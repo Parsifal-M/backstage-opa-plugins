@@ -1,0 +1,13 @@
+version: '4'
+services:
+  postgres:
+    image: postgres:15.1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: devPostgres
+    ports:
+      - 5432:5432
+  opa:
+    image: openpolicyagent/opa:0.49.2-static
+    ports:
+      - 8181:8181
