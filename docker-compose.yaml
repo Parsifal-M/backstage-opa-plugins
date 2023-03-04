@@ -8,6 +8,11 @@ services:
     ports:
       - 5432:5432
   opa:
-    image: openpolicyagent/opa:0.49.2-static
+    image: openpolicyagent/opa:0.49.2
+    command: 
+      - "run"
+      - "--server"
+      - "--log-level=info"
+      - "--log-format=json-pretty"
     ports:
       - 8181:8181

@@ -3042,6 +3042,27 @@
     qs "^6.10.1"
     react-use "^17.2.4"
 
+"@backstage/plugin-permission-backend@^0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@backstage/plugin-permission-backend/-/plugin-permission-backend-0.5.17.tgz#a1d9a500319f0cfe759374a04f197ea6338846b5"
+  integrity sha512-7Cat7RPj1nu2y58ZvZhKfnTLFUHbVf9+Q38QPhQh0yIuRM9plOubFDc2SrzWYE3VrOQzVcyENZdjOeJY3QxsZw==
+  dependencies:
+    "@backstage/backend-common" "^0.18.2"
+    "@backstage/config" "^1.0.6"
+    "@backstage/errors" "^1.1.4"
+    "@backstage/plugin-auth-node" "^0.2.11"
+    "@backstage/plugin-permission-common" "^0.7.3"
+    "@backstage/plugin-permission-node" "^0.7.5"
+    "@types/express" "*"
+    dataloader "^2.0.0"
+    express "^4.17.1"
+    express-promise-router "^4.1.0"
+    lodash "^4.17.21"
+    node-fetch "^2.6.7"
+    winston "^3.2.1"
+    yn "^4.0.0"
+    zod "~3.18.0"
+
 "@backstage/plugin-permission-common@^0.7.3":
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/@backstage/plugin-permission-common/-/plugin-permission-common-0.7.3.tgz#389ec502affa5694895055c5537c96f8ed21db0f"
