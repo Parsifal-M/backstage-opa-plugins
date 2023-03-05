@@ -12,7 +12,7 @@ services:
     command: 
       - "run"
       - "--server"
-      - "--log-level=info"
       - "--log-format=json-pretty"
+      - "--set=decision_logs.console=true"
     ports:
       - 8181:8181

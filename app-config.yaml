@@ -36,6 +36,10 @@ backend:
       password: ${POSTGRES_PASSWORD}
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
+logging:
+  logLevel: debug
+
+
 integrations:
   github:
     - host: github.com

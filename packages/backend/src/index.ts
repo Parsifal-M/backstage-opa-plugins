@@ -32,6 +32,8 @@ import { PluginEnvironment } from './types';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import permission from './plugins/permission';
+// eslint-disable-next-line @backstage/no-relative-monorepo-imports
+import { OpaClient } from '../../../plugins/opa-auth-backend/src/opa/opaClient';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
@@ -39,7 +41,7 @@ function makeCreateEnv(config: Config) {
   const discovery = SingleHostDiscovery.fromConfig(config);
   const cacheManager = CacheManager.fromConfig(config);
   const databaseManager = DatabaseManager.fromConfig(config, { logger: root });
-  const tokenManager = ServerTokenManager.noop();
+  const tokenManager = ServerTokenManager.fromConfig(config, { logger: root });
   const taskScheduler = TaskScheduler.fromConfig(config);
 
   const identity = DefaultIdentityClient.create({
@@ -50,6 +52,8 @@ function makeCreateEnv(config: Config) {
     tokenManager,
   });
 
+  const opaClient = new OpaClient('http://localhost:8181/v1/data');
+
   root.info(`Created UrlReader ${reader}`);
 
   return (plugin: string): PluginEnvironment => {
@@ -57,7 +61,7 @@ function makeCreateEnv(config: Config) {
     const database = databaseManager.forPlugin(plugin);
     const cache = cacheManager.forPlugin(plugin);
     const scheduler = taskScheduler.forPlugin(plugin);
-    return {
+    const env = {
       logger,
       database,
       cache,
@@ -68,9 +72,17 @@ function makeCreateEnv(config: Config) {
       scheduler,
       permissions,
       identity,
+      opaClient,
     };
+    
+    if (plugin === 'permission') {
+      return { ...env, opaClient };
+    }
+    
+    return env;
   };
 }
+
 
 async function main() {
   const config = await loadBackendConfig({
