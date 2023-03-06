@@ -7,7 +7,7 @@ export class OpaClient {
     this.baseUrl = baseUrl;
   }
 
-  async evaluatePolicy(input: any) {
+  async evaluatePolicy(input: any): Promise<boolean> {
     const response = await fetch(this.baseUrl, {
       method: 'POST',
       headers: {
@@ -21,7 +21,6 @@ export class OpaClient {
     }
 
     const data = await response.json();
-    return data.result.backstagedefault.allow;
-    
+    return data.result.backstagedefault.allow as boolean;
   }
 }
