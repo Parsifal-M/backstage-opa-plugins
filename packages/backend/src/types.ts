@@ -12,7 +12,6 @@ import { PermissionEvaluator } from '@backstage/plugin-permission-common';
 import { IdentityApi } from '@backstage/plugin-auth-node';
 
 export type PluginEnvironment = {
-  opaClient: any;
   logger: Logger;
   database: PluginDatabaseManager;
   cache: PluginCacheManager;

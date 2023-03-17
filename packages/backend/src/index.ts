@@ -74,12 +74,7 @@ function makeCreateEnv(config: Config) {
       identity,
       opaClient,
     };
-    
-    if (plugin === 'permission') {
-      return { ...env, opaClient };
-    }
-    
-    return env;
+        return env;
   };
 }
 

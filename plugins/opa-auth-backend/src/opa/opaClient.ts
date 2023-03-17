@@ -4,8 +4,8 @@ import fetch from "node-fetch";
 export class OpaClient {
   private readonly baseUrl: string;
 
-  constructor(config: Config) {
-    this.baseUrl = config.getString("integrations.opa.baseUrl");
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
   }
 
   async evaluatePolicy(policy: string, input: any): Promise<boolean> {
@@ -24,4 +24,9 @@ export class OpaClient {
     const data = await response.json();
     return data.result as boolean;
   }
+}
+
+export function createOpaClient(config: Config): OpaClient {
+  const baseUrl = config.getString("integrations.opa.baseUrl");
+  return new OpaClient(baseUrl);
 }

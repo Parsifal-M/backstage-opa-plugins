@@ -30,10 +30,10 @@ backend:
   database:
     client: pg
     connection:
-      host: ${POSTGRES_HOST}
-      port: ${POSTGRES_PORT}
-      user: ${POSTGRES_USER}
-      password: ${POSTGRES_PASSWORD}
+      host: localhost
+      port: 5432
+      user: postgres
+      password: devPostgres
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 logging:
@@ -50,6 +50,8 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
+  opa:
+    baseUrl: http://localhost:8181
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -108,3 +110,5 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+permission:
+  enabled: true
