@@ -1,19 +1,22 @@
-import { createRouter } from "@backstage/plugin-app-backend";
+/* eslint-disable @backstage/no-relative-monorepo-imports */
+import { createRouter } from "@backstage/plugin-permission-backend";
 import { PolicyDecision, AuthorizeResult } from "@backstage/plugin-permission-common";
 import { PolicyQuery } from "@backstage/plugin-permission-node";
 import { Router } from "express-serve-static-core";
+import { cannotDeleteEntities } from "../../../../plugins/opa-auth-backend/src/catalog-policies/policies";
 import { OpaClient, createOpaClient } from "../../../../plugins/opa-auth-backend/src/opa/opaClient";
 import { PluginEnvironment } from "../types";
 
-
-const catalogPermissions = new CatalogPermissions();
 
 export class PermissionsHandler {
   constructor(private opaClient: OpaClient) {}
 
   async handle(request: PolicyQuery): Promise<PolicyDecision> {
+    // Use the policy function from your policies.ts file here
+    const cannotDeleteEntitiesPolicy = await cannotDeleteEntities(this.opaClient);
+    
     if (isResourcePermission(request.permission, "catalog-entity")) {
-      return await catalogPermissions.decide(request, this.opaClient);
+      return await cannotDeleteEntitiesPolicy(request);
     }
 
     // If the entity is not a "catalog-entity", you can decide what to do, e.g.:

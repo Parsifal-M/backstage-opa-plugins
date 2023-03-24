@@ -4,11 +4,11 @@ import fetch from "node-fetch";
 export class OpaClient {
   private readonly baseUrl: string;
 
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  constructor(config: Config) {
+    this.baseUrl = config.getString("integrations.opa.baseUrl");
   }
 
-  async evaluatePolicy(policy: string, input: string): Promise<boolean> {
+  async evaluatePolicy(policy: string, input: any): Promise<boolean> {
     const response = await fetch(`${this.baseUrl}/v1/data/${policy}`, {
       method: "POST",
       headers: {
@@ -27,6 +27,5 @@ export class OpaClient {
 }
 
 export function createOpaClient(config: Config): OpaClient {
-  const baseUrl = config.getString("integrations.opa.baseUrl");
-  return new OpaClient(baseUrl);
+  return new OpaClient(config);
 }
