@@ -7,12 +7,12 @@ services:
       POSTGRES_PASSWORD: devPostgres
     ports:
       - 5432:5432
-  # opa:
-  #   image: openpolicyagent/opa:0.49.2
-  #   command: 
-  #     - "run"
-  #     - "--server"
-  #     - "--log-format=json-pretty"
-  #     - "--set=decision_logs.console=true"
-  #   ports:
-  #     - 8181:8181
+  opa:
+    image: openpolicyagent/opa:0.50.1-static
+    command: 
+      - "run"
+      - "--server"
+      - "--log-format=json-pretty"
+      - "--set=decision_logs.console=true"
+    ports:
+      - 8181:8181

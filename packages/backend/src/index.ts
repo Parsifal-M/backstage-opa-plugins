@@ -33,7 +33,6 @@ import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import permission from './plugins/permission';
 // eslint-disable-next-line @backstage/no-relative-monorepo-imports
-import { OpaClient } from '../../../plugins/opa-auth-backend/src/opa/opaClient';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
@@ -51,8 +50,6 @@ function makeCreateEnv(config: Config) {
     discovery,
     tokenManager,
   });
-
-  const opaClient = new OpaClient('http://localhost:8181/v1/data');
 
   root.info(`Created UrlReader ${reader}`);
 
@@ -72,7 +69,6 @@ function makeCreateEnv(config: Config) {
       scheduler,
       permissions,
       identity,
-      opaClient,
     };
         return env;
   };
