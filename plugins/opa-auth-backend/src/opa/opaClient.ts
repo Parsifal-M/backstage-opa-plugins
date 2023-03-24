@@ -8,7 +8,7 @@ export class OpaClient {
     this.baseUrl = baseUrl;
   }
 
-  async evaluatePolicy(policy: string, input: any): Promise<boolean> {
+  async evaluatePolicy(policy: string, input: string): Promise<boolean> {
     const response = await fetch(`${this.baseUrl}/v1/data/${policy}`, {
       method: "POST",
       headers: {
