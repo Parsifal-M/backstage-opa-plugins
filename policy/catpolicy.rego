@@ -1,5 +1,5 @@
 package example_policy
 
-deny {
+allow {
     input.permission.name == "catalog.entity.read"
 }
