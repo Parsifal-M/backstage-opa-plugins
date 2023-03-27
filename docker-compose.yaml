@@ -16,3 +16,5 @@ services:
       - "--set=decision_logs.console=true"
     ports:
       - 8181:8181
+    volumes:
+      - ./policy:/policy

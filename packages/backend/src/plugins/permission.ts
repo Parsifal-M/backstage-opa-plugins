@@ -14,10 +14,13 @@ export class PermissionsHandler {
   async handle(request: PolicyQuery): Promise<PolicyDecision> {
     // Use the policy function from your policies.ts file here
     console.log('PermissionsHandler.handle called');
+    console.log(request)
     const cannotDeleteEntitiesPolicy = await cannotDeleteEntities(this.opaClient);
     
     if (isResourcePermission(request.permission, "catalog-entity")) {
-      return await cannotDeleteEntitiesPolicy(request);
+      const policyDecision = await cannotDeleteEntitiesPolicy(request);
+      console.log(`Policy decision: ${JSON.stringify(policyDecision)}`);
+      return policyDecision;
     }
 
     // If the entity is not a "catalog-entity", you can decide what to do, e.g.:

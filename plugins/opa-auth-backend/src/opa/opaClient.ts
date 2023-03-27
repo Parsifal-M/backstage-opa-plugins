@@ -6,10 +6,10 @@ export class OpaClient {
 
   constructor(config: Config) {
     // this.baseUrl = config.getString("integrations.opa.baseUrl");
-    this.baseUrl = "http://localhost:8181"
+    this.baseUrl = "http://localhost:8181";
   }
 
-  async evaluatePolicy(policy: string, input: any): Promise<boolean> {
+  async evaluatePolicy(policy: string, input: any): Promise<any> {
     console.log(`Sending request to OPA server: ${this.baseUrl}/v1/data/${policy}`);
   
     const response = await fetch(`${this.baseUrl}/v1/data/${policy}`, {
@@ -27,10 +27,9 @@ export class OpaClient {
     const data = await response.json();
     console.log(`Received response from OPA server: ${JSON.stringify(data)}`);
   
-    return data.result as boolean;
+    return data.result;
   }
-  
-}
+}  
 
 export function createOpaClient(config: Config): OpaClient {
   return new OpaClient(config);
