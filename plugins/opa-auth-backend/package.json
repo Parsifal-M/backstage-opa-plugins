@@ -24,6 +24,8 @@
   },
   "dependencies": {
     "@backstage/backend-common": "^0.18.2",
+    "@backstage/plugin-permission-node": "^0.7.5",
+    "@backstage/plugin-permission-common": "^0.7.3",
     "@backstage/config": "^1.0.6",
     "@types/express": "*",
     "express": "^4.17.3",
@@ -39,6 +41,7 @@
     "msw": "^0.49.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "config.d.ts"
   ]
 }

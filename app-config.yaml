@@ -112,3 +112,8 @@ catalog:
     #     - allow: [User, Group]
 permission:
   enabled: true
+
+opa-auth-backend:
+  opa:
+    baseUrl: 'http://localhost:8181'
+

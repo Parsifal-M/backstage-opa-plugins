@@ -1,16 +1,18 @@
 import { Config } from "@backstage/config";
+import { Logger } from "winston";
 import fetch from "node-fetch";
 
 export class OpaClient {
   private readonly baseUrl: string;
+  private readonly logger: Logger;
 
-  constructor(config: Config) {
-    // this.baseUrl = config.getString("integrations.opa.baseUrl");
-    this.baseUrl = "http://localhost:8181";
+  constructor(config: Config, logger: Logger) {
+    this.baseUrl = config.getString("opa-auth-backend.opa.baseUrl");
+    this.logger = logger;
   }
 
   async evaluatePolicy(policy: string, input: any): Promise<any> {
-    console.log(`Sending request to OPA server: ${this.baseUrl}/v1/data/${policy}`);
+    this.logger.info(`Sending request to OPA server: ${this.baseUrl}/v1/data/${policy}`);
   
     const response = await fetch(`${this.baseUrl}/v1/data/${policy}`, {
       method: "POST",
@@ -25,12 +27,12 @@ export class OpaClient {
     }
   
     const data = await response.json();
-    console.log(`Received response from OPA server: ${JSON.stringify(data)}`);
+    this.logger.info(`Received response from OPA server: ${JSON.stringify(data)}`);
   
     return data.result;
   }
 }  
 
-export function createOpaClient(config: Config): OpaClient {
-  return new OpaClient(config);
+export function createOpaClient(config: Config, logger: Logger): OpaClient {
+  return new OpaClient(config, logger);
 }
