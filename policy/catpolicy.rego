@@ -1,5 +1,5 @@
 package example_policy
 
 deny {
-    input.permission.name == "catalog.entity.delete"
+    input.permission.name == "catalog.entity.edit"
 }
