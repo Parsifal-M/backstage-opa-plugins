@@ -1,5 +1,9 @@
-package example_policy
+package catalog_policy
 
-deny {
-    input.permission.name == "catalog.entity.edit"
+import future.keywords.if
+
+default deny := false
+
+deny if {
+    input.permission.name == "catalog.entity.delete"
 }
