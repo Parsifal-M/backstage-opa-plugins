@@ -113,7 +113,7 @@ catalog:
 permission:
   enabled: true
 
-opa-auth-backend:
+opa-client:
   opa:
     baseUrl: 'http://localhost:8181'
 
