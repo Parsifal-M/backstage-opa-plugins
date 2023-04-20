@@ -7,14 +7,14 @@ import { BackstageIdentityResponse } from "@backstage/plugin-auth-node";
 
 export async function catalogPermissions(opaClient: OpaClient) {
   return async (request: PolicyQuery, user?: BackstageIdentityResponse): Promise<PolicyDecision> => {
-    const isResouceType = isResourcePermission(request.permission, "catalog-entity");
+    const isResourceType = isResourcePermission(request.permission, "catalog-entity");
     const result = await opaClient.evaluatePolicy("catalog_policy", {
       "input": {
         "permission": {
           "type": request.permission.type,
           "name": request.permission.name,
           "attributes": request.permission.attributes,
-          "resourceType": isResouceType
+          "resourceType": isResourceType
         },
         "user": {
           "identity": user?.identity.userEntityRef,

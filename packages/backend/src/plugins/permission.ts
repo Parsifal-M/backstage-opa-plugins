@@ -5,7 +5,6 @@ import { PluginEnvironment } from "../types";
 import { PolicyDecision } from '@backstage/plugin-permission-common';
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { Logger } from 'winston';
-
 import { catalogPermissions } from "../../../../plugins/opa-auth-backend/src/catalog-policies/policies";
 import { OpaClient } from "../../../../plugins/opa-auth-backend/src/opa/opaClient";
 
@@ -18,9 +17,9 @@ class PermissionsHandler {
   async handle(request: PolicyQuery): Promise<PolicyDecision> {
     this.logger.info('PermissionsHandler.handle called');
     this.logger.info(JSON.stringify(request));
-    const cannotDeleteEntitiesPolicy = await catalogPermissions(this.opaClient);
+    const catalogPermissionsPolicy = await catalogPermissions(this.opaClient);
 
-    const policyDecision = await cannotDeleteEntitiesPolicy(request);
+    const policyDecision = await catalogPermissionsPolicy(request);
     this.logger.info(`Policy decision: ${JSON.stringify(policyDecision)}`);
 
     return policyDecision;
