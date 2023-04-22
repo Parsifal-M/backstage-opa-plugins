@@ -30,11 +30,15 @@ backend:
   database:
     client: pg
     connection:
-      host: ${POSTGRES_HOST}
-      port: ${POSTGRES_PORT}
-      user: ${POSTGRES_USER}
-      password: ${POSTGRES_PASSWORD}
+      host: localhost
+      port: 5432
+      user: postgres
+      password: devPostgres
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+
+logging:
+  logLevel: debug
+
 
 integrations:
   github:
@@ -46,6 +50,8 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
+  opa:
+    baseUrl: http://localhost:8181
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -66,8 +72,12 @@ techdocs:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
-  # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: {CID}
+        clientSecret: {CS}
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -104,3 +114,15 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+permission:
+  enabled: true
+
+opa-client:
+  opa:
+    baseUrl: 'http://localhost:8181'
+    policies:
+      catalog:
+        package: 'catalog_policy'
+
+
+
