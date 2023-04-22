@@ -5,22 +5,24 @@ import fetch from 'node-fetch';
 export class OpaClient {
   private readonly baseUrl: string;
   private readonly logger: Logger;
+  private readonly package: string;
 
   constructor(config: Config, logger: Logger) {
     this.baseUrl = config.getString('opa-client.opa.baseUrl');
+    this.package = config.getString('opa-client.opa.policies.catalog.package');
     this.logger = logger;
   }
 
-  async evaluatePolicy(policy: string, input: any): Promise<any> {
+  async evaluatePolicy(input: any): Promise<any> {
     this.logger.info(
-      `Sending request to OPA server: ${this.baseUrl}/v1/data/${policy}`,
+      `Sending request to OPA server: ${this.baseUrl}/v1/data/${this.package}`,
     );
 
     // Log the input being sent to OPA
     this.logger.info(`Request input for OPA: ${JSON.stringify(input)}`);
 
     try {
-      const response = await fetch(`${this.baseUrl}/v1/data/${policy}`, {
+      const response = await fetch(`${this.baseUrl}/v1/data/${this.package}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

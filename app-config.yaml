@@ -72,8 +72,12 @@ techdocs:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
-  # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${CID}
+        clientSecret: ${CSECRET}
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -116,4 +120,9 @@ permission:
 opa-client:
   opa:
     baseUrl: 'http://localhost:8181'
+    policies:
+      catalog:
+        package: 'catalog_policy'
+
+
 
