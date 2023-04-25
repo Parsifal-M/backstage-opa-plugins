@@ -2,8 +2,7 @@
 import { createRouter } from "@backstage/plugin-permission-backend";
 import { Router } from "express-serve-static-core";
 import { PluginEnvironment } from "../types";
-import { OpaClient } from "../../../../plugins/opa-auth-backend/src/opa-client/opaClient";
-import { PermissionsHandler } from "../../../../plugins/opa-auth-backend/src/permission-handler/permissionHandler";
+import { OpaClient, PermissionsHandler } from "../../../../plugins/opa-wrapper/src";
 
 
 export default async function createPlugin(
