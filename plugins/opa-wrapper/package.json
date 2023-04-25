@@ -1,5 +1,5 @@
 {
-  "name": "@parsifal-m/plugin-opa-auth-backend",
+  "name": "@parsifal-m/opa-wrapper",
   "version": "0.0.2",
   "main": "src/index.ts",
   "types": "src/index.ts",
