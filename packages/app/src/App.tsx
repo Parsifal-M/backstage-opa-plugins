@@ -34,6 +34,7 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
+import { ScaffolderFrontendModuleOwnedgroupsFieldPage } from '@internal/plugin-scaffolder-frontend-module-ownedgroups-field';
 
 const app = createApp({
   components: {
@@ -106,6 +107,7 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/scaffolder-frontend-module-ownedgroups-field" element={<ScaffolderFrontendModuleOwnedgroupsFieldPage />} />
   </FlatRoutes>
 );
 
