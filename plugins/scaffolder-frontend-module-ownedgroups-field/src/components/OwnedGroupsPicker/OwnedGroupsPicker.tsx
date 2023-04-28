@@ -1,38 +1,58 @@
-import React from 'react';
-import { Typography, Grid } from '@material-ui/core';
-import {
-  InfoCard,
-  Header,
-  Page,
-  Content,
-  ContentHeader,
-  HeaderLabel,
-  SupportButton,
-} from '@backstage/core-components';
-import { ExampleFetchComponent } from '../ExampleFetchComponent';
+/* eslint-disable @backstage/no-undeclared-imports */
+import React, { useEffect, useState } from 'react';
+import { useApi, identityApiRef } from '@backstage/core-plugin-api';
+import { TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { catalogApiRef } from '@backstage/plugin-catalog-react';
+import { NotFoundError } from '@backstage/errors';
+import { Entity } from '@backstage/catalog-model';
 
-export const ExampleComponent = () => (
-  <Page themeId="tool">
-    <Header title="Welcome to scaffolder-frontend-module-ownedgroups-field!" subtitle="Optional subtitle">
-      <HeaderLabel label="Owner" value="Team X" />
-      <HeaderLabel label="Lifecycle" value="Alpha" />
-    </Header>
-    <Content>
-      <ContentHeader title="Plugin title">
-        <SupportButton>A description of your plugin goes here.</SupportButton>
-      </ContentHeader>
-      <Grid container spacing={3} direction="column">
-        <Grid item>
-          <InfoCard title="Information card">
-            <Typography variant="body1">
-              All content should be wrapped in a card like this.
-            </Typography>
-          </InfoCard>
-        </Grid>
-        <Grid item>
-          <ExampleFetchComponent />
-        </Grid>
-      </Grid>
-    </Content>
-  </Page>
-);
+
+const useStyles = makeStyles({
+  dropdown: {
+    minWidth: 120,
+  },
+});
+
+export const OwnedGroupsPicker = () => {
+  const classes = useStyles();
+  const identityApi = useApi(identityApiRef);
+  const catalogApi = useApi(catalogApiRef);
+  const [groups, setGroups] = useState<Entity[]>([]);
+
+  useEffect(() => {
+    const fetchUserGroups = async () => {
+      const backstageIdentity = await identityApi.getBackstageIdentity();
+      const ownedEntities = backstageIdentity?.ownershipEntityRefs;
+      
+      if (!ownedEntities) {
+        throw new NotFoundError(`Could not find owned entities for user ${ownedEntities}`);
+      }
+
+      const userOwnedGroups = await catalogApi.getEntities({
+        filter: {
+          kind: 'Group',
+          'metadata.owners': ownedEntities,
+        },
+      });
+      setGroups(userOwnedGroups.items);
+    };
+
+    fetchUserGroups();
+  }, [identityApi, catalogApi]);
+
+  return (
+    <TextField
+      select
+      label="User Owned Groups"
+      className={classes.dropdown}
+      variant="outlined"
+    >
+      {groups.map((group: any) => (
+        <option key={group.metadata.name} value={group.metadata.name}>
+          {group.metadata.name}
+        </option>
+      ))}
+    </TextField>
+  );
+};

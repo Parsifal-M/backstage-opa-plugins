@@ -1,1 +1,1 @@
-export { scaffolderFrontendModuleOwnedgroupsFieldPlugin, ScaffolderFrontendModuleOwnedgroupsFieldPage } from './plugin';
+export { SelectOwnedGroupsExtension } from './plugin';

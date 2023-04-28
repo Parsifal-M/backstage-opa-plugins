@@ -1,1 +1,1 @@
-export { ExampleComponent } from './OwnedGroupsPicker';
+export * from './OwnedGroupsPicker';
