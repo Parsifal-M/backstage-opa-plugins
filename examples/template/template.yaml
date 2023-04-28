@@ -13,8 +13,6 @@ spec:
   # used to gather input data for the execution of the template.
   parameters:
     - title: Fill in some steps
-      required:
-        - name
       properties:
         name:
           title: Name
@@ -23,9 +21,13 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
+    - title: Choose an owner
+      properties:
+        repoUrl:
+          title: Owner
+          type: string
+          ui:field: OwnedGroupsPicker
     - title: Choose a location
-      required:
-        - repoUrl
       properties:
         repoUrl:
           title: Repository Location

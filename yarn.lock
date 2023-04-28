@@ -2945,6 +2945,33 @@
     node-fetch "^2.6.7"
     winston "^3.2.1"
 
+"@backstage/plugin-catalog-backend-module-github@^0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@backstage/plugin-catalog-backend-module-github/-/plugin-catalog-backend-module-github-0.2.7.tgz#43e8e02804ab4e197c73693149e503095a9e5794"
+  integrity sha512-RSAZAUEOhZmqtCRSTdBDDLJ4Jul4gGK1p7iNLawo5ixSJvKLmy5fgdGJznZ3nw1K5SFD5Mw5+YVuGsewVNNf7w==
+  dependencies:
+    "@backstage/backend-common" "^0.18.4"
+    "@backstage/backend-plugin-api" "^0.5.1"
+    "@backstage/backend-tasks" "^0.5.1"
+    "@backstage/catalog-client" "^1.4.1"
+    "@backstage/catalog-model" "^1.3.0"
+    "@backstage/config" "^1.0.7"
+    "@backstage/errors" "^1.1.5"
+    "@backstage/integration" "^1.4.4"
+    "@backstage/plugin-catalog-backend" "^1.9.0"
+    "@backstage/plugin-catalog-common" "^1.0.13"
+    "@backstage/plugin-catalog-node" "^1.3.5"
+    "@backstage/plugin-events-node" "^0.2.5"
+    "@backstage/types" "^1.0.2"
+    "@octokit/graphql" "^5.0.0"
+    "@octokit/rest" "^19.0.3"
+    git-url-parse "^13.0.0"
+    lodash "^4.17.21"
+    minimatch "^5.1.2"
+    node-fetch "^2.6.7"
+    uuid "^8.0.0"
+    winston "^3.2.1"
+
 "@backstage/plugin-catalog-backend@^1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@backstage/plugin-catalog-backend/-/plugin-catalog-backend-1.9.0.tgz#69bdec038ac3f6476c6e9bb07fe0a8aedb97c6bc"
@@ -3115,6 +3142,13 @@
     react-helmet "6.1.0"
     react-use "^17.2.4"
     zen-observable "^0.10.0"
+
+"@backstage/plugin-events-node@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@backstage/plugin-events-node/-/plugin-events-node-0.2.5.tgz#7bd3ed7a305bedbbbc45f750429178cc5505808a"
+  integrity sha512-+AnqspnhcACW6ZxHDO62JIMYUy2fWwuBI7zCnkAzQ28njvKGJ3CgckIsVi1+L0JYBbXMbFM3arUjVhugfDAVOg==
+  dependencies:
+    "@backstage/backend-plugin-api" "^0.5.1"
 
 "@backstage/plugin-github-actions@^0.5.17":
   version "0.5.17"
