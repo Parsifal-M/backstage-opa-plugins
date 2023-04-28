@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExampleComponent } from './OwnedGroupsPicker';
+import { OwnedGroupsPicker } from './OwnedGroupsPicker';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
@@ -21,7 +21,7 @@ describe('ExampleComponent', () => {
   });
 
   it('should render', async () => {
-    await renderInTestApp(<ExampleComponent />);
+    await renderInTestApp(<OwnedGroupsPicker />);
     expect(screen.getByText('Welcome to scaffolder-frontend-module-ownedgroups-field!')).toBeInTheDocument();
   });
 });
