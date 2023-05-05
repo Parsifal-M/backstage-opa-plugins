@@ -1,5 +1,5 @@
 {
-  "name": "@parsifal-m/scaffolder-frontend-module-ownedgroups-field",
+  "name": "@parsifal-m/scaffolder-frontend-module-ownedgroupspicker-field",
   "version": "0.0.1",
   "main": "src/index.ts",
   "types": "src/index.ts",
