@@ -1,6 +1,7 @@
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
 import fetch from 'node-fetch';
+import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
 
 export class OpaClient {
   private readonly baseUrl: string;
@@ -13,7 +14,7 @@ export class OpaClient {
     this.logger = logger;
   }
 
-  async evaluatePolicy(input: any): Promise<any> {
+  async evaluatePolicy(input:PolicyEvaluationInput): Promise<PolicyEvaluationResult> {
     this.logger.info(
       `Sending request to OPA server: ${this.baseUrl}/v1/data/${this.package}`,
     );
