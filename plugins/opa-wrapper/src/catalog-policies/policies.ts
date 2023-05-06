@@ -1,19 +1,20 @@
 /* eslint-disable @backstage/no-undeclared-imports */
-import { PolicyDecision } from "@backstage/plugin-permission-common";
-import { PolicyQuery } from "@backstage/plugin-permission-node";
-import { AuthorizeResult } from "@backstage/plugin-permission-common";
-import { OpaClient } from "../opa-client/opaClient";
-import { BackstageIdentityResponse } from "@backstage/plugin-auth-node";
-import { isResourcePermission } from "@backstage/plugin-permission-common";
+import { PolicyDecision } from '@backstage/plugin-permission-common';
+import { PolicyQuery } from '@backstage/plugin-permission-node';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { OpaClient } from '../opa-client/opaClient';
+import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
+import { isResourcePermission } from '@backstage/plugin-permission-common';
+import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
 
-export async function catalogPermissions(opaClient: OpaClient) {
+export function catalogPermissions(opaClient: OpaClient) {
   return async (request: PolicyQuery, user?: BackstageIdentityResponse): Promise<PolicyDecision> => {
     const resourceType = isResourcePermission(request.permission) ? request.permission.resourceType : undefined;
     const userGroups = user?.identity.ownershipEntityRefs ?? [];
-    const userName = user?.identity.userEntityRef ?? [];
+    const userName = user?.identity.userEntityRef;
     const { type, name, attributes: { action } } = request.permission;
-    
-    const result = await opaClient.evaluatePolicy({
+
+    const input: PolicyEvaluationInput = {
       input: {
         permission: {
           type: type,
@@ -26,11 +27,13 @@ export async function catalogPermissions(opaClient: OpaClient) {
           groups: userGroups,
         },
       },
-    });
+    };
+
+    const evaluationResult: PolicyEvaluationResult = await opaClient.evaluatePolicy(input);
 
     return {
       result:
-        result.deny
+        evaluationResult.deny
           ? AuthorizeResult.DENY
           : AuthorizeResult.ALLOW,
     };
