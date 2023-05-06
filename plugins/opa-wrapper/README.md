@@ -53,5 +53,39 @@ opa-client:
 
 Replace http://your-opa-server-url with the URL of your OPA server and your-catalog-package with the OPA policy package containing your catalog policies.
 
+## An Example Policy and Input
+
+An example policy in OPA might look like this:
+
+```rego
+package catalog_policy
+
+default deny := false
+
+deny{
+    input.permission.name == "catalog.entity.delete"
+    input.identity.groups[_] == "group:default/maintainers"
+}
+```
+
+The input sent from Backstage looks like this:
+
+```typescript
+    const input: PolicyEvaluationInput = {
+      input: {
+        permission: {
+          type: type,
+          name: name,
+          action: action,
+          resourceType: resourceType,
+        },
+        identity: {
+          username: userName,
+          groups: userGroups,
+        },
+      },
+    };
+```
+
 ## License
 This project is released under the Apache 2.0 License.
