@@ -24,10 +24,10 @@ export function createOpaPermissionEvaluator(opaClient: OpaClient) {
       const input: PolicyEvaluationInput = {
         input: {
           permission: {
-            type: type,
-            name: name,
-            action: action,
-            resourceType: resourceType,
+            type,
+            name,
+            action,
+            resourceType,
           },
           identity: {
             username: userName,
