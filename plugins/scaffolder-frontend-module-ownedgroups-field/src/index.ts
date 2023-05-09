@@ -1,1 +1,0 @@
-export { SelectOwnedGroupsExtension } from './plugin';

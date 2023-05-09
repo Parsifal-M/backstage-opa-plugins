@@ -34,7 +34,7 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
-import { SelectOwnedGroupsExtension } from '@internal/plugin-scaffolder-frontend-module-ownedgroups-field';
+
 
 
 const app = createApp({
@@ -92,9 +92,6 @@ const routes = (
       </TechDocsAddons>
     </Route>
     <Route path="/create" element={<ScaffolderPage />}>
-      <ScaffolderFieldExtensions>
-        <SelectOwnedGroupsExtension />
-      </ScaffolderFieldExtensions>
     </Route>
     <Route path="/api-docs" element={<ApiExplorerPage />} />
     <Route
