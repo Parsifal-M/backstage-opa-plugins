@@ -5,8 +5,8 @@ import future.keywords.in
 default deny := false
 
 deny{
-  input.permission.name == "catalog.entity.read"
-  "group:default/maintainers" in input.identity.groups
+  input.permission.name == "catalog.entity.delete"
+  "group:default/testers" in input.identity.groups
 }
 
 deny{
