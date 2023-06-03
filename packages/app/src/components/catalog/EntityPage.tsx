@@ -162,6 +162,14 @@ const serviceEntityPage = (
       </Grid>
     </EntityLayout.Route>
 
+    <EntityLayout.Route
+      if={isJfrogArtifactoryAvailable}
+      path="/jfrog-artifactory"
+      title="Jfrog Artifactory"
+    >
+      <JfrogArtifactoryPage />
+    </EntityLayout.Route>
+
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
     </EntityLayout.Route>
