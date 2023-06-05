@@ -9,5 +9,5 @@ export interface JfrogArtifactoryApiV1 {
 export type Options = {
   discoveryApi: DiscoveryApi;
   configApi: ConfigApi;
-  logger: Logger
+  logger: Logger;
 };
