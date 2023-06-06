@@ -1,23 +1,21 @@
 import { ConfigApi, DiscoveryApi } from '@backstage/core-plugin-api';
 import { JfrogArtifactoryApiClient } from './artifactoryApiClient';
-import { Logger } from 'winston';
+
 
 describe('JfrogArtifactoryApiClient', () => {
   let discoveryApi: DiscoveryApi;
   let configApi: ConfigApi;
   let fetchMock: jest.MockedFunction<typeof fetch>;
-  let logger: Logger;
 
   beforeEach(() => {
     discoveryApi = { getBaseUrl: jest.fn() } as unknown as DiscoveryApi;
     configApi = { getOptionalString: jest.fn() } as unknown as ConfigApi;
-    logger = { error: jest.fn(), log: jest.fn() } as unknown as Logger;
     fetchMock = jest.fn();
     global.fetch = fetchMock;
   });
 
   it('should call fetch with correct parameters and return response', async () => {
-    const client = new JfrogArtifactoryApiClient({ discoveryApi, configApi, logger });
+    const client = new JfrogArtifactoryApiClient({ discoveryApi, configApi });
     const response = {
       data: {
         packages: {
@@ -92,7 +90,7 @@ describe('JfrogArtifactoryApiClient', () => {
   });
 
   it('should throw an error if fetch fails', async () => {
-    const client = new JfrogArtifactoryApiClient({ discoveryApi, configApi, logger });
+    const client = new JfrogArtifactoryApiClient({ discoveryApi, configApi });
     const repo = 'repo';
 
     (

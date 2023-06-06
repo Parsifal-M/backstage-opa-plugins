@@ -5,7 +5,7 @@ import {
 } from '@backstage/core-plugin-api';
 import { ArtifactResponse } from '../types';
 import { JfrogArtifactoryApiV1, Options } from './types';
-import { Logger } from 'winston';
+
 
 const DEFAULT_PROXY_PATH = '/jfrog-artifactory/api';
 
@@ -16,12 +16,11 @@ export const jfrogArtifactoryApiRef = createApiRef<JfrogArtifactoryApiV1>({
 export class JfrogArtifactoryApiClient implements JfrogArtifactoryApiV1 {
   private readonly discoveryApi: DiscoveryApi;
   private readonly configApi: ConfigApi;
-  private readonly logger: Logger;
+
 
   constructor(options: Options) {
     this.discoveryApi = options.discoveryApi;
     this.configApi = options.configApi;
-    this.logger = options.logger;
   }
 
   private async getBaseUrl() {
@@ -38,11 +37,8 @@ export class JfrogArtifactoryApiClient implements JfrogArtifactoryApiV1 {
       body: query,
     });
     if (!response.ok) {
-      this.logger.error(
-        `Failed to fetch data, status ${response.status}: ${response.statusText}`,
-      );
       throw new Error(
-        `Failed to fetch data, status ${response.status}: ${response.statusText}`,
+        `Request failed with status: ${response.status} ${response.statusText}`,
       );
     }
     return await response.json();
@@ -70,8 +66,7 @@ export class JfrogArtifactoryApiClient implements JfrogArtifactoryApiV1 {
         JSON.stringify(packageQuery),
       )) as ArtifactResponse;
     } catch (error) {
-      this.logger.error(`Failed to retrieve artifact: ${error}`);
-      throw error;
+      throw new Error(`Request failed with error: ${error}`);
     }
   }
 }
