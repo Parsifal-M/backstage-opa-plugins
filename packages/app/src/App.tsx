@@ -37,6 +37,7 @@ import { githubAuthApiRef } from '@backstage/core-plugin-api';
 
 
 
+
 const app = createApp({
   components: {
     SignInPage: props => (
@@ -91,8 +92,7 @@ const routes = (
         <ReportIssue />
       </TechDocsAddons>
     </Route>
-    <Route path="/create" element={<ScaffolderPage />}>
-    </Route>
+    <Route path="/create" element={<ScaffolderPage />} />
     <Route path="/api-docs" element={<ApiExplorerPage />} />
     <Route
       path="/tech-radar"
