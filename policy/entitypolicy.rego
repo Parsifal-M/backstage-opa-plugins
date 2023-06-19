@@ -1,13 +1,9 @@
-package backstage
+package component
 
 default allow = false
 
 allow {
-    input.spec.system == "opa"
-}
-
-allow {
-    input.spec.lifecycle == "production"
+	count({v | v := violation[_]; v.level == "error"}) == 0
 }
 
 violation[{"message": msg, "level": "warning"}] {
@@ -16,16 +12,23 @@ violation[{"message": msg, "level": "warning"}] {
 }
 
 violation[{"message": msg, "level": "error"}] {
-    input.spec.lifecycle != "production"
-    msg := "The spec field 'lifecycle' is not 'production'"
+	valid_lifecycles = {"production", "development", "experimental"}
+    not valid_lifecycles[input.spec.lifecycle]
+    msg := "Incorrect lifecycle, should be one of production, development or experimental"
 }
 
 violation[{"message": msg, "level": "error"}] {
-    input.spec.system != "opa"
-    msg := "The spec field 'system' is not 'opa'"
+    not is_system_present
+    msg := "System is missing!"
 }
 
-violation[{"message": msg, "level": "success"}] {
-    input.spec.type == "website"
-    msg := "Correct component type!"
+violation[{"message": msg, "level": "error"}] {
+	valid_types = {"website", "library", "service"}
+    not valid_types[input.spec.type]
+	not valid_types
+    msg := "Incorrect component type!"
+}
+
+is_system_present {
+	input.spec.system
 }
