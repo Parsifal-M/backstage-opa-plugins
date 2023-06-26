@@ -47,7 +47,7 @@ export const MetadataAnalysisCard = () => {
 
   const getPassStatus = (violations: Violation[] = []) => {
     const errors = violations.filter(v => v.level === 'error').length;
-    return errors > 0 ? 'FAIL' : 'PASS';  // Return 'FAIL' if any error exists, 'PASS' otherwise
+    return errors > 0 ? 'FAIL' : 'PASS';
   }
 
   return (

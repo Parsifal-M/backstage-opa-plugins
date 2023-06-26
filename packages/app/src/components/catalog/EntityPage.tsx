@@ -55,7 +55,7 @@ import {
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-import { MetadataAnalysisCard, EntityDetails } from '@internal/plugin-opa-entity-checker';
+import { MetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
 
 const techdocsContent = (
   <EntityTechdocsContent>
