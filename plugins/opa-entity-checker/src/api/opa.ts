@@ -2,20 +2,6 @@ import axios from 'axios';
 import { Entity } from '@backstage/catalog-model';
 import { ConfigApi, DiscoveryApi } from '@backstage/core-plugin-api';
 
-// export async function evaluateMetadata(entityMetadata: Entity): Promise<any> {
-//     const opaURL = 'http://localhost:7007/api/proxy/opa/';
-
-//     try {
-//       const response = await axios.post(opaURL, {
-//           input: entityMetadata,
-//       });
-
-//       return response.data.result;
-//   } catch (error) {
-//       throw new Error('Failed to evaluate metadata with OPA');
-//   }
-// }
-
 const DEFAULT_PROXY_PATH = '/opa/entity-checker';
 
 export type Options = {
