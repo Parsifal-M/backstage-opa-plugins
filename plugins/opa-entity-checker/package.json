@@ -1,6 +1,6 @@
 {
   "name": "@parsifal-m/plugin-opa-entity-checker",
-  "version": "0.1.1-alpha.2",
+  "version": "0.1.1-alpha.4",
   "main": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "license": "Apache-2.0",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@backstage/catalog-model": "^1.4.0",
+    "@backstage/config": "^1.0.8",
     "@backstage/core-components": "^0.13.0",
     "@backstage/core-plugin-api": "^1.5.1",
     "@backstage/plugin-catalog-react": "^1.6.0",
