@@ -1,4 +1,4 @@
-import { createPlugin } from '@backstage/core-plugin-api';
+import { createComponentExtension, createPlugin } from '@backstage/core-plugin-api';
 import { rootRouteRef } from './routes';
 
 export const opaEntityCheckerPlugin = createPlugin({
@@ -8,5 +8,14 @@ export const opaEntityCheckerPlugin = createPlugin({
   },
 });
 
-
-export { MetadataAnalysisCard } from './components/MetadataAnalysisCard';
+export const MetadataAnalysisCard = opaEntityCheckerPlugin.provide(
+  createComponentExtension({
+    name: 'MetadataAnalysisCard',
+    component: {
+      lazy: () =>
+        import('./components/MetadataAnalysisCard').then(
+          m => m.MetadataAnalysisCard,
+        ),
+    },
+  }),
+);
