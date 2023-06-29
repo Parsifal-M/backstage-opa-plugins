@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Chip, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { OpaClient } from '../../api/opa';
+import { evaluateMetadata } from '../../api/opa';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { OpaResult, Violation } from '../../api/types';
-import { useApi, configApiRef, discoveryApiRef } from '@backstage/core-plugin-api';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,26 +33,21 @@ export const MetadataAnalysisCard = () => {
   const { entity } = useEntity();
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
 
-  const configApi = useApi(configApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const opaClient = useMemo(() => new OpaClient({ configApi, discoveryApiUrl: discoveryApi }), [configApi, discoveryApi]);
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const results = await opaClient.evaluateMetadata(entity);
+        const results = await evaluateMetadata(entity);
           setOpaResults(results);
       } catch (err) {
-        // handle the error accordingly
+        console.log(err);
       }
     };
     fetchData();
-  }, [entity, opaClient]);
+  }, [entity]);
 
   const getPassStatus = (violations: Violation[] = []) => {
     const errors = violations.filter(v => v.level === 'error').length;
-    return errors > 0 ? 'FAIL' : 'PASS';
+    return errors > 0 ? 'FAIL' : 'PASS';  // Return 'FAIL' if any error exists, 'PASS' otherwise
   }
 
   return (
