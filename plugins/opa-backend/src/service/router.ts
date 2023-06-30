@@ -21,21 +21,24 @@ export async function createRouter(
 
   router.post('/entity-checker', async (request, response) => {
     const entityMetadata = request.body.input;
-    const packageName = config.getString('opa-client.opa.policies.catalog.package');
-    const opaUrl = `http://localhost:8181/v1/data/${packageName}`;
-  
+    const packageName = config.getString(
+      'opa-client.opa.policies.entityChecker.package',
+    );
+    logger.warn(`Package name: ${packageName}`);
+    const opaUrl = `http://localhost:8181/v1/data/${packageName}/`;
+
     try {
       const opaResponse = await axios.post(opaUrl, {
         input: entityMetadata,
       });
-  
+
       response.json(opaResponse.data.result);
     } catch (error) {
       logger.error('Failed to evaluate metadata with OPA', error);
       response.status(500).send('Failed to evaluate metadata with OPA');
     }
   });
-  
+
   router.use(errorHandler());
   return router;
 }

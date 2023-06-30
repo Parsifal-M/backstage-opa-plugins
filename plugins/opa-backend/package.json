@@ -26,17 +26,18 @@
     "@backstage/backend-common": "^0.18.4",
     "@backstage/config": "^1.0.7",
     "@types/express": "*",
+    "axios": "^1.4.0",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
-    "winston": "^3.2.1",
     "node-fetch": "^2.6.7",
+    "winston": "^3.2.1",
     "yn": "^4.0.0"
   },
   "devDependencies": {
     "@backstage/cli": "^0.22.6",
     "@types/supertest": "^2.0.12",
-    "supertest": "^6.2.4",
-    "msw": "^1.0.0"
+    "msw": "^1.0.0",
+    "supertest": "^6.2.4"
   },
   "files": [
     "dist"

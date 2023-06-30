@@ -11,14 +11,10 @@ export class OpaBackendClient implements OpaBackendApi {
   }
   private async handleResponse(response: Response): Promise<OpaResult> {
     if (!response.ok) {
-      throw new Error();
+        throw new Error();
     }
     const data = await response.json();
-    if (data.result) {
-      return data.result as OpaResult;
-    } else {
-      throw new Error('Unexpected response data format');
-    }
+    return data as OpaResult;  // directly use data as OpaResult
 }
 
 async entityCheck(entityMetadata: Entity): Promise<OpaResult> {
@@ -32,6 +28,4 @@ async entityCheck(entityMetadata: Entity): Promise<OpaResult> {
   });
   return await this.handleResponse(response);
 }
-
-
 }

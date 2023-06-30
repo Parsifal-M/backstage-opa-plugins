@@ -122,7 +122,9 @@ opa-client:
     baseUrl: 'http://localhost:8181'
     policies:
       catalog:
-        package: 'catalog_policy'
+        package: 'catalog'
+      entityChecker:
+        package: 'entitymeta'
 
 
 

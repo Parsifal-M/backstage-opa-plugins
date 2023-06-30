@@ -3,7 +3,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Chip, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { useApi } from '@backstage/core-plugin-api';
+import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { opaBackendApiRef } from '../../api';
 import { OpaResult, Violation } from '../../api/types';
 
@@ -34,18 +34,22 @@ export const MetadataAnalysisCard = () => {
   const { entity } = useEntity();
   const opaApi = useApi(opaBackendApiRef);
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
+  const alertApi = useApi(alertApiRef);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const results = await opaApi.entityCheck(entity);
         setOpaResults(results);
-      } catch (err) {
-        console.error(err);
+      } catch (err: any) {
+        alertApi.post({
+          message: 'Oops, something went wrong, cannot load Employees!',
+          severity: 'error',
+        });
       }
     };
-    fetchData();
-  }, [entity, opaApi]);
+    fetchData(); 
+  }, [entity, alertApi, opaApi]);
 
   const getPassStatus = (violations: Violation[] = []) => {
     const errors = violations.filter(v => v.level === 'error').length;
@@ -59,15 +63,15 @@ export const MetadataAnalysisCard = () => {
           <Typography variant="h6">
             Metadata Analysis
           </Typography>
-          {opaResults?.violation && 
-            <Chip 
-              label={getPassStatus(opaResults.violation)} 
-              color={getPassStatus(opaResults.violation) === 'FAIL' ? 'secondary' : 'primary'} 
+          {opaResults?.violation &&
+            <Chip
+              label={getPassStatus(opaResults.violation)}
+              color={getPassStatus(opaResults.violation) === 'FAIL' ? 'secondary' : 'primary'}
               className={classes.chip}
             />
           }
         </Box>
-        {opaResults && opaResults.violation && opaResults.violation.length > 0 ?  (
+        {opaResults && opaResults.violation && opaResults.violation.length > 0 ? (
           opaResults?.violation?.map((violation: Violation, i: number) => (
             <Alert severity={violation.level} key={i} className={classes.alert}>
               {violation.message}
