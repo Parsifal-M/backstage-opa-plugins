@@ -3,15 +3,14 @@ import { Entity } from '@backstage/catalog-model';
 
 export async function evaluateMetadata(entityMetadata: Entity): Promise<any> {
 
-    const opaURL = `http://localhost:7007/api/proxy/entity-checker/component`;
-
     try {
-      const response = await axios.post(opaURL, {
+      const response = await axios.post(`http://localhost:7007/api/proxy/entity-checker`, {
           input: entityMetadata,
       });
 
       return response.data.result;
   } catch (error) {
+    console.error(error); 
       throw new Error('Failed to evaluate metadata with OPA');
   }
 }

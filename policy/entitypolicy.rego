@@ -1,4 +1,4 @@
-package component
+package entitymeta
 
 default allow = false
 

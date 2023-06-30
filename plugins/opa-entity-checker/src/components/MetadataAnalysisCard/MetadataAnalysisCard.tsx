@@ -39,7 +39,7 @@ export const MetadataAnalysisCard = () => {
         const results = await evaluateMetadata(entity);
           setOpaResults(results);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     fetchData();
