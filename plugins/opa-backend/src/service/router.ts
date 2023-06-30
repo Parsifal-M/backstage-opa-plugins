@@ -24,7 +24,6 @@ export async function createRouter(
     const packageName = config.getString(
       'opa-client.opa.policies.entityChecker.package',
     );
-    logger.warn(`Package name: ${packageName}`);
     const opaUrl = `http://localhost:8181/v1/data/${packageName}/`;
 
     try {

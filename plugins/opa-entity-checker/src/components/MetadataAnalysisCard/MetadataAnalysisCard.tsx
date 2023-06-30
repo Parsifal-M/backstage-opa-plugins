@@ -43,8 +43,9 @@ export const MetadataAnalysisCard = () => {
         setOpaResults(results);
       } catch (err: any) {
         alertApi.post({
-          message: 'Oops, something went wrong, cannot load Employees!',
-          severity: 'error',
+          message: 'Oops, something went wrong, cannot load Entity Checker Data from OPA!',
+          severity: 'warning',
+          display: 'transient'
         });
       }
     };
