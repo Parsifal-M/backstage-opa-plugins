@@ -1,3 +1,13 @@
+import { createApiRef } from '@backstage/core-plugin-api';
+
+export interface OpaBackendApi {
+  getHealth(): Promise<{ status: string; }>;
+}
+
+export const opaBackendApiRef = createApiRef<OpaBackendApi>({
+  id: 'plugin.opa-backend.service',
+});
+
 export interface OpaResult {
   allow: boolean;
   violation?: Violation[];
