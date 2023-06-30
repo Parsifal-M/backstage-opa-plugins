@@ -1,7 +1,7 @@
 import { createApiRef } from '@backstage/core-plugin-api';
 
 export interface OpaBackendApi {
-  getHealth(): Promise<{ status: string; }>;
+  entityCheck(): Promise<{ status: string; }>;
 }
 
 export const opaBackendApiRef = createApiRef<OpaBackendApi>({
