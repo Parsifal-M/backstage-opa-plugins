@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, Chip, Box } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { evaluateMetadata } from '../../api/opa';
 import { useEntity } from '@backstage/plugin-catalog-react';
+import { useApi } from '@backstage/core-plugin-api';
+import { opaBackendApiRef } from '../../api';
 import { OpaResult, Violation } from '../../api/types';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,19 +32,20 @@ const useStyles = makeStyles((theme: Theme) =>
 export const MetadataAnalysisCard = () => {
   const classes = useStyles();
   const { entity } = useEntity();
+  const opaApi = useApi(opaBackendApiRef);
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const results = await evaluateMetadata(entity);
-          setOpaResults(results);
+        const results = await opaApi.entityCheck(entity);
+        setOpaResults(results);
       } catch (err) {
         console.error(err);
       }
     };
     fetchData();
-  }, [entity]);
+  }, [entity, opaApi]);
 
   const getPassStatus = (violations: Violation[] = []) => {
     const errors = violations.filter(v => v.level === 'error').length;

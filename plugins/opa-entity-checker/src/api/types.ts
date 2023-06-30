@@ -1,7 +1,8 @@
+import { Entity } from '@backstage/catalog-model';
 import { createApiRef } from '@backstage/core-plugin-api';
 
 export interface OpaBackendApi {
-  entityCheck(): Promise<{ status: string; }>;
+  entityCheck(entityMetadata: Entity): Promise<OpaResult>;
 }
 
 export const opaBackendApiRef = createApiRef<OpaBackendApi>({
