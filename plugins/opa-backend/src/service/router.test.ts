@@ -21,8 +21,6 @@ describe('createRouter', () => {
           }
           throw new Error(`Unmocked config key "${key}"`);
         }),
-        // You can add more mocked methods if your code uses them.
-        // Add any other required keys that your config object might use.
         ...(jest.fn() as any),
       },
     });
