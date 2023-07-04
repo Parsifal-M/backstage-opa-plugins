@@ -1,14 +1,14 @@
 version: '4'
 services:
   postgres:
-    image: postgres:15.1
+    image: postgres:15.3-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: devPostgres
     ports:
       - 5432:5432
   opa:
-    image: openpolicyagent/opa:0.50.1-static
+    image: openpolicyagent/opa:0.54.0-static
     command: 
       - "run"
       - "--server"

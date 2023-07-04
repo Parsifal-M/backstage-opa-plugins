@@ -43,8 +43,9 @@ export const MetadataAnalysisCard = () => {
         setOpaResults(results);
       } catch (err: any) {
         alertApi.post({
-          message: 'Oops, something went wrong, cannot load Employees!',
+          message: 'Oops, something went wrong, could not load data from OPA!',
           severity: 'error',
+          display: 'transient'
         });
       }
     };
@@ -55,6 +56,22 @@ export const MetadataAnalysisCard = () => {
     const errors = violations.filter(v => v.level === 'error').length;
     return errors > 0 ? 'FAIL' : 'PASS';  // Return 'FAIL' if any error exists, 'PASS' otherwise
   }
+
+  const renderCardContent = () => {
+    if (opaResults === null) {
+      return <Typography>ERROR: Could not fetch data from OPA.</Typography>;
+    }
+
+    if (opaResults.violation && opaResults.violation.length > 0) {
+      return opaResults.violation.map((violation: Violation, i: number) => (
+        <Alert severity={violation.level} key={i} className={classes.alert}>
+          {violation.message}
+        </Alert>
+      ));
+    }
+
+    return <Typography>No Issues Found!</Typography>;
+  };
 
   return (
     <Card className={classes.card}>
@@ -71,15 +88,7 @@ export const MetadataAnalysisCard = () => {
             />
           }
         </Box>
-        {opaResults && opaResults.violation && opaResults.violation.length > 0 ? (
-          opaResults?.violation?.map((violation: Violation, i: number) => (
-            <Alert severity={violation.level} key={i} className={classes.alert}>
-              {violation.message}
-            </Alert>
-          ))
-        ) : (
-          <Typography>No Issues Found!</Typography>
-        )}
+        {renderCardContent()}
       </CardContent>
     </Card>
   );
