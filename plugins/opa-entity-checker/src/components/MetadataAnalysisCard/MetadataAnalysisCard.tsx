@@ -93,9 +93,3 @@ export const MetadataAnalysisCard = () => {
     </Card>
   );
 };
-
-
-
-
-
-
