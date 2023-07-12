@@ -2,4 +2,54 @@
 
 This serves as the OPA Backend Plugin, eventually to route all your OPA needs through!
 
-// TODO: Add more information here
+This plugin is still in development so please use with caution.
+
+## Installation
+
+```bash
+yarn add @parsifal-m/opa-backend
+```
+
+Then add `opa.ts` to your packages/backend/src/plugins.ts directory with the following contents:
+
+```ts
+import { createRouter } from '@internal/plugin-opa-backend';
+import { Router } from 'express';
+import { PluginEnvironment } from '../types';
+
+export default async function createPlugin(
+  env: PluginEnvironment,
+): Promise<Router> {
+
+  return await createRouter({
+    logger: env.logger,
+    config: env.config,
+  });
+}
+```
+
+And then add the following to your `packages/backend/src/index.ts` file:
+
+```ts
+//...
+import opa from './plugins/opa';
+
+//...
+ const opaEnv = useHotMemoize(module, () => createEnv('opa'));
+
+//...
+  apiRouter.use('/opa', await opa(opaEnv));
+```
+
+In your `app-config.yaml` file, add the following:
+
+```yaml
+opa-client:
+  opa:
+    baseUrl: 'http://localhost:8181'
+    policies:
+      entityChecker:
+        package: 'some-package-name'
+```
+
+This plugin currently works together with the [opa-entity-checker](../opa-entity-checker/README.md) plugin. The `package` name in the `app-config.yaml` file should match the `package` name in the `rego` file of the `opa-entity-checker` plugin.

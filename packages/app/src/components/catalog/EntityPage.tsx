@@ -55,7 +55,7 @@ import {
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-import { MetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
+import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -123,7 +123,7 @@ const overviewContent = (
     </Grid>
 
     <Grid item md={6} xs={12}>
-      <MetadataAnalysisCard/>
+      <OpaMetadataAnalysisCard/>
     </Grid>
 
     <Grid item md={4} xs={12}>
