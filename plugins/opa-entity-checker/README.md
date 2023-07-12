@@ -4,7 +4,15 @@ Welcome to the opa-entity-checker plugin!
 
 ## Getting started
 
-To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](https://github.com/Parsifal-M/brewed-backstage/tree/main/plugins/opa-backend)
+To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](../opa-backend/README.md)
+
+## Installation
+
+To add this plugin to Backstage, run the following command:
+
+```bash
+yarn add @parsifal-m/plugin-opa-entity-checker
+```
 
 ## What does this do?
 
