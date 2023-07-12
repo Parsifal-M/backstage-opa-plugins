@@ -70,3 +70,18 @@ is_system_present {
 
 ## Add the card to your entity page
 
+Add the following to your `EntityPage.tsx` file:
+
+```tsx
+import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
+
+//...
+
+const overviewContent = (
+//...
+    <Grid item md={6} xs={12}>
+      <OpaMetadataAnalysisCard/>
+    </Grid>
+//...
+);
+```
