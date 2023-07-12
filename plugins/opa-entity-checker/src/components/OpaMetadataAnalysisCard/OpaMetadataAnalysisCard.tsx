@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const MetadataAnalysisCard = () => {
+export const OpaMetadataAnalysisCard = () => {
   const classes = useStyles();
   const { entity } = useEntity();
   const opaApi = useApi(opaBackendApiRef);
@@ -78,7 +78,7 @@ export const MetadataAnalysisCard = () => {
       <CardContent>
         <Box className={classes.titleBox}>
           <Typography variant="h6">
-            Metadata Analysis
+            OPA Metadata Analysis
           </Typography>
           {opaResults?.violation &&
             <Chip

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
-import { MetadataAnalysisCard } from './MetadataAnalysisCard';
+import { OpaMetadataAnalysisCard } from './OpaMetadataAnalysisCard';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider } from '@backstage/test-utils';
 import { opaBackendApiRef } from '../../api';
@@ -44,7 +44,7 @@ beforeEach(() => {
 test('renders without crashing', async () => {
   render(
     <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <MetadataAnalysisCard />
+      <OpaMetadataAnalysisCard />
     </TestApiProvider>
   );
 
@@ -60,7 +60,7 @@ test('renders violations if they exist', async () => {
 
   render(
     <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <MetadataAnalysisCard />
+      <OpaMetadataAnalysisCard />
     </TestApiProvider>
   );
 
@@ -74,7 +74,7 @@ test('handles error from the api call', async () => {
 
   render(
     <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <MetadataAnalysisCard />
+      <OpaMetadataAnalysisCard />
     </TestApiProvider>
   );
 

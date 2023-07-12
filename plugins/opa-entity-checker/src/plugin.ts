@@ -20,13 +20,13 @@ export const opaEntityCheckerPlugin = createPlugin({
   },
 });
 
-export const MetadataAnalysisCard = opaEntityCheckerPlugin.provide(
+export const OpaMetadataAnalysisCard = opaEntityCheckerPlugin.provide(
   createComponentExtension({
-    name: 'MetadataAnalysisCard',
+    name: 'OpaMetadataAnalysisCard',
     component: {
       lazy: () =>
-        import('./components/MetadataAnalysisCard').then(
-          m => m.MetadataAnalysisCard,
+        import('./components/OpaMetadataAnalysisCard').then(
+          m => m.OpaMetadataAnalysisCard,
         ),
     },
   }),
