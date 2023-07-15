@@ -1,4 +1,4 @@
-import { createRouter } from '@internal/plugin-opa-backend';
+import { createRouter } from '@parsifal-m/plugin-opa-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 

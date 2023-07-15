@@ -13,7 +13,7 @@ yarn add @parsifal-m/opa-backend
 Then add `opa.ts` to your packages/backend/src/plugins.ts directory with the following contents:
 
 ```ts
-import { createRouter } from '@internal/plugin-opa-backend';
+import { createRouter } from '@parsifal-m/plugin-opa-backend';
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 
