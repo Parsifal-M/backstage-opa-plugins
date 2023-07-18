@@ -6265,6 +6265,19 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.4.0.tgz#2c91791a9ba6ca0a0f4aaac5e45d58df13639ac8"
   integrity sha512-IgMK9i3sFGNUqPMbjABm0G26g0QCKCUBfglhQ7rQq6WcxbKfEHRcmwsoER4hZcuYqJgkYn2OeuoJIv7Jsftp7g==
 
+"@parsifal-m/plugin-opa-backend@^0.1.0":
+  version "0.1.0-beta.1"
+  dependencies:
+    "@backstage/backend-common" "^0.18.4"
+    "@backstage/config" "^1.0.7"
+    "@types/express" "*"
+    axios "^1.4.0"
+    express "^4.17.1"
+    express-promise-router "^4.1.0"
+    node-fetch "^2.6.7"
+    winston "^3.2.1"
+    yn "^4.0.0"
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.7":
   version "0.5.10"
   resolved "https://registry.yarnpkg.com/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.5.10.tgz#2eba163b8e7dbabb4ce3609ab5e32ab63dda3ef8"
@@ -8104,7 +8117,6 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     "@backstage/theme" "^0.2.19"
     "@material-ui/core" "^4.12.2"
     "@material-ui/icons" "^4.9.1"
-    "@parsifal-m/plugin-opa-entity-checker" "^0.1.1-alpha.2"
     history "^5.0.0"
     react "^17.0.2"
     react-dom "^17.0.2"
