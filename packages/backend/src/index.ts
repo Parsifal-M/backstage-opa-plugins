@@ -92,6 +92,7 @@ async function main() {
   const permissionEnv = useHotMemoize(module, () => createEnv('permission'));
   const opaEnv = useHotMemoize(module, () => createEnv('opa'));
 
+
   const apiRouter = Router();
   apiRouter.use('/catalog', await catalog(catalogEnv));
   apiRouter.use('/scaffolder', await scaffolder(scaffolderEnv));
