@@ -1,13 +1,28 @@
 # gitlab-runners
 
-Welcome to the gitlab-runners plugin!
+This plugin provides a way to manage [GitLab Runners](https://docs.gitlab.com/runner/).
 
-_This plugin was created through the Backstage CLI_
+## Requirements
 
-## Getting started
+You need to set a proxy in `app-config.yml`:
 
-Your plugin has been added to the example app in this repository, meaning you'll be able to access it by running `yarn start` in the root directory, and then navigating to [/gitlab-runners](http://localhost:3000/gitlab-runners).
+```yaml
+  '/gitlab-runners':
+    target: https://gitlab.com/api/v4/runners
+    changeOrigin: true
+    allowedMethods: ['GET']
+    headers:
+      Authorization: Bearer {TOKEN}
+```
 
-You can also serve the plugin in isolation by running `yarn start` in the plugin directory.
-This method of serving the plugin provides quicker iteration speed and a faster startup and hot reloads.
-It is only meant for local development, and the setup for it can be found inside the [/dev](./dev) directory.
+The token should be an Access Token with the owner role and at least 'read' scope on the APIs.
+
+## Setup
+
+In your `Root.tsx` file, add the following:
+
+```tsx
+//...
+<SidebarItem icon={DirectionsRunIcon} to="gitlab-runners" text="Gitlab Runners" />
+//...
+```

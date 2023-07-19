@@ -36,6 +36,7 @@ export interface Pipeline {
   sha: string;
   ref: string;
   status: string;
+  web_url: string;
 }
 
 export interface Project {

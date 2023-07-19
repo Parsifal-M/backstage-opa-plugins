@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, makeStyles, Avatar, CardHeader, Collapse, CardActions, Divider, Grid, Paper, Button } from '@material-ui/core';
+import { Card, CardContent, Typography, makeStyles, Avatar, CardHeader, Collapse, CardActions, Divider, Grid, Paper, Button, Link } from '@material-ui/core';
 import { Job, Runner } from '../../types';
 import { getRunnerJobs } from '../../api/fetchRunners';
 import { formatDate } from '../utils/utils';
@@ -47,11 +47,15 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
 
+
+
   const classes = useStyles();
   let chipClass = '';
 
   useEffect(() => {
-    getRunnerJobs(runner.id).then(data => setJobs(data));
+    getRunnerJobs(runner.id).then(data => {
+      setJobs(data);
+    });
   }, [runner.id]);
 
 
@@ -63,23 +67,24 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
     chipClass = classes.offline;
   }
 
-  interface DataFieldProps {
-    label: string;
-    value: string | number;
-  }
-
-  const DataField = ({ label, value }: DataFieldProps) => {
+  const DataField = ({ label, value, url }: { label: string; value: string | number; url?: string }) => {
     return (
-      <React.Fragment>
+      <>
         <Grid item xs={4}>
           <Typography variant="subtitle1">{label}:</Typography>
         </Grid>
         <Grid item xs={8}>
-          <Typography variant="body1" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>{value}</Typography>
+          {url ? (
+            <Link href={url} target="_blank" rel="noopener noreferrer">
+              <Typography variant="body1" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>{value}</Typography>
+            </Link>
+          ) : (
+            <Typography variant="body1" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>{value}</Typography>
+          )}
         </Grid>
-      </React.Fragment>
+      </>
     );
-  }
+  };
 
 
   const handleExpandClick = (section: string) => {
@@ -100,10 +105,11 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
 
       <CardContent>
         <Typography color="textSecondary">
-          IP Address: {runner.ip_address}
+          Paused: {runner.paused.toString().charAt(0).toUpperCase() + runner.paused.toString().slice(1)}
         </Typography>
+
         <Typography color="textSecondary">
-          Online: {runner.online ? 'Yes' : 'No'}
+          IP Address: {runner.ip_address}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -142,7 +148,7 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
             <Typography variant="h6" style={{ marginBottom: '10px' }}>Pipeline ID: {job.pipeline.id}</Typography>
             <Divider variant="middle" style={{ marginBottom: '10px' }} />
             <Grid container spacing={1}>
-              <DataField label="ID" value={job.pipeline.id} />
+              <DataField label="ID" value={job.pipeline.id} url={job.pipeline.web_url} />
               <DataField label="Ref" value={job.pipeline.ref} />
               <DataField label="Status" value={job.pipeline.status} />
             </Grid>
@@ -157,7 +163,7 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
             <Grid container spacing={1}>
               <DataField label="ID" value={job.project.id} />
               <DataField label="Name" value={job.project.name} />
-              <DataField label="Path with Namespace" value={job.project.path_with_namespace} />
+              <DataField label="Path" value={job.project.path_with_namespace} />
             </Grid>
           </Paper>
         ))}
