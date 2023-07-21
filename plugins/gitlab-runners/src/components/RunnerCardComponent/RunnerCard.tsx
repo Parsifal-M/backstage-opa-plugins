@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, makeStyles, Avatar, CardHeader, Collapse, CardActions, Divider, Grid, Paper, Button, Link } from '@material-ui/core';
-import { Job, Runner } from '../../types';
-import { getRunnerJobs } from '../../api/fetchRunners';
+import React, { useState } from 'react';
+import { Card, CardContent, Typography, makeStyles, Avatar, CardHeader, Collapse, CardActions, Divider, Grid, Paper, Button, Link, Box } from '@material-ui/core';
+import { Job, Runner, RunnerDetails } from '../../types';
+import { getRunnerDetails, getRunnerJobs } from '../../api/fetchRunners';
 import { formatDate } from '../utils/utils';
 
 
@@ -46,18 +46,11 @@ interface RunnerCardProps {
 export const RunnerCard = ({ runner }: RunnerCardProps) => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
-
+  const [runnerDetails, setRunnerDetails] = useState<RunnerDetails | null>(null);
 
 
   const classes = useStyles();
   let chipClass = '';
-
-  useEffect(() => {
-    getRunnerJobs(runner.id).then(data => {
-      setJobs(data);
-    });
-  }, [runner.id]);
-
 
   if (runner.online) {
     chipClass = classes.online;
@@ -86,9 +79,25 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
     );
   };
 
+  const fetchData = (type: string) => {
+    if (expanded !== type) {
+      getRunnerJobs(runner.id)
+        .then(data => setJobs(data));
+    }
+  };
+
+  const fetchRunnerDetails = async () => {
+    const details = await getRunnerDetails(runner.id);
+    setRunnerDetails(details);
+  };
 
   const handleExpandClick = (section: string) => {
     setExpanded(prev => prev === section ? null : section);
+    if (section === 'info') {
+      fetchRunnerDetails();
+    } else {
+      fetchData(section);
+    }
   };
 
   return (
@@ -96,7 +105,9 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
       <CardHeader
         avatar={
           <Avatar aria-label="runner-status" className={chipClass}>
-            {runner.online ? 'O' : 'X'}
+            {runner.status === 'online' && 'O'}
+            {runner.status === 'offline' && 'X'}
+            {runner.status === 'stale' && 'S'}
           </Avatar>
         }
         title={runner.description}
@@ -104,24 +115,25 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
       />
 
       <CardContent>
-        <Typography color="textSecondary">
-          Paused: {runner.paused.toString().charAt(0).toUpperCase() + runner.paused.toString().slice(1)}
-        </Typography>
-
-        <Typography color="textSecondary">
-          IP Address: {runner.ip_address}
-        </Typography>
+        {/* <Typography color="textSecondary">
+          Tags: {runner.tag_list?.join(', ')}
+        </Typography> */}
       </CardContent>
       <CardActions disableSpacing>
-        <Button size="small" onClick={() => handleExpandClick('jobs')}>
-          Jobs
-        </Button>
-        <Button size="small" onClick={() => handleExpandClick('pipelines')}>
-          Pipelines
-        </Button>
-        <Button size="small" onClick={() => handleExpandClick('projects')}>
-          Projects
-        </Button>
+        <Box display="flex" justifyContent="flex-end" width="100%">
+          <Button size="small" onClick={() => handleExpandClick('jobs')} style={{ marginLeft: '10px' }}>
+            Jobs
+          </Button>
+          <Button size="small" onClick={() => handleExpandClick('pipelines')} style={{ marginLeft: '10px' }}>
+            Pipelines
+          </Button>
+          <Button size="small" onClick={() => handleExpandClick('projects')} style={{ marginLeft: '10px' }}>
+            Projects
+          </Button>
+          <Button size="small" onClick={() => handleExpandClick('info')} style={{ marginLeft: '10px' }}>
+            Info
+          </Button>
+        </Box>
       </CardActions>
       <Collapse in={expanded === 'jobs'} timeout="auto" unmountOnExit>
         <CardContent>
@@ -167,6 +179,27 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
             </Grid>
           </Paper>
         ))}
+      </Collapse>
+      <Collapse in={expanded === 'info'} timeout="auto" unmountOnExit>
+        <CardContent>
+          {runnerDetails && (
+            <Paper elevation={2} style={{ margin: '10px 0', padding: '10px' }}>
+              <Typography variant="h6" style={{ marginBottom: '10px' }}>Runner Details</Typography>
+              <Divider variant="middle" style={{ marginBottom: '10px' }} />
+              <Grid container spacing={1}>
+                <DataField label="IP Address" value={runnerDetails.ip_address} />
+                <DataField label="Active" value={runnerDetails.active.toString()} />
+                <DataField label="Paused" value={runnerDetails.paused.toString()} />
+                <DataField label="Contacted At" value={formatDate(runnerDetails.contacted_at)} />
+                <DataField label="Description" value={runnerDetails.description} />
+                <DataField label="Shared" value={runnerDetails.is_shared.toString()} />
+                <DataField label="Status" value={runnerDetails.status} />
+                <DataField label="Projects" value={runnerDetails.projects.map((project: { name: string; }) => project.name).join(', ')} />
+                <DataField label="Tag Lists" value={runnerDetails.tag_list.join(', ')} />
+              </Grid>
+            </Paper>
+          )}
+        </CardContent>
       </Collapse>
 
     </Card>

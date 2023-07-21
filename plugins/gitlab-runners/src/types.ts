@@ -49,6 +49,28 @@ export interface Project {
   created_at: string;
 }
 
+export interface RunnerDetails {
+  active: boolean;
+  paused: boolean;
+  architecture: null | string;
+  description: string;
+  id: number;
+  ip_address: string;
+  is_shared: boolean;
+  runner_type: string;
+  contacted_at: string;
+  name: null | string;
+  online: boolean;
+  status: string;
+  platform: null | string;
+  projects: Project[];
+  revision: null | string;
+  tag_list: string[];
+  version: null | string;
+  access_level: string;
+  maximum_timeout: number;
+}
+
 export interface Job {
   id: number;
   ip_address: string;
