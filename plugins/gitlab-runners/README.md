@@ -1,6 +1,6 @@
 # gitlab-runners
 
-This plugin provides a way to manage [GitLab Runners](https://docs.gitlab.com/runner/).
+This plugin provides a way to view details of [GitLab Runners](https://docs.gitlab.com/runner/).
 
 ## Requirements
 

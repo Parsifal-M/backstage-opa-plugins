@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Card, CardContent, Typography, makeStyles, Avatar, CardHeader, Collapse, CardActions, Divider, Grid, Paper, Button, Link, Box } from '@material-ui/core';
-import { Job, Runner, RunnerDetails } from '../../types';
+import { Job, RunnerDetails } from '../../types';
 import { getRunnerDetails, getRunnerJobs } from '../../api/fetchRunners';
 import { formatDate } from '../utils/utils';
+import { RunnerCardProps } from './types';
 
 
 const useStyles = makeStyles(theme => ({
@@ -39,9 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface RunnerCardProps {
-  runner: Runner;
-}
+
 
 export const RunnerCard = ({ runner }: RunnerCardProps) => {
   const [jobs, setJobs] = useState<Job[]>([]);

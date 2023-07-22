@@ -28,18 +28,22 @@ const runnerStatus = ['online', 'offline', 'stale'];
 
 export const RunnerPage = () => {
   const classes = useStyles();
-  const [state, setState] = useState<{ runners: Runners | null, loading: boolean }>({ runners: null, loading: false });
+  const [state, setState] = useState<{ runners: Runners | null, loading: boolean, error: string | null }>({ runners: null, loading: false, error: null });
   const [tabValue, setTabValue] = useState(0);
 
 
 
   const fetchRunners = useCallback((status: string) => {
-    setState({ runners: null, loading: true });
+    setState(prevState => ({ ...prevState, loading: true, error: null }));
     getRunners(status)
       .then(data => {
-        setState({ runners: data, loading: false });
+        setState({ runners: data, loading: false, error: null });
       })
+      .catch(error => {
+        setState({ runners: null, loading: false, error: error.message });
+      });
   }, []);
+
 
   useEffect(() => {
     fetchRunners(runnerStatus[tabValue]);
@@ -48,6 +52,34 @@ export const RunnerPage = () => {
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
   };
+
+  let content;
+
+  if (state.loading) {
+    content = (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+        <CircularProgress />
+      </Box>
+    );
+  } else if (state.error) {
+    content = (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+        <Typography variant="h6" color="error">
+          {state.error}
+        </Typography>
+      </Box>
+    );
+  } else {
+    content = (
+      <Grid container spacing={3} className={classes.gridContainer}>
+        {state.runners?.map((runner: Runner) => (
+          <Grid item xs={12} sm={6} md={4} key={runner.id}>
+            <RunnerCard runner={runner} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
 
   return (
     <Page themeId="tool">
@@ -69,20 +101,8 @@ export const RunnerPage = () => {
             {runnerStatus[tabValue].charAt(0).toUpperCase() + runnerStatus[tabValue].slice(1)}
           </span> Runners
         </Typography>
-        {state.loading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Grid container spacing={3} className={classes.gridContainer}>
-            {state.runners?.map((runner: Runner) => (
-              <Grid item xs={12} sm={6} md={4} key={runner.id}>
-                <RunnerCard runner={runner} />
-              </Grid>
-            ))}
-          </Grid>
-        )}
+        {content}
       </Content>
     </Page>
   );
-};
+}
