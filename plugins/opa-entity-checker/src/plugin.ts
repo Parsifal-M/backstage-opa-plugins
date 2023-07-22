@@ -1,4 +1,4 @@
-import { createApiFactory, createComponentExtension, createPlugin, discoveryApiRef } from '@backstage/core-plugin-api';
+import { createApiFactory, createPlugin, createRoutableExtension, discoveryApiRef } from '@backstage/core-plugin-api';
 import { rootRouteRef } from './routes';
 import { opaBackendApiRef } from './api';
 import { OpaBackendClient } from './api/opaBackendClient';
@@ -21,13 +21,10 @@ export const opaEntityCheckerPlugin = createPlugin({
 });
 
 export const OpaMetadataAnalysisCard = opaEntityCheckerPlugin.provide(
-  createComponentExtension({
-    name: 'OpaMetadataAnalysisCard',
-    component: {
-      lazy: () =>
-        import('./components/OpaMetadataAnalysisCard').then(
-          m => m.OpaMetadataAnalysisCard,
-        ),
-    },
+  createRoutableExtension({
+    name: 'GitlabRunnersPage',
+    component: () =>
+      import('./components/OpaMetadataAnalysisCard').then(m => m.OpaMetadataAnalysisCard),
+    mountPoint: rootRouteRef,
   }),
 );
