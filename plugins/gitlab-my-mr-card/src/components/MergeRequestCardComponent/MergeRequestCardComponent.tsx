@@ -28,9 +28,6 @@ export const MergeRequestCard = () => (
             </Typography>
           </InfoCard>
         </Grid>
-        <Grid item>
-          <ExampleFetchComponent />
-        </Grid>
       </Grid>
     </Content>
   </Page>
