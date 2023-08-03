@@ -22,7 +22,7 @@ export const opaEntityCheckerPlugin = createPlugin({
 
 export const OpaMetadataAnalysisCard = opaEntityCheckerPlugin.provide(
   createRoutableExtension({
-    name: 'GitlabRunnersPage',
+    name: 'OpaMetadataAnalysisCard',
     component: () =>
       import('./components/OpaMetadataAnalysisCard').then(m => m.OpaMetadataAnalysisCard),
     mountPoint: rootRouteRef,
