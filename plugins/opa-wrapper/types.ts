@@ -6,12 +6,13 @@ export type PolicyEvaluationInput = {
       action: string | undefined;
       resourceType?: string;
     };
-    identity: {
+    identity?: { 
       username: string | undefined;
       groups: string[];
     };
   };
 };
+
 
 export interface PolicyEvaluationResult {
   decision_id: string;

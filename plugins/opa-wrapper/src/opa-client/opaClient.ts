@@ -8,7 +8,7 @@ export class OpaClient {
   private readonly logger: Logger;
 
   constructor(config: Config, logger: Logger) {
-    this.baseUrl = config.getOptionalString('backend.baseUrl') ?? 'http://localhost:7007';
+    this.baseUrl = config.getString('backend.baseUrl');
     this.logger = logger;
   }
 
@@ -19,11 +19,11 @@ export class OpaClient {
       const response = await axios.post(`${this.baseUrl}/api/opa/catalog-permission`, {
         catalogPolicyInput: input,
       });
-
+  
       this.logger.info(
         `Received response from OPA server: ${JSON.stringify(response.data)}`,
       );
-
+  
       return response.data;
     } catch (error) {
       this.logger.error('Error during OPA policy evaluation', error);

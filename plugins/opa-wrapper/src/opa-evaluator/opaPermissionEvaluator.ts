@@ -1,11 +1,16 @@
-import { PolicyDecision, isResourcePermission, AuthorizeResult } from "@backstage/plugin-permission-common";
-import { PolicyQuery } from "@backstage/plugin-permission-node";
-import { PolicyEvaluationInput } from "../../types";
-import { OpaClient } from "../opa-client/opaClient";
-// eslint-disable-next-line @backstage/no-undeclared-imports
+import {
+  PolicyDecision,
+  isResourcePermission,
+  AuthorizeResult
+} from '@backstage/plugin-permission-common';
+import { PolicyQuery } from '@backstage/plugin-permission-node';
+import { OpaClient } from '../opa-client/opaClient';
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
+import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
 
-export function createOpaPermissionEvaluator(opaClient: OpaClient) {
+
+
+export const createOpaPermissionEvaluator = (opaClient: OpaClient) => {
   return async (
     request: PolicyQuery,
     user?: BackstageIdentityResponse,
@@ -36,12 +41,14 @@ export function createOpaPermissionEvaluator(opaClient: OpaClient) {
       },
     };
 
-    const response = await opaClient.evaluatePolicy(input);
+    // For debugging purposes
+    console.log('input', JSON.stringify(input, null, 2));
+
+    const response: PolicyEvaluationResult = await opaClient.evaluatePolicy(input);
     const allow = !response.deny; // If 'deny' is false, then 'allow' will be true
-    
-    // Returning the decision based on the 'allow' value
+
     return {
       result: allow ? AuthorizeResult.ALLOW : AuthorizeResult.DENY,
     };
   };
-}
+};

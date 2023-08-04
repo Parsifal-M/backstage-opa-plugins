@@ -12,12 +12,12 @@ export default async function createPlugin(
 
   builder.addEntityProvider(
     GithubOrgEntityProvider.fromConfig(env.config, {
-      id: 'production',
+      id: 'development',
       orgUrl: 'https://github.com/twocodersbrewing',
       logger: env.logger,
       schedule: env.scheduler.createScheduledTaskRunner({
-        frequency: { minutes: 5 },
-        timeout: { minutes: 2 },
+        frequency: { minutes: 2 },
+        timeout: { minutes: 3 },
       }),
     }),
   );
