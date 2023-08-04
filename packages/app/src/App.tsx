@@ -34,7 +34,7 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
-import { GitlabRunnersPage } from '@internal/plugin-gitlab-runners';
+// import { GitlabRunnersPage } from '@internal/plugin-gitlab-runners';
 import { GitlabMyMrCardPage } from '@internal/plugin-gitlab-my-mr-card';
 
 
@@ -113,7 +113,7 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
-    <Route path="/gitlab-runners" element={<GitlabRunnersPage />} />
+    {/* <Route path="/gitlab-runners" element={<GitlabRunnersPage />} /> */}
     <Route path="/gitlab-my-mr-card" element={<GitlabMyMrCardPage />} />
   </FlatRoutes>
 );

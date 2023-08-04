@@ -21,6 +21,15 @@ export interface Config {
            */
           package?: string;
         };
+        /**
+         * Configuration options for the catalog permission policy
+         */
+        catalogPermission?: {
+          /**
+           * The path to the catalog package in the OPA server
+          */
+          package?: string;
+        };
       };
     };
   }
