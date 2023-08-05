@@ -1,13 +1,15 @@
 import {
+  AuthorizeResult,
   PolicyDecision,
-  isResourcePermission,
-  AuthorizeResult
+  isResourcePermission
 } from '@backstage/plugin-permission-common';
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { OpaClient } from '../opa-client/opaClient';
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
+import {
+  catalogConditions
+} from '@backstage/plugin-catalog-backend/alpha';
 import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
-
 
 
 export const createOpaPermissionEvaluator = (opaClient: OpaClient) => {
@@ -45,10 +47,25 @@ export const createOpaPermissionEvaluator = (opaClient: OpaClient) => {
     console.log('input', JSON.stringify(input, null, 2));
 
     const response: PolicyEvaluationResult = await opaClient.evaluatePolicy(input);
-    const allow = !response.deny; // If 'deny' is false, then 'allow' will be true
 
-    return {
-      result: allow ? AuthorizeResult.ALLOW : AuthorizeResult.DENY,
-    };
+    // If 'deny' is true (which means the operation is denied), we switch to a conditional decision.
+    // Otherwise, it defaults to 'ALLOW'
+    if (!response.deny) {
+      return {
+        result: AuthorizeResult.CONDITIONAL,
+        conditions: {
+          anyOf: [
+            catalogConditions.isEntityKind({kinds: ['Component']}),
+          ]
+        },
+        pluginId: 'catalog',
+        resourceType: 'catalog-entity',
+    
+      };
+    } 
+      return { result: AuthorizeResult.DENY };
   };
 };
+
+
+
