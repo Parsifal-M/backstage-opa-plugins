@@ -14,6 +14,7 @@ export type PolicyEvaluationInput = {
 };
 
 
+
 export interface PolicyEvaluationResult {
   decision_id: string;
   deny: boolean;

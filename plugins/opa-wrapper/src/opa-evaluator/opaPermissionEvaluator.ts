@@ -7,7 +7,8 @@ import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { OpaClient } from '../opa-client/opaClient';
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import {
-  catalogConditions
+  catalogConditions,
+  createCatalogConditionalDecision
 } from '@backstage/plugin-catalog-backend/alpha';
 import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
 
@@ -21,7 +22,9 @@ export const createOpaPermissionEvaluator = (opaClient: OpaClient) => {
       ? request.permission.resourceType
       : undefined;
     const userGroups = user?.identity.ownershipEntityRefs ?? [];
+    const kindsArray = ['Component', 'API'] // TODO: Get this from OPA?
     const userName = user?.identity.userEntityRef;
+    const kindCondition = catalogConditions.isEntityKind({kinds: [...kindsArray]})
     const {
       type,
       name,
@@ -49,23 +52,10 @@ export const createOpaPermissionEvaluator = (opaClient: OpaClient) => {
     const response: PolicyEvaluationResult = await opaClient.evaluatePolicy(input);
 
     // If 'deny' is true (which means the operation is denied), we switch to a conditional decision.
-    // Otherwise, it defaults to 'ALLOW'
-    if (!response.deny) {
-      return {
-        result: AuthorizeResult.CONDITIONAL,
-        conditions: {
-          anyOf: [
-            catalogConditions.isEntityKind({kinds: ['Component']}),
-          ]
-        },
-        pluginId: 'catalog',
-        resourceType: 'catalog-entity',
-    
-      };
+    if (!response.deny && isResourcePermission(request.permission, 'catalog-entity')){
+      return createCatalogConditionalDecision(request.permission, kindCondition) // TODO: Test this
     } 
-      return { result: AuthorizeResult.DENY };
+    return { result: AuthorizeResult.DENY };
+    
   };
 };
-
-
-

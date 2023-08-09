@@ -1,11 +1,10 @@
 package catalog_policy
 
-import future.keywords.in
-import future.keywords.if
+default deny = true
 
-default deny := false
-
-
-deny if {
-  input.identity.username == "user:default/parsifal-m"
+allow {
+    input.permission.resource == "catalog"
+    input.permission.resourceType == "catalog-entity"
+    input.permission.action == "read"
+    input.permission.condition.owner == input.identity.username
 }
