@@ -1,15 +1,10 @@
 package catalog_policy
 
-import future.keywords.in
-import future.keywords.if
+default deny = true
 
-default deny := false
-
-deny if {
-  data.kind == "component"
-}
-
-deny if {
-  input.permission.name == "catalog.entity.delete"
-  input.identity.username == "user:default/dave"
+allow {
+    input.permission.resource == "catalog"
+    input.permission.resourceType == "catalog-entity"
+    input.permission.action == "read"
+    input.permission.condition.owner == input.identity.username
 }
