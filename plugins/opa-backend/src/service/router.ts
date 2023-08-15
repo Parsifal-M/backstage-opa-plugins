@@ -32,7 +32,7 @@ export async function createRouter(
 
   router.post('/entity-checker', async (req, res) => {
     const entityMetadata = req.body.input;
-    const opaUrl = `${opaAddr}/v1/data/${entityCheckerPackage}/`;
+    const opaUrl = `${opaAddr}/v1/data/${entityCheckerPackage}`;
 
     try {
       const opaResponse = await axios.post(opaUrl, {
@@ -47,16 +47,14 @@ export async function createRouter(
   });
 
   router.post('/catalog-permission', async (req, res) => {
-    const catalogPolicyInput = req.body.input;
-    const entityData = req.body.entityData;
-    const opaUrl = `${opaAddr}/v1/data/${catalogPermissionPackage}/`;
+    const catalogPolicyInput = req.body.policyInput;
+    const opaUrl = `${opaAddr}/v1/data/${catalogPermissionPackage}`;
 
     try {
       const opaResponse = await axios.post(opaUrl, {
         input: catalogPolicyInput,
-        data: entityData,
       });
-      
+      console.log(`Input is: ${JSON.stringify(catalogPolicyInput)}`);
       res.json(opaResponse.data.result);
     } catch (error) {
       logger.error('Failed to evaluate permission data with OPA', error);

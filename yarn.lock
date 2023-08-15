@@ -2551,7 +2551,7 @@
 
 "@backstage/plugin-auth-node@^0.2.16":
   version "0.2.16"
-  resolved "https://registry.yarnpkg.com/@backstage/plugin-auth-node/-/plugin-auth-node-0.2.16.tgz#39b50d0a62fc50f4e17bf411a4819345b5e68923"
+  resolved "https://registry.npmjs.org/@backstage/plugin-auth-node/-/plugin-auth-node-0.2.16.tgz#39b50d0a62fc50f4e17bf411a4819345b5e68923"
   integrity sha512-wJG1eERzsbZJ2u2ovhyXWmWTpMDgdB9BV1YX9BLUdPPYjgzjXDEtgz6TaSZuEC33DVekLzfRc5isnb6tTlT+rg==
   dependencies:
     "@backstage/backend-common" "^0.19.1"
@@ -2592,7 +2592,7 @@
 
 "@backstage/plugin-catalog-backend@^1.11.0":
   version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@backstage/plugin-catalog-backend/-/plugin-catalog-backend-1.11.0.tgz#d625b307fdbe1dba9fbdcb625101edac8608a45b"
+  resolved "https://registry.npmjs.org/@backstage/plugin-catalog-backend/-/plugin-catalog-backend-1.11.0.tgz#d625b307fdbe1dba9fbdcb625101edac8608a45b"
   integrity sha512-OyUO9w8FnonWFvtaBd29IaV6vXWnvMBsCAyomV0Pv8cxRgUC7CajhBuOXXhppdOmnZ7hino4ZCgYjffwE03OTA==
   dependencies:
     "@backstage/backend-common" "^0.19.1"

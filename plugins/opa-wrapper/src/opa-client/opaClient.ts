@@ -17,8 +17,12 @@ export class OpaClient {
 
     try {
       const response = await axios.post(`${this.baseUrl}/api/opa/catalog-permission`, {
-        catalogPolicyInput: input,
+        policyInput: input,
       });
+
+      this.logger.info(
+        `Input is: ${JSON.stringify(input)}`,
+      );
   
       this.logger.info(
         `Received response from OPA server: ${JSON.stringify(response.data)}`,
