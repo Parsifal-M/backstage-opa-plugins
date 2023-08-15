@@ -1,5 +1,6 @@
+import { PermissionCriteria, PermissionCondition, PermissionRuleParams } from "@backstage/plugin-permission-common";
+
 export type PolicyEvaluationInput = {
-  input: {
     permission: {
       type: string;
       name: string;
@@ -10,12 +11,13 @@ export type PolicyEvaluationInput = {
       username: string | undefined;
       groups: string[];
     };
-  };
 };
 
 
 
 export interface PolicyEvaluationResult {
   decision_id: string;
-  deny: boolean;
+  allow: boolean;
+  conditional: boolean;
+  condition?: PermissionCriteria<PermissionCondition<"catalog-entity", PermissionRuleParams>>;
 }
