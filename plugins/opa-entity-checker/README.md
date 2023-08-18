@@ -98,6 +98,10 @@ const overviewContent = (
 
 You can also find the example policy [here](policy/example_policy.rego)
 
-# Contributing
+## Contributing
 
 I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
+
+## License
+
+This project is released under the Apache 2.0 License.
