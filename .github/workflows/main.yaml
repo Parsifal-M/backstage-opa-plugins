@@ -7,33 +7,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
-    - name: Cache Node.js modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.yarn
-        key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.OS }}-yarn-
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn
+          key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-yarn-
 
-    - name: Install Dependencies
-      run: yarn install --frozen-lockfile
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
 
-    - name: Run Tests
-      run: yarn test:all
+      - name: Run Tests
+        run: yarn test:all
 
-    - name: Lint Code
-      run: yarn lint:all
+      - name: Lint Code
+        run: yarn lint:all
 
-    - name: Format Code
-      run: prettier --write .
+      - name: Format Code
+        run: yarn prettier:write
 
-    - name: Check Formatting
-      run: yarn prettier:check
+      - name: Check Formatting
+        run: yarn prettier:check

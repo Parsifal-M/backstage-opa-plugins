@@ -1,6 +1,21 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Grid, makeStyles, Typography, Tabs, Tab, CircularProgress, Box } from '@material-ui/core';
-import { Header, Page, Content, ContentHeader, HeaderLabel, SupportButton } from '@backstage/core-components';
+import {
+  Grid,
+  makeStyles,
+  Typography,
+  Tabs,
+  Tab,
+  CircularProgress,
+  Box,
+} from '@material-ui/core';
+import {
+  Header,
+  Page,
+  Content,
+  ContentHeader,
+  HeaderLabel,
+  SupportButton,
+} from '@backstage/core-components';
 import { getRunners } from '../../api/fetchRunners';
 import { Runners, Runner } from '../../types';
 import { RunnerCard } from '../RunnerCardComponent/RunnerCard';
@@ -25,13 +40,14 @@ const useStyles = makeStyles({
 
 const runnerStatus = ['online', 'offline', 'stale'];
 
-
 export const RunnerPage = () => {
   const classes = useStyles();
-  const [state, setState] = useState<{ runners: Runners | null, loading: boolean, error: string | null }>({ runners: null, loading: false, error: null });
+  const [state, setState] = useState<{
+    runners: Runners | null;
+    loading: boolean;
+    error: string | null;
+  }>({ runners: null, loading: false, error: null });
   const [tabValue, setTabValue] = useState(0);
-
-
 
   const fetchRunners = useCallback((status: string) => {
     setState(prevState => ({ ...prevState, loading: true, error: null }));
@@ -43,7 +59,6 @@ export const RunnerPage = () => {
         setState({ runners: null, loading: false, error: error.message });
       });
   }, []);
-
 
   useEffect(() => {
     fetchRunners(runnerStatus[tabValue]);
@@ -57,13 +72,23 @@ export const RunnerPage = () => {
 
   if (state.loading) {
     content = (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
         <CircularProgress />
       </Box>
     );
   } else if (state.error) {
     content = (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
         <Typography variant="h6" color="error">
           {state.error}
         </Typography>
@@ -97,12 +122,18 @@ export const RunnerPage = () => {
           <Tab label="Stale" />
         </Tabs>
         <Typography variant="h6" className={classes.sectionHeader}>
-          <span className={classes[runnerStatus[tabValue] as 'online' | 'offline' | 'stale']}>
-            {runnerStatus[tabValue].charAt(0).toUpperCase() + runnerStatus[tabValue].slice(1)}
-          </span> Runners
+          <span
+            className={
+              classes[runnerStatus[tabValue] as 'online' | 'offline' | 'stale']
+            }
+          >
+            {runnerStatus[tabValue].charAt(0).toUpperCase() +
+              runnerStatus[tabValue].slice(1)}
+          </span>{' '}
+          Runners
         </Typography>
         {content}
       </Content>
     </Page>
   );
-}
+};

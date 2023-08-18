@@ -18,5 +18,3 @@ export interface Violation {
   level: 'error' | 'warning';
   message: string;
 }
-
-  

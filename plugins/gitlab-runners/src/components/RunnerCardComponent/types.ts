@@ -1,5 +1,5 @@
-import { Runner } from "../../types";
+import { Runner } from '../../types';
 
 export interface RunnerCardProps {
-    runner: Runner;
-  }
+  runner: Runner;
+}

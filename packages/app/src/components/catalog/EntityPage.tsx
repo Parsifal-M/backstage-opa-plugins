@@ -123,7 +123,7 @@ const overviewContent = (
     </Grid>
 
     <Grid item md={6} xs={12}>
-      <OpaMetadataAnalysisCard/>
+      <OpaMetadataAnalysisCard />
     </Grid>
 
     <Grid item md={4} xs={12}>

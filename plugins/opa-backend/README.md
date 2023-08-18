@@ -20,7 +20,6 @@ import { PluginEnvironment } from '../types';
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
-
   return await createRouter({
     logger: env.logger,
     config: env.config,
@@ -35,10 +34,10 @@ And then add the following to your `packages/backend/src/index.ts` file:
 import opa from './plugins/opa';
 
 //...
- const opaEnv = useHotMemoize(module, () => createEnv('opa'));
+const opaEnv = useHotMemoize(module, () => createEnv('opa'));
 
 //...
-  apiRouter.use('/opa', await opa(opaEnv));
+apiRouter.use('/opa', await opa(opaEnv));
 ```
 
 In your `app-config.yaml` file, add the following:

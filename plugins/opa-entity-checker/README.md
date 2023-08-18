@@ -88,11 +88,11 @@ import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
 //...
 
 const overviewContent = (
-//...
-    <Grid item md={6} xs={12}>
-      <OpaMetadataAnalysisCard/>
-    </Grid>
-//...
+  //...
+  <Grid item md={6} xs={12}>
+    <OpaMetadataAnalysisCard />
+  </Grid>
+  //...
 );
 ```
 

@@ -26,6 +26,10 @@ In your `Root.tsx` file, add the following:
 
 ```tsx
 //...
-<SidebarItem icon={DirectionsRunIcon} to="gitlab-runners" text="Gitlab Runners" />
+<SidebarItem
+  icon={DirectionsRunIcon}
+  to="gitlab-runners"
+  text="Gitlab Runners"
+/>
 //...
 ```

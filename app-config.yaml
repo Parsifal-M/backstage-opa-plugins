@@ -39,7 +39,6 @@ backend:
 logging:
   logLevel: debug
 
-
 integrations:
   github:
     - host: github.com
@@ -76,8 +75,8 @@ auth:
   providers:
     github:
       development:
-        clientId: {CID}
-        clientSecret: {CS}
+        clientId: { CID }
+        clientSecret: { CS }
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -125,6 +124,3 @@ opa-client:
         package: 'catalog'
       entityChecker:
         package: 'entitymeta'
-
-
-

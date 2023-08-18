@@ -9,11 +9,11 @@ services:
       - 5432:5432
   opa:
     image: openpolicyagent/opa:0.54.0-static
-    command: 
-      - "run"
-      - "--server"
-      - "--log-format=json-pretty"
-      - "--set=decision_logs.console=true"
+    command:
+      - 'run'
+      - '--server'
+      - '--log-format=json-pretty'
+      - '--set=decision_logs.console=true'
     ports:
       - 8181:8181
     volumes:

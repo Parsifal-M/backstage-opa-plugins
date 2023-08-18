@@ -7,6 +7,6 @@ createDevApp()
   .addPage({
     element: <GitlabMyMrCardPage />,
     title: 'Root Page',
-    path: '/gitlab-my-mr-card'
+    path: '/gitlab-my-mr-card',
   })
   .render();

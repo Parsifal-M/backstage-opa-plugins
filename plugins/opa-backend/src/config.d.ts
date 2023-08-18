@@ -1,36 +1,35 @@
 export interface Config {
+  /**
+   * Configuration options for the OpaClient plugin
+   */
+  opaClient?: {
     /**
-     * Configuration options for the OpaClient plugin
+     * The base url of the OPA server used for the plugin
      */
-    opaClient?: {
+    baseUrl?: string;
+
+    /**
+     * Configuration options for the OPA policies
+     */
+    policies?: {
       /**
-       * The base url of the OPA server used for the plugin
+       * Configuration options for the catalog policy
        */
-      baseUrl?: string;
-  
+      entityChecker?: {
+        /**
+         * The path to the catalog package in the OPA server
+         */
+        package?: string;
+      };
       /**
-       * Configuration options for the OPA policies
+       * Configuration options for the catalog permission policy
        */
-      policies?: {
+      catalogPermission?: {
         /**
-         * Configuration options for the catalog policy
+         * The path to the catalog package in the OPA server
          */
-        entityChecker?: {
-          /**
-           * The path to the catalog package in the OPA server
-           */
-          package?: string;
-        };
-        /**
-         * Configuration options for the catalog permission policy
-         */
-        catalogPermission?: {
-          /**
-           * The path to the catalog package in the OPA server
-          */
-          package?: string;
-        };
+        package?: string;
       };
     };
-  }
-  
+  };
+}
