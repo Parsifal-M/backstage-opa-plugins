@@ -29,6 +29,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const getPassStatus = (violations: Violation[] = []) => {
+  const errors = violations.filter(v => v.level === 'error').length;
+  return errors > 0 ? 'FAIL' : 'PASS';  // Return 'FAIL' if any error exists, 'PASS' otherwise
+}
+
 export const OpaMetadataAnalysisCard = () => {
   const classes = useStyles();
   const { entity } = useEntity();
@@ -52,25 +57,16 @@ export const OpaMetadataAnalysisCard = () => {
     fetchData(); 
   }, [entity, alertApi, opaApi]);
 
-  const getPassStatus = (violations: Violation[] = []) => {
-    const errors = violations.filter(v => v.level === 'error').length;
-    return errors > 0 ? 'FAIL' : 'PASS';  // Return 'FAIL' if any error exists, 'PASS' otherwise
-  }
-
   const renderCardContent = () => {
-    if (opaResults === null) {
-      return <Typography>ERROR: Could not fetch data from OPA.</Typography>;
-    }
-
-    if (opaResults.violation && opaResults.violation.length > 0) {
-      return opaResults.violation.map((violation: Violation, i: number) => (
-        <Alert severity={violation.level} key={i} className={classes.alert}>
-          {violation.message}
-        </Alert>
-      ));
-    }
-
-    return <Typography>No Issues Found!</Typography>;
+    if (opaResults === null) return <Typography>ERROR: Could not fetch data from OPA.</Typography>;
+  
+    if (!opaResults.violation || opaResults.violation.length === 0) return <Typography>No Issues Found!</Typography>;
+  
+    return opaResults.violation.map((violation: Violation, i: number) => (
+      <Alert severity={violation.level} key={i} className={classes.alert}>
+        {violation.message}
+      </Alert>
+    ));
   };
 
   return (

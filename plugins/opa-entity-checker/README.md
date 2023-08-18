@@ -1,6 +1,8 @@
 # opa-entity-checker
 
-Welcome to the opa-entity-checker plugin!
+Welcome to the opa-entity-checker plugin! This plugin uses [OPA](https://github.com/open-policy-agent/opa) to check your entities against a policy you set. It will then display the results of the check on the entity page. This is a good way to remind people of the data quality that is expected in your Backstage instance.
+
+If you need help with OPA, you can find the documentation [here](https://www.openpolicyagent.org/docs/latest/).
 
 ## Getting started
 
@@ -93,3 +95,9 @@ const overviewContent = (
 //...
 );
 ```
+
+You can also find the example policy [here](policy/example_policy.rego)
+
+# Contributing
+
+I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)

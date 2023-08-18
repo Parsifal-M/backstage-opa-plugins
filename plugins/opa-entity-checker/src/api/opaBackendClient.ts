@@ -11,10 +11,18 @@ export class OpaBackendClient implements OpaBackendApi {
   }
   private async handleResponse(response: Response): Promise<OpaResult> {
     if (!response.ok) {
-        throw new Error();
+        const message = `Error ${response.status}: ${response.statusText}.`;
+
+        try {
+            const responseBody = await response.json();
+            throw new Error(`${message} Details: ${responseBody.error || 'No additional details provided.'}`);
+        } catch (error) {
+            throw new Error(message);
+        }
     }
+
     const data = await response.json();
-    return data as OpaResult;  // directly use data as OpaResult
+    return data as OpaResult;
 }
 
 async entityCheck(entityMetadata: Entity): Promise<OpaResult> {
