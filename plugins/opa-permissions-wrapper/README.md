@@ -1,4 +1,4 @@
-# OPA Wrapper for Backstage Permissions
+# OPA Permissions Wrapper for Backstage
 
 This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) wrapper for the Backstage Permission Framework. The wrapper provides a way to evaluate permissions using OPA, allowing for fine-grained access control and customized policies for your Backstage instance.
 
@@ -65,11 +65,39 @@ An example policy in OPA might look like this:
 ```rego
 package catalog_policy
 
-default deny := false
+# Default decisions
+default allow = true
+default conditional = false
 
-deny{
-    input.permission.name == "catalog.entity.delete"
-    input.identity.groups[_] == "group:default/maintainers"
+# Allow and set conditions if the user is a maintainer
+allow {
+    is_maintainer
+}
+
+conditional = true {
+    is_maintainer
+}
+
+# conditions structure (this is for conditional catalog descisions)
+condition = {
+    "anyOf": [{
+        "resourceType": "catalog-entity",
+        "rule": "IS_ENTITY_KIND",
+        "params": {
+            "kinds": ["API"]
+        },
+    }]
+} { is_maintainer }
+
+# Helper rule to check if the identity is a maintainer
+is_maintainer {
+    user_group := input.identity.groups[_]
+    user_group == "group:default/justice_league"
+}
+
+allow = false {
+    user_group := input.identity.groups[_]
+    user_group == "group:default/maintainers"
 }
 ```
 
@@ -91,6 +119,12 @@ const input: PolicyEvaluationInput = {
   },
 };
 ```
+
+It will then return either just an allow decision or both an allow decision and a conditions object if the rule is conditional.
+
+## Contributing
+
+I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
 
 ## License
 

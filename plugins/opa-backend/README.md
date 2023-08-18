@@ -52,3 +52,11 @@ opa-client:
 ```
 
 This plugin currently works together with the [opa-entity-checker](../opa-entity-checker/README.md) plugin. The `package` name in the `app-config.yaml` file should match the `package` name in the `rego` file of the `opa-entity-checker` plugin.
+
+## Contributing
+
+I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
+
+## License
+
+This project is released under the Apache 2.0 License.

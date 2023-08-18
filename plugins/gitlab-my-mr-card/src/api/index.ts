@@ -1,1 +1,2 @@
-export { ExampleFetchComponent } from './ExampleFetchComponent';
+export * from './types';
+export * from './fetchMergeRequests';
