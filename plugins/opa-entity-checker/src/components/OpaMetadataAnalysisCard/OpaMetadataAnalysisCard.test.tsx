@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen, act } from '@testing-library/react';
 import { OpaMetadataAnalysisCard } from './OpaMetadataAnalysisCard';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider } from '@backstage/test-utils';
@@ -42,13 +42,15 @@ beforeEach(() => {
 });
 
 test('renders without crashing', async () => {
-  render(
-    <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <OpaMetadataAnalysisCard />
-    </TestApiProvider>
-  );
+  await act(async () => {
+    render(
+      <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
+        <OpaMetadataAnalysisCard />
+      </TestApiProvider>
+    );
 
-  expect(screen.getByText(/metadata analysis/i)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/metadata analysis/i)).toBeInTheDocument());
+  });
 });
 
 test('renders violations if they exist', async () => {
@@ -58,31 +60,38 @@ test('renders violations if they exist', async () => {
     ],
   });
 
-  render(
-    <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <OpaMetadataAnalysisCard />
-    </TestApiProvider>
-  );
+  await act(async () => {
+    render(
+      <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
+        <OpaMetadataAnalysisCard />
+      </TestApiProvider>
+    );
 
-  await waitFor(() => expect(mockEntityCheck).toHaveBeenCalled());
-
-  expect(screen.getByText(/test violation/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(mockEntityCheck).toHaveBeenCalled();
+      expect(screen.getByText(/test violation/i)).toBeInTheDocument();
+    });
+  });
 });
 
 test('handles error from the api call', async () => {
   mockEntityCheck.mockRejectedValue(new Error());
 
-  render(
-    <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <OpaMetadataAnalysisCard />
-    </TestApiProvider>
-  );
+  await act(async () => {
+    render(
+      <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
+        <OpaMetadataAnalysisCard />
+      </TestApiProvider>
+    );
 
-  await waitFor(() => expect(mockAlertPost).toHaveBeenCalled());
+    await waitFor(() => {
+      expect(mockAlertPost).toHaveBeenCalled();
+    });
 
-  expect(mockAlertPost).toHaveBeenCalledWith({
-    message: 'Oops, something went wrong, could not load data from OPA!',
-    severity: 'error',
-    display: 'transient',
+    expect(mockAlertPost).toHaveBeenCalledWith({
+      message: 'Oops, something went wrong, could not load data from OPA!',
+      severity: 'error',
+      display: 'transient',
+    });
   });
 });

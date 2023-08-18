@@ -54,14 +54,14 @@ export const OpaMetadataAnalysisCard = () => {
         });
       }
     };
-    fetchData(); 
+    fetchData();
   }, [entity, alertApi, opaApi]);
 
   const renderCardContent = () => {
     if (opaResults === null) return <Typography>ERROR: Could not fetch data from OPA.</Typography>;
-  
-    if (!opaResults.violation || opaResults.violation.length === 0) return <Typography>No Issues Found!</Typography>;
-  
+
+    if (!opaResults || !opaResults.violation || opaResults.violation.length === 0) return <Typography>No Issues Found!</Typography>;
+
     return opaResults.violation.map((violation: Violation, i: number) => (
       <Alert severity={violation.level} key={i} className={classes.alert}>
         {violation.message}
@@ -76,7 +76,7 @@ export const OpaMetadataAnalysisCard = () => {
           <Typography variant="h6">
             OPA Metadata Analysis
           </Typography>
-          {opaResults?.violation &&
+          {opaResults && opaResults.violation &&
             <Chip
               label={getPassStatus(opaResults.violation)}
               color={getPassStatus(opaResults.violation) === 'FAIL' ? 'secondary' : 'primary'}
