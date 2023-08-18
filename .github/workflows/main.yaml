@@ -4,11 +4,9 @@ on: [push]
 
 jobs:
   build:
-    name: Run on Node ${{ matrix.node }}
+    name: Run on Node 18
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16.x, 18.x]
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -16,7 +14,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.x'
 
       - name: Clean Yarn Cache
         run: yarn cache clean
@@ -25,9 +23,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/yarn
-          key: yarn-${{ runner.OS }}-${{ matrix.node }}-${{ hashFiles('**/yarn.lock') }}
+          key: yarn-${{ runner.OS }}-18-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            yarn-${{ runner.OS }}-${{ matrix.node }}-
+            yarn-${{ runner.OS }}-18-
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile --silent
@@ -39,4 +37,3 @@ jobs:
         run: |
           yarn lint:all --silent
           yarn prettier:check
-
