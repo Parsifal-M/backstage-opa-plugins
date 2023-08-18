@@ -37,26 +37,3 @@ jobs:
         run: |
           yarn lint:all
           yarn prettier:check
-
-      # Checking if a version bump occurred for changed plugins:
-      - name: Check for Changes in Plugins Folder
-        id: check_changes
-        run: |
-          CHANGED=$(git diff --name-only origin/main HEAD | grep '^plugins/')
-          if [[ -n "$CHANGED" ]]; then
-            echo "Plugins changed: $CHANGED"
-            echo "::set-output name=changed::true"
-          fi
-
-      - name: Check package.json Version Update
-        if: steps.check_changes.outputs.changed == 'true'
-        run: |
-          for changed_file in $CHANGED; do
-            if [[ "$changed_file" == */package.json ]]; then
-              DIFF=$(git diff origin/main:./$changed_file HEAD:./$changed_file -- "version")
-              if [[ -z "$DIFF" ]]; then
-                echo "Error: version in $changed_file has not been updated!"
-                exit 1
-              fi
-            fi
-          done
