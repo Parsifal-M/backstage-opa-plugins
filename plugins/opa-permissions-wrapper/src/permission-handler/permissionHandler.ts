@@ -7,10 +7,7 @@ import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import { createOpaPermissionEvaluator } from '../opa-evaluator/opaPermissionEvaluator';
 
 export class PermissionsHandler {
-  constructor(
-    private opaClient: OpaClient,
-    private logger: Logger,
-  ) {}
+  constructor(private opaClient: OpaClient, private logger: Logger) {}
 
   async handle(
     request: PolicyQuery,
