@@ -32,8 +32,8 @@ jobs:
     - name: Lint Code
       run: yarn lint:all
 
-    - name: Check Formatting
-      run: yarn prettier:check
-
     - name: Format Code
       run: prettier --write .
+
+    - name: Check Formatting
+      run: yarn prettier:check

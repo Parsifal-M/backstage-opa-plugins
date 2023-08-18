@@ -23,7 +23,7 @@ describe('createRouter', () => {
         }),
         getOptionalString: jest.fn().mockImplementation((key: string) => {
           if (key === 'opa-client.opa.baseUrl') {
-            return 'http://dummy-opa-base-url.com'; // return your mock URL
+            return 'http://dummy-opa-base-url.com'; 
           }
           return null;  // Return null for non-existing optional keys
         }),
