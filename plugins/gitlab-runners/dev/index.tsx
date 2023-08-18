@@ -7,6 +7,6 @@ createDevApp()
   .addPage({
     element: <GitlabRunnersPage />,
     title: 'Root Page',
-    path: '/gitlab-runners'
+    path: '/gitlab-runners',
   })
   .render();

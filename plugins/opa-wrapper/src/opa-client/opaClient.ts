@@ -12,22 +12,27 @@ export class OpaClient {
     this.logger = logger;
   }
 
-  async evaluatePolicy(input: PolicyEvaluationInput): Promise<PolicyEvaluationResult> {
-    this.logger.info(`Sending request to catalog-permission route at ${this.baseUrl}/api/opa/catalog-permission`);
+  async evaluatePolicy(
+    input: PolicyEvaluationInput,
+  ): Promise<PolicyEvaluationResult> {
+    this.logger.info(
+      `Sending request to catalog-permission route at ${this.baseUrl}/api/opa/catalog-permission`,
+    );
 
     try {
-      const response = await axios.post(`${this.baseUrl}/api/opa/catalog-permission`, {
-        policyInput: input,
-      });
-
-      this.logger.info(
-        `Input is: ${JSON.stringify(input)}`,
+      const response = await axios.post(
+        `${this.baseUrl}/api/opa/catalog-permission`,
+        {
+          policyInput: input,
+        },
       );
-  
+
+      this.logger.info(`Input is: ${JSON.stringify(input)}`);
+
       this.logger.info(
         `Received response from OPA server: ${JSON.stringify(response.data)}`,
       );
-  
+
       return response.data;
     } catch (error) {
       this.logger.error('Error during OPA policy evaluation', error);

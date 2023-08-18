@@ -70,10 +70,9 @@ function makeCreateEnv(config: Config) {
       permissions,
       identity,
     };
-        return env;
+    return env;
   };
 }
-
 
 async function main() {
   const config = await loadBackendConfig({
@@ -91,7 +90,6 @@ async function main() {
   const appEnv = useHotMemoize(module, () => createEnv('app'));
   const permissionEnv = useHotMemoize(module, () => createEnv('permission'));
   const opaEnv = useHotMemoize(module, () => createEnv('opa'));
-
 
   const apiRouter = Router();
   apiRouter.use('/catalog', await catalog(catalogEnv));

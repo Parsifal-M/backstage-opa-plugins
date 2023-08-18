@@ -28,7 +28,6 @@ spec:
           description: Select the group you belong to
           type: string
           ui:field: OwnedGroupsPicker
-          
 
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.

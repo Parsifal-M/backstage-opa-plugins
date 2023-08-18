@@ -1,5 +1,2 @@
-export {
-    OpaMetadataAnalysisCard,
-    opaEntityCheckerPlugin,
-} from './plugin'
+export { OpaMetadataAnalysisCard, opaEntityCheckerPlugin } from './plugin';
 export * from './api';

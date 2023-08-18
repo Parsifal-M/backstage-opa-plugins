@@ -22,7 +22,6 @@ export default async function createPlugin(
     }),
   );
 
-
   const { processingEngine, router } = await builder.build();
   await processingEngine.start();
   return router;

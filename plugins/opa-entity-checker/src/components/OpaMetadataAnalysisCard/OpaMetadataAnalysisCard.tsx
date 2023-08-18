@@ -25,9 +25,14 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       marginBottom: theme.spacing(2),
-    }
-  })
+    },
+  }),
 );
+
+const getPassStatus = (violations: Violation[] = []) => {
+  const errors = violations.filter(v => v.level === 'error').length;
+  return errors > 0 ? 'FAIL' : 'PASS'; // Return 'FAIL' if any error exists, 'PASS' otherwise
+};
 
 export const OpaMetadataAnalysisCard = () => {
   const classes = useStyles();
@@ -45,48 +50,47 @@ export const OpaMetadataAnalysisCard = () => {
         alertApi.post({
           message: 'Oops, something went wrong, could not load data from OPA!',
           severity: 'error',
-          display: 'transient'
+          display: 'transient',
         });
       }
     };
-    fetchData(); 
+    fetchData();
   }, [entity, alertApi, opaApi]);
 
-  const getPassStatus = (violations: Violation[] = []) => {
-    const errors = violations.filter(v => v.level === 'error').length;
-    return errors > 0 ? 'FAIL' : 'PASS';  // Return 'FAIL' if any error exists, 'PASS' otherwise
-  }
-
   const renderCardContent = () => {
-    if (opaResults === null) {
+    if (opaResults === null)
       return <Typography>ERROR: Could not fetch data from OPA.</Typography>;
-    }
 
-    if (opaResults.violation && opaResults.violation.length > 0) {
-      return opaResults.violation.map((violation: Violation, i: number) => (
-        <Alert severity={violation.level} key={i} className={classes.alert}>
-          {violation.message}
-        </Alert>
-      ));
-    }
+    if (
+      !opaResults ||
+      !opaResults.violation ||
+      opaResults.violation.length === 0
+    )
+      return <Typography>No Issues Found!</Typography>;
 
-    return <Typography>No Issues Found!</Typography>;
+    return opaResults.violation.map((violation: Violation, i: number) => (
+      <Alert severity={violation.level} key={i} className={classes.alert}>
+        {violation.message}
+      </Alert>
+    ));
   };
 
   return (
     <Card className={classes.card}>
       <CardContent>
         <Box className={classes.titleBox}>
-          <Typography variant="h6">
-            OPA Metadata Analysis
-          </Typography>
-          {opaResults?.violation &&
+          <Typography variant="h6">OPA Metadata Analysis</Typography>
+          {opaResults && opaResults.violation && (
             <Chip
               label={getPassStatus(opaResults.violation)}
-              color={getPassStatus(opaResults.violation) === 'FAIL' ? 'secondary' : 'primary'}
+              color={
+                getPassStatus(opaResults.violation) === 'FAIL'
+                  ? 'secondary'
+                  : 'primary'
+              }
               className={classes.chip}
             />
-          }
+          )}
         </Box>
         {renderCardContent()}
       </CardContent>

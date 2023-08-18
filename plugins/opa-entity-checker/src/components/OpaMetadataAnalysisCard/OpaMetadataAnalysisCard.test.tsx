@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen, act } from '@testing-library/react';
 import { OpaMetadataAnalysisCard } from './OpaMetadataAnalysisCard';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider } from '@backstage/test-utils';
@@ -11,29 +11,29 @@ const mockAlertPost = jest.fn();
 jest.mock('@backstage/plugin-catalog-react', () => ({
   useEntity: () => ({
     entity: {
-      apiVersion: "backstage.io/v1alpha1",
-      kind: "Component",
+      apiVersion: 'backstage.io/v1alpha1',
+      kind: 'Component',
       metadata: {
-        name: "component-name",
-        description: "component-description",
+        name: 'component-name',
+        description: 'component-description',
         labels: {
-          key: "value"
+          key: 'value',
         },
         annotations: {
-          key: "value"
-        }
+          key: 'value',
+        },
       },
       spec: {
-        type: "service",
-        system: "example"
+        type: 'service',
+        system: 'example',
       },
       relations: [
         {
-          type: "ownedBy",
-          target: "user:default/user-name"
-        }
-      ]
-    }
+          type: 'ownedBy',
+          target: 'user:default/user-name',
+        },
+      ],
+    },
   }),
 }));
 
@@ -42,47 +42,71 @@ beforeEach(() => {
 });
 
 test('renders without crashing', async () => {
-  render(
-    <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <OpaMetadataAnalysisCard />
-    </TestApiProvider>
-  );
+  await act(async () => {
+    render(
+      <TestApiProvider
+        apis={[
+          [alertApiRef, { post: mockAlertPost }],
+          [opaBackendApiRef, { entityCheck: mockEntityCheck }],
+        ]}
+      >
+        <OpaMetadataAnalysisCard />
+      </TestApiProvider>,
+    );
 
-  expect(screen.getByText(/metadata analysis/i)).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText(/metadata analysis/i)).toBeInTheDocument(),
+    );
+  });
 });
 
 test('renders violations if they exist', async () => {
   mockEntityCheck.mockResolvedValue({
-    violation: [
-      { message: 'Test violation', level: 'error' },
-    ],
+    violation: [{ message: 'Test violation', level: 'error' }],
   });
 
-  render(
-    <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <OpaMetadataAnalysisCard />
-    </TestApiProvider>
-  );
+  await act(async () => {
+    render(
+      <TestApiProvider
+        apis={[
+          [alertApiRef, { post: mockAlertPost }],
+          [opaBackendApiRef, { entityCheck: mockEntityCheck }],
+        ]}
+      >
+        <OpaMetadataAnalysisCard />
+      </TestApiProvider>,
+    );
 
-  await waitFor(() => expect(mockEntityCheck).toHaveBeenCalled());
-
-  expect(screen.getByText(/test violation/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(mockEntityCheck).toHaveBeenCalled();
+      expect(screen.getByText(/test violation/i)).toBeInTheDocument();
+    });
+  });
 });
 
 test('handles error from the api call', async () => {
   mockEntityCheck.mockRejectedValue(new Error());
 
-  render(
-    <TestApiProvider apis={[[alertApiRef, { post: mockAlertPost }], [opaBackendApiRef, { entityCheck: mockEntityCheck }]]}>
-      <OpaMetadataAnalysisCard />
-    </TestApiProvider>
-  );
+  await act(async () => {
+    render(
+      <TestApiProvider
+        apis={[
+          [alertApiRef, { post: mockAlertPost }],
+          [opaBackendApiRef, { entityCheck: mockEntityCheck }],
+        ]}
+      >
+        <OpaMetadataAnalysisCard />
+      </TestApiProvider>,
+    );
 
-  await waitFor(() => expect(mockAlertPost).toHaveBeenCalled());
+    await waitFor(() => {
+      expect(mockAlertPost).toHaveBeenCalled();
+    });
 
-  expect(mockAlertPost).toHaveBeenCalledWith({
-    message: 'Oops, something went wrong, could not load data from OPA!',
-    severity: 'error',
-    display: 'transient',
+    expect(mockAlertPost).toHaveBeenCalledWith({
+      message: 'Oops, something went wrong, could not load data from OPA!',
+      severity: 'error',
+      display: 'transient',
+    });
   });
 });

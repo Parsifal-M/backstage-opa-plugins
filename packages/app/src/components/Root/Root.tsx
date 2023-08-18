@@ -28,7 +28,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 
-
 const useSidebarLogoStyles = makeStyles({
   root: {
     width: sidebarConfig.drawerWidthClosed,
@@ -71,7 +70,11 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
-        <SidebarItem icon={DirectionsRunIcon} to="gitlab-runners" text="Gitlab Runners" />
+        <SidebarItem
+          icon={DirectionsRunIcon}
+          to="gitlab-runners"
+          text="Gitlab Runners"
+        />
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>

@@ -1,4 +1,7 @@
-import { createPlugin, createRoutableExtension } from '@backstage/core-plugin-api';
+import {
+  createPlugin,
+  createRoutableExtension,
+} from '@backstage/core-plugin-api';
 
 import { rootRouteRef } from './routes';
 
@@ -13,7 +16,9 @@ export const GitlabMyMrCardPage = gitlabMyMrCardPlugin.provide(
   createRoutableExtension({
     name: 'GitlabMyMrCardPage',
     component: () =>
-      import('./components/MergeRequestCardComponent').then(m => m.MergeRequestCard),
+      import('./components/MergeRequestCardComponent').then(
+        m => m.MergeRequestCard,
+      ),
     mountPoint: rootRouteRef,
   }),
 );
