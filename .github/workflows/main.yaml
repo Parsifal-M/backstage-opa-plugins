@@ -1,9 +1,10 @@
-name: CI Workflow
+name: Lint, Test, and Format Workflow
 
 on: [push]
 
 jobs:
   build:
+    name: Run on Node 18
     runs-on: ubuntu-latest
 
     steps:
@@ -13,18 +14,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '18.x'
+
+      - name: Clean Yarn Cache
+        run: yarn cache clean
 
       - name: Cache Node.js modules
         uses: actions/cache@v2
         with:
-          path: ~/.yarn
-          key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.cache/yarn
+          key: yarn-${{ runner.OS }}-18-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.OS }}-yarn-
-
-      - name: Clean Cache
-        run: yarn cache clean
+            yarn-${{ runner.OS }}-18-
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -32,11 +33,7 @@ jobs:
       - name: Run Tests
         run: yarn test:all
 
-      - name: Lint Code
-        run: yarn lint:all
-
-      - name: Format Code
-        run: yarn prettier:write
-
-      - name: Check Formatting
-        run: yarn prettier:check
+      - name: Lint and Check Formatting
+        run: |
+          yarn lint:all
+          yarn prettier:check
