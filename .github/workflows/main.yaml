@@ -28,12 +28,12 @@ jobs:
             yarn-${{ runner.OS }}-18-
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile --silent
+        run: yarn install --frozen-lockfile
 
       - name: Run Tests
-        run: yarn test:all --silent
+        run: yarn test:all
 
       - name: Lint and Check Formatting
         run: |
-          yarn lint:all --silent
+          yarn lint:all
           yarn prettier:check
