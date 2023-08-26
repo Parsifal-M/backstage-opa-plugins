@@ -39,9 +39,6 @@ export const createOpaPermissionEvaluator = (opaClient: OpaClient) => {
       },
     };
 
-    // For debugging purposes
-    console.log('input', JSON.stringify(input, null, 2));
-
     const response: PolicyEvaluationResult = await opaClient.evaluatePolicy(
       input,
     );

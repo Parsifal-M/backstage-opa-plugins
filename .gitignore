@@ -23,6 +23,10 @@ node_modules/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.yarnrc
+
+# npmrc files
+.npmrc
 
 # Node version directives
 .nvmrc
