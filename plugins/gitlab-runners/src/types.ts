@@ -14,7 +14,7 @@ export type User = {
   twitter: string;
   website_url: string;
   organization: null | string;
-}
+};
 
 export type Commit = {
   id: string;
@@ -29,17 +29,17 @@ export type Commit = {
   committer_name: string;
   committer_email: string;
   committed_date: string;
-}
+};
 
-export type  Pipeline = {
+export type Pipeline = {
   id: number;
   sha: string;
   ref: string;
   status: string;
   web_url: string;
-}
+};
 
-export type Project ={
+export type Project = {
   id: number;
   description: null | string;
   name: string;
@@ -47,7 +47,7 @@ export type Project ={
   path: string;
   path_with_namespace: string;
   created_at: string;
-}
+};
 
 export type RunnerDetails = {
   active: boolean;
@@ -69,9 +69,9 @@ export type RunnerDetails = {
   version: null | string;
   access_level: string;
   maximum_timeout: number;
-}
+};
 
-export type Job ={
+export type Job = {
   id: number;
   ip_address: string;
   status: string;
@@ -88,7 +88,7 @@ export type Job ={
   commit: Commit;
   pipeline: Pipeline;
   project: Project;
-}
+};
 
 export type Jobs = Job[];
 
@@ -103,6 +103,6 @@ export type Runner = {
   name: string | null;
   online: boolean;
   status: string;
-}
+};
 
 export type Runners = Runner[];
