@@ -143,11 +143,6 @@ export const RunnerCard = ({ runner }: RunnerCardProps) => {
         subheader={`ID: ${runner.id}`}
       />
 
-      <CardContent>
-        {/* <Typography color="textSecondary">
-          Tags: {runner.tag_list?.join(', ')}
-        </Typography> */}
-      </CardContent>
       <CardActions disableSpacing>
         <Box display="flex" justifyContent="flex-end" width="100%">
           <Button

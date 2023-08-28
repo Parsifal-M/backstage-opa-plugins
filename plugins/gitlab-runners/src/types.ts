@@ -1,4 +1,4 @@
-export interface User {
+export type User = {
   id: number;
   name: string;
   username: string;
@@ -14,9 +14,9 @@ export interface User {
   twitter: string;
   website_url: string;
   organization: null | string;
-}
+};
 
-export interface Commit {
+export type Commit = {
   id: string;
   short_id: string;
   title: string;
@@ -29,17 +29,17 @@ export interface Commit {
   committer_name: string;
   committer_email: string;
   committed_date: string;
-}
+};
 
-export interface Pipeline {
+export type Pipeline = {
   id: number;
   sha: string;
   ref: string;
   status: string;
   web_url: string;
-}
+};
 
-export interface Project {
+export type Project = {
   id: number;
   description: null | string;
   name: string;
@@ -47,9 +47,9 @@ export interface Project {
   path: string;
   path_with_namespace: string;
   created_at: string;
-}
+};
 
-export interface RunnerDetails {
+export type RunnerDetails = {
   active: boolean;
   paused: boolean;
   architecture: null | string;
@@ -69,9 +69,9 @@ export interface RunnerDetails {
   version: null | string;
   access_level: string;
   maximum_timeout: number;
-}
+};
 
-export interface Job {
+export type Job = {
   id: number;
   ip_address: string;
   status: string;
@@ -88,11 +88,11 @@ export interface Job {
   commit: Commit;
   pipeline: Pipeline;
   project: Project;
-}
+};
 
 export type Jobs = Job[];
 
-export interface Runner {
+export type Runner = {
   active: boolean;
   paused: boolean;
   description: string;
@@ -103,6 +103,6 @@ export interface Runner {
   name: string | null;
   online: boolean;
   status: string;
-}
+};
 
 export type Runners = Runner[];

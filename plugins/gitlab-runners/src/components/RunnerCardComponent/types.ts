@@ -1,5 +1,5 @@
 import { Runner } from '../../types';
 
-export interface RunnerCardProps {
+export type RunnerCardProps = {
   runner: Runner;
-}
+};
