@@ -8,7 +8,7 @@ import { Config } from '@backstage/config';
 export type RouterOptions = {
   logger: Logger;
   config: Config;
-}
+};
 
 export async function createRouter(
   options: RouterOptions,
