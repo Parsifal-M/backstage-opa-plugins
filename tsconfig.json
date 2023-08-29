@@ -6,14 +6,9 @@
     "plugins/*/dev",
     "plugins/*/migrations"
   ],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "jsx": "react",
     "outDir": "dist-types",
     "rootDir": ".",
-    "target": "es2015",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true
+    "useUnknownInCatchVariables": false
   }
 }
