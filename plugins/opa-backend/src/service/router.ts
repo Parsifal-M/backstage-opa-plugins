@@ -5,7 +5,7 @@ import axios from 'axios';
 import { errorHandler } from '@backstage/backend-common';
 import { Config } from '@backstage/config';
 
-export interface RouterOptions {
+export type RouterOptions = {
   logger: Logger;
   config: Config;
 }
