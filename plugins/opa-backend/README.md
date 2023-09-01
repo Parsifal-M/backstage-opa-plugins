@@ -47,8 +47,10 @@ opa-client:
   opa:
     baseUrl: 'http://localhost:8181'
     policies:
-      entityChecker:
-        package: 'some-package-name'
+      entityChecker: # Entity checker plugin
+        package: 'entitymeta'
+      catalogPermission: # Permission wrapper plugin
+        package: 'catalog_policy'
 ```
 
 This plugin currently works together with the [opa-entity-checker](../opa-entity-checker/README.md) plugin. The `package` name in the `app-config.yaml` file should match the `package` name in the `rego` file of the `opa-entity-checker` plugin.
