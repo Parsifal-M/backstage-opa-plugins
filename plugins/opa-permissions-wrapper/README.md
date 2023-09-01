@@ -23,7 +23,7 @@ import { PluginEnvironment } from '../types';
 import {
   OpaClient,
   PermissionsHandler,
-} from '../../../../plugins/opa-permissions-wrapper/src';
+} from '@parsifal-m/opa-permissions-wrapper';
 
 export default async function createPlugin(
   env: PluginEnvironment,
