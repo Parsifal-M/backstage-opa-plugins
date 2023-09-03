@@ -27,15 +27,13 @@ export class OpaClient {
         },
       );
 
-      this.logger.info(`Input is: ${JSON.stringify(input)}`);
-
       this.logger.info(
         `Received response from OPA server: ${JSON.stringify(response.data)}`,
       );
 
       return response.data;
-    } catch (error) {
-      this.logger.error('Error during OPA policy evaluation', error);
+    } catch (error: unknown) {
+      this.logger.error('Error during OPA policy evaluation:', error);
       throw new Error(`Failed to evaluate policy: ${error}`);
     }
   }
