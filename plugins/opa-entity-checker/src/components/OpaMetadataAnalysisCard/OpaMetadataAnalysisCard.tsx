@@ -59,7 +59,11 @@ export const OpaMetadataAnalysisCard = () => {
 
   const renderCardContent = () => {
     if (opaResults === null)
-      return <Typography>`Error loading results for ${entity.metadata.name}`</Typography>;
+      return (
+        <Typography>
+          `Error loading results for ${entity.metadata.name}`
+        </Typography>
+      );
 
     if (
       !opaResults ||
