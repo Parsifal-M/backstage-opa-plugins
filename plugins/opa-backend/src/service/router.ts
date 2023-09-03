@@ -23,9 +23,11 @@ export async function createRouter(
   const opaAddr = config.getOptionalString('opa-client.opa.baseUrl');
 
   // Get Packages
+  // This is the Entity Checker package
   const entityCheckerPackage = config.getOptionalString(
     'opa-client.opa.policies.entityChecker.package',
   );
+  // This is the Catalog Permission package
   const catalogPermissionPackage = config.getOptionalString(
     'opa-client.opa.policies.catalogPermission.package',
   );
@@ -45,7 +47,7 @@ export async function createRouter(
 
       res.json(opaResponse.data.result);
     } catch (error) {
-      logger.error('Failed to evaluate metadata with OPA', error);
+      logger.error('Failed to evaluate entity metadata with OPA:', error);
       res.status(500).send('Failed to evaluate metadata with OPA');
     }
   });
@@ -58,10 +60,10 @@ export async function createRouter(
       const opaResponse = await axios.post(opaUrl, {
         input: catalogPolicyInput,
       });
-      console.log(`Input is: ${JSON.stringify(catalogPolicyInput)}`);
+      logger.info(`Sending Input to OPA: ${catalogPolicyInput}`);
       res.json(opaResponse.data.result);
     } catch (error) {
-      logger.error('Failed to evaluate permission data with OPA', error);
+      logger.error('Failed to evaluate permission data with OPA:', error);
       res.status(500).send('Failed to evaluate permission data with OPA');
     }
   });

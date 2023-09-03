@@ -46,9 +46,9 @@ export const OpaMetadataAnalysisCard = () => {
       try {
         const results = await opaApi.entityCheck(entity);
         setOpaResults(results);
-      } catch (err: any) {
+      } catch (error: unknown) {
         alertApi.post({
-          message: 'Oops, something went wrong, could not load data from OPA!',
+          message: `Could not fetch data from OPA: ${error}`,
           severity: 'error',
           display: 'transient',
         });
@@ -59,7 +59,7 @@ export const OpaMetadataAnalysisCard = () => {
 
   const renderCardContent = () => {
     if (opaResults === null)
-      return <Typography>ERROR: Could not fetch data from OPA.</Typography>;
+      return <Typography>`Error loading results for ${entity.metadata.name}`</Typography>;
 
     if (
       !opaResults ||

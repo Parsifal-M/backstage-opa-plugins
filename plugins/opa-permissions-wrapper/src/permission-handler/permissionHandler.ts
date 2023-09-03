@@ -13,13 +13,14 @@ export class PermissionsHandler {
     request: PolicyQuery,
     user?: BackstageIdentityResponse,
   ): Promise<PolicyDecision> {
-    this.logger.info('PermissionsHandler.handle called');
-    this.logger.info(JSON.stringify(request));
+
+    this.logger.info(`User: ${JSON.stringify(user)} has made a request: ${JSON.stringify(request)}`);
 
     const makePolicyDecision = createOpaPermissionEvaluator(this.opaClient);
 
     const policyDecision = await makePolicyDecision(request, user);
-    this.logger.info(`Policy decision: ${JSON.stringify(policyDecision)}`);
+
+    this.logger.info(`Policy decision: ${JSON.stringify(policyDecision)} for user: ${JSON.stringify(user)} and request: ${JSON.stringify(request)}`);
 
     return policyDecision;
   }
