@@ -86,6 +86,7 @@ test('renders violations if they exist', async () => {
 
 test('handles error from the api call', async () => {
   mockEntityCheck.mockRejectedValue(new Error());
+  const someError = new Error();
 
   await act(async () => {
     render(
@@ -104,7 +105,7 @@ test('handles error from the api call', async () => {
     });
 
     expect(mockAlertPost).toHaveBeenCalledWith({
-      message: 'Oops, something went wrong, could not load data from OPA!',
+      message: `Could not fetch data from OPA: ${someError}`,
       severity: 'error',
       display: 'transient',
     });
