@@ -6,6 +6,13 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 > This wrapper is still in **development**, you can use it at your own risk. It is not yet ready for production use.
 
+
+## Pre-requisites
+
+- This plugin requires the [opa-backend](../opa-backend/README.md) plugin to be installed and configured.
+- This plugin also requires and assumes that you have set up and followed the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
+
+
 ## Key Components
 
 - `opa-evaluator/createOpaPermissionEvaluator`: A factory function for creating an asynchronous OPA policy evaluation function.
@@ -50,17 +57,19 @@ The OPA client requires configuration to connect to the OPA server. You need to 
 ```yaml
 opa-client:
   opa:
-    baseUrl: http://your-opa-server-url
+    baseUrl: 'http://localhost:8181'
     policies:
-      catalog:
-        package: your-catalog-package
+      entityChecker: # Entity checker plugin
+        package: 'entitymeta'
+      catalogPermission: # Permission wrapper plugin
+        package: 'catalog_policy'
 ```
 
-Replace http://your-opa-server-url with the URL of your OPA server and your-catalog-package with the OPA policy package containing your catalog policies.
+Replace the `baseUrl` with the URL of your OPA server and 'catalog_policy' with the OPA policy package containing your catalog policies.
 
 ## An Example Policy and Input
 
-An example policy in OPA might look like this:
+An example policy in OPA might look like this, keep in mind you could also use [bundles](https://www.openpolicyagent.org/docs/latest/management-bundles/) to manage your policies and keep the `conditions` object in a `data.json` file.
 
 ```rego
 package catalog_policy
@@ -124,7 +133,7 @@ It will then return either just an allow decision or both an allow decision and 
 
 ## Contributing
 
-I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
+I am happy to accept contributions and suggestions for this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
 
 ## License
 

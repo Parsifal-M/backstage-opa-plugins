@@ -4,7 +4,7 @@ Welcome to the opa-entity-checker plugin! This plugin uses [OPA](https://github.
 
 If you need help with OPA, you can find the documentation [here](https://www.openpolicyagent.org/docs/latest/).
 
-## Getting started
+## Pre-requisites
 
 To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](../opa-backend/README.md)
 
