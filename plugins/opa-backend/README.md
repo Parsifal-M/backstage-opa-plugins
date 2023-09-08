@@ -4,6 +4,10 @@ This serves as the OPA Backend Plugin, eventually to route all your OPA needs th
 
 This plugin is still in development so please use with caution.
 
+# Pre-requisites
+
+This plugin has no pre-requisites.
+
 ## Installation
 
 ```bash
