@@ -1,9 +1,9 @@
 app:
-  title: Scaffolded Backstage App
+  title: Brewed-Backstage
   baseUrl: http://localhost:3000
 
 organization:
-  name: My Company
+  name: Brewed-Backstage
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -49,8 +49,6 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
-  opa:
-    baseUrl: http://localhost:8181
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -75,8 +73,8 @@ auth:
   providers:
     github:
       development:
-        clientId: { CID }
-        clientSecret: { CS }
+        clientId: ${GITHUB_CLIENT_ID}
+        clientSecret: ${GITHUB_CLIENT_SECRET}
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
