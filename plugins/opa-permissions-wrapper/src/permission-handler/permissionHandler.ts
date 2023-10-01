@@ -1,10 +1,10 @@
-/* eslint-disable @backstage/no-undeclared-imports */
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { Logger } from 'winston';
 import { OpaClient } from '../opa-client/opaClient';
-import { PolicyDecision } from '@backstage/plugin-permission-common';
+import { PolicyDecision, isResourcePermission } from '@backstage/plugin-permission-common';
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import { createOpaPermissionEvaluator } from '../opa-evaluator/opaPermissionEvaluator';
+import { catalogPolicyEvaluator } from '../core-permissions/catalogEvaluator';
 
 export class PermissionsHandler {
   constructor(private opaClient: OpaClient, private logger: Logger) {}
@@ -18,6 +18,16 @@ export class PermissionsHandler {
         request,
       )}`,
     );
+
+    if (isResourcePermission(request.permission, 'catalog-entity')) {
+      this.logger.info('Catalog Permission Request') // Debugging for now
+      const makeCatalogPolicyDecision = catalogPolicyEvaluator(
+        this.opaClient
+      );
+      const policyDescision = await makeCatalogPolicyDecision(request, user);
+
+      return policyDescision;
+    }
 
     const makePolicyDecision = createOpaPermissionEvaluator(this.opaClient);
 
