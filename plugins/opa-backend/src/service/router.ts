@@ -52,15 +52,15 @@ export async function createRouter(
     }
   });
 
-  router.post('/catalog-permission', async (req, res) => {
-    const catalogPolicyInput = req.body.policyInput;
+  router.post('/opa-permissions', async (req, res) => {
+    const policyInput = req.body.policyInput;
     const opaUrl = `${opaAddr}/v1/data/${catalogPermissionPackage}`;
 
     try {
       const opaResponse = await axios.post(opaUrl, {
-        input: catalogPolicyInput,
+        input: policyInput,
       });
-      logger.info(`Sending Input to OPA: ${catalogPolicyInput}`);
+      logger.info(`Sending Input to OPA: ${policyInput}`);
       res.json(opaResponse.data.result);
     } catch (error) {
       logger.error('Failed to evaluate permission data with OPA:', error);

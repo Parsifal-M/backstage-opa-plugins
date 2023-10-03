@@ -3,8 +3,10 @@ import { Logger } from 'winston';
 import { OpaClient } from '../opa-client/opaClient';
 import { PolicyDecision, isResourcePermission } from '@backstage/plugin-permission-common';
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
-import { createOpaPermissionEvaluator } from '../opa-evaluator/opaPermissionEvaluator';
 import { catalogPolicyEvaluator } from '../core-permissions/catalogEvaluator';
+import { scaffolderActionPolicyEvaluator } from '../core-permissions/scaffolderActionEvaluator';
+import { scaffolderTemplatePolicyEvaluator } from '../core-permissions/scaffolderTemplateEvaluator';
+
 
 export class PermissionsHandler {
   constructor(private opaClient: OpaClient, private logger: Logger) {}
@@ -29,19 +31,29 @@ export class PermissionsHandler {
       return policyDescision;
     }
 
-    const makePolicyDecision = createOpaPermissionEvaluator(this.opaClient);
+    if (isResourcePermission(request.permission, 'scaffolder-action')) {
+      this.logger.info('Scaffolder Action Permission Request') // Debugging for now
+      const makeScaffolderActionPolicyDecision = scaffolderActionPolicyEvaluator(
+        this.opaClient
+      );
+      const policyDescision = await makeScaffolderActionPolicyDecision(request, user);
 
-    const policyDecision = await makePolicyDecision(request, user);
+      return policyDescision;
+    }
 
-    this.logger.info(
-      `Policy decision: ${JSON.stringify(
-        policyDecision,
-      )} for user: ${JSON.stringify(user)} and request: ${JSON.stringify(
-        request,
-      )}`,
-    );
+    if (isResourcePermission(request.permission, 'scaffolder-template')) {
+      this.logger.info('Scaffolder Template Permission Request') // Debugging for now
+      const makeScaffolderTemplatePolicyDecision = scaffolderTemplatePolicyEvaluator(
+        this.opaClient
+      );
+      const policyDescision = await makeScaffolderTemplatePolicyDecision(request, user);
 
-    return policyDecision;
+      return policyDescision;
+    }
+
+    this.logger.error('Unknown permission type');
+    throw new Error('Unknown permission type');
+
   }
 }
 

@@ -6,10 +6,10 @@ import {
   import { PolicyQuery } from '@backstage/plugin-permission-node';
   import { OpaClient } from '../opa-client/opaClient';
   import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
-  import { createCatalogConditionalDecision } from '@backstage/plugin-catalog-backend/alpha';
-  import { PolicyEvaluationInput, CatalogPolicyEvaluationResult } from '../../types';
+  import { createScaffolderActionConditionalDecision } from '@backstage/plugin-scaffolder-backend/alpha';
+  import { PolicyEvaluationInput, ScaffolderPolicyEvaluationResult } from '../../types';
   
-  export const catalogPolicyEvaluator = (opaClient: OpaClient) => {
+  export const scaffolderActionPolicyEvaluator = (opaClient: OpaClient) => {
     return async (
       request: PolicyQuery,
       user?: BackstageIdentityResponse,
@@ -39,17 +39,17 @@ import {
         },
       };
   
-      const response: CatalogPolicyEvaluationResult = await opaClient.evaluatePolicy(
+      const response: ScaffolderPolicyEvaluationResult = await opaClient.evaluatePolicy(
         input,
       );
       if (response.allow) {
         if (
           response.conditional &&
-          response.condition &&
-          isResourcePermission(request.permission, 'catalog-entity')
+          response.action_condition &&
+          isResourcePermission(request.permission, 'scaffolder-action')
         ) {
-          const conditionalDescision = response.condition;
-          return createCatalogConditionalDecision(
+          const conditionalDescision = response.action_condition;
+          return createScaffolderActionConditionalDecision(
             request.permission,
             conditionalDescision,
           );
