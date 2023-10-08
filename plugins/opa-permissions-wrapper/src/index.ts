@@ -1,3 +1,5 @@
 export * from './service/router';
 export * from './opa-client/opaClient';
-export * from './permission-handler/permissionHandler';
+export * from './core-permissions/catalogEvaluator';
+export * from './core-permissions/scaffolderActionEvaluator';
+export * from './core-permissions/scaffolderTemplateEvaluator';
