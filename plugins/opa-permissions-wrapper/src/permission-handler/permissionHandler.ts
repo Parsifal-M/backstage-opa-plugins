@@ -1,7 +1,7 @@
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { Logger } from 'winston';
 import { OpaClient } from '../opa-client/opaClient';
-import { PolicyDecision, isResourcePermission } from '@backstage/plugin-permission-common';
+import { AuthorizeResult, PolicyDecision, isResourcePermission } from '@backstage/plugin-permission-common';
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import { catalogPolicyEvaluator } from '../core-permissions/catalogEvaluator';
 import { scaffolderActionPolicyEvaluator } from '../core-permissions/scaffolderActionEvaluator';
@@ -16,7 +16,7 @@ export class PermissionsHandler {
     user?: BackstageIdentityResponse,
   ): Promise<PolicyDecision> {
     this.logger.info(
-      `User: ${JSON.stringify(user)} has made a request: ${JSON.stringify(
+      `User: ${JSON.stringify(user?.identity)} has made a request: ${JSON.stringify(
         request,
       )}`,
     );
@@ -51,8 +51,7 @@ export class PermissionsHandler {
       return policyDescision;
     }
 
-    this.logger.error('Unknown permission type');
-    throw new Error('Unknown permission type');
+    return { result: AuthorizeResult.ALLOW };
 
   }
 }

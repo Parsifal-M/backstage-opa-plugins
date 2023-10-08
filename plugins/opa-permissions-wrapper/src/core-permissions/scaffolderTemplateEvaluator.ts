@@ -7,8 +7,8 @@ import {
   import { OpaClient } from '../opa-client/opaClient';
   import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
   import { createScaffolderTemplateConditionalDecision } from '@backstage/plugin-scaffolder-backend/alpha';
-  import { PolicyEvaluationInput, ScaffolderPolicyEvaluationResult } from '../../types';
-  
+  import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
+
   export const scaffolderTemplatePolicyEvaluator = (opaClient: OpaClient) => {
     return async (
       request: PolicyQuery,
@@ -19,7 +19,7 @@ import {
         : undefined;
       const userGroups = user?.identity.ownershipEntityRefs ?? [];
       const userName = user?.identity.userEntityRef;
-  
+
       const {
         type,
         name,
@@ -39,16 +39,16 @@ import {
         },
       };
   
-      const response: ScaffolderPolicyEvaluationResult = await opaClient.evaluatePolicy(
+      const response: PolicyEvaluationResult = await opaClient.evaluatePolicy(
         input,
       );
       if (response.allow) {
         if (
           response.conditional &&
-          response.template_condition &&
+          response.software_template_condition &&
           isResourcePermission(request.permission, 'scaffolder-template')
         ) {
-          const conditionalDescision = response.template_condition;
+          const conditionalDescision = response.software_template_condition;
           return createScaffolderTemplateConditionalDecision(
             request.permission,
             conditionalDescision,

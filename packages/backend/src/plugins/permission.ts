@@ -8,13 +8,13 @@ export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
   const opaClient = new OpaClient(env.config, env.logger);
-  const permissionsHandler = new PermissionsHandler(opaClient, env.logger);
+  const opaPermissionHandler = new PermissionsHandler(opaClient, env.logger);
 
   return await createRouter({
     config: env.config,
     logger: env.logger,
     discovery: env.discovery,
-    policy: permissionsHandler,
+    policy: opaPermissionHandler,
     identity: env.identity,
   });
 }

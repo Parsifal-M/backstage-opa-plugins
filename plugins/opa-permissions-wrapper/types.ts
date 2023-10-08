@@ -17,23 +17,17 @@ export type PolicyEvaluationInput = {
   };
 };
 
-export interface CatalogPolicyEvaluationResult {
-  decision_id: string;
+export type PolicyEvaluationResult = {
+  descision_id: string;
   allow: boolean;
-  conditional: boolean;
-  condition?: PermissionCriteria<
+  conditional?: boolean;
+  catalog_condition?: PermissionCriteria<
     PermissionCondition<'catalog-entity', PermissionRuleParams>
   >;
-}
-
-export interface ScaffolderPolicyEvaluationResult {
-  decision_id: string;
-  allow: boolean;
-  conditional: boolean;
-  action_condition?: PermissionCriteria<
+  software_template_action_condition?: PermissionCriteria<
     PermissionCondition<'scaffolder-action', PermissionRuleParams>
   >;
-  template_condition?: PermissionCriteria<
+  software_template_condition?: PermissionCriteria<
     PermissionCondition<'scaffolder-template', PermissionRuleParams>
   >;
-}
+};

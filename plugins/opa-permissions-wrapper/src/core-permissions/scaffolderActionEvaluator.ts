@@ -7,7 +7,7 @@ import {
   import { OpaClient } from '../opa-client/opaClient';
   import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
   import { createScaffolderActionConditionalDecision } from '@backstage/plugin-scaffolder-backend/alpha';
-  import { PolicyEvaluationInput, ScaffolderPolicyEvaluationResult } from '../../types';
+  import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
   
   export const scaffolderActionPolicyEvaluator = (opaClient: OpaClient) => {
     return async (
@@ -39,16 +39,16 @@ import {
         },
       };
   
-      const response: ScaffolderPolicyEvaluationResult = await opaClient.evaluatePolicy(
+      const response: PolicyEvaluationResult = await opaClient.evaluatePolicy(
         input,
       );
       if (response.allow) {
         if (
           response.conditional &&
-          response.action_condition &&
+          response.software_template_action_condition &&
           isResourcePermission(request.permission, 'scaffolder-action')
         ) {
-          const conditionalDescision = response.action_condition;
+          const conditionalDescision = response.software_template_action_condition;
           return createScaffolderActionConditionalDecision(
             request.permission,
             conditionalDescision,
