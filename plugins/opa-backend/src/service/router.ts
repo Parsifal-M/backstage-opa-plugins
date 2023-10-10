@@ -28,7 +28,6 @@ export async function createRouter(
     'opa-client.opa.policies.entityChecker.package',
   );
 
-
   router.get('/health', (_, resp) => {
     resp.json({ status: 'ok' });
   });

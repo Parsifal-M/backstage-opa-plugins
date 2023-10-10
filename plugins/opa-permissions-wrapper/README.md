@@ -54,16 +54,16 @@ The OPA client requires configuration to connect to the OPA server. You need to 
 
 ```yaml
 opaClient:
-    baseUrl: 'http://localhost:8181'
-    policies:
-      entityChecker: # Entity checker plugin
-        package: 'entitymeta'
-      catalogPermission: # Permission wrapper plugin
-        package: 'catalog_policy'
-      scaffolderTemplatePermission:
-        package: 'scaffolder_template_policy'
-      scaffolderActionPermission:
-        package: 'scaffolder_action_policy'
+  baseUrl: 'http://localhost:8181'
+  policies:
+    entityChecker: # Entity checker plugin
+      package: 'entitymeta'
+    catalogPermission: # Permission wrapper plugin
+      package: 'catalog_policy'
+    scaffolderTemplatePermission:
+      package: 'scaffolder_template_policy'
+    scaffolderActionPermission:
+      package: 'scaffolder_action_policy'
 ```
 
 Replace the `baseUrl` with the URL of your OPA server and 'catalog_policy' with the OPA policy package containing your catalog policies.

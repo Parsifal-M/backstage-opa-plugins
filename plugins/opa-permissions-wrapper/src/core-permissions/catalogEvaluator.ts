@@ -10,8 +10,10 @@ import { createCatalogConditionalDecision } from '@backstage/plugin-catalog-back
 import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
 import { Config } from '@backstage/config';
 
-
-export const catalogPolicyEvaluator = (opaClient: OpaClient, config: Config) => {
+export const catalogPolicyEvaluator = (
+  opaClient: OpaClient,
+  config: Config,
+) => {
   return async (
     request: PolicyQuery,
     user?: BackstageIdentityResponse,
@@ -21,7 +23,9 @@ export const catalogPolicyEvaluator = (opaClient: OpaClient, config: Config) => 
       : undefined;
     const userGroups = user?.identity.ownershipEntityRefs ?? [];
     const userName = user?.identity.userEntityRef;
-    const opaCatalogPackage = config.getString('opaClient.policies.catalogPermission.package')
+    const opaCatalogPackage = config.getString(
+      'opaClient.policies.catalogPermission.package',
+    );
 
     const {
       type,
@@ -39,12 +43,12 @@ export const catalogPolicyEvaluator = (opaClient: OpaClient, config: Config) => 
       identity: {
         username: userName,
         groups: userGroups,
-      }
+      },
     };
 
     const response: PolicyEvaluationResult = await opaClient.evaluatePolicy(
       input,
-      opaCatalogPackage
+      opaCatalogPackage,
     );
 
     if (response.allow) {

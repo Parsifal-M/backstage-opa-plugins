@@ -48,16 +48,16 @@ In your `app-config.yaml` file, add the following:
 
 ```yaml
 opaClient:
-    baseUrl: 'http://localhost:8181'
-    policies:
-      entityChecker: # Entity checker plugin
-        package: 'entitymeta'
-      catalogPermission: # Permission wrapper plugin
-        package: 'catalog_policy'
-      scaffolderTemplatePermission:
-        package: 'scaffolder_template_policy'
-      scaffolderActionPermission:
-        package: 'scaffolder_action_policy'
+  baseUrl: 'http://localhost:8181'
+  policies:
+    entityChecker: # Entity checker plugin
+      package: 'entitymeta'
+    catalogPermission: # Permission wrapper plugin
+      package: 'catalog_policy'
+    scaffolderTemplatePermission:
+      package: 'scaffolder_template_policy'
+    scaffolderActionPermission:
+      package: 'scaffolder_action_policy'
 ```
 
 This plugin currently works together with the [opa-entity-checker](../opa-entity-checker/README.md) plugin. The `package` name in the `app-config.yaml` file should match the `package` name in the `rego` file of the `opa-entity-checker` plugin.

@@ -14,20 +14,18 @@ export class OpaClient {
 
   async evaluatePolicy(
     input: PolicyEvaluationInput,
-    opaPackage: string
+    opaPackage: string,
   ): Promise<PolicyEvaluationResult> {
     this.logger.info(
       `Sending request to catalog-permission route at ${this.baseUrl}/api/opa/opa-permissions`,
     );
-
-
 
     try {
       const response = await axios.post(
         `${this.baseUrl}/api/opa/opa-permissions`,
         {
           policyInput: input,
-          opaPackage: opaPackage
+          opaPackage: opaPackage,
         },
       );
 
