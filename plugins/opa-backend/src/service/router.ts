@@ -28,7 +28,6 @@ export async function createRouter(
     'opa-client.opa.policies.entityChecker.package',
   );
 
-  const packageName = config.getOptionalString('opaClient.policies.catalogPermission.package');
 
   router.get('/health', (_, resp) => {
     resp.json({ status: 'ok' });
@@ -52,7 +51,8 @@ export async function createRouter(
 
   router.post('/opa-permissions', async (req, res) => {
     const policyInput = req.body.policyInput;
-    const opaUrl = `${opaAddr}/v1/data/${packageName}`;
+    const opaPackage = req.body.opaPackage;
+    const opaUrl = `${opaAddr}/v1/data/${opaPackage}`;
 
     try {
       const opaResponse = await axios.post(opaUrl, {

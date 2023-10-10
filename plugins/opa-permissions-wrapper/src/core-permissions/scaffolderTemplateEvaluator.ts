@@ -8,8 +8,9 @@ import {
   import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
   import { createScaffolderTemplateConditionalDecision } from '@backstage/plugin-scaffolder-backend/alpha';
   import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
+import { Config } from '@backstage/config';
 
-  export const scaffolderTemplatePolicyEvaluator = (opaClient: OpaClient) => {
+  export const scaffolderTemplatePolicyEvaluator = (opaClient: OpaClient, config: Config) => {
     return async (
       request: PolicyQuery,
       user?: BackstageIdentityResponse,
@@ -19,6 +20,8 @@ import {
         : undefined;
       const userGroups = user?.identity.ownershipEntityRefs ?? [];
       const userName = user?.identity.userEntityRef;
+      const opaScaffolderTemplatePackage = config.getString('opaClient.policies.opaScaffolderTemplatePackage.package')
+
 
       const {
         type,
@@ -41,6 +44,7 @@ import {
   
       const response: PolicyEvaluationResult = await opaClient.evaluatePolicy(
         input,
+        opaScaffolderTemplatePackage
       );
       if (response.allow) {
         if (

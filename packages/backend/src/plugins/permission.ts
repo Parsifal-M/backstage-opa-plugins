@@ -27,7 +27,8 @@ export default async function createPlugin(
       if (isResourcePermission(request.permission, 'catalog-entity')) {
         logger.info('Catalog Permission Request') // Debugging for now
         const makeCatalogPolicyDecision = catalogPolicyEvaluator(
-          opaClient
+          opaClient,
+          env.config,
         );
         const policyDescision = await makeCatalogPolicyDecision(request, user);
   
@@ -37,7 +38,8 @@ export default async function createPlugin(
       if (isResourcePermission(request.permission, 'scaffolder-action')) {
         logger.info('Scaffolder Action Permission Request') // Debugging for now
         const makeScaffolderActionPolicyDecision = scaffolderActionPolicyEvaluator(
-          opaClient
+          opaClient,
+          env.config,
         );
         const policyDescision = await makeScaffolderActionPolicyDecision(request, user);
   
@@ -47,7 +49,8 @@ export default async function createPlugin(
       if (isResourcePermission(request.permission, 'scaffolder-template')) {
         logger.info('Scaffolder Template Permission Request') // Debugging for now
         const makeScaffolderTemplatePolicyDecision = scaffolderTemplatePolicyEvaluator(
-          opaClient
+          opaClient,
+          env.config,
         );
         const policyDescision = await makeScaffolderTemplatePolicyDecision(request, user);
   

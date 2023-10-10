@@ -13,7 +13,8 @@ export class OpaClient {
   }
 
   async evaluatePolicy(
-    input: PolicyEvaluationInput
+    input: PolicyEvaluationInput,
+    opaPackage: string
   ): Promise<PolicyEvaluationResult> {
     this.logger.info(
       `Sending request to catalog-permission route at ${this.baseUrl}/api/opa/opa-permissions`,
@@ -25,7 +26,8 @@ export class OpaClient {
       const response = await axios.post(
         `${this.baseUrl}/api/opa/opa-permissions`,
         {
-          policyInput: input
+          policyInput: input,
+          opaPackage: opaPackage
         },
       );
 
@@ -39,8 +41,4 @@ export class OpaClient {
       throw new Error(`Failed to evaluate policy: ${error}`);
     }
   }
-}
-
-export function createOpaClient(config: Config, logger: Logger): OpaClient {
-  return new OpaClient(config, logger);
 }
