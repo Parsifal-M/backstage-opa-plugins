@@ -114,11 +114,14 @@ catalog:
 permission:
   enabled: true
 
-opa-client:
-  opa:
-    baseUrl: 'http://localhost:8181'
-    policies:
-      catalog:
-        package: 'catalog'
-      entityChecker:
-        package: 'entitymeta'
+opaClient:
+  baseUrl: 'http://localhost:8181'
+  policies:
+    entityChecker: # Entity checker plugin
+      package: 'entitymeta'
+    catalogPermission: # Permission wrapper plugin
+      package: catalog_policy
+    scaffolderTemplatePermission:
+      package: 'scaffolder_template_policy'
+    scaffolderActionPermission:
+      package: 'scaffolder_action_policy'

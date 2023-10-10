@@ -53,14 +53,17 @@ This will create an OPA client and a permissions handler using the OPA wrapper a
 The OPA client requires configuration to connect to the OPA server. You need to provide the baseUrl and package for the OPA server in your Backstage app-config.yaml file:
 
 ```yaml
-opa-client:
-  opa:
-    baseUrl: 'http://localhost:8181'
-    policies:
-      entityChecker: # Entity checker plugin
-        package: 'entitymeta'
-      catalogPermission: # Permission wrapper plugin
-        package: 'catalog_policy'
+opaClient:
+  baseUrl: 'http://localhost:8181'
+  policies:
+    entityChecker: # Entity checker plugin
+      package: 'entitymeta'
+    catalogPermission: # Permission wrapper plugin
+      package: 'catalog_policy'
+    scaffolderTemplatePermission:
+      package: 'scaffolder_template_policy'
+    scaffolderActionPermission:
+      package: 'scaffolder_action_policy'
 ```
 
 Replace the `baseUrl` with the URL of your OPA server and 'catalog_policy' with the OPA policy package containing your catalog policies.

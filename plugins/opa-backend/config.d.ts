@@ -30,6 +30,20 @@ export interface Config {
          */
         package?: string;
       };
+
+      scaffolderTemplatePermission?: {
+        /**
+         * The path to the scaffolder templates package in the OPA server
+         */
+        package?: string;
+      };
+
+      scaffolderActionPermission?: {
+        /**
+         * The path to the scaffolder action package in the OPA server
+         */
+        package?: string;
+      };
     };
   };
 }

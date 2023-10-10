@@ -20,16 +20,12 @@ export async function createRouter(
   router.use(express.json());
 
   // Get the config options for the OPA plugin
-  const opaAddr = config.getOptionalString('opa-client.opa.baseUrl');
+  const opaAddr = config.getOptionalString('opaClient.baseUrl');
 
   // Get Packages
   // This is the Entity Checker package
   const entityCheckerPackage = config.getOptionalString(
     'opa-client.opa.policies.entityChecker.package',
-  );
-  // This is the Catalog Permission package
-  const catalogPermissionPackage = config.getOptionalString(
-    'opa-client.opa.policies.catalogPermission.package',
   );
 
   router.get('/health', (_, resp) => {
@@ -52,15 +48,16 @@ export async function createRouter(
     }
   });
 
-  router.post('/catalog-permission', async (req, res) => {
-    const catalogPolicyInput = req.body.policyInput;
-    const opaUrl = `${opaAddr}/v1/data/${catalogPermissionPackage}`;
+  router.post('/opa-permissions', async (req, res) => {
+    const policyInput = req.body.policyInput;
+    const opaPackage = req.body.opaPackage;
+    const opaUrl = `${opaAddr}/v1/data/${opaPackage}`;
 
     try {
       const opaResponse = await axios.post(opaUrl, {
-        input: catalogPolicyInput,
+        input: policyInput,
       });
-      logger.info(`Sending Input to OPA: ${catalogPolicyInput}`);
+      logger.info(`Sending input to OPA: ${JSON.stringify(policyInput)}`);
       res.json(opaResponse.data.result);
     } catch (error) {
       logger.error('Failed to evaluate permission data with OPA:', error);
