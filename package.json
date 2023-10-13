@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@backstage/cli": "^0.22.13",
+    "eslint-plugin-jest": "*",
     "@spotify/prettier-config": "^12.0.0",
     "concurrently": "^6.0.0",
     "lerna": "^4.0.0",
@@ -54,5 +55,5 @@
       "prettier --write"
     ]
   },
-  "dependencies": {}
+  "packageManager": "yarn@3.6.4"
 }

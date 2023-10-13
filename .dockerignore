@@ -6,3 +6,5 @@ packages/*/src
 packages/*/node_modules
 plugins
 *.local.yaml
+.yarn/cache
+.yarn/install-state.gz
