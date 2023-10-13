@@ -57,6 +57,7 @@
   },
   "packageManager": "yarn@3.6.4",
   "dependencies": {
+    "@parsifal-m/plugin-opa-backend": "workspace:^",
     "@parsifal-m/plugin-opa-entity-checker": "workspace:^"
   }
 }

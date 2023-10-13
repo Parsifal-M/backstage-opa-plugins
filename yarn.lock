@@ -6477,6 +6477,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@parsifal-m/plugin-dev-quotes-homepage@^0.1.0, @parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage":
+  version: 0.0.0-use.local
+  resolution: "@parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage"
+  dependencies:
+    "@backstage/cli": ^0.22.13
+    "@backstage/core-app-api": ^1.10.0
+    "@backstage/core-components": ^0.13.5
+    "@backstage/core-plugin-api": ^1.6.0
+    "@backstage/dev-utils": ^1.0.21
+    "@backstage/test-utils": ^1.4.3
+    "@backstage/theme": ^0.4.2
+    "@material-ui/core": ^4.12.2
+    "@material-ui/icons": ^4.9.1
+    "@material-ui/lab": 4.0.0-alpha.61
+    "@testing-library/jest-dom": ^5.10.1
+    "@testing-library/react": ^12.1.3
+    "@testing-library/user-event": ^14.0.0
+    msw: ^1.0.0
+    react-use: ^17.2.4
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0
+  languageName: unknown
+  linkType: soft
+
 "@internal/plugin-gitlab-my-mr-card@^0.1.0, @internal/plugin-gitlab-my-mr-card@workspace:plugins/gitlab-my-mr-card":
   version: 0.0.0-use.local
   resolution: "@internal/plugin-gitlab-my-mr-card@workspace:plugins/gitlab-my-mr-card"
@@ -8826,7 +8850,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parsifal-m/plugin-opa-backend@workspace:plugins/opa-backend":
+"@parsifal-m/plugin-opa-backend@workspace:^, @parsifal-m/plugin-opa-backend@workspace:plugins/opa-backend":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/opa-backend"
   dependencies:
@@ -12928,6 +12952,7 @@ __metadata:
     "@backstage/plugin-user-settings": ^0.7.10
     "@backstage/test-utils": ^1.4.3
     "@backstage/theme": ^0.4.2
+    "@parsifal-m/plugin-dev-quotes-homepage": ^0.1.0
     "@internal/plugin-gitlab-my-mr-card": ^0.1.0
     "@material-ui/core": ^4.12.2
     "@material-ui/icons": ^4.9.1
@@ -28415,6 +28440,7 @@ __metadata:
   resolution: "root@workspace:."
   dependencies:
     "@backstage/cli": ^0.22.13
+    "@parsifal-m/plugin-opa-backend": "workspace:^"
     "@parsifal-m/plugin-opa-entity-checker": "workspace:^"
     "@spotify/prettier-config": ^12.0.0
     concurrently: ^6.0.0
