@@ -53,3 +53,12 @@ site
 
 # vscode database functionality support files
 *.session.sql
+
+# Yarn 3 files
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
