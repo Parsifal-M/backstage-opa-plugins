@@ -8864,7 +8864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parsifal-m/plugin-opa-entity-checker@workspace:plugins/opa-entity-checker":
+"@parsifal-m/plugin-opa-entity-checker@workspace:^, @parsifal-m/plugin-opa-entity-checker@workspace:plugins/opa-entity-checker":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-entity-checker@workspace:plugins/opa-entity-checker"
   dependencies:
@@ -28415,6 +28415,7 @@ __metadata:
   resolution: "root@workspace:."
   dependencies:
     "@backstage/cli": ^0.22.13
+    "@parsifal-m/plugin-opa-entity-checker": "workspace:^"
     "@spotify/prettier-config": ^12.0.0
     concurrently: ^6.0.0
     eslint-plugin-jest: "*"
