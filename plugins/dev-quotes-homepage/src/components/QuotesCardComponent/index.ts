@@ -1,0 +1,1 @@
+export { QuoteCard } from './QuotesCard';
