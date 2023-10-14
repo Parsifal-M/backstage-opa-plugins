@@ -25,7 +25,7 @@ export async function createRouter(
   // Get Packages
   // This is the Entity Checker package
   const entityCheckerPackage = config.getOptionalString(
-    'opa-client.opa.policies.entityChecker.package',
+    'opaClient.policies.entityChecker.package',
   );
 
   router.get('/health', (_, resp) => {

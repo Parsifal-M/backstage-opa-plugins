@@ -37,8 +37,8 @@ const getPassStatus = (violations: Violation[] = []) => {
     return 'FAIL';
   } else if (warnings > 0) {
     return 'WARN';
-  } 
-    return 'PASS';
+  }
+  return 'PASS';
 };
 
 export const OpaMetadataAnalysisCard = () => {
@@ -69,17 +69,22 @@ export const OpaMetadataAnalysisCard = () => {
     if (opaResults === null) {
       return (
         <Typography>
-          OPA did not return any results for this entity. Please make sure you are using the correct OPA package name.
+          OPA did not return any results for this entity. Please make sure you
+          are using the correct OPA package name.
         </Typography>
       );
     }
-  
+
     if (!opaResults?.violation?.length) {
       return <Typography>No issues found!</Typography>;
     }
-  
+
     return opaResults.violation.map((violation: Violation) => (
-      <Alert severity={violation.level} key={violation.id || ++violationId} className={classes.alert}>
+      <Alert
+        severity={violation.level}
+        key={violation.id || ++violationId}
+        className={classes.alert}
+      >
         {violation.message}
       </Alert>
     ));
