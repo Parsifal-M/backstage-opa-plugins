@@ -8,10 +8,8 @@ export const QuoteCard = () => {
 
   return (
     <InfoCard>
-        <Typography variant="h6">
-          {randomQuote.text}
-        </Typography>
-        <Typography variant='subtitle2'>{randomQuote.author}</Typography>
+      <Typography variant="h6">{randomQuote.text}</Typography>
+      <Typography variant="subtitle2">{randomQuote.author}</Typography>
     </InfoCard>
   );
 };
