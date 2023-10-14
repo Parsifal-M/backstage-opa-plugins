@@ -31,7 +31,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const getPassStatus = (violations: Violation[] = []) => {
   const errors = violations.filter(v => v.level === 'error').length;
-  return errors > 0 ? 'FAIL' : 'PASS'; // Return 'FAIL' if any error exists, 'PASS' otherwise
+  const warnings = violations.filter(v => v.level !== 'error').length;
+
+  if (errors > 0) {
+    return 'FAIL';
+  } else if (warnings > 0) {
+    return 'WARN';
+  } 
+    return 'PASS';
 };
 
 export const OpaMetadataAnalysisCard = () => {
@@ -40,6 +47,7 @@ export const OpaMetadataAnalysisCard = () => {
   const opaApi = useApi(opaBackendApiRef);
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
   const alertApi = useApi(alertApiRef);
+  let violationId = 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,22 +66,20 @@ export const OpaMetadataAnalysisCard = () => {
   }, [entity, alertApi, opaApi]);
 
   const renderCardContent = () => {
-    if (opaResults === null)
+    if (opaResults === null) {
       return (
         <Typography>
-          `Error loading results for ${entity.metadata.name}`
+          OPA did not return any results for this entity. Please make sure you are using the correct OPA package name.
         </Typography>
       );
-
-    if (
-      !opaResults ||
-      !opaResults.violation ||
-      opaResults.violation.length === 0
-    )
-      return <Typography>No Issues Found!</Typography>;
-
-    return opaResults.violation.map((violation: Violation, i: number) => (
-      <Alert severity={violation.level} key={i} className={classes.alert}>
+    }
+  
+    if (!opaResults?.violation?.length) {
+      return <Typography>No issues found!</Typography>;
+    }
+  
+    return opaResults.violation.map((violation: Violation) => (
+      <Alert severity={violation.level} key={violation.id || ++violationId} className={classes.alert}>
         {violation.message}
       </Alert>
     ));
@@ -84,14 +90,20 @@ export const OpaMetadataAnalysisCard = () => {
       <CardContent>
         <Box className={classes.titleBox}>
           <Typography variant="h6">OPA Metadata Analysis</Typography>
-          {opaResults && opaResults.violation && (
+          {opaResults?.violation && (
             <Chip
               label={getPassStatus(opaResults.violation)}
               color={
                 getPassStatus(opaResults.violation) === 'FAIL'
                   ? 'secondary'
-                  : 'primary'
+                  : 'default'
               }
+              style={{
+                backgroundColor:
+                  getPassStatus(opaResults.violation) === 'WARN'
+                    ? 'orange'
+                    : undefined,
+              }}
               className={classes.chip}
             />
           )}
