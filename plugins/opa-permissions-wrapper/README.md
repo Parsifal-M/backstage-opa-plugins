@@ -19,28 +19,89 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 To integrate this OPA wrapper with your Backstage instance, you need to first follow the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
 
-Then, make the following changes to the `packages/backend/src/plugins/permission.ts` file in your Backstage project. (Replace the existing contents of the file with the following)
+Then, make the following changes to the `packages/backend/src/plugins/permission.ts` file in your Backstage project. You can replace the contents with something like the following, this allows for flexible policy evaluation and the ability to use multiple OPA policies for different resource types.
 
 ```typescript
 import { createRouter } from '@backstage/plugin-permission-backend';
 import { Router } from 'express-serve-static-core';
 import { PluginEnvironment } from '../types';
+import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import {
+  PermissionPolicy,
+  PolicyQuery,
+} from '@backstage/plugin-permission-node';
+import {
+  AuthorizeResult,
+  PolicyDecision,
+  isResourcePermission,
+} from '@backstage/plugin-permission-common';
+import {
+  catalogPolicyEvaluator,
+  scaffolderActionPolicyEvaluator,
+  scaffolderTemplatePolicyEvaluator,
   OpaClient,
-  PermissionsHandler,
 } from '@parsifal-m/opa-permissions-wrapper';
 
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
   const opaClient = new OpaClient(env.config, env.logger);
-  const permissionsHandler = new PermissionsHandler(opaClient, env.logger);
+  const logger = env.logger;
+  class PermissionsHandler implements PermissionPolicy {
+    async handle(
+      request: PolicyQuery,
+      user?: BackstageIdentityResponse,
+    ): Promise<PolicyDecision> {
+      logger.info(
+        `User: ${JSON.stringify(
+          user?.identity,
+        )} has made a request: ${JSON.stringify(request)}`,
+      );
+
+      if (isResourcePermission(request.permission, 'catalog-entity')) {
+        logger.info('Catalog Permission Request'); // Debugging for now
+        const makeCatalogPolicyDecision = catalogPolicyEvaluator(
+          opaClient,
+          env.config,
+        );
+        const policyDescision = await makeCatalogPolicyDecision(request, user);
+
+        return policyDescision;
+      }
+
+      if (isResourcePermission(request.permission, 'scaffolder-action')) {
+        logger.info('Scaffolder Action Permission Request'); // Debugging for now
+        const makeScaffolderActionPolicyDecision =
+          scaffolderActionPolicyEvaluator(opaClient, env.config);
+        const policyDescision = await makeScaffolderActionPolicyDecision(
+          request,
+          user,
+        );
+
+        return policyDescision;
+      }
+
+      if (isResourcePermission(request.permission, 'scaffolder-template')) {
+        logger.info('Scaffolder Template Permission Request'); // Debugging for now
+        const makeScaffolderTemplatePolicyDecision =
+          scaffolderTemplatePolicyEvaluator(opaClient, env.config);
+        const policyDescision = await makeScaffolderTemplatePolicyDecision(
+          request,
+          user,
+        );
+
+        return policyDescision;
+      }
+
+      return { result: AuthorizeResult.ALLOW };
+    }
+  }
 
   return await createRouter({
     config: env.config,
     logger: env.logger,
     discovery: env.discovery,
-    policy: permissionsHandler,
+    policy: new PermissionsHandler(),
     identity: env.identity,
   });
 }
