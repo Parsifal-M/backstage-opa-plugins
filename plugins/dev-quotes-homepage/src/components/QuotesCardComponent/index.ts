@@ -1,1 +1,1 @@
-export { QuoteCard } from './QuotesCard';
+export { DevQuoteCard } from './DevQuotesCard';

@@ -3,7 +3,7 @@ import { InfoCard } from '@backstage/core-components';
 import React from 'react';
 import { quotes } from '../../quotes';
 
-export const QuoteCard = () => {
+export const DevQuoteCard = () => {
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
   return (

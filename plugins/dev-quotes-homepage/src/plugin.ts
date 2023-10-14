@@ -15,7 +15,7 @@ export const DevQuotesHomepageCard = devQuotesHomepageCard.provide(
   createRoutableExtension({
     name: 'DevQuotesHomepageCard',
     component: () =>
-      import('./components/QuotesCardComponent').then(m => m.QuoteCard),
+      import('./components/QuotesCardComponent').then(m => m.DevQuoteCard),
     mountPoint: rootRouteRef,
   }),
 );
