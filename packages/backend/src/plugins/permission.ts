@@ -1,4 +1,3 @@
-/* eslint-disable @backstage/no-relative-monorepo-imports */
 import { createRouter } from '@backstage/plugin-permission-backend';
 import { Router } from 'express-serve-static-core';
 import { PluginEnvironment } from '../types';
@@ -36,7 +35,7 @@ export default async function createPlugin(
       );
 
       if (isResourcePermission(request.permission, 'catalog-entity')) {
-        logger.info('Catalog Permission Request'); // Debugging for now
+        logger.info('Catalog Permission Request Fired');
         const makeCatalogPolicyDecision = catalogPolicyEvaluator(
           opaClient,
           env.config,
@@ -47,7 +46,7 @@ export default async function createPlugin(
       }
 
       if (isResourcePermission(request.permission, 'scaffolder-action')) {
-        logger.info('Scaffolder Action Permission Request'); // Debugging for now
+        logger.info('Scaffolder Action Permission Request Fired');
         const makeScaffolderActionPolicyDecision =
           scaffolderActionPolicyEvaluator(opaClient, env.config);
         const policyDescision = await makeScaffolderActionPolicyDecision(
@@ -59,7 +58,7 @@ export default async function createPlugin(
       }
 
       if (isResourcePermission(request.permission, 'scaffolder-template')) {
-        logger.info('Scaffolder Template Permission Request'); // Debugging for now
+        logger.info('Scaffolder Template Permission Request Fired');
         const makeScaffolderTemplatePolicyDecision =
           scaffolderTemplatePolicyEvaluator(opaClient, env.config);
         const policyDescision = await makeScaffolderTemplatePolicyDecision(

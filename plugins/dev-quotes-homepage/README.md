@@ -49,3 +49,7 @@ const overviewContent = (
 ## Would you like to contribute? or add more quotes?
 
 Please do! I would love to see more quotes added to this plugin. If you would like to add some quotes, please open a pull request with your changes. If you would like to add a lot of quotes, please open an issue first so we can discuss it. And please keep them programming related, and keep it SFW.
+
+## License
+
+This project is released under the Apache 2.0 License.
