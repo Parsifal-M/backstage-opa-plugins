@@ -8063,29 +8063,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parsifal-m/opa-permissions-wrapper@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "@parsifal-m/opa-permissions-wrapper@npm:0.3.1"
-  dependencies:
-    "@backstage/backend-common": ^0.19.7
-    "@backstage/config": ^1.1.0
-    "@backstage/plugin-auth-node": ^0.3.2
-    "@backstage/plugin-catalog-backend": ^1.13.3
-    "@backstage/plugin-permission-common": ^0.7.8
-    "@backstage/plugin-permission-node": ^0.7.16
-    "@backstage/plugin-scaffolder-backend": ^1.17.3
-    "@types/express": "*"
-    axios: ^1.4.0
-    express: ^4.17.3
-    express-promise-router: ^4.1.0
-    node-fetch: ^2.6.7
-    winston: ^3.2.1
-    yn: ^4.0.0
-  checksum: 6137aa7713a6507835f6ed28c13a815f2ecb8d16498061293a50f692172b64e7b2122f0d11008dc1ecf54527a86898ab071af4a69cc848369bb3269b8ba4229a
-  languageName: node
-  linkType: hard
-
-"@parsifal-m/opa-permissions-wrapper@workspace:plugins/opa-permissions-wrapper":
+"@parsifal-m/opa-permissions-wrapper@^0.3.1, @parsifal-m/opa-permissions-wrapper@workspace:plugins/opa-permissions-wrapper":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/opa-permissions-wrapper@workspace:plugins/opa-permissions-wrapper"
   dependencies:
