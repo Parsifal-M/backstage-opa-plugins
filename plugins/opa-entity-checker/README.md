@@ -31,12 +31,11 @@ If there are no issues or violations, the card will look like this:
 The policy is set in the `app-config.yaml` file like so:
 
 ```yaml
-opa-client:
-  opa:
-    baseUrl: 'http://localhost:8181'
-    policies:
-      entityChecker:
-        package: 'your-package-name'
+opaClient:
+  baseUrl: 'http://localhost:8181'
+  policies:
+    entityChecker: # Entity checker plugin
+      package: 'entity_checker'
 ```
 
 Then in your OPA Policy (the `rego` file) you can use the following to set any violations you want to display:
