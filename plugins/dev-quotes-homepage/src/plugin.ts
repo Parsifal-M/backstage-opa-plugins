@@ -4,16 +4,16 @@ import {
 } from '@backstage/core-plugin-api';
 import { rootRouteRef } from './routes';
 
-export const devQuotesHomepagePlugin = createPlugin({
+export const devQuotesHomepageCard = createPlugin({
   id: 'dev-quotes-homepage',
   routes: {
     root: rootRouteRef,
   },
 });
 
-export const DevQuotesHomepagePage = devQuotesHomepagePlugin.provide(
+export const DevQuotesHomepageCard = devQuotesHomepageCard.provide(
   createRoutableExtension({
-    name: 'DevQuotesHomepagePage',
+    name: 'DevQuotesHomepageCard',
     component: () =>
       import('./components/QuotesCardComponent').then(m => m.QuoteCard),
     mountPoint: rootRouteRef,

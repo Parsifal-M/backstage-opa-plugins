@@ -1,4 +1,6 @@
-export const quotes = [
+import { Quotes } from './types';
+
+export const quotes: Quotes = [
   {
     text: 'Talk is cheap. Show me the code.',
     author: 'Linus Torvalds',
