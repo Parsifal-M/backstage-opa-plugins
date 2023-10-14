@@ -9,6 +9,7 @@ You are probably looking for the plugins which can be found in the `plugins/` di
 - [opa-backend](./plugins/opa-backend/README.md)
 - [opa-entity-checker](./plugins/opa-entity-checker/README.md)
 - [opa-permissions-wrapper](./plugins/opa-permissions-wrapper/README.md)
+- [dev-quotes-homepage](./plugins/dev-quotes-homepage/README.md)
 - [gitlab-my-mr-card](./plugins/gitlab-my-mr-card/README.md) (WIP)
 - [gitlab-runners](./plugins/gitlab-runners/README.md) (WIP)
 
