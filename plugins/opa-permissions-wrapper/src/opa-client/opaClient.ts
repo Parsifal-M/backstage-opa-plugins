@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
-import { PolicyEvaluationInput, PolicyEvaluationResult } from '../../types';
+import { PolicyEvaluationInput } from '../../types';
 
 export class OpaClient {
   private readonly baseUrl: string;

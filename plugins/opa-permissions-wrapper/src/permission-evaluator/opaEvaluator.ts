@@ -1,15 +1,14 @@
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
-import {
-  PolicyDecision,
-  AuthorizeResult,
-  isResourcePermission,
-} from '@backstage/plugin-permission-common';
+import { PolicyDecision, AuthorizeResult, isResourcePermission } from '@backstage/plugin-permission-common';
 import { OpaClient } from '../opa-client/opaClient';
 import { Config } from '@backstage/config';
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { PolicyEvaluationInput } from '../../types';
 
-export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
+export const policyEvaluator = (
+  opaClient: OpaClient,
+  config: Config,
+) => {
   return async (
     request: PolicyQuery,
     user?: BackstageIdentityResponse,
@@ -41,7 +40,7 @@ export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
 
     const response = await opaClient.evaluatePolicy(
       input,
-      config.getString('opaClient.policies.package'),
+      config.getString('opaClient.policies.catalogPermission.package'),
     );
 
     if (response.decision.result === 'CONDITIONAL') {
@@ -49,7 +48,7 @@ export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
         result: AuthorizeResult.CONDITIONAL,
         pluginId: response.decision.pluginId,
         resourceType: response.decision.resourceType,
-        conditions: response.condition,
+        conditions: response.decision.conditions,
       };
     }
 
