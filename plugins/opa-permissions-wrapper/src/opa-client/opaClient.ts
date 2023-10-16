@@ -15,7 +15,7 @@ export class OpaClient {
   async evaluatePolicy(
     input: PolicyEvaluationInput,
     opaPackage: string,
-  ): Promise<PolicyEvaluationResult> {
+  ): Promise<any> {
     this.logger.info(
       `Sending request to catalog-permission route at ${this.baseUrl}/api/opa/opa-permissions`,
     );
