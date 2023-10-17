@@ -262,14 +262,6 @@ export const quotes: Quotes = [
     author: 'Martin Fowler',
   },
   {
-    text: 'Programming is like sex. One mistake and you have to support it for the rest of your life.',
-    author: 'Michael Sinz',
-  },
-  {
-    text: 'If builders built buildings the way programmers wrote programs, then the first woodpecker that came along would destroy civilization.',
-    author: 'Gerald Weinberg',
-  },
-  {
     text: 'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     author: 'Brian W. Kernighan',
   },
@@ -344,5 +336,21 @@ export const quotes: Quotes = [
   {
     text: "I'm not a great programmer. I'm just a good programmer with great habits.",
     author: 'Kent Beck',
+  },
+  {
+    text: 'LGTM',
+    author: 'Peter Macdonald',
+  },
+  {
+    text: 'The best thing about a boolean is even if you are wrong, you are only off by a bit.',
+    author: 'Anonymous',
+  },
+  {
+    text: 'The trouble with programmers is that you can never tell what a programmer is doing until it’s too late.',
+    author: 'Seymour Cray',
+  },
+  {
+    text: 'The best error message is the one that never shows up.',
+    author: 'Thomas Fuchs',
   },
 ];
