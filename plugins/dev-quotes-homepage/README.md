@@ -17,7 +17,7 @@ yarn add --cwd packages/app @parsifal-m/plugin-dev-quotes-homepage
 Then all you need to do is import the card as below, anywhere you like!
 
 ```tsx
-import { DevQuoteCard } from '@parsifal-m/plugin-dev-quotes-homepage';
+import { DevQuote } from '@parsifal-m/plugin-dev-quotes-homepage';
 
 const overviewContent = (
   <Grid container spacing={3} alignItems="stretch">
@@ -29,7 +29,7 @@ const overviewContent = (
       <EntityCatalogGraphCard variant="gridItem" height={400} />
     </Grid>
     <Grid item md={4} xs={12}>
-      <DevQuoteCard />
+      <DevQuote />
     </Grid>
 
     <Grid item md={6} xs={12}>
