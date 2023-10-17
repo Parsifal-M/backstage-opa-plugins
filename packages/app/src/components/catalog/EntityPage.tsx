@@ -56,7 +56,7 @@ import {
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
-import { DevQuoteCard } from '@parsifal-m/plugin-dev-quotes-homepage';
+import { DevQuote } from '@parsifal-m/plugin-dev-quotes-homepage';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -123,7 +123,7 @@ const overviewContent = (
       <EntityCatalogGraphCard variant="gridItem" height={400} />
     </Grid>
     <Grid item md={4} xs={12}>
-      <DevQuoteCard />
+      <DevQuote />
     </Grid>
 
     <Grid item md={6} xs={12}>

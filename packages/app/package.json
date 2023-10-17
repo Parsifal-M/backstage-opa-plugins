@@ -46,7 +46,7 @@
     "@internal/plugin-gitlab-my-mr-card": "^0.1.0",
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",
-    "@parsifal-m/plugin-dev-quotes-homepage": "^2.1.2",
+    "@parsifal-m/plugin-dev-quotes-homepage": "^2.1.3",
     "@parsifal-m/plugin-gitlab-runners": "^0.1.1",
     "@parsifal-m/plugin-opa-entity-checker": "^1.1.1",
     "history": "^5.0.0",
