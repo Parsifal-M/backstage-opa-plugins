@@ -7936,7 +7936,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-dev-quotes-homepage@^2.1.1, @parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage":
+"@parsifal-m/plugin-dev-quotes-homepage@^2.1.2, @parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage"
   dependencies:
@@ -11639,7 +11639,7 @@ __metadata:
     "@internal/plugin-gitlab-my-mr-card": ^0.1.0
     "@material-ui/core": ^4.12.2
     "@material-ui/icons": ^4.9.1
-    "@parsifal-m/plugin-dev-quotes-homepage": ^2.1.1
+    "@parsifal-m/plugin-dev-quotes-homepage": ^2.1.2
     "@parsifal-m/plugin-gitlab-runners": ^0.1.1
     "@parsifal-m/plugin-opa-entity-checker": ^1.1.1
     "@testing-library/jest-dom": ^5.10.1
