@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { DevQuoteCard } from './DevQuotesCard';
+import { DevQuote } from './DevQuotes';
 
 // Mock your quotes array for testing purposes
 jest.mock('../../quotes', () => ({
@@ -9,7 +9,7 @@ jest.mock('../../quotes', () => ({
 
 describe('QuoteCard', () => {
   it('renders a quote', () => {
-    const { getByText } = render(<DevQuoteCard />);
+    const { getByText } = render(<DevQuote />);
 
     // Assert that the quote text and author are displayed
     const quoteText = getByText('Sample quote text');
