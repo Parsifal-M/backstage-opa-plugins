@@ -1,40 +1,23 @@
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
-import { PolicyDecision, AuthorizeResult, isResourcePermission } from '@backstage/plugin-permission-common';
+import {
+  PolicyDecision,
+  AuthorizeResult,
+} from '@backstage/plugin-permission-common';
 import { OpaClient } from '../opa-client/opaClient';
 import { Config } from '@backstage/config';
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { PolicyEvaluationInput } from '../../types';
 
-export const policyEvaluator = (
-  opaClient: OpaClient,
-  config: Config,
-) => {
+export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
   return async (
     request: PolicyQuery,
     user?: BackstageIdentityResponse,
   ): Promise<PolicyDecision> => {
-    const resourceType = isResourcePermission(request.permission)
-      ? request.permission.resourceType
-      : undefined;
-    const userGroups = user?.identity.ownershipEntityRefs ?? [];
-    const userName = user?.identity.userEntityRef;
-
-    const {
-      type,
-      name,
-      attributes: { action },
-    } = request.permission;
-
     const input: PolicyEvaluationInput = {
-      permission: {
-        type,
-        name,
-        action,
-        resourceType,
-      },
+      permission: request.permission,
       identity: {
-        username: userName,
-        groups: userGroups,
+        username: user?.identity.userEntityRef,
+        groups: user?.identity.ownershipEntityRefs ?? [],
       },
     };
 

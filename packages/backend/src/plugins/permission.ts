@@ -6,9 +6,7 @@ import {
   PermissionPolicy,
   PolicyQuery,
 } from '@backstage/plugin-permission-node';
-import {
-  PolicyDecision,
-} from '@backstage/plugin-permission-common';
+import { PolicyDecision } from '@backstage/plugin-permission-common';
 import {
   OpaClient,
   policyEvaluator,
@@ -20,7 +18,10 @@ export default async function createPlugin(
   const opaClient = new OpaClient(env.config, env.logger);
   const genericPolicyEvaluator = policyEvaluator(opaClient, env.config);
   class PermissionsHandler implements PermissionPolicy {
-    async handle(request: PolicyQuery, user?: BackstageIdentityResponse): Promise<PolicyDecision> {
+    async handle(
+      request: PolicyQuery,
+      user?: BackstageIdentityResponse,
+    ): Promise<PolicyDecision> {
       return await genericPolicyEvaluator(request, user);
     }
   }

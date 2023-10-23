@@ -7,9 +7,6 @@ import {
 export type PolicyEvaluationInput = {
   permission: {
     type: string;
-    name: string;
-    action: string | undefined;
-    resourceType?: string;
   };
   identity?: {
     username: string | undefined;
