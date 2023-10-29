@@ -1,0 +1,1 @@
+export { policyEvaluator } from './opaEvaluator';

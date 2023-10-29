@@ -6,70 +6,23 @@ import {
   PermissionPolicy,
   PolicyQuery,
 } from '@backstage/plugin-permission-node';
+import { PolicyDecision } from '@backstage/plugin-permission-common';
 import {
-  AuthorizeResult,
-  PolicyDecision,
-  isResourcePermission,
-} from '@backstage/plugin-permission-common';
-import {
-  catalogPolicyEvaluator,
-  scaffolderActionPolicyEvaluator,
-  scaffolderTemplatePolicyEvaluator,
   OpaClient,
+  policyEvaluator,
 } from '@parsifal-m/opa-permissions-wrapper';
 
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
   const opaClient = new OpaClient(env.config, env.logger);
-  const logger = env.logger;
+  const genericPolicyEvaluator = policyEvaluator(opaClient, env.config);
   class PermissionsHandler implements PermissionPolicy {
     async handle(
       request: PolicyQuery,
       user?: BackstageIdentityResponse,
     ): Promise<PolicyDecision> {
-      logger.info(
-        `User: ${JSON.stringify(
-          user?.identity,
-        )} has made a request: ${JSON.stringify(request)}`,
-      );
-
-      if (isResourcePermission(request.permission, 'catalog-entity')) {
-        logger.info('Catalog Permission Request Fired');
-        const makeCatalogPolicyDecision = catalogPolicyEvaluator(
-          opaClient,
-          env.config,
-        );
-        const policyDescision = await makeCatalogPolicyDecision(request, user);
-
-        return policyDescision;
-      }
-
-      if (isResourcePermission(request.permission, 'scaffolder-action')) {
-        logger.info('Scaffolder Action Permission Request Fired');
-        const makeScaffolderActionPolicyDecision =
-          scaffolderActionPolicyEvaluator(opaClient, env.config);
-        const policyDescision = await makeScaffolderActionPolicyDecision(
-          request,
-          user,
-        );
-
-        return policyDescision;
-      }
-
-      if (isResourcePermission(request.permission, 'scaffolder-template')) {
-        logger.info('Scaffolder Template Permission Request Fired');
-        const makeScaffolderTemplatePolicyDecision =
-          scaffolderTemplatePolicyEvaluator(opaClient, env.config);
-        const policyDescision = await makeScaffolderTemplatePolicyDecision(
-          request,
-          user,
-        );
-
-        return policyDescision;
-      }
-
-      return { result: AuthorizeResult.ALLOW };
+      return await genericPolicyEvaluator(request, user);
     }
   }
 
