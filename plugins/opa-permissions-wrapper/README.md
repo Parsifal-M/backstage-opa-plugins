@@ -4,7 +4,7 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 ### **Please Note! This project is still in development and is not yet ready for production use.**
 
-> This wrapper is still in **development**, you can use it at your own risk. It is not yet ready for production use.
+> This wrapper is still in **development**, you can use it at your own risk, be aware it can change without notice. It is not yet ready for production use.
 
 ## Pre-requisites
 
@@ -15,7 +15,6 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 - `opa-evaluator/createOpaPermissionEvaluator`: A factory function for creating an asynchronous OPA policy evaluation function.
 - `opa-client/opaClient.ts`: Provides the OpaClient class for communication with the OPA server.
-- `permission-handler/permissionHandler.ts`: Contains the PermissionsHandler class that integrates the OPA client and policy evaluation within Backstage's permission framework.
 
 To integrate this OPA wrapper with your Backstage instance, you need to first follow the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
 

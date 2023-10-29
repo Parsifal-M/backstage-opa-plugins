@@ -23,7 +23,7 @@ export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
 
     const response = await opaClient.evaluatePolicy(
       input,
-      config.getString('opaClient.policies.catalogPermission.package'),
+      config.getString('opaClient.policies.rbac.package'),
     );
 
     if (response.decision.result === 'CONDITIONAL') {

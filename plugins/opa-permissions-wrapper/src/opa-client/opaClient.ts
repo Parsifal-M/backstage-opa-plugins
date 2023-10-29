@@ -17,7 +17,7 @@ export class OpaClient {
     opaPackage: string,
   ): Promise<any> {
     this.logger.info(
-      `Sending request to catalog-permission route at ${this.baseUrl}/api/opa/opa-permissions`,
+      `Sending request to OPA: ${this.baseUrl}/api/opa/opa-permissions`,
     );
 
     try {
