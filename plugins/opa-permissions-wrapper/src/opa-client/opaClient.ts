@@ -16,6 +16,7 @@ export class OpaClient {
     input: PolicyEvaluationInput,
     opaPackage: string,
   ): Promise<any> {
+    // NOTE: Fix this type
     this.logger.info(
       `Sending request to OPA: ${this.baseUrl}/api/opa/opa-permissions`,
     );

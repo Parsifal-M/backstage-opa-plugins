@@ -16,8 +16,8 @@ export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
     const input: PolicyEvaluationInput = {
       permission: request.permission,
       identity: {
-        username: user?.identity.userEntityRef,
-        groups: user?.identity.ownershipEntityRefs ?? [],
+        user: user?.identity.userEntityRef,
+        claims: user?.identity.ownershipEntityRefs ?? [],
       },
     };
 
