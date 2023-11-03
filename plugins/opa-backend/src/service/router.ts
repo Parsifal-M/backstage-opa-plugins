@@ -53,13 +53,13 @@ export async function createRouter(
     // const policyInput = "Blah"
     const opaPackage = req.body.opaPackage;
     const opaUrl = `${opaAddr}/v1/data/${opaPackage}`;
-  
+
     if (!policyInput) {
       logger.error('Policy input is not defined');
       res.status(400).send('Policy input is not defined');
       return;
     }
-  
+
     try {
       const opaResponse = await axios.post(opaUrl, {
         input: policyInput,
