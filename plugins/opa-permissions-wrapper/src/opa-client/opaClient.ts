@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
-import { PolicyEvaluationInput } from '../../types';
+import { PolicyEvaluationInput } from '../types';
 
 export class OpaClient {
   private readonly baseUrl: string;
@@ -16,10 +16,11 @@ export class OpaClient {
     input: PolicyEvaluationInput,
     opaPackage: string,
   ): Promise<any> {
-    // NOTE: Fix this type
     this.logger.info(
       `Sending request to OPA: ${this.baseUrl}/api/opa/opa-permissions`,
     );
+
+    this.logger.info(`Sending request to OPA: ${JSON.stringify(input)}`);
 
     try {
       const response = await axios.post(

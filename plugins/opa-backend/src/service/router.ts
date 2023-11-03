@@ -50,9 +50,16 @@ export async function createRouter(
 
   router.post('/opa-permissions', async (req, res) => {
     const policyInput = req.body.policyInput;
+    // const policyInput = "Blah"
     const opaPackage = req.body.opaPackage;
     const opaUrl = `${opaAddr}/v1/data/${opaPackage}`;
-
+  
+    if (!policyInput) {
+      logger.error('Policy input is not defined');
+      res.status(400).send('Policy input is not defined');
+      return;
+    }
+  
     try {
       const opaResponse = await axios.post(opaUrl, {
         input: policyInput,
@@ -61,6 +68,9 @@ export async function createRouter(
       res.json(opaResponse.data.result);
     } catch (error) {
       logger.error('Failed to evaluate permission data with OPA:', error);
+      if (error.response) {
+        logger.error('OPA response:', error.response);
+      }
       res.status(500).send('Failed to evaluate permission data with OPA');
     }
   });

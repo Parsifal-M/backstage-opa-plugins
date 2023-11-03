@@ -1,6 +1,6 @@
 export type PolicyEvaluationInput = {
   permission: {
-    type: string;
+    name: string;
   };
   identity?: {
     user: string | undefined;

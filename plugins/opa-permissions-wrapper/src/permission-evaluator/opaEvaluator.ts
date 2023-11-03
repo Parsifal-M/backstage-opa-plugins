@@ -6,7 +6,7 @@ import {
 import { OpaClient } from '../opa-client/opaClient';
 import { Config } from '@backstage/config';
 import { PolicyQuery } from '@backstage/plugin-permission-node';
-import { PolicyEvaluationInput } from '../../types';
+import { PolicyEvaluationInput } from '../types';
 
 export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
   return async (
@@ -14,7 +14,9 @@ export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
     user?: BackstageIdentityResponse,
   ): Promise<PolicyDecision> => {
     const input: PolicyEvaluationInput = {
-      permission: request.permission,
+      permission: {
+        name: request.permission.name
+      },
       identity: {
         user: user?.identity.userEntityRef,
         claims: user?.identity.ownershipEntityRefs ?? [],
