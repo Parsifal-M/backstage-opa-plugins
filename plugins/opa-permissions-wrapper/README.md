@@ -4,7 +4,7 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 ### **Please Note! This project is still in development and is not yet ready for production use.**
 
-> This wrapper is still in **development**, you can use it at your own risk. It is not yet ready for production use.
+> This wrapper is still in **development**, you can use it at your own risk, be aware it can change without notice. It is not yet ready for production use.
 
 ## Pre-requisites
 
@@ -13,9 +13,8 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 ## Key Components
 
-- `opa-evaluator/createOpaPermissionEvaluator`: A factory function for creating an asynchronous OPA policy evaluation function.
+- `permission-evaluator/opaEvaluator.ts`: Defines a policy evaluation function that checks if a given request should be allowed or denied based on a set of policy rules. It uses the OpaClient and configuration provided to evaluate these policies, taking into account the user's identity, and returns a decision accordingly.
 - `opa-client/opaClient.ts`: Provides the OpaClient class for communication with the OPA server.
-- `permission-handler/permissionHandler.ts`: Contains the PermissionsHandler class that integrates the OPA client and policy evaluation within Backstage's permission framework.
 
 To integrate this OPA wrapper with your Backstage instance, you need to first follow the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
 
@@ -30,70 +29,23 @@ import {
   PermissionPolicy,
   PolicyQuery,
 } from '@backstage/plugin-permission-node';
+import { PolicyDecision } from '@backstage/plugin-permission-common';
 import {
-  AuthorizeResult,
-  PolicyDecision,
-  isResourcePermission,
-} from '@backstage/plugin-permission-common';
-import {
-  catalogPolicyEvaluator,
-  scaffolderActionPolicyEvaluator,
-  scaffolderTemplatePolicyEvaluator,
   OpaClient,
+  policyEvaluator,
 } from '@parsifal-m/opa-permissions-wrapper';
 
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
   const opaClient = new OpaClient(env.config, env.logger);
-  const logger = env.logger;
+  const genericPolicyEvaluator = policyEvaluator(opaClient, env.config);
   class PermissionsHandler implements PermissionPolicy {
     async handle(
       request: PolicyQuery,
       user?: BackstageIdentityResponse,
     ): Promise<PolicyDecision> {
-      logger.info(
-        `User: ${JSON.stringify(
-          user?.identity,
-        )} has made a request: ${JSON.stringify(request)}`,
-      );
-
-      if (isResourcePermission(request.permission, 'catalog-entity')) {
-        logger.info('Catalog Permission Request'); // Debugging for now
-        const makeCatalogPolicyDecision = catalogPolicyEvaluator(
-          opaClient,
-          env.config,
-        );
-        const policyDescision = await makeCatalogPolicyDecision(request, user);
-
-        return policyDescision;
-      }
-
-      if (isResourcePermission(request.permission, 'scaffolder-action')) {
-        logger.info('Scaffolder Action Permission Request'); // Debugging for now
-        const makeScaffolderActionPolicyDecision =
-          scaffolderActionPolicyEvaluator(opaClient, env.config);
-        const policyDescision = await makeScaffolderActionPolicyDecision(
-          request,
-          user,
-        );
-
-        return policyDescision;
-      }
-
-      if (isResourcePermission(request.permission, 'scaffolder-template')) {
-        logger.info('Scaffolder Template Permission Request'); // Debugging for now
-        const makeScaffolderTemplatePolicyDecision =
-          scaffolderTemplatePolicyEvaluator(opaClient, env.config);
-        const policyDescision = await makeScaffolderTemplatePolicyDecision(
-          request,
-          user,
-        );
-
-        return policyDescision;
-      }
-
-      return { result: AuthorizeResult.ALLOW };
+      return await genericPolicyEvaluator(request, user);
     }
   }
 
@@ -118,13 +70,9 @@ opaClient:
   baseUrl: 'http://localhost:8181'
   policies:
     entityChecker: # Entity checker plugin
-      package: 'entitymeta'
-    catalogPermission: # Permission wrapper plugin
-      package: 'catalog_policy'
-    scaffolderTemplatePermission:
-      package: 'scaffolder_template_policy'
-    scaffolderActionPermission:
-      package: 'scaffolder_action_policy'
+      package: 'entitymeta_policy'
+    rbac: # Permission wrapper plugin
+      package: 'rbac_policy'
 ```
 
 Replace the `baseUrl` with the URL of your OPA server and 'catalog_policy' with the OPA policy package containing your catalog policies.
@@ -134,60 +82,58 @@ Replace the `baseUrl` with the URL of your OPA server and 'catalog_policy' with 
 An example policy in OPA might look like this, keep in mind you could also use [bundles](https://www.openpolicyagent.org/docs/latest/management-bundles/) to manage your policies and keep the `conditions` object in a `data.json` file.
 
 ```rego
-package catalog_policy
+package backstage_policy
 
-# Default decisions
-default allow = true
-default conditional = false
+import future.keywords.if
 
-# Allow and set conditions if the user is a maintainer
-allow {
-    is_maintainer
+# Helper method for constructing a conditional decision
+CONDITIONAL(plugin_id, resource_type, conditions) := conditional_decision if {
+	conditional_decision := {
+		"result": "CONDITIONAL",
+		"pluginId": plugin_id,
+		"resourceType": resource_type,
+		"conditions": conditions,
+	}
 }
 
-conditional = true {
-    is_maintainer
+default decision := {"result": "DENY"}
+
+permission := input.permission.name
+
+claims := input.identity.claims
+
+decision := {"result": "ALLOW"} if {
+	permission == "catalog.entity.read"
 }
 
-# conditions structure (this is for conditional catalog descisions)
-condition = {
-    "anyOf": [{
-        "resourceType": "catalog-entity",
-        "rule": "IS_ENTITY_KIND",
-        "params": {
-            "kinds": ["API"]
-        },
-    }]
-} { is_maintainer }
-
-# Helper rule to check if the identity is a maintainer
-is_maintainer {
-    user_group := input.identity.groups[_]
-    user_group == "group:default/justice_league"
+decision := CONDITIONAL("catalog", "catalog-entity", {"anyOf": [{
+	"resourceType": "catalog-entity",
+	"rule": "IS_ENTITY_OWNER",
+	"params": {"claims": claims},
+}]}) if {
+	permission == "catalog.entity.delete"
 }
 
-allow = false {
-    user_group := input.identity.groups[_]
-    user_group == "group:default/maintainers"
+decision := CONDITIONAL("catalog", "catalog-entity", {"anyOf": [{
+	"resourceType": "catalog-entity",
+	"rule": "IS_ENTITY_KIND",
+	"params": {"kinds": ["Component"]},
+}]}) if {
+	permission == "catalog.entity.read"
 }
 ```
 
 The input sent from Backstage looks like this:
 
 ```typescript
-const input: PolicyEvaluationInput = {
-  input: {
-    permission: {
-      type: type,
-      name: name,
-      action: action,
-      resourceType: resourceType,
-    },
-    identity: {
-      username: userName,
-      groups: userGroups,
-    },
-  },
+export type PolicyEvaluationInput = {
+  permission: {
+    type: string;
+  };
+  identity?: {
+    user: string | undefined;
+    claims: string[];
+  };
 };
 ```
 

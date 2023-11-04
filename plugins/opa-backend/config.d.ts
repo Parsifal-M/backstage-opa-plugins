@@ -13,34 +13,20 @@ export interface Config {
      */
     policies?: {
       /**
-       * Configuration options for the catalog policy
+       * Configuration options for the entity metadata checker policy
        */
       entityChecker?: {
         /**
-         * The path to the catalog package in the OPA server
+         * The path to the entity metadata checker package in the OPA server
          */
         package?: string;
       };
       /**
-       * Configuration options for the catalog permission policy
+       * Configuration options for the rbac permission policy
        */
-      catalogPermission?: {
+      rbac?: {
         /**
-         * The path to the catalog package in the OPA server
-         */
-        package?: string;
-      };
-
-      scaffolderTemplatePermission?: {
-        /**
-         * The path to the scaffolder templates package in the OPA server
-         */
-        package?: string;
-      };
-
-      scaffolderActionPermission?: {
-        /**
-         * The path to the scaffolder action package in the OPA server
+         * The path to the rbac package in the OPA server
          */
         package?: string;
       };
