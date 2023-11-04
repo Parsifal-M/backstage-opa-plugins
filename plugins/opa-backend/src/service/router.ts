@@ -20,7 +20,7 @@ export async function createRouter(
   router.use(express.json());
 
   // Get the config options for the OPA plugin
-  const opaAddr = config.getOptionalString('opaClient.baseUrl');
+  const opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
 
   // Get Packages
   // This is the Entity Checker package
@@ -28,50 +28,61 @@ export async function createRouter(
     'opaClient.policies.entityChecker.package',
   );
 
+  // This is the OPA Permissions/RBAC package
+  const opaRbacPackage = config.getOptionalString(
+    'opaClient.policies.rbac.package',
+  );
+
   router.get('/health', (_, resp) => {
     resp.json({ status: 'ok' });
   });
 
-  router.post('/entity-checker', async (req, res) => {
+  router.post('/entity-checker', async (req, res, next) => {
     const entityMetadata = req.body.input;
-    const opaUrl = `${opaAddr}/v1/data/${entityCheckerPackage}`;
-
+    const opaUrl = `${opaBaseUrl}/v1/data/${entityCheckerPackage}`;
+  
+    if (!opaUrl) {
+      return next(new Error('OPA URL not set or missing!'));
+    }
+  
+    if (!entityMetadata) {
+      return next(new Error('Entity metadata is missing!'));
+    }
+  
     try {
       const opaResponse = await axios.post(opaUrl, {
         input: entityMetadata,
       });
-
-      res.json(opaResponse.data.result);
+      return res.json(opaResponse.data.result);
     } catch (error) {
-      logger.error('Failed to evaluate entity metadata with OPA:', error);
-      res.status(500).send('Failed to evaluate metadata with OPA');
+      return next(error);
     }
   });
 
-  router.post('/opa-permissions', async (req, res) => {
+  router.post('/opa-permissions', async (req, res, next) => {
     const policyInput = req.body.policyInput;
-    // const policyInput = "Blah"
-    const opaPackage = req.body.opaPackage;
-    const opaUrl = `${opaAddr}/v1/data/${opaPackage}`;
-
-    if (!policyInput) {
-      logger.error('Policy input is not defined');
-      res.status(400).send('Policy input is not defined');
-      return;
+    const opaUrl = `${opaBaseUrl}/v1/data/${opaRbacPackage}`;
+  
+    if (!opaUrl) {
+      return next(new Error('OPA URL not set or missing!'));
     }
-
+    
+    if (!opaRbacPackage) {
+      return next(new Error('OPA package not set or missing!'));
+    }
+    
+    if (!policyInput) {
+      return next(new Error('Policy input is missing!'));
+    }
+  
     try {
       const opaResponse = await axios.post(opaUrl, {
         input: policyInput,
       });
-      logger.info(`Sending input to OPA: ${JSON.stringify(policyInput)}`);
-      res.json(opaResponse.data.result);
+      logger.info(`Permission request sent to OPA with input: ${JSON.stringify(policyInput)}`);
+      return res.json(opaResponse.data.result);
     } catch (error) {
-      logger.error('Failed to evaluate permission data with OPA:', error);
-      if (error.response) {
-        logger.error('OPA response:', error.response);
-      }
-      res.status(500).send('Failed to evaluate permission data with OPA');
+      return next(error);
     }
   });
 

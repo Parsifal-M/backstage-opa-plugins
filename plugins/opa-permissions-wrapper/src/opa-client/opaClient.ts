@@ -13,8 +13,7 @@ export class OpaClient {
   }
 
   async evaluatePolicy(
-    input: PolicyEvaluationInput,
-    opaPackage: string,
+    input: PolicyEvaluationInput
   ): Promise<any> {
     this.logger.info(
       `Sending request to OPA: ${this.baseUrl}/api/opa/opa-permissions`,
@@ -26,8 +25,7 @@ export class OpaClient {
       const response = await axios.post(
         `${this.baseUrl}/api/opa/opa-permissions`,
         {
-          policyInput: input,
-          opaPackage: opaPackage,
+          policyInput: input
         },
       );
 

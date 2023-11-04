@@ -4,11 +4,10 @@ import {
   AuthorizeResult,
 } from '@backstage/plugin-permission-common';
 import { OpaClient } from '../opa-client/opaClient';
-import { Config } from '@backstage/config';
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { PolicyEvaluationInput } from '../types';
 
-export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
+export const policyEvaluator = (opaClient: OpaClient) => {
   return async (
     request: PolicyQuery,
     user?: BackstageIdentityResponse,
@@ -24,8 +23,7 @@ export const policyEvaluator = (opaClient: OpaClient, config: Config) => {
     };
 
     const response = await opaClient.evaluatePolicy(
-      input,
-      config.getString('opaClient.policies.rbac.package'),
+      input
     );
 
     if (response.decision.result === 'CONDITIONAL') {
