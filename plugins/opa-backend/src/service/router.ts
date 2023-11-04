@@ -65,19 +65,19 @@ export async function createRouter(
     const opaUrl = `${opaBaseUrl}/v1/data/${opaRbacPackage}`;
 
     if (!opaUrl) {
-      res.status(400)
+      res.status(400);
       logger.error('OPA URL not set or missing!');
       return next(new Error('OPA URL not set or missing!'));
     }
 
     if (!opaRbacPackage) {
-      res.status(400)
+      res.status(400);
       logger.error('OPA package not set or missing!');
       return next(new Error('OPA package not set or missing!'));
     }
 
     if (!policyInput) {
-      res.status(400)
+      res.status(400);
       logger.error('Policy input is missing!');
       return next(new Error('Policy input is missing!'));
     }
