@@ -91,8 +91,9 @@ async function main() {
   const appEnv = useHotMemoize(module, () => createEnv('app'));
   const permissionEnv = useHotMemoize(module, () => createEnv('permission'));
   const opaEnv = useHotMemoize(module, () => createEnv('opa'));
-  const opaPermissionsWrapperEnv = useHotMemoize(module, () => createEnv('opaPermissionsWrapper'));
-
+  const opaPermissionsWrapperEnv = useHotMemoize(module, () =>
+    createEnv('opaPermissionsWrapper'),
+  );
 
   const apiRouter = Router();
   apiRouter.use('/catalog', await catalog(catalogEnv));
@@ -103,7 +104,10 @@ async function main() {
   apiRouter.use('/search', await search(searchEnv));
   apiRouter.use('/permission', await permission(permissionEnv));
   apiRouter.use('/opa', await opa(opaEnv));
-  apiRouter.use('/opa-permissions', await opaPermissionsWrapper(opaPermissionsWrapperEnv));
+  apiRouter.use(
+    '/opa-permissions',
+    await opaPermissionsWrapper(opaPermissionsWrapperEnv),
+  );
 
   // Add backends ABOVE this line; this 404 handler is the catch-all fallback
   apiRouter.use(notFoundHandler());

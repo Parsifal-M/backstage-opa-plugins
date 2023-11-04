@@ -23,7 +23,9 @@ export const policyEvaluator = (opaClient: OpaClient, logger: Logger) => {
       },
     };
 
-    logger.info(`Evaluating policy ${request.permission.name} for user ${user?.identity.userEntityRef}`)
+    logger.info(
+      `Evaluating policy ${request.permission.name} for user ${user?.identity.userEntityRef}`,
+    );
     const response = await opaClient.evaluatePolicy(input);
 
     if (response.decision.result === 'CONDITIONAL') {
