@@ -55,6 +55,7 @@ export async function createRouter(
       });
       return res.json(opaResponse.data.result);
     } catch (error) {
+      res.status(500);
       return next(error);
     }
   });
@@ -64,14 +65,20 @@ export async function createRouter(
     const opaUrl = `${opaBaseUrl}/v1/data/${opaRbacPackage}`;
 
     if (!opaUrl) {
+      res.status(400)
+      logger.error('OPA URL not set or missing!');
       return next(new Error('OPA URL not set or missing!'));
     }
 
     if (!opaRbacPackage) {
+      res.status(400)
+      logger.error('OPA package not set or missing!');
       return next(new Error('OPA package not set or missing!'));
     }
 
     if (!policyInput) {
+      res.status(400)
+      logger.error('Policy input is missing!');
       return next(new Error('Policy input is missing!'));
     }
 
@@ -86,6 +93,8 @@ export async function createRouter(
       );
       return res.json(opaResponse.data.result);
     } catch (error) {
+      res.status(500);
+      logger.error('Error during OPA policy evaluation:', error);
       return next(error);
     }
   });

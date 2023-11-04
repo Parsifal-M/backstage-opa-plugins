@@ -16,13 +16,13 @@ describe('createRouter', () => {
       logger: getVoidLogger(),
       config: {
         getString: jest.fn().mockImplementation((key: string) => {
-          if (key === 'opa-client.opa.policies.entityChecker.package') {
-            return 'opa.policies';
+          if (key === 'opaClient.policies.entityChecker.package') {
+            return 'entityChecker.package';
           }
           throw new Error(`Unmocked config key "${key}"`);
         }),
         getOptionalString: jest.fn().mockImplementation((key: string) => {
-          if (key === 'opa-client.opa.baseUrl') {
+          if (key === 'opaClient.baseUrl') {
             return 'http://dummy-opa-base-url.com';
           }
           return null; // Return null for non-existing optional keys
@@ -51,14 +51,21 @@ describe('createRouter', () => {
     });
 
     it('handles error from OPA', async () => {
-      mockedAxios.post.mockRejectedValue(new Error());
+      const mockErrorResponse = {
+        error: {
+          name: 'Error',
+          message: 'OPA error message',
+        },
+      };
+
+      mockedAxios.post.mockRejectedValue(mockErrorResponse);
 
       const response = await request(app)
         .post('/entity-checker')
         .send({ input: 'entityMetadata' });
 
-      expect(response.status).toEqual(500);
-      expect(response.text).toContain('Failed to evaluate metadata with OPA');
+      expect(response.status).toEqual(500); // Check the HTTP status code
+      expect(response.text).toContain('OPA error message'); // Check the actual error message received
     });
   });
 });
