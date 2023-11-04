@@ -12,9 +12,7 @@ export class OpaClient {
     this.logger = logger;
   }
 
-  async evaluatePolicy(
-    input: PolicyEvaluationInput
-  ): Promise<any> {
+  async evaluatePolicy(input: PolicyEvaluationInput): Promise<any> {
     this.logger.info(
       `Sending request to OPA: ${this.baseUrl}/api/opa/opa-permissions`,
     );
@@ -25,7 +23,7 @@ export class OpaClient {
       const response = await axios.post(
         `${this.baseUrl}/api/opa/opa-permissions`,
         {
-          policyInput: input
+          policyInput: input,
         },
       );
 

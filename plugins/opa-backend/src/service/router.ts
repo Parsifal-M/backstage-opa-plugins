@@ -40,15 +40,15 @@ export async function createRouter(
   router.post('/entity-checker', async (req, res, next) => {
     const entityMetadata = req.body.input;
     const opaUrl = `${opaBaseUrl}/v1/data/${entityCheckerPackage}`;
-  
+
     if (!opaUrl) {
       return next(new Error('OPA URL not set or missing!'));
     }
-  
+
     if (!entityMetadata) {
       return next(new Error('Entity metadata is missing!'));
     }
-  
+
     try {
       const opaResponse = await axios.post(opaUrl, {
         input: entityMetadata,
@@ -62,24 +62,28 @@ export async function createRouter(
   router.post('/opa-permissions', async (req, res, next) => {
     const policyInput = req.body.policyInput;
     const opaUrl = `${opaBaseUrl}/v1/data/${opaRbacPackage}`;
-  
+
     if (!opaUrl) {
       return next(new Error('OPA URL not set or missing!'));
     }
-    
+
     if (!opaRbacPackage) {
       return next(new Error('OPA package not set or missing!'));
     }
-    
+
     if (!policyInput) {
       return next(new Error('Policy input is missing!'));
     }
-  
+
     try {
       const opaResponse = await axios.post(opaUrl, {
         input: policyInput,
       });
-      logger.info(`Permission request sent to OPA with input: ${JSON.stringify(policyInput)}`);
+      logger.info(
+        `Permission request sent to OPA with input: ${JSON.stringify(
+          policyInput,
+        )}`,
+      );
       return res.json(opaResponse.data.result);
     } catch (error) {
       return next(error);

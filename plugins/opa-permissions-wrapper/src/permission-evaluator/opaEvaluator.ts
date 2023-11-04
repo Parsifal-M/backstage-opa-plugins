@@ -22,9 +22,7 @@ export const policyEvaluator = (opaClient: OpaClient) => {
       },
     };
 
-    const response = await opaClient.evaluatePolicy(
-      input
-    );
+    const response = await opaClient.evaluatePolicy(input);
 
     if (response.decision.result === 'CONDITIONAL') {
       return {
