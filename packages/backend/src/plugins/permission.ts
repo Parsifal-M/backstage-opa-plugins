@@ -24,7 +24,6 @@ export default async function createPlugin(
     ): Promise<PolicyDecision> {
       return await genericPolicyEvaluator(request, user);
     }
-
   }
 
   return await createRouter({
