@@ -1,1 +1,1 @@
-export * from './components/QuotesCardComponent';
+export * from './components/QuotesComponent';

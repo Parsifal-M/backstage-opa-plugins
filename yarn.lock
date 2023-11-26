@@ -7936,7 +7936,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-dev-quotes-homepage@^2.1.3, @parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage":
+"@parsifal-m/plugin-dev-quotes-homepage@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "@parsifal-m/plugin-dev-quotes-homepage@npm:2.1.3"
+  dependencies:
+    "@backstage/core-components": ^0.13.5
+    "@backstage/core-plugin-api": ^1.6.0
+    "@backstage/theme": ^0.4.2
+    "@material-ui/core": ^4.12.2
+    "@material-ui/icons": ^4.9.1
+    "@material-ui/lab": 4.0.0-alpha.61
+    react-use: ^17.2.4
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0
+  checksum: 25e12ba5078e6ba28fe19b7a8c4da06c02619e33106f754884f7933c8840f970ab6d45607a99d9590c56d51b2a8928e938dfb58a891c1c9b570421d3d93c40d6
+  languageName: node
+  linkType: hard
+
+"@parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage"
   dependencies:
