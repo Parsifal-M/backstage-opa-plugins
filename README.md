@@ -7,7 +7,7 @@ You are probably looking for the plugins which have been moved to their own repo
 - [opa-backend](https://github.com/Parsifal-M/backstage-opa-backend#opa-backend)
 - [opa-entity-checker](https://github.com/Parsifal-M/backstage-opa-entity-checker#opa-entity-checker)
 - [opa-permissions-wrapper](https://github.com/Parsifal-M/backstage-opa-permissions-wrapper#opa-permissions-wrapper-for-backstage)
-- [dev-quotes-homepage](./plugins/dev-quotes-homepage/README.md) (PENDING)
+- [dev-quotes-homepage](https://github.com/Parsifal-M/backstage-dev-quotes)
 - [gitlab-my-mr-card](./plugins/gitlab-my-mr-card/README.md) (WIP) (PENDING)
 - [gitlab-runners](./plugins/gitlab-runners/README.md) (WIP) (PENDING)
 
