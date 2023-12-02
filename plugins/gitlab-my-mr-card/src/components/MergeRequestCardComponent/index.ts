@@ -1,1 +1,0 @@
-export { MergeRequestCard } from './MergeRequestCardComponent';
