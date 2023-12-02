@@ -3119,6 +3119,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/errors@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@backstage/errors@npm:1.2.3"
+  dependencies:
+    "@backstage/types": ^1.1.1
+    serialize-error: ^8.0.1
+  checksum: 00e367ed9c47404d391d3c4125f5e279fe99393734f86ec0b0102cbea2573c9e9a4a58ca6a09c159b4b543bb3adabe81554a5af6d4d12ee7f45c92ed404705d9
+  languageName: node
+  linkType: hard
+
 "@backstage/eslint-plugin@npm:^0.1.3":
   version: 0.1.3
   resolution: "@backstage/eslint-plugin@npm:0.1.3"
@@ -7918,12 +7928,14 @@ __metadata:
     "@backstage/backend-common": ^0.19.7
     "@backstage/cli": ^0.22.13
     "@backstage/config": ^1.1.0
+    "@backstage/errors": ^1.2.3
     "@types/express": "*"
     "@types/supertest": ^2.0.12
     axios: ^1.4.0
     express: ^4.17.1
     express-promise-router: ^4.1.0
     msw: ^1.0.0
+    node-fetch: ^2.6.7
     supertest: ^6.2.4
     winston: ^3.2.1
     yn: ^4.0.0
