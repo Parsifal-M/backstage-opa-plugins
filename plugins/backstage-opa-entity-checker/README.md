@@ -32,10 +32,10 @@ The policy is set in the `app-config.yaml` file like so:
 
 ```yaml
 opaClient:
-  baseUrl: "http://localhost:8181"
+  baseUrl: 'http://localhost:8181'
   policies:
     entityChecker: # Entity checker plugin
-      package: "entity_checker"
+      package: 'entity_checker'
 ```
 
 Then in your OPA Policy (the `rego` file) you can use the following to set any violations you want to display:
@@ -82,7 +82,7 @@ is_system_present {
 Add the following to your `EntityPage.tsx` file:
 
 ```tsx
-import { OpaMetadataAnalysisCard } from "@parsifal-m/plugin-opa-entity-checker";
+import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
 
 //...
 

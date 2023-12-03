@@ -12,7 +12,6 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 - [backstage-opa-policies](https://github.com/Parsifal-M/backstage-opa-policies#hello) - A collection of policies that can be used with the plugins in this repository.
 
-
 ## Local Development
 
 Step by step guide to developing locally:
@@ -23,7 +22,6 @@ Step by step guide to developing locally:
 4. Run `yarn install --immutable` in the root of the repository
 5. Use `docker-compose up -d` to start the OPA server and postgres database
 6. Run `yarn dev` in the root of the repository to start the Backstage app
-
 
 # Contributing
 
