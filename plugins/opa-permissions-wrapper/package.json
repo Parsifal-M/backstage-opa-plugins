@@ -35,12 +35,12 @@
   "dependencies": {
     "@backstage/backend-common": "^0.19.7",
     "@backstage/config": "^1.1.0",
+    "@backstage/errors": "^1.2.3",
     "@backstage/plugin-auth-node": "^0.3.2",
     "@backstage/plugin-catalog-backend": "^1.13.3",
     "@backstage/plugin-permission-common": "^0.7.8",
     "@backstage/plugin-permission-node": "^0.7.16",
     "@backstage/plugin-scaffolder-backend": "^1.17.3",
-    "@backstage/errors": "^1.2.3",
     "@types/express": "*",
     "axios": "^1.4.0",
     "express": "^4.17.3",
