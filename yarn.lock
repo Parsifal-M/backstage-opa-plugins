@@ -7896,9 +7896,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parsifal-m/opa-permissions-wrapper@^0.3.1, @parsifal-m/opa-permissions-wrapper@workspace:plugins/opa-permissions-wrapper":
+"@parsifal-m/opa-permissions-wrapper@^0.3.1, @parsifal-m/opa-permissions-wrapper@workspace:plugins/backstage-opa-permissions-wrapper":
   version: 0.0.0-use.local
-  resolution: "@parsifal-m/opa-permissions-wrapper@workspace:plugins/opa-permissions-wrapper"
+  resolution: "@parsifal-m/opa-permissions-wrapper@workspace:plugins/backstage-opa-permissions-wrapper"
   dependencies:
     "@backstage/backend-common": ^0.19.7
     "@backstage/cli": ^0.22.13
@@ -7922,9 +7922,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-opa-backend@^1.1.3, @parsifal-m/plugin-opa-backend@workspace:plugins/opa-backend":
+"@parsifal-m/plugin-opa-backend@^1.1.3, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
   version: 0.0.0-use.local
-  resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/opa-backend"
+  resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend"
   dependencies:
     "@backstage/backend-common": ^0.19.7
     "@backstage/cli": ^0.22.13
@@ -7943,9 +7943,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-opa-entity-checker@^1.1.1, @parsifal-m/plugin-opa-entity-checker@workspace:plugins/opa-entity-checker":
+"@parsifal-m/plugin-opa-entity-checker@^1.1.1, @parsifal-m/plugin-opa-entity-checker@workspace:plugins/backstage-opa-entity-checker":
   version: 0.0.0-use.local
-  resolution: "@parsifal-m/plugin-opa-entity-checker@workspace:plugins/opa-entity-checker"
+  resolution: "@parsifal-m/plugin-opa-entity-checker@workspace:plugins/backstage-opa-entity-checker"
   dependencies:
     "@backstage/catalog-model": ^1.4.2
     "@backstage/cli": ^0.22.13
