@@ -3119,6 +3119,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/errors@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@backstage/errors@npm:1.2.3"
+  dependencies:
+    "@backstage/types": ^1.1.1
+    serialize-error: ^8.0.1
+  checksum: 00e367ed9c47404d391d3c4125f5e279fe99393734f86ec0b0102cbea2573c9e9a4a58ca6a09c159b4b543bb3adabe81554a5af6d4d12ee7f45c92ed404705d9
+  languageName: node
+  linkType: hard
+
 "@backstage/eslint-plugin@npm:^0.1.3":
   version: 0.1.3
   resolution: "@backstage/eslint-plugin@npm:0.1.3"
@@ -5629,31 +5639,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@internal/plugin-gitlab-my-mr-card@^0.1.0, @internal/plugin-gitlab-my-mr-card@workspace:plugins/gitlab-my-mr-card":
-  version: 0.0.0-use.local
-  resolution: "@internal/plugin-gitlab-my-mr-card@workspace:plugins/gitlab-my-mr-card"
-  dependencies:
-    "@backstage/cli": ^0.22.13
-    "@backstage/core-app-api": ^1.10.0
-    "@backstage/core-components": ^0.13.5
-    "@backstage/core-plugin-api": ^1.6.0
-    "@backstage/dev-utils": ^1.0.21
-    "@backstage/test-utils": ^1.4.3
-    "@backstage/theme": ^0.4.2
-    "@material-ui/core": ^4.12.2
-    "@material-ui/icons": ^4.9.1
-    "@material-ui/lab": 4.0.0-alpha.61
-    "@testing-library/jest-dom": ^5.10.1
-    "@testing-library/react": ^12.1.3
-    "@testing-library/user-event": ^14.0.0
-    "@types/node": "*"
-    msw: ^1.0.0
-    react-use: ^17.2.4
-  peerDependencies:
-    react: ^16.13.1 || ^17.0.0
-  languageName: unknown
-  linkType: soft
-
 "@ioredis/commands@npm:^1.1.1":
   version: 1.2.0
   resolution: "@ioredis/commands@npm:1.2.0"
@@ -7918,6 +7903,7 @@ __metadata:
     "@backstage/backend-common": ^0.19.7
     "@backstage/cli": ^0.22.13
     "@backstage/config": ^1.1.0
+    "@backstage/errors": ^1.2.3
     "@backstage/plugin-auth-node": ^0.3.2
     "@backstage/plugin-catalog-backend": ^1.13.3
     "@backstage/plugin-permission-common": ^0.7.8
@@ -7936,74 +7922,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-dev-quotes-homepage@npm:^2.1.3":
-  version: 2.1.3
-  resolution: "@parsifal-m/plugin-dev-quotes-homepage@npm:2.1.3"
-  dependencies:
-    "@backstage/core-components": ^0.13.5
-    "@backstage/core-plugin-api": ^1.6.0
-    "@backstage/theme": ^0.4.2
-    "@material-ui/core": ^4.12.2
-    "@material-ui/icons": ^4.9.1
-    "@material-ui/lab": 4.0.0-alpha.61
-    react-use: ^17.2.4
-  peerDependencies:
-    react: ^16.13.1 || ^17.0.0
-  checksum: 25e12ba5078e6ba28fe19b7a8c4da06c02619e33106f754884f7933c8840f970ab6d45607a99d9590c56d51b2a8928e938dfb58a891c1c9b570421d3d93c40d6
-  languageName: node
-  linkType: hard
-
-"@parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage":
-  version: 0.0.0-use.local
-  resolution: "@parsifal-m/plugin-dev-quotes-homepage@workspace:plugins/dev-quotes-homepage"
-  dependencies:
-    "@backstage/cli": ^0.22.13
-    "@backstage/core-app-api": ^1.10.0
-    "@backstage/core-components": ^0.13.5
-    "@backstage/core-plugin-api": ^1.6.0
-    "@backstage/dev-utils": ^1.0.21
-    "@backstage/test-utils": ^1.4.3
-    "@backstage/theme": ^0.4.2
-    "@material-ui/core": ^4.12.2
-    "@material-ui/icons": ^4.9.1
-    "@material-ui/lab": 4.0.0-alpha.61
-    "@testing-library/jest-dom": ^5.10.1
-    "@testing-library/react": ^12.1.3
-    "@testing-library/user-event": ^14.0.0
-    msw: ^1.0.0
-    react-use: ^17.2.4
-  peerDependencies:
-    react: ^16.13.1 || ^17.0.0
-  languageName: unknown
-  linkType: soft
-
-"@parsifal-m/plugin-gitlab-runners@^0.1.1, @parsifal-m/plugin-gitlab-runners@workspace:plugins/gitlab-runners":
-  version: 0.0.0-use.local
-  resolution: "@parsifal-m/plugin-gitlab-runners@workspace:plugins/gitlab-runners"
-  dependencies:
-    "@backstage/cli": ^0.22.13
-    "@backstage/core-app-api": ^1.10.0
-    "@backstage/core-components": ^0.13.5
-    "@backstage/core-plugin-api": ^1.6.0
-    "@backstage/dev-utils": ^1.0.21
-    "@backstage/test-utils": ^1.4.3
-    "@backstage/theme": ^0.4.2
-    "@material-ui/core": ^4.12.2
-    "@material-ui/icons": ^4.9.1
-    "@material-ui/lab": 4.0.0-alpha.61
-    "@testing-library/jest-dom": ^5.10.1
-    "@testing-library/react": ^12.1.3
-    "@testing-library/user-event": ^14.0.0
-    "@types/node": "*"
-    axios: ^1.4.0
-    date-fns: ^2.30.0
-    msw: ^1.0.0
-    react-use: ^17.2.4
-  peerDependencies:
-    react: ^16.13.1 || ^17.0.0
-  languageName: unknown
-  linkType: soft
-
 "@parsifal-m/plugin-opa-backend@^1.1.3, @parsifal-m/plugin-opa-backend@workspace:plugins/opa-backend":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/opa-backend"
@@ -8011,12 +7929,14 @@ __metadata:
     "@backstage/backend-common": ^0.19.7
     "@backstage/cli": ^0.22.13
     "@backstage/config": ^1.1.0
+    "@backstage/errors": ^1.2.3
     "@types/express": "*"
     "@types/supertest": ^2.0.12
     axios: ^1.4.0
     express: ^4.17.1
     express-promise-router: ^4.1.0
     msw: ^1.0.0
+    node-fetch: ^2.6.7
     supertest: ^6.2.4
     winston: ^3.2.1
     yn: ^4.0.0
@@ -11653,11 +11573,8 @@ __metadata:
     "@backstage/plugin-user-settings": ^0.7.10
     "@backstage/test-utils": ^1.4.3
     "@backstage/theme": ^0.4.2
-    "@internal/plugin-gitlab-my-mr-card": ^0.1.0
     "@material-ui/core": ^4.12.2
     "@material-ui/icons": ^4.9.1
-    "@parsifal-m/plugin-dev-quotes-homepage": ^2.1.3
-    "@parsifal-m/plugin-gitlab-runners": ^0.1.1
     "@parsifal-m/plugin-opa-entity-checker": ^1.1.1
     "@testing-library/jest-dom": ^5.10.1
     "@testing-library/react": ^12.1.3
@@ -14771,7 +14688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.16.1, date-fns@npm:^2.30.0":
+"date-fns@npm:^2.16.1":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:

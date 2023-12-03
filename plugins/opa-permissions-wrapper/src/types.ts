@@ -8,10 +8,12 @@ export type PolicyEvaluationInput = {
   };
 };
 
-export interface ConditionalDecision {
-  claims: string;
+export type PolicyEvaluationResult = {
   decision: {
-    conditions: {
+    result: string;
+    pluginId?: string;
+    resourceType?: string;
+    conditions?: {
       anyOf?: {
         params: {
           [key: string]: any;
@@ -34,9 +36,5 @@ export interface ConditionalDecision {
         rule: string;
       }[];
     };
-    pluginId: string;
-    resourceType: string;
-    result: string;
   };
-  permission: string;
-}
+};

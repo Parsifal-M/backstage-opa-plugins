@@ -1,1 +1,1 @@
-export { policyEvaluator } from './opaEvaluator';
+export * from './opaEvaluator';
