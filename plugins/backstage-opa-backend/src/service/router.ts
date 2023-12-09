@@ -50,7 +50,9 @@ export async function createRouter(
     const opaUrl = `${opaBaseUrl}/v1/data/${entityCheckerPackage}`;
 
     if (!entityCheckerPackage) {
-      res.status(400).json({ message: 'OPA entity checker package not set or missing!' });
+      res
+        .status(400)
+        .json({ message: 'OPA entity checker package not set or missing!' });
       logger.error('OPA package not set or missing!');
       throw new InputError('OPA package not set or missing!');
     }

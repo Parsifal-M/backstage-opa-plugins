@@ -215,9 +215,7 @@ describe('createRouter', () => {
         .expect('Content-Type', /json/);
 
       expect(res.status).toEqual(400);
-      expect(res.body.message).toBe(
-        'Entity metadata is missing!',
-      );
+      expect(res.body.message).toBe('Entity metadata is missing!');
     });
   });
 
@@ -315,9 +313,7 @@ describe('createRouter', () => {
         .send({ input: {} });
 
       expect(res.status).toBe(400);
-      expect(res.body.message).toBe(
-        'OPA RBAC package not set or missing!',
-      );
+      expect(res.body.message).toBe('OPA RBAC package not set or missing!');
     });
 
     it('will return 400 if the policy input is missing', async () => {
