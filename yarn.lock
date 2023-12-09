@@ -2980,6 +2980,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/config@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@backstage/config@npm:1.1.1"
+  dependencies:
+    "@backstage/errors": ^1.2.3
+    "@backstage/types": ^1.1.1
+    lodash: ^4.17.21
+  checksum: 60dec0799a97ef7d99dc43076862b7914bd4b0390d6de6300148cc635ab218c21a3df1bc4fe98f7a49a89de9950c1f562ae29ce9324f93acfd9bd31104e751ef
+  languageName: node
+  linkType: hard
+
 "@backstage/core-app-api@npm:^1.10.0":
   version: 1.10.0
   resolution: "@backstage/core-app-api@npm:1.10.0"
@@ -3059,22 +3070,20 @@ __metadata:
   linkType: hard
 
 "@backstage/core-plugin-api@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "@backstage/core-plugin-api@npm:1.6.0"
+  version: 1.8.0
+  resolution: "@backstage/core-plugin-api@npm:1.8.0"
   dependencies:
-    "@backstage/config": ^1.1.0
+    "@backstage/config": ^1.1.1
     "@backstage/types": ^1.1.1
-    "@backstage/version-bridge": ^1.0.5
+    "@backstage/version-bridge": ^1.0.7
     "@types/react": ^16.13.1 || ^17.0.0
     history: ^5.0.0
     i18next: ^22.4.15
-    prop-types: ^15.7.2
-    zen-observable: ^0.10.0
   peerDependencies:
-    react: ^16.13.1 || ^17.0.0
-    react-dom: ^16.13.1 || ^17.0.0
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-router-dom: 6.0.0-beta.0 || ^6.3.0
-  checksum: 540deb91d3c143ce1c3736359c3301af64fbd6eccbaae61bfc96f4e180654e7eb025bb1d4ff5be62b7ea3d6dac7ed617e4dba0c176cfdbf865400fde0f987ddb
+  checksum: 1f78c4737c0e30682a3169d967943698cb95b3dccea1e60bd72e82dd14847192f5180db658b8d0b6811d6fb13830085ca3ecc6ea0be58771d0b517f877c97bbb
   languageName: node
   linkType: hard
 
@@ -4451,6 +4460,19 @@ __metadata:
     react-dom: ^16.13.1 || ^17.0.0
     react-router-dom: 6.0.0-beta.0 || ^6.3.0
   checksum: 8430860bcd0eac3ec57fda30eb5b1a4d895c75cb5ae9609b79bb1264eee7a4f39169122ce0e71f5fcade8f4d0cfe9bc3dbf6e0b9a2adc7fafef2bbbde95545f8
+  languageName: node
+  linkType: hard
+
+"@backstage/version-bridge@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "@backstage/version-bridge@npm:1.0.7"
+  dependencies:
+    "@types/react": ^16.13.1 || ^17.0.0
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-router-dom: 6.0.0-beta.0 || ^6.3.0
+  checksum: 806170c331e18469d0e2b0e3af76dd27d51f538f5f90b2122d90a461ad751098f6542bee45984696bcf98c398502cdb53b5727979be50b59a0309894581f5a5d
   languageName: node
   linkType: hard
 
