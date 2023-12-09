@@ -33,14 +33,13 @@
   "devDependencies": {
     "@backstage/cli": "^0.22.13",
     "@spotify/prettier-config": "^12.0.0",
-    "concurrently": "^6.0.0",
+    "concurrently": "^8.0.0",
     "eslint-plugin-jest": "*",
     "husky": "^8.0.3",
-    "lerna": "^4.0.0",
     "lint-staged": "^15.1.0",
-    "node-gyp": "^9.0.0",
-    "prettier": "^2.3.2",
-    "typescript": "~4.6.4"
+    "node-gyp": "^10.0.0",
+    "prettier": "^2.2.1",
+    "typescript": "~5.2.0"
   },
   "resolutions": {
     "@types/react": "^17",

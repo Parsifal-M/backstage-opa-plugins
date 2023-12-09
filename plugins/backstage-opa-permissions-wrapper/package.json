@@ -42,7 +42,6 @@
     "@backstage/plugin-permission-node": "^0.7.16",
     "@backstage/plugin-scaffolder-backend": "^1.17.3",
     "@types/express": "*",
-    "axios": "^1.4.0",
     "express": "^4.17.3",
     "express-promise-router": "^4.1.0",
     "node-fetch": "^2.6.7",
