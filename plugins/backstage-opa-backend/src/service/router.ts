@@ -42,6 +42,7 @@ export async function createRouter(
     const entityMetadata = req.body.input;
 
     if (!opaBaseUrl) {
+      res.status(400).json({ message: 'OPA URL not set or missing!' });
       logger.error('OPA URL not set or missing!');
       throw new InputError('OPA URL not set or missing!');
     }
@@ -57,6 +58,7 @@ export async function createRouter(
     }
 
     if (!entityMetadata) {
+      res.status(400).json({ message: 'Entity metadata is missing!' });
       logger.error('Entity metadata is missing!');
       throw new InputError('Entity metadata is missing!');
     }
