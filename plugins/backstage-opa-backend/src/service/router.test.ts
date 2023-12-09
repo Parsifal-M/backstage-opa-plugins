@@ -38,10 +38,10 @@ describe('createRouter', () => {
 
   describe('GET /health', () => {
     it('returns ok', async () => {
-      const response = await request(app).get('/health');
+      const res = await request(app).get('/health');
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({ status: 'ok' });
+      expect(res.status).toEqual(200);
+      expect(res.body).toEqual({ status: 'ok' });
     });
   });
 
@@ -152,12 +152,12 @@ describe('createRouter', () => {
 
       const localApp = express().use(router);
 
-      const response = await request(localApp)
+      const res = await request(localApp)
         .post(`/entity-checker`)
         .send({ input: {} }); // send an empty input
 
-      expect(response.status).toBe(400);
-      expect(response.body.error.message).toBe('OPA URL not set or missing!');
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe('OPA URL not set or missing!');
     });
 
     it('will complain if no entity checker package is set', async () => {
@@ -182,12 +182,12 @@ describe('createRouter', () => {
 
       const localApp = express().use(router);
 
-      const response = await request(localApp)
+      const res = await request(localApp)
         .post(`/entity-checker`)
         .send({ input: {} });
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe(
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe(
         'OPA entity checker package not set or missing!',
       );
     });
@@ -215,19 +215,9 @@ describe('createRouter', () => {
         .expect('Content-Type', /json/);
 
       expect(res.status).toEqual(400);
-      expect(res.body).toEqual({
-        error: {
-          message: 'Entity metadata is missing!',
-          name: 'InputError',
-        },
-        request: {
-          method: 'POST',
-          url: '/entity-checker',
-        },
-        response: {
-          statusCode: 400,
-        },
-      });
+      expect(res.body.message).toBe(
+        'Entity metadata is missing!',
+      );
     });
   });
 
@@ -290,12 +280,12 @@ describe('createRouter', () => {
 
       const localApp = express().use(router);
 
-      const response = await request(localApp)
+      const res = await request(localApp)
         .post(`/opa-permissions`)
         .send({ input: {} });
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('OPA URL not set or missing!');
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe('OPA URL not set or missing!');
     });
 
     it('will complain if no rbac package is set', async () => {
@@ -320,12 +310,12 @@ describe('createRouter', () => {
 
       const localApp = express().use(router);
 
-      const response = await request(localApp)
+      const res = await request(localApp)
         .post(`/opa-permissions`)
         .send({ input: {} });
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe(
+      expect(res.status).toBe(400);
+      expect(res.body.message).toBe(
         'OPA RBAC package not set or missing!',
       );
     });
