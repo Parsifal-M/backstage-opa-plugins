@@ -16,7 +16,7 @@ export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
   const opaClient = new OpaClient(env.config, env.logger);
-  const genericPolicyEvaluator = policyEvaluator(opaClient);
+  const genericPolicyEvaluator = policyEvaluator(opaClient, env.logger);
   class PermissionsHandler implements PermissionPolicy {
     async handle(
       request: PolicyQuery,
