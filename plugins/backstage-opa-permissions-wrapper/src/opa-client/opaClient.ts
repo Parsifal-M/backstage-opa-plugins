@@ -21,6 +21,7 @@ export class OpaClient {
 
   async evaluatePolicy(
     input: PolicyEvaluationInput,
+    opaPackage: string = this.opaPackage,
   ): Promise<PolicyEvaluationResult> {
     this.logger.info(
       `Sending request to OPA: ${this.backendBaseUrl}/api/opa/opa-permissions`,
@@ -38,7 +39,7 @@ export class OpaClient {
           },
           body: JSON.stringify({
             policyInput: input,
-            policy: this.opaPackage,
+            opaPackage: opaPackage,
           }),
         },
       );
