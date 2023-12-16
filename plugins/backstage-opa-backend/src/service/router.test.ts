@@ -4,7 +4,6 @@ import request from 'supertest';
 import { createRouter } from './router';
 import { ConfigReader } from '@backstage/config';
 import fetch from 'node-fetch';
-import e from 'express';
 
 jest.mock('node-fetch');
 
