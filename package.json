@@ -50,10 +50,10 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier:check"
     ],
     "*.{json,md,yaml}": [
-      "prettier --write"
+      "prettier:check"
     ]
   },
   "packageManager": "yarn@3.6.4"

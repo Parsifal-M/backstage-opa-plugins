@@ -3029,7 +3029,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/core-plugin-api@npm:^1.8.0":
+"@backstage/core-plugin-api@npm:^1.6.0, @backstage/core-plugin-api@npm:^1.8.0":
   version: 1.8.0
   resolution: "@backstage/core-plugin-api@npm:1.8.0"
   dependencies:
@@ -7012,6 +7012,18 @@ __metadata:
     yn: ^4.0.0
   languageName: unknown
   linkType: soft
+
+"@parsifal-m/plugin-dev-quotes-homepage@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@parsifal-m/plugin-dev-quotes-homepage@npm:3.0.3"
+  dependencies:
+    "@backstage/core-plugin-api": ^1.6.0
+    "@material-ui/core": ^4.12.2
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0
+  checksum: 49a3f3daf4275b64f8e7b318d5ab99bbc1f0d02e3c8e6a188c248dbe7b2ae3f146da7bdfe0d88893304091d02009897d39dea86bda9c54492f4aee7ff26725b3
+  languageName: node
+  linkType: hard
 
 "@parsifal-m/plugin-opa-backend@^1.1.3, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
   version: 0.0.0-use.local
@@ -11340,6 +11352,7 @@ __metadata:
     "@backstage/theme": ^0.4.4
     "@material-ui/core": ^4.12.2
     "@material-ui/icons": ^4.9.1
+    "@parsifal-m/plugin-dev-quotes-homepage": ^3.0.3
     "@parsifal-m/plugin-opa-entity-checker": ^1.1.1
     "@testing-library/jest-dom": ^6.1.5
     "@testing-library/react": ^12.1.3

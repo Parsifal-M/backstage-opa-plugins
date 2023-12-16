@@ -55,6 +55,7 @@ import {
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
+import { DevQuote } from '@parsifal-m/plugin-dev-quotes-homepage';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -128,8 +129,12 @@ const overviewContent = (
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
-    <Grid item md={8} xs={12}>
+    <Grid item md={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
+    </Grid>
+
+    <Grid item md={12}>
+      <DevQuote />
     </Grid>
   </Grid>
 );

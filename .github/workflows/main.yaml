@@ -1,6 +1,10 @@
 name: Lint, Test, and Format Workflow
 
-on: [push]
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
