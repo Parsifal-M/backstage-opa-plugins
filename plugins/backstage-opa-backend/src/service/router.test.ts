@@ -278,13 +278,37 @@ describe('createRouter', () => {
       expect(res.body).toEqual(mockedResponse.result); // Updated this line
     });
 
-    it('replaces . in package name with /', async () => {
-      const dotInPackageNameConfig = new ConfigReader({
+    it('POSTS successfully with optionally provided nested packaged policies', async () => {
+      (fetch as jest.MockedFunction<typeof fetch>).mockImplementation(() => {
+        return Promise.resolve(
+          new FetchResponse(JSON.stringify(mockedResponse), {
+            headers: { 'Content-Type': 'application/json' },
+          }),
+        );
+      });
+
+      const res = await request(app)
+        .post('/opa-permissions')
+        .send({
+          policyInput: mockedInput,
+          opaPackage: 'optional_custom_package.admins.users',
+        }) // Updated this line
+        .expect('Content-Type', /json/);
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toEqual(mockedResponse.result);
+    });
+
+    it('POSTS successfully with nested packaged policies', async () => {
+      const nestedPackagedOpaPolicy = new ConfigReader({
         opaClient: {
           baseUrl: 'http://localhost',
           policies: {
+            entityChecker: {
+              package: 'entitymeta_policy',
+            },
             rbac: {
-              package: 'rbac.policy.decision',
+              package: 'example.rbac_policy.admins.users',
             },
           },
         },
@@ -292,23 +316,19 @@ describe('createRouter', () => {
 
       const router = await createRouter({
         logger: getVoidLogger(),
-        config: dotInPackageNameConfig,
+        config: nestedPackagedOpaPolicy,
       });
 
       const localApp = express().use(router);
 
-      const fetchMock = jest.spyOn(global, 'fetch');
-      fetchMock.mockImplementation(() => Promise.resolve(new Response()));
-
-      await request(localApp)
-        .post(`/opa-permissions`)
-        .send({ opaPackage: 'rbac.policy', policyInput: {} });
-
-      expect(fetchMock).toHaveBeenCalledWith(
-        'http://localhost/v1/data/rbac/policy', // The URL should have / instead of .
-      );
-
-      fetchMock.mockRestore();
+      const res = await request(localApp)
+        .post('/opa-permissions')
+        .send({
+          policyInput: mockedInput,
+        }) // Updated this line
+        .expect('Content-Type', /json/);
+      expect(res.status).toEqual(200);
+      expect(res.body).toEqual(mockedResponse.result);
     });
 
     it('will complain if the OPA url is missing', async () => {

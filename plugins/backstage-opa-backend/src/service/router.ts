@@ -84,7 +84,9 @@ export async function createRouter(
     const policyInput = req.body.policyInput;
     const opaRbacPackage = req.body.opaPackage
       ? req.body.opaPackage.replace('.', '/')
-      : config.getOptionalString('opaClient.policies.rbac.package');
+      : config
+          .getOptionalString('opaClient.policies.rbac.package')
+          ?.replace(/\./g, '/');
 
     if (!opaBaseUrl) {
       res.status(400).json({ message: 'OPA URL not set or missing!' });
