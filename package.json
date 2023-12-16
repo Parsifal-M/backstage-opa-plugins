@@ -50,14 +50,11 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier:check"
     ],
     "*.{json,md,yaml}": [
-      "prettier --write"
+      "prettier:check"
     ]
   },
-  "packageManager": "yarn@3.6.4",
-  "dependencies": {
-    "@parsifal-m/plugin-dev-quotes-homepage": "^3.0.2"
-  }
+  "packageManager": "yarn@3.6.4"
 }
