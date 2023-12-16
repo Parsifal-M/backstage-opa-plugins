@@ -56,5 +56,8 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@3.6.4",
+  "dependencies": {
+    "@parsifal-m/plugin-dev-quotes-homepage": "^3.0.2"
+  }
 }

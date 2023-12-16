@@ -50,13 +50,6 @@ integrations:
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
 
-proxy:
-  ### Example for how to add a proxy endpoint for the frontend.
-  ### A typical reason to do this is to handle HTTPS and CORS for internal services.
-  # '/test':
-  #   target: 'https://example.com'
-  #   changeOrigin: true
-
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
 # and an external cloud storage when deploying TechDocs for production use-case.
@@ -75,9 +68,6 @@ auth:
       development:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
-
-scaffolder:
-  # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
   import:
