@@ -8,33 +8,40 @@ import { ResponseError } from '@backstage/errors';
 // instead of routing through the backend plugin. Something we need to think about.
 
 export class OpaClient {
-  private readonly baseUrl: string;
+  private readonly backendBaseUrl: string;
   private readonly logger: Logger;
+  private opaPackage: string;
 
-  constructor(config: Config, logger: Logger) {
-    this.baseUrl = config.getString('backend.baseUrl');
+  constructor(config: Config, logger: Logger, opaPackage?: string) {
+    this.backendBaseUrl = config.getString('backend.baseUrl');
     this.logger = logger;
+    this.opaPackage =
+      opaPackage ?? config.getString('opaClient.policies.rbac.package');
   }
 
   async evaluatePolicy(
     input: PolicyEvaluationInput,
   ): Promise<PolicyEvaluationResult> {
     this.logger.info(
-      `Sending request to OPA: ${this.baseUrl}/api/opa/opa-permissions`,
+      `Sending request to OPA: ${this.backendBaseUrl}/api/opa/opa-permissions`,
     );
 
     this.logger.info(`Sending input to OPA: ${JSON.stringify(input)}`);
 
     try {
-      const response = await fetch(`${this.baseUrl}/api/opa/opa-permissions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${this.backendBaseUrl}/api/opa/opa-permissions`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            policyInput: input,
+            policy: this.opaPackage,
+          }),
         },
-        body: JSON.stringify({
-          policyInput: input,
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw await ResponseError.fromResponse(response);

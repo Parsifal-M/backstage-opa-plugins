@@ -4,6 +4,7 @@ import request from 'supertest';
 import { createRouter } from './router';
 import { ConfigReader } from '@backstage/config';
 import fetch from 'node-fetch';
+import e from 'express';
 
 jest.mock('node-fetch');
 
@@ -169,7 +170,7 @@ describe('createRouter', () => {
               package: undefined,
             },
             rbac: {
-              package: 'rbac_policy',
+              package: 'entitymeta_policy',
             },
           },
         },
@@ -248,12 +249,66 @@ describe('createRouter', () => {
       });
 
       const res = await request(app)
-        .post('/entity-checker')
-        .send(mockedInput)
+        .post('/opa-permissions')
+        .send({ policyInput: mockedInput, opaPackage: 'blah' })
         .expect('Content-Type', /json/);
 
       expect(res.status).toEqual(200);
-      expect(res.body).toEqual(mockedResponse);
+      expect(res.body).toEqual(mockedResponse.result); // Updated this line
+    });
+
+    it('POSTS with an optional package and returns a response from OPA as expected', async () => {
+      (fetch as jest.MockedFunction<typeof fetch>).mockImplementation(() => {
+        return Promise.resolve(
+          new FetchResponse(JSON.stringify(mockedResponse), {
+            headers: { 'Content-Type': 'application/json' },
+          }),
+        );
+      });
+
+      const res = await request(app)
+        .post('/opa-permissions')
+        .send({
+          policyInput: mockedInput,
+          opaPackage: 'optional_custom_package',
+        }) // Updated this line
+        .expect('Content-Type', /json/);
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toEqual(mockedResponse.result); // Updated this line
+    });
+
+    it('replaces . in package name with /', async () => {
+      const dotInPackageNameConfig = new ConfigReader({
+        opaClient: {
+          baseUrl: 'http://localhost',
+          policies: {
+            rbac: {
+              package: 'rbac.policy.decision',
+            },
+          },
+        },
+      });
+
+      const router = await createRouter({
+        logger: getVoidLogger(),
+        config: dotInPackageNameConfig,
+      });
+
+      const localApp = express().use(router);
+
+      const fetchMock = jest.spyOn(global, 'fetch');
+      fetchMock.mockImplementation(() => Promise.resolve(new Response()));
+
+      await request(localApp)
+        .post(`/opa-permissions`)
+        .send({ opaPackage: 'rbac.policy', policyInput: {} });
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        'http://localhost/v1/data/rbac/policy', // The URL should have / instead of .
+      );
+
+      fetchMock.mockRestore();
     });
 
     it('will complain if the OPA url is missing', async () => {

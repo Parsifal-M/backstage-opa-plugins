@@ -28,7 +28,7 @@ describe('OpaClient', () => {
     } as unknown as Logger;
     mockConfig = new ConfigReader({
       backend: {
-        baseUrl: 'http://localhost:7007',
+        backendBaseUrl: 'http://localhost:7007',
       },
     });
   });

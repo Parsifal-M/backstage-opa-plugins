@@ -29,11 +29,6 @@ export async function createRouter(
     'opaClient.policies.entityChecker.package',
   );
 
-  // This is the OPA Permissions/RBAC package
-  const opaRbacPackage = config.getOptionalString(
-    'opaClient.policies.rbac.package',
-  );
-
   router.get('/health', (_, resp) => {
     resp.json({ status: 'ok' });
   });
@@ -87,6 +82,9 @@ export async function createRouter(
 
   router.post('/opa-permissions', async (req, res, next) => {
     const policyInput = req.body.policyInput;
+    const opaRbacPackage = req.body.opaPackage
+      ? req.body.opaPackage.replace('.', '/')
+      : config.getOptionalString('opaClient.policies.rbac.package');
 
     if (!opaBaseUrl) {
       res.status(400).json({ message: 'OPA URL not set or missing!' });
@@ -94,13 +92,13 @@ export async function createRouter(
       throw new InputError('OPA URL not set or missing!');
     }
 
-    const opaUrl = `${opaBaseUrl}/v1/data/${opaRbacPackage}`;
-
     if (!opaRbacPackage) {
       res.status(400).json({ message: 'OPA RBAC package not set or missing!' });
       logger.error('OPA package not set or missing!');
       throw new InputError('OPA package not set or missing!');
     }
+
+    const opaUrl = `${opaBaseUrl}/v1/data/${opaRbacPackage}`;
 
     if (!policyInput) {
       res.status(400).json({ message: 'The policy input is missing!' });
