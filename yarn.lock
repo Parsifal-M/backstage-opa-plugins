@@ -7013,18 +7013,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-dev-quotes-homepage@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@parsifal-m/plugin-dev-quotes-homepage@npm:3.0.2"
-  dependencies:
-    "@backstage/core-plugin-api": ^1.6.0
-    "@material-ui/core": ^4.12.2
-  peerDependencies:
-    react: ^16.13.1 || ^17.0.0
-  checksum: c2163666d202cf700a7cd415c7da3edb0298582e776c5c7752afd593745bca6207c560e2d3ffc8f99e74afed940236c27ea7f54aafe9578e0e7cb113b22ebd20
-  languageName: node
-  linkType: hard
-
 "@parsifal-m/plugin-dev-quotes-homepage@npm:^3.0.3":
   version: 3.0.3
   resolution: "@parsifal-m/plugin-dev-quotes-homepage@npm:3.0.3"
@@ -25909,7 +25897,6 @@ __metadata:
   resolution: "root@workspace:."
   dependencies:
     "@backstage/cli": ^0.24.0
-    "@parsifal-m/plugin-dev-quotes-homepage": ^3.0.2
     "@spotify/prettier-config": ^12.0.0
     concurrently: ^8.0.0
     eslint-plugin-jest: "*"
