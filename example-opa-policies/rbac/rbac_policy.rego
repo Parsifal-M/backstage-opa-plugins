@@ -1,4 +1,4 @@
-package rbac_policy
+package rbac_policy.admin
 
 import future.keywords.if
 

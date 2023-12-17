@@ -9,29 +9,35 @@ import { ResponseError } from '@backstage/errors';
 
 export class OpaClient {
   private readonly backendBaseUrl: string;
+  private readonly opaPackage?: string;
   private readonly logger: Logger;
-  private opaPackage: string;
 
-  constructor(config: Config, logger: Logger, opaPackage?: string) {
+  constructor(config: Config, logger: Logger) {
     this.backendBaseUrl = config.getString('backend.baseUrl');
+    this.opaPackage = config.getOptionalString(
+      'opaClient.policies.rbac.package',
+    );
     this.logger = logger;
-    this.opaPackage =
-      opaPackage ?? config.getString('opaClient.policies.rbac.package');
   }
 
   async evaluatePolicy(
     input: PolicyEvaluationInput,
-    opaPackage: string = this.opaPackage,
+    opaPackage?: string,
   ): Promise<PolicyEvaluationResult> {
+    const setOpaPackage = opaPackage ?? this.opaPackage;
+
+    if (!setOpaPackage) {
+      throw new Error('OPA package not set or missing!');
+    }
     this.logger.info(
-      `Sending request to OPA: ${this.backendBaseUrl}/api/opa/opa-permissions`,
+      `Sending request to OPA: ${this.backendBaseUrl}/api/opa/opa-permissions/${setOpaPackage}`,
     );
 
     this.logger.info(`Sending input to OPA: ${JSON.stringify(input)}`);
 
     try {
       const response = await fetch(
-        `${this.backendBaseUrl}/api/opa/opa-permissions`,
+        `${this.backendBaseUrl}/api/opa/opa-permissions/${setOpaPackage}`,
         {
           method: 'POST',
           headers: {
@@ -39,7 +45,6 @@ export class OpaClient {
           },
           body: JSON.stringify({
             policyInput: input,
-            opaPackage: opaPackage,
           }),
         },
       );

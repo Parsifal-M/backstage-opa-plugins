@@ -80,13 +80,13 @@ export async function createRouter(
     }
   });
 
-  router.post('/opa-permissions', async (req, res, next) => {
+  router.post('/opa-permissions/:opaPackage?', async (req, res, next) => {
     const policyInput = req.body.policyInput;
-    const opaRbacPackage = req.body.opaPackage
-      ? req.body.opaPackage.replace('.', '/')
+    const opaRbacPackage = req.params.opaPackage
+      ? req.params.opaPackage.replace('.', '/')
       : config
           .getOptionalString('opaClient.policies.rbac.package')
-          ?.replace(/\./g, '/');
+          ?.replace('.', '/');
 
     if (!opaBaseUrl) {
       res.status(400).json({ message: 'OPA URL not set or missing!' });

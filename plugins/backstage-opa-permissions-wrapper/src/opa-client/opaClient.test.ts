@@ -10,6 +10,7 @@ jest.mock('@backstage/config', () => {
     ConfigReader: jest.fn().mockImplementation(() => {
       return {
         getString: jest.fn().mockReturnValue('http://localhost:7007'),
+        getOptionalString: jest.fn().mockReturnValue('some.package.admin'),
       };
     }),
   };
@@ -53,13 +54,12 @@ describe('OpaClient', () => {
     const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      'http://localhost:7007/api/opa/opa-permissions',
+      `http://localhost:7007/api/opa/opa-permissions/${mockOpaPackage}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           policyInput: mockInput,
-          opaPackage: mockOpaPackage,
         }),
       },
     );
@@ -82,13 +82,12 @@ describe('OpaClient', () => {
     const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      'http://localhost:7007/api/opa/opa-permissions',
+      `http://localhost:7007/api/opa/opa-permissions/${mockOpaPackage}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           policyInput: mockInput,
-          opaPackage: mockOpaPackage,
         }),
       },
     );

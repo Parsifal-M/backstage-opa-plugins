@@ -11,7 +11,11 @@ import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { PolicyEvaluationInput } from '../types';
 import { Logger } from 'winston';
 
-export const policyEvaluator = (opaClient: OpaClient, logger: Logger) => {
+export const policyEvaluator = (
+  opaClient: OpaClient,
+  logger: Logger,
+  opaPackage?: string,
+) => {
   return async (
     request: PolicyQuery,
     user?: BackstageIdentityResponse,
@@ -26,7 +30,7 @@ export const policyEvaluator = (opaClient: OpaClient, logger: Logger) => {
       },
     };
 
-    const response = await opaClient.evaluatePolicy(input);
+    const response = await opaClient.evaluatePolicy(input, opaPackage);
 
     if (response.decision.result === 'CONDITIONAL') {
       if (!response.decision.conditions) {
