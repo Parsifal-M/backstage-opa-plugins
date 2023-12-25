@@ -7002,7 +7002,7 @@ __metadata:
     "@backstage/plugin-permission-node": ^0.7.18
     "@backstage/plugin-scaffolder-backend": ^1.19.1
     "@types/express": "*"
-    "@types/supertest": ^2.0.12
+    "@types/supertest": ^6.0.1
     express: ^4.17.3
     express-promise-router: ^4.1.0
     msw: ^0.49.0
@@ -7034,7 +7034,7 @@ __metadata:
     "@backstage/config": ^1.1.1
     "@backstage/errors": ^1.2.3
     "@types/express": "*"
-    "@types/supertest": ^2.0.12
+    "@types/supertest": ^6.0.1
     express: ^4.17.1
     express-promise-router: ^4.1.0
     msw: ^1.0.0
@@ -9638,10 +9638,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookiejar@npm:*":
-  version: 2.1.2
-  resolution: "@types/cookiejar@npm:2.1.2"
-  checksum: f6e1903454007f86edd6c3520cbb4d553e1d4e17eaf1f77f6f75e3270f48cc828d74397a113a36942f5fe52f9fa71067bcfa738f53ad468fcca0bc52cb1cbd28
+"@types/cookiejar@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "@types/cookiejar@npm:2.1.5"
+  checksum: 04d5990e87b6387532d15a87d9ec9b2eb783039291193863751dcfd7fc723a3b3aa30ce4c06b03975cba58632e933772f1ff031af23eaa3ac7f94e71afa6e073
   languageName: node
   linkType: hard
 
@@ -9989,6 +9989,13 @@ __metadata:
   version: 1.0.3
   resolution: "@types/mdurl@npm:1.0.3"
   checksum: 5bbed4f0eb9f60040fa26be77aa2158ca468b6423876cec0d2043e7f8298e83b8e5b95fb66056327b02d747c4d376aed16c11ff3fdc4cb3dca327a6931a71f18
+  languageName: node
+  linkType: hard
+
+"@types/methods@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "@types/methods@npm:1.1.4"
+  checksum: ad2a7178486f2fd167750f3eb920ab032a947ff2e26f55c86670a6038632d790b46f52e5b6ead5823f1e53fc68028f1e9ddd15cfead7903e04517c88debd72b1
   languageName: node
   linkType: hard
 
@@ -10372,22 +10379,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/superagent@npm:*":
-  version: 4.1.19
-  resolution: "@types/superagent@npm:4.1.19"
+"@types/superagent@npm:^8.1.0":
+  version: 8.1.1
+  resolution: "@types/superagent@npm:8.1.1"
   dependencies:
-    "@types/cookiejar": "*"
+    "@types/cookiejar": ^2.1.5
+    "@types/methods": ^1.1.4
     "@types/node": "*"
-  checksum: e72a08c72e69ed6f07b785f01da1c1bf29d043db449eb457ed5468418aaece35cc3fa439b4ffcce22ca2fd664e0fd6d8273c0b81cba039cef3aeca87762d48ef
+  checksum: 02b987833cf0d85da9b137fd296fe8ad25a470d60f7e9d81a6ed3f8f8a5d6bace8780816bd35885e2928f467e819a4aa509879a7da0f28018ab1453845eb91e2
   languageName: node
   linkType: hard
 
-"@types/supertest@npm:^2.0.12":
-  version: 2.0.14
-  resolution: "@types/supertest@npm:2.0.14"
+"@types/supertest@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@types/supertest@npm:6.0.1"
   dependencies:
-    "@types/superagent": "*"
-  checksum: 9f6850a22b8f0fd4c26a6dfd9b64771a66476b1a4f841a3b84a9da843ce69463efbf37594fe107297dd14a225d199b802464d48d70e9413238c637903d392137
+    "@types/methods": ^1.1.4
+    "@types/superagent": ^8.1.0
+  checksum: 26e849e9b173b65b18aeb2107b737f8528e865639a9d9101b005b133f9cba01ec1c0c046a3b54971d87e441fc2325694132e941fdcd225c7e19202de5dd0b12d
   languageName: node
   linkType: hard
 
