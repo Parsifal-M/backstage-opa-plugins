@@ -12,6 +12,10 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 - [backstage-opa-policies](https://github.com/Parsifal-M/backstage-opa-policies#hello) - A collection of policies that can be used with the plugins in this repository.
 
+## Additional Documentation
+
+You can find some additional documentation including an architecture overview in the [docs](./docs) folder.
+
 ## Local Development
 
 Step by step guide to developing locally:
