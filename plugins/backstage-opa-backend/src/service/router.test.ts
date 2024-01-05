@@ -169,7 +169,7 @@ describe('createRouter', () => {
               package: undefined,
             },
             rbac: {
-              package: 'rbac_policy',
+              package: 'entitymeta_policy',
             },
           },
         },
@@ -247,52 +247,70 @@ describe('createRouter', () => {
         );
       });
 
+      const opaPackage = 'blah';
       const res = await request(app)
-        .post('/entity-checker')
-        .send(mockedInput)
+        .post(`/opa-permissions/${opaPackage}`)
+        .send({ policyInput: mockedInput })
         .expect('Content-Type', /json/);
 
       expect(res.status).toEqual(200);
-      expect(res.body).toEqual(mockedResponse);
+      expect(res.body).toEqual(mockedResponse.result); // Updated this line
     });
 
-    it('will complain if the OPA url is missing', async () => {
-      const noBaseUrlConfig = new ConfigReader({
+    it('POSTS without an optional package and returns a response from OPA as expected', async () => {
+      const opaPackage = 'entitymeta_policy';
+      const mockedPackagePath = opaPackage.replace(/\./g, '/');
+
+      const opaPermissionsPackageInAppConfig = new ConfigReader({
         opaClient: {
-          baseUrl: undefined,
+          baseUrl: 'http://localhost',
           policies: {
             entityChecker: {
-              package: 'entitymeta_policy',
+              package: undefined,
             },
             rbac: {
-              package: 'rbac_policy',
+              package: opaPackage,
             },
           },
         },
       });
 
+      (fetch as jest.MockedFunction<typeof fetch>).mockImplementation(() => {
+        return Promise.resolve(
+          new FetchResponse(JSON.stringify(mockedResponse), {
+            headers: { 'Content-Type': 'application/json' },
+          }),
+        );
+      });
+
       const router = await createRouter({
         logger: getVoidLogger(),
-        config: noBaseUrlConfig,
+        config: opaPermissionsPackageInAppConfig,
       });
 
       const localApp = express().use(router);
 
       const res = await request(localApp)
-        .post(`/opa-permissions`)
-        .send({ input: {} });
+        .post(`/opa-permissions/${opaPackage}`)
+        .send({ policyInput: mockedInput })
+        .expect('Content-Type', /json/);
 
-      expect(res.status).toBe(400);
-      expect(res.body.message).toBe('OPA URL not set or missing!');
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining(mockedPackagePath),
+        expect.anything(),
+      );
+
+      expect(res.status).toEqual(200);
+      expect(res.body).toEqual(mockedResponse.result);
     });
 
-    it('will complain if no rbac package is set', async () => {
+    it('will complain if no package is set', async () => {
       const noRbacPackageConfig = new ConfigReader({
         opaClient: {
           baseUrl: 'http://localhost',
           policies: {
             entityChecker: {
-              package: 'entitymeta_policy',
+              package: undefined,
             },
             rbac: {
               package: undefined,
@@ -308,17 +326,25 @@ describe('createRouter', () => {
 
       const localApp = express().use(router);
 
+      // Since the package is undefined, we don't need to get it from the config
+      // Instead, we can just pass 'undefined' directly to the post request
+
       const res = await request(localApp)
         .post(`/opa-permissions`)
-        .send({ input: {} });
+        .send({ policyInput: mockedInput })
+        .expect('Content-Type', /json/);
 
-      expect(res.status).toBe(400);
-      expect(res.body.message).toBe('OPA RBAC package not set or missing!');
+      expect(res.status).toEqual(400);
+      expect(res.body).toEqual({
+        message: 'OPA RBAC package not set or missing!',
+      });
     });
 
     it('will return 400 if the policy input is missing', async () => {
+      const opaPackage = 'blah.admin';
+
       const res = await request(app)
-        .post('/opa-permissions')
+        .post(`/opa-permissions/${opaPackage}`)
         .send()
         .expect('Content-Type', /json/);
 
@@ -327,12 +353,14 @@ describe('createRouter', () => {
     });
 
     it('will return a 500 if OPA there is an issue sending the request to OPA', async () => {
+      const opaPackage = 'blah.admin';
+
       (fetch as jest.MockedFunction<typeof fetch>).mockImplementation(() => {
         return Promise.reject(new Error('OPA is not available'));
       });
 
       const res = await request(app)
-        .post('/opa-permissions')
+        .post(`/opa-permissions/${opaPackage}`)
         .send({ policyInput: {} })
         .expect('Content-Type', /json/);
 

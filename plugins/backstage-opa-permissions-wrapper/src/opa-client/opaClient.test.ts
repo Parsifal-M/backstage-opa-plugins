@@ -10,6 +10,7 @@ jest.mock('@backstage/config', () => {
     ConfigReader: jest.fn().mockImplementation(() => {
       return {
         getString: jest.fn().mockReturnValue('http://localhost:7007'),
+        getOptionalString: jest.fn().mockReturnValue('some.package.admin'),
       };
     }),
   };
@@ -28,7 +29,7 @@ describe('OpaClient', () => {
     } as unknown as Logger;
     mockConfig = new ConfigReader({
       backend: {
-        baseUrl: 'http://localhost:7007',
+        backendBaseUrl: 'http://localhost:7007',
       },
     });
   });
@@ -42,6 +43,7 @@ describe('OpaClient', () => {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
+    const mockOpaPackage = 'some.package.admin';
     const mockResponse = { result: 'DENY' };
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -49,14 +51,17 @@ describe('OpaClient', () => {
     } as any);
 
     const client = new OpaClient(mockConfig, mockLogger);
-    const result = await client.evaluatePolicy(mockInput);
+    const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      'http://localhost:7007/api/opa/opa-permissions',
-      expect.anything(),
-    );
-    expect(mockFetch.mock.calls[0][1]?.body).toContain(
-      JSON.stringify({ policyInput: mockInput }),
+      `http://localhost:7007/api/opa/opa-permissions/${mockOpaPackage}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          policyInput: mockInput,
+        }),
+      },
     );
     expect(result).toEqual(mockResponse);
   });
@@ -73,14 +78,17 @@ describe('OpaClient', () => {
     } as any);
 
     const client = new OpaClient(mockConfig, mockLogger);
-    const result = await client.evaluatePolicy(mockInput);
+    const mockOpaPackage = 'some.package.admin';
+    const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      'http://localhost:7007/api/opa/opa-permissions',
+      `http://localhost:7007/api/opa/opa-permissions/${mockOpaPackage}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ policyInput: mockInput }),
+        body: JSON.stringify({
+          policyInput: mockInput,
+        }),
       },
     );
     expect(result).toEqual(mockResponse);
