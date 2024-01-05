@@ -87,29 +87,31 @@ This document provides examples of inputs and outputs for the policy evaluation 
 
 ```json
 {
+  "claims": ["user:default/john-doe", "group:default/admins"],
   "decision": {
-    "result": "CONDITIONAL",
-    "pluginId": "catalog",
-    "resourceType": "catalog-entity",
     "conditions": {
       "allOf": [
         {
+          "resourceType": "catalog-entity",
+          "rule": "IS_ENTITY_KIND",
           "params": {
             "kinds": ["API"]
-          },
-          "resourceType": "catalog-entity",
-          "rule": "IS_ENTITY_KIND"
+          }
         },
         {
+          "resourceType": "catalog-entity",
+          "rule": "IS_ENTITY_OWNER",
           "params": {
             "claims": ["user:default/john-doe", "group:default/admins"]
-          },
-          "resourceType": "catalog-entity",
-          "rule": "IS_ENTITY_OWNER"
+          }
         }
       ]
-    }
-  }
+    },
+    "pluginId": "catalog",
+    "resourceType": "catalog-entity",
+    "result": "CONDITIONAL"
+  },
+  "permission": "catalog.entity.write"
 }
 ```
 
