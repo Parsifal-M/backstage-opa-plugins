@@ -111,7 +111,7 @@ This document provides examples of inputs and outputs for the policy evaluation 
     "resourceType": "catalog-entity",
     "result": "CONDITIONAL"
   },
-  "permission": "catalog.entity.write"
+  "permission": "catalog.entity.read"
 }
 ```
 
