@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import { ConfigReader } from '@backstage/config';
 import { Logger } from 'winston';
 import { PolicyEvaluationInput } from '../types';
+import { DiscoveryService } from '@backstage/backend-plugin-api';
 
 jest.mock('node-fetch', () => jest.fn());
 jest.mock('@backstage/config', () => {
@@ -16,10 +17,20 @@ jest.mock('@backstage/config', () => {
   };
 });
 jest.mock('winston');
+jest.mock('@backstage/backend-plugin-api', () => {
+  return {
+    DiscoveryService: jest.fn().mockImplementation(() => {
+      return {
+        getBaseUrl: jest.fn().mockResolvedValue('http://localhost:7007'),
+      };
+    }),
+  };
+});
 
 describe('OpaClient', () => {
   let mockLogger: Logger;
   let mockConfig: ConfigReader;
+  let mockDiscovery: DiscoveryService;
   const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
   beforeAll(() => {
@@ -32,6 +43,9 @@ describe('OpaClient', () => {
         backendBaseUrl: 'http://localhost:7007',
       },
     });
+    mockDiscovery = {
+      getBaseUrl: jest.fn().mockResolvedValue('http://localhost:7007'),
+    } as unknown as DiscoveryService;
   });
 
   beforeEach(() => {
@@ -43,18 +57,21 @@ describe('OpaClient', () => {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
+
     const mockOpaPackage = 'some.package.admin';
+    const baseUrl = await mockDiscovery.getBaseUrl('opa');
+    const url = `${baseUrl}/opa-permissions/${mockOpaPackage}`;
     const mockResponse = { result: 'DENY' };
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: jest.fn().mockResolvedValueOnce(mockResponse),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger);
+    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
     const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      `http://localhost:7007/api/opa/opa-permissions/${mockOpaPackage}`,
+      url, // Use the correct URL here
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -71,18 +88,20 @@ describe('OpaClient', () => {
       permission: { name: 'write' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
+    const mockOpaPackage = 'some.package.admin';
+    const baseUrl = await mockDiscovery.getBaseUrl('opa');
+    const url = `${baseUrl}/opa-permissions/${mockOpaPackage}`;
     const mockResponse = { result: 'ALLOW' };
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: jest.fn().mockResolvedValueOnce(mockResponse),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger);
-    const mockOpaPackage = 'some.package.admin';
+    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
     const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      `http://localhost:7007/api/opa/opa-permissions/${mockOpaPackage}`,
+      url, // Use the correct URL here
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,7 +119,7 @@ describe('OpaClient', () => {
       json: jest.fn().mockResolvedValueOnce({}),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger);
+    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
@@ -114,7 +133,7 @@ describe('OpaClient', () => {
       json: jest.fn().mockResolvedValueOnce({}),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger);
+    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
@@ -125,7 +144,7 @@ describe('OpaClient', () => {
   it('should throw error when fetch throws an error', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
-    const client = new OpaClient(mockConfig, mockLogger);
+    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
