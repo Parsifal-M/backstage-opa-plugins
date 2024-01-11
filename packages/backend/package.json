@@ -36,7 +36,7 @@
     "@backstage/plugin-search-backend-module-pg": "^0.5.16",
     "@backstage/plugin-search-backend-node": "^1.2.11",
     "@backstage/plugin-techdocs-backend": "^1.9.0",
-    "@parsifal-m/opa-permissions-wrapper": "^0.4.1",
+    "@parsifal-m/opa-permissions-wrapper": "0.5.0",
     "@parsifal-m/plugin-opa-backend": "^1.2.3",
     "app": "link:../app",
     "better-sqlite3": "^8.0.0",

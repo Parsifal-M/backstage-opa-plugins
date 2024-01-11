@@ -34,21 +34,18 @@ export class OpaClient {
     }
     this.logger.info(`Sending request to OPA: ${url}`);
 
-
     this.logger.info(`Sending input to OPA: ${JSON.stringify(input)}`);
 
     try {
-      const response = await fetch(url,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            policyInput: input,
-          }),
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          policyInput: input,
+        }),
+      });
 
       if (!response.ok) {
         throw await ResponseError.fromResponse(response);

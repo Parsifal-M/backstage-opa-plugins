@@ -1,4 +1,4 @@
-# OPA Permissions Wrapper for Backstage A.K.A. `backstage-opa-permissions-wrapper`
+# OPA Permissions Wrapper for Backstage
 
 This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) wrapper for the Backstage Permission Framework. The wrapper provides a way to evaluate permissions using OPA, allowing for fine-grained access control and customized policies for your Backstage instance.
 
@@ -38,7 +38,7 @@ import {
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
-  const opaClient = new OpaClient(env.config, env.logger);
+  const opaClient = new OpaClient(env.config, env.logger, env.discovery);
   const genericPolicyEvaluator = policyEvaluator(opaClient, env.config);
   class PermissionsHandler implements PermissionPolicy {
     async handle(

@@ -1,6 +1,6 @@
 {
   "name": "@parsifal-m/opa-permissions-wrapper",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "license": "Apache-2.0",
@@ -10,19 +10,8 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "backend-plugin"
+    "role": "node-library"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Parsifal-M/brewed-backstage"
-  },
-  "keywords": [
-    "backstage",
-    "OPA",
-    "Open Policy Agent",
-    "permissions",
-    "RBAC"
-  ],
   "scripts": {
     "start": "backstage-cli package start",
     "build": "backstage-cli package build",
@@ -33,21 +22,14 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@backstage/backend-common": "^0.19.9",
     "@backstage/backend-plugin-api": "^0.6.8",
     "@backstage/config": "^1.1.1",
     "@backstage/errors": "^1.2.3",
     "@backstage/plugin-auth-node": "^0.4.1",
-    "@backstage/plugin-catalog-backend": "^1.15.0",
     "@backstage/plugin-permission-common": "^0.7.10",
     "@backstage/plugin-permission-node": "^0.7.18",
-    "@backstage/plugin-scaffolder-backend": "^1.19.1",
-    "@types/express": "*",
-    "express": "^4.17.3",
-    "express-promise-router": "^4.1.0",
     "node-fetch": "^2.6.7",
-    "winston": "^3.2.1",
-    "yn": "^4.0.0"
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@backstage/cli": "^0.24.0",
@@ -56,7 +38,6 @@
     "supertest": "^6.2.4"
   },
   "files": [
-    "dist",
-    "config.d.ts"
+    "dist"
   ]
 }
