@@ -19,7 +19,7 @@ import { catalogEntityDeletePermission } from '@backstage/plugin-catalog-common/
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
-  const opaClient = new OpaClient(env.config, env.logger);
+  const opaClient = new OpaClient(env.config, env.logger, env.discovery);
   // Example of how you can use the OPA client to create a policy evaluator and pass different policies to it
   const adminPolicyEvaluator = policyEvaluator(
     opaClient,

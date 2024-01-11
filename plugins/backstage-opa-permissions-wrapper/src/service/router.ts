@@ -1,10 +1,11 @@
-import { errorHandler } from '@backstage/backend-common';
+import { PluginEndpointDiscovery, errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
 
 export interface RouterOptions {
   logger: Logger;
+  discovery: PluginEndpointDiscovery;
 }
 
 export async function createRouter(
