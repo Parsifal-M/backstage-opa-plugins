@@ -1,3 +1,5 @@
+![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-opa-backend?logo=npm)
+
 # backstage-opa-backend
 
 This serves as the OPA Backend Plugin, eventually to route all your OPA needs through!
@@ -56,17 +58,15 @@ opaClient:
       package: 'rbac_policy'
 ```
 
-This plugin currently works together with the [opa-entity-checker](https://github.com/Parsifal-M/brewed-backstage/blob/main/plugins/opa-entity-checker/README.md) and the [opa-permissions-wrapper](https://github.com/Parsifal-M/backstage-opa-permissions-wrapper) plugin(s).
+This plugin currently works together with the [opa-entity-checker](../backstage-opa-entity-checker/README.md) and the [opa-permissions-wrapper](../../packages/backstage-opa-permissions-wrapper/README.md) plugin(s).
 
 # Note!
 
-The `package` name in the `app-config.yaml` file should match the `package` name in the `rego` file. You can find some working example of policies to use with this plugin [here](https://github.com/Parsifal-M/backstage-opa-policies).
+The `package` name in the `app-config.yaml` file should match the `package` name in the `rego` file. You can find some working example of policies to use with this plugin [here](https://github.com/Parsifal-M/backstage-opa-policies) or in [here](../../example-opa-policies/README.md)
 
 ## Contributing
 
-I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
-
-Don't forget to read the [Contributing Guide](CONTRIBUTING.md) before submitting your first contribution.
+I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal)
 
 ## License
 

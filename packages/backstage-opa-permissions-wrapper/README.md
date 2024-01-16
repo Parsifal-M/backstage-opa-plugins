@@ -1,3 +1,5 @@
+![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fopa-permissions-wrapper?logo=npm)
+
 # OPA Permissions Wrapper for Backstage
 
 This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) wrapper for the Backstage Permission Framework. The wrapper provides a way to evaluate permissions using OPA, allowing for fine-grained access control and customized policies for your Backstage instance.
@@ -8,7 +10,7 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 ## Pre-requisites
 
-- This plugin requires the [opa-backend](https://github.com/Parsifal-M/backstage-opa-backend#opa-backend) plugin to be installed and configured.
+- This plugin requires the [opa-backend](../../plugins/backstage-opa-backend/README.md) plugin to be installed and configured.
 - This plugin also requires and assumes that you have set up and followed the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
 
 ## Key Components
@@ -75,7 +77,11 @@ opaClient:
       package: 'rbac_policy'
 ```
 
-Replace the `baseUrl` with the URL of your OPA server and 'catalog_policy' with the OPA policy package containing your catalog policies.
+Depending on how you have deployed OPA, you may need to change the `baseUrl` to point to the correct location. You can then set the package for each policy you want to use.
+
+It is also possible to provide a package to the `policyEvaluator` function, this will override the package provided in the config. This allows for more flexibility in policy evaluation.
+
+If you do not override the package, the package provided in the config will be used.
 
 ## An Example Policy and Input
 

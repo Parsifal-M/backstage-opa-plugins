@@ -9195,6 +9195,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@spotify/eslint-plugin@npm:^14.1.3":
+  version: 14.1.6
+  resolution: "@spotify/eslint-plugin@npm:14.1.6"
+  peerDependencies:
+    "@typescript-eslint/parser": ^5.13.0
+    eslint: ^8.10.0
+  checksum: 55d844c5733c929a6218f9aae3454556b6090102ae7a7461082dd14ea98485e48e936046f815267b62f7b054c7faa8edd8bde7d4e092d92f810d8eb7246b29bc
+  languageName: node
+  linkType: hard
+
 "@spotify/prettier-config@npm:^15.0.0":
   version: 15.0.0
   resolution: "@spotify/prettier-config@npm:15.0.0"
@@ -11564,7 +11574,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:^5.10.0, @typescript-eslint/utils@npm:^5.57.0":
+"@typescript-eslint/utils@npm:^5.10.0, @typescript-eslint/utils@npm:^5.57.0, @typescript-eslint/utils@npm:^5.58.0":
   version: 5.62.0
   resolution: "@typescript-eslint/utils@npm:5.62.0"
   dependencies:
@@ -16621,6 +16631,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-notice@npm:^0.9.10":
+  version: 0.9.10
+  resolution: "eslint-plugin-notice@npm:0.9.10"
+  dependencies:
+    find-root: ^1.1.0
+    lodash: ^4.17.15
+    metric-lcs: ^0.1.2
+  peerDependencies:
+    eslint: ">=3.0.0"
+  checksum: 0892ea3da8f31f57390941b6ae3472a34fe4037a21dfe73763c2e5011a08859bff4be6af50d1c54b04e16e43b10342458acb83874b806fcd5e2839be9f99c92e
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-react-hooks@npm:^4.3.0":
   version: 4.6.0
   resolution: "eslint-plugin-react-hooks@npm:4.6.0"
@@ -16653,6 +16676,17 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
   checksum: b4c3d76390b0ae6b6f9fed78170604cc2c04b48e6778a637db339e8e3911ec9ef22510b0ae77c429698151d0f1b245f282177f384105b6830e7b29b9c9b26610
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-testing-library@npm:^6.0.0":
+  version: 6.2.0
+  resolution: "eslint-plugin-testing-library@npm:6.2.0"
+  dependencies:
+    "@typescript-eslint/utils": ^5.58.0
+  peerDependencies:
+    eslint: ^7.5.0 || ^8.0.0
+  checksum: 7af7e0a1eee44c6ba65ce2ae99f8e46ce709a319f4cce778bb0af2dda5828d78f3a81e8989c7b691a8b9b9fef102b56136209aac700038b9e64794600b0d12db
   languageName: node
   linkType: hard
 
@@ -22266,6 +22300,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"metric-lcs@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "metric-lcs@npm:0.1.2"
+  checksum: 9dbdedb904da1a4c0a21024df781427f7b23d7469fdf55275c790fef3471634ee64a7bde0813c6b035c7eff021957833249172180f4ca59e7b4c7b5e587950bc
+  languageName: node
+  linkType: hard
+
 "micromark-core-commonmark@npm:^1.0.0, micromark-core-commonmark@npm:^1.0.1":
   version: 1.1.0
   resolution: "micromark-core-commonmark@npm:1.1.0"
@@ -26847,9 +26888,13 @@ __metadata:
   resolution: "root@workspace:."
   dependencies:
     "@backstage/cli": ^0.24.0
+    "@spotify/eslint-plugin": ^14.1.3
     "@spotify/prettier-config": ^15.0.0
     concurrently: ^8.0.0
     eslint-plugin-jest: "*"
+    eslint-plugin-notice: ^0.9.10
+    eslint-plugin-react: ^7.28.0
+    eslint-plugin-testing-library: ^6.0.0
     husky: ^8.0.3
     lint-staged: ^15.1.0
     node-gyp: ^10.0.0
