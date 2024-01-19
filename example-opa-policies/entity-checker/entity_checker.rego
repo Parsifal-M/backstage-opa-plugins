@@ -10,11 +10,11 @@ good_entity if {
 	count({v | some v in violation; v.level == "error"}) == 0
 }
 
-# violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
-# 	not input.metadata.tags
-# 	entity_check := "Tags"
-# 	msg := "You do not have any tags set!"
-# }
+violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
+	not input.metadata.tags
+	entity_check := "Tags"
+	msg := "You do not have any tags set!"
+}
 
 violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
 	valid_lifecycles = {"production", "development", "experimental"}
