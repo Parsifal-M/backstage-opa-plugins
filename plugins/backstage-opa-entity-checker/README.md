@@ -41,38 +41,41 @@ opaClient:
 Then in your OPA Policy (the `rego` file) you can use the following to set any violations you want to display:
 
 ```rego
-package your-package-name
+package entity_checker
 
-default allow = false
+import future.keywords.contains
+import future.keywords.if
+import future.keywords.in
 
-allow {
-	count({v | v := violation[_]; v.level == "error"}) == 0
+default allow := false
+
+allow if {
+	count({v | some v in violation; v.level == "error"}) == 0
 }
 
-violation[{"message": msg, "level": "warning"}] {
-    not input.metadata.tags
-    msg := "You do not have any tags set!"
+violation contains [{"message": msg, "level": "warning"}] if {
+	not input.metadata.tags
+	msg := "You do not have any tags set!"
 }
 
-violation[{"message": msg, "level": "error"}] {
+violation contains {"message": msg, "level": "error"} if {
 	valid_lifecycles = {"production", "development", "experimental"}
-    not valid_lifecycles[input.spec.lifecycle]
-    msg := "Incorrect lifecycle, should be one of production, development or experimental"
+	not valid_lifecycles[input.spec.lifecycle]
+	msg := "Incorrect lifecycle, should be one of production, development or experimental"
 }
 
-violation[{"message": msg, "level": "error"}] {
-    not is_system_present
-    msg := "System is missing!"
+violation contains {"message": msg, "level": "error"} if {
+	not is_system_present
+	msg := "System is missing!"
 }
 
-violation[{"message": msg, "level": "error"}] {
+violation contains {"message": msg, "level": "error"} if {
 	valid_types = {"website", "library", "service"}
-    not valid_types[input.spec.type]
-	not valid_types
-    msg := "Incorrect component type!"
+	not valid_types[input.spec.type]
+	msg := "Incorrect component type!"
 }
 
-is_system_present {
+is_system_present if {
 	input.spec.system
 }
 ```

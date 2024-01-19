@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, Chip, Box } from '@material-ui/core';
+import { Card, CardContent, Typography, Chip } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
@@ -49,24 +49,30 @@ export const OpaMetadataAnalysisCard = () => {
   const alertApi = useApi(alertApiRef);
   let violationId = 0;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const results = await opaApi.entityCheck(entity);
-        setOpaResults(results);
-      } catch (error: unknown) {
-        alertApi.post({
-          message: `Could not fetch data from OPA: ${error}`,
-          severity: 'error',
-          display: 'transient',
-        });
-      }
-    };
-    fetchData();
+  const fetchData = useCallback(async () => {
+    try {
+      const results = await opaApi.entityCheck(entity);
+      setOpaResults(results);
+    } catch (error: unknown) {
+      alertApi.post({
+        message: `Could not fetch data from OPA: ${error}`,
+        severity: 'error',
+        display: 'transient',
+      });
+    }
   }, [entity, alertApi, opaApi]);
 
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const passStatus = useMemo(
+    () => getPassStatus(opaResults?.violation),
+    [opaResults],
+  );
+
   const renderCardContent = () => {
-    if (opaResults === null) {
+    if (!opaResults || !('violation' in opaResults)) {
       return (
         <Typography>
           OPA did not return any results for this entity. Please make sure you
@@ -82,7 +88,7 @@ export const OpaMetadataAnalysisCard = () => {
     return opaResults.violation.map((violation: Violation) => (
       <Alert
         severity={violation.level}
-        key={violation.id || ++violationId}
+        key={violation.id ?? ++violationId}
         className={classes.alert}
       >
         {violation.message}
@@ -93,26 +99,19 @@ export const OpaMetadataAnalysisCard = () => {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Box className={classes.titleBox}>
-          <Typography variant="h6">OPA Metadata Analysis</Typography>
+        <div className={classes.titleBox}>
+          <Typography variant="h6">OPA Entity Checker</Typography>
           {opaResults?.violation && (
             <Chip
-              label={getPassStatus(opaResults.violation)}
-              color={
-                getPassStatus(opaResults.violation) === 'FAIL'
-                  ? 'secondary'
-                  : 'default'
-              }
+              label={passStatus}
+              color={passStatus === 'FAIL' ? 'secondary' : 'default'}
               style={{
-                backgroundColor:
-                  getPassStatus(opaResults.violation) === 'WARN'
-                    ? 'orange'
-                    : undefined,
+                backgroundColor: passStatus === 'WARN' ? 'orange' : undefined,
               }}
               className={classes.chip}
             />
           )}
-        </Box>
+        </div>
         {renderCardContent()}
       </CardContent>
     </Card>
