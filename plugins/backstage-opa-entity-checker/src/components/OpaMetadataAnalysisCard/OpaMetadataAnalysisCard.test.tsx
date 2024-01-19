@@ -55,7 +55,7 @@ test('renders without crashing', async () => {
     );
 
     await waitFor(() =>
-      expect(screen.getByText(/metadata analysis/i)).toBeInTheDocument(),
+      expect(screen.getByText(/OPA Entity Checker/i)).toBeInTheDocument(),
     );
   });
 });
