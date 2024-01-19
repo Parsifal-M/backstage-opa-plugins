@@ -17,6 +17,7 @@ export interface OpaResult {
 }
 
 export interface Violation {
+  id: string;
   level: 'error' | 'warning';
   message: string;
 }

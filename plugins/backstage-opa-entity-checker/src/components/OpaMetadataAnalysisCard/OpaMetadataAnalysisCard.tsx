@@ -47,7 +47,6 @@ export const OpaMetadataAnalysisCard = () => {
   const opaApi = useApi(opaBackendApiRef);
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
   const alertApi = useApi(alertApiRef);
-  let violationId = 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,14 +74,14 @@ export const OpaMetadataAnalysisCard = () => {
       );
     }
 
-    if (!opaResults?.violation?.length) {
+    if (!opaResults?.result?.violation?.length) {
       return <Typography>No issues found!</Typography>;
     }
 
-    return opaResults.violation.map((violation: Violation) => (
+    return opaResults.result.violation.map((violation: Violation) => (
       <Alert
         severity={violation.level}
-        key={violation.id || ++violationId}
+        key={`${violation.level}-${violation.message}`}
         className={classes.alert}
       >
         {violation.message}
@@ -95,21 +94,14 @@ export const OpaMetadataAnalysisCard = () => {
       <CardContent>
         <Box className={classes.titleBox}>
           <Typography variant="h6">OPA Metadata Analysis</Typography>
-          {opaResults?.violation && (
+          {opaResults?.result?.violation && (
             <Chip
-              label={getPassStatus(opaResults.violation)}
+              label={getPassStatus(opaResults.result.violation)}
               color={
-                getPassStatus(opaResults.violation) === 'FAIL'
+                getPassStatus(opaResults.result.violation) === 'FAIL'
                   ? 'secondary'
                   : 'default'
               }
-              style={{
-                backgroundColor:
-                  getPassStatus(opaResults.violation) === 'WARN'
-                    ? 'orange'
-                    : undefined,
-              }}
-              className={classes.chip}
             />
           )}
         </Box>
