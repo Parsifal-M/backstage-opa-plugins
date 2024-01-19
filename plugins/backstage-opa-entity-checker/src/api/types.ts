@@ -10,12 +10,13 @@ export const opaBackendApiRef = createApiRef<OpaBackendApi>({
 });
 
 export interface OpaResult {
-  allow: boolean;
-  violation?: Violation[];
+  result: {
+    allow: boolean;
+    violation?: Violation[];
+  };
 }
 
 export interface Violation {
-  id: number;
   level: 'error' | 'warning';
   message: string;
 }
