@@ -71,6 +71,15 @@ export const OpaMetadataAnalysisCard = () => {
     [opaResults],
   );
 
+  let chipColor: 'orange' | 'green' | 'red';
+  if (passStatus === 'FAIL') {
+    chipColor = 'red';
+  } else if (passStatus === 'PASS') {
+    chipColor = 'green';
+  } else {
+    chipColor = 'orange';
+  }
+
   const renderCardContent = () => {
     if (!opaResults || !('violation' in opaResults)) {
       return (
@@ -104,10 +113,7 @@ export const OpaMetadataAnalysisCard = () => {
           {opaResults?.violation && (
             <Chip
               label={passStatus}
-              color={passStatus === 'FAIL' ? 'secondary' : 'default'}
-              style={{
-                backgroundColor: passStatus === 'WARN' ? 'orange' : undefined,
-              }}
+              style={{ backgroundColor: chipColor }}
               className={classes.chip}
             />
           )}
