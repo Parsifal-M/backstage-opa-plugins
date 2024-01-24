@@ -26,7 +26,7 @@ Step by step guide to developing locally:
 4. Run `yarn install --immutable` in the root of the repository
 5. Use `docker-compose up -d` to start the OPA server and postgres database
 6. Load the `example-opa-policies` in this project into the OPA server, [read here on how to do this](example-opa-policies/README.md).
-6. Run `yarn dev` in the root of the repository to start the Backstage app
+7. Run `yarn dev` in the root of the repository to start the Backstage app
 
 # Contributing
 
