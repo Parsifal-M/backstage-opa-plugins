@@ -5,11 +5,17 @@ The following instructions assume that you have the OPA server running locally o
 ### Load the `entity-checker` policy
 
 ```bash
-curl -X PUT --data-binary @entity-checker.rego localhost:8181/v1/policies/entity_checker
+curl -X PUT --data-binary @entity_checker.rego localhost:8181/v1/policies/entity_checker
 ```
 
-### Load the `rbac_policy` policy
+### Load the `rbac_policy_admin` policy
 
 ```bash
-curl -X PUT --data-binary @rbac_policy.rego localhost:8181/v1/policies/rbac_policy
+curl -X PUT --data-binary @rbac_policy_admin.rego localhost:8181/v1/policies/rbac_policy_admin
+```
+
+### Load the `rbac_policy_user` policy
+
+```bash
+curl -X PUT --data-binary @rbac_policy_user.rego localhost:8181/v1/policies/rbac_policy_user
 ```
