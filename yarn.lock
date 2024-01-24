@@ -2599,7 +2599,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/app-defaults@npm:^1.4.5, @backstage/app-defaults@npm:^1.4.6":
+"@backstage/app-defaults@npm:^1.4.5":
   version: 1.4.6
   resolution: "@backstage/app-defaults@npm:1.4.6"
   dependencies:
@@ -2615,6 +2615,25 @@ __metadata:
     react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-router-dom: 6.0.0-beta.0 || ^6.3.0
   checksum: 26a4edd7437c166c1259da9a3d51a3e8223391cd061b0c9e595b99cfd0a1ccc0f9e5b51c9c2d8f5d5950eb9dc5d9e1cd7d7d0a79829e1a807347148d676a2868
+  languageName: node
+  linkType: hard
+
+"@backstage/app-defaults@npm:^1.4.7":
+  version: 1.4.7
+  resolution: "@backstage/app-defaults@npm:1.4.7"
+  dependencies:
+    "@backstage/core-app-api": ^1.11.3
+    "@backstage/core-components": ^0.13.10
+    "@backstage/core-plugin-api": ^1.8.2
+    "@backstage/plugin-permission-react": ^0.4.19
+    "@backstage/theme": ^0.5.0
+    "@material-ui/core": ^4.12.2
+    "@material-ui/icons": ^4.9.1
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-router-dom: 6.0.0-beta.0 || ^6.3.0
+  checksum: 0d6a6dce52d2908f68189c6fa01373736eb86631a7de8675b4c8204bee27694491629a8faf5720ba1d252831e4aeca39ef6ab9d213bda2060d50ca1eb757d5a2
   languageName: node
   linkType: hard
 
@@ -3107,6 +3126,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/core-app-api@npm:^1.11.3":
+  version: 1.11.3
+  resolution: "@backstage/core-app-api@npm:1.11.3"
+  dependencies:
+    "@backstage/config": ^1.1.1
+    "@backstage/core-plugin-api": ^1.8.2
+    "@backstage/types": ^1.1.1
+    "@backstage/version-bridge": ^1.0.7
+    "@types/prop-types": ^15.7.3
+    "@types/react": ^16.13.1 || ^17.0.0
+    history: ^5.0.0
+    i18next: ^22.4.15
+    lodash: ^4.17.21
+    prop-types: ^15.7.2
+    react-use: ^17.2.4
+    zen-observable: ^0.10.0
+    zod: ^3.22.4
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-router-dom: 6.0.0-beta.0 || ^6.3.0
+  checksum: 909998d2b9e6b86e1d231ef08f7d17e48661a35c5de751527849f6f0f2b1a2c4ad5ad560b3a9a493c1bfd3265e56d6b1eb071c4f747ce3db76e9f89bd2322e28
+  languageName: node
+  linkType: hard
+
 "@backstage/core-compat-api@npm:^0.1.0":
   version: 0.1.0
   resolution: "@backstage/core-compat-api@npm:0.1.0"
@@ -3262,17 +3306,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/dev-utils@npm:^1.0.24":
-  version: 1.0.25
-  resolution: "@backstage/dev-utils@npm:1.0.25"
+"@backstage/dev-utils@npm:^1.0.26":
+  version: 1.0.26
+  resolution: "@backstage/dev-utils@npm:1.0.26"
   dependencies:
-    "@backstage/app-defaults": ^1.4.6
+    "@backstage/app-defaults": ^1.4.7
     "@backstage/catalog-model": ^1.4.3
-    "@backstage/core-app-api": ^1.11.2
-    "@backstage/core-components": ^0.13.9
-    "@backstage/core-plugin-api": ^1.8.1
-    "@backstage/integration-react": ^1.1.22
-    "@backstage/plugin-catalog-react": ^1.9.2
+    "@backstage/core-app-api": ^1.11.3
+    "@backstage/core-components": ^0.13.10
+    "@backstage/core-plugin-api": ^1.8.2
+    "@backstage/integration-react": ^1.1.23
+    "@backstage/plugin-catalog-react": ^1.9.3
     "@backstage/theme": ^0.5.0
     "@material-ui/core": ^4.12.2
     "@material-ui/icons": ^4.9.1
@@ -3282,7 +3326,7 @@ __metadata:
     react: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-router-dom: 6.0.0-beta.0 || ^6.3.0
-  checksum: 935179d2a84dabf760296f7aad8d77a74736bc4234f0e4fd1b2bfb6df26eca3d976507d2a1f8587d6b5d9adca74508b4b9612b24cf3b81d77f3a376e676e51b6
+  checksum: 0ff261f23789340fa78654b7f95eb32e3c655ad5ef75ab53024c1d19625f2c9de8fc0bb7701701212a0bf78fe1d9eccdfb2518c730b3d4280812d9e136fd83f1
   languageName: node
   linkType: hard
 
@@ -7820,7 +7864,7 @@ __metadata:
     "@backstage/core-app-api": ^1.11.1
     "@backstage/core-components": ^0.13.8
     "@backstage/core-plugin-api": ^1.8.0
-    "@backstage/dev-utils": ^1.0.24
+    "@backstage/dev-utils": ^1.0.26
     "@backstage/plugin-catalog-react": ^1.9.1
     "@backstage/test-utils": ^1.4.5
     "@backstage/theme": ^0.4.4
