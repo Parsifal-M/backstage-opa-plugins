@@ -25,7 +25,7 @@ Step by step guide to developing locally:
 3. Create a PAT (Personal Access Token) for your GitHub account with these scopes: `read:org`, `read:user`, `user:email`. This token should be placed under `integrations.github.token` in the `app-config.local.yaml` file.
 4. Run `yarn install --immutable` in the root of the repository
 5. Use `docker-compose up -d` to start the OPA server and postgres database
-6. Load the `example-opa-policies` in this project into the OPA server, [read here on how to do this](example-opa-policies/README.md).
+6. Load the `rbac_policy.rego` in this project into the OPA server, [read here on how to do this](example-opa-policies/README.md).
 7. Run `yarn dev` in the root of the repository to start the Backstage app
 
 # Contributing
@@ -33,3 +33,5 @@ Step by step guide to developing locally:
 Contributions are welcome! However, still figuring out the best approach as this does require user and group entities to be in the system.
 
 Please open an issue or a pull request. You can also contact me on mastodon at [@parcifal](https://hachyderm.io/@parcifal).
+
+Please remember to sign your commits with `git commit -s` so that your commits are signed!

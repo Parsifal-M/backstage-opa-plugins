@@ -108,6 +108,6 @@ opaClient:
   baseUrl: 'http://localhost:8181'
   policies:
     entityChecker: # Entity checker plugin
-      package: 'entitymeta_policy'
+      package: 'entity_checker'
     rbac: # Permission wrapper plugin
       package: 'rbac_policy'
