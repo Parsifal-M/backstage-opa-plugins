@@ -3,34 +3,30 @@ import fetch from 'node-fetch';
 import { ConfigReader } from '@backstage/config';
 import { Logger } from 'winston';
 import { PolicyEvaluationInput } from '../types';
-import { DiscoveryService } from '@backstage/backend-plugin-api';
 
 jest.mock('node-fetch', () => jest.fn());
 jest.mock('@backstage/config', () => {
   return {
     ConfigReader: jest.fn().mockImplementation(() => {
       return {
-        getString: jest.fn().mockReturnValue('http://localhost:7007'),
-        getOptionalString: jest.fn().mockReturnValue('some.package.admin'),
+        getOptionalString: jest.fn().mockImplementation((key: string) => {
+          if (key === 'opaClient.baseUrl') {
+            return 'http://localhost:8181';
+          }
+          if (key === 'opaClient.policies.rbac.package') {
+            return 'some.package.admin';
+          }
+          return null;
+        }),
       };
     }),
   };
 });
 jest.mock('winston');
-jest.mock('@backstage/backend-plugin-api', () => {
-  return {
-    DiscoveryService: jest.fn().mockImplementation(() => {
-      return {
-        getBaseUrl: jest.fn().mockResolvedValue('http://localhost:7007'),
-      };
-    }),
-  };
-});
 
 describe('OpaClient', () => {
   let mockLogger: Logger;
   let mockConfig: ConfigReader;
-  let mockDiscovery: DiscoveryService;
   const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
   beforeAll(() => {
@@ -43,9 +39,6 @@ describe('OpaClient', () => {
         backendBaseUrl: 'http://localhost:7007',
       },
     });
-    mockDiscovery = {
-      getBaseUrl: jest.fn().mockResolvedValue('http://localhost:7007'),
-    } as unknown as DiscoveryService;
   });
 
   beforeEach(() => {
@@ -59,15 +52,16 @@ describe('OpaClient', () => {
     };
 
     const mockOpaPackage = 'some.package.admin';
-    const baseUrl = await mockDiscovery.getBaseUrl('opa');
-    const url = `${baseUrl}/opa-permissions/${mockOpaPackage}`;
-    const mockResponse = { result: 'DENY' };
+    const url = `http://localhost:8181/v1/data/${mockOpaPackage.replace(
+      /\./g,
+      '/',
+    )}`;
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: jest.fn().mockResolvedValueOnce(mockResponse),
+      json: jest.fn().mockResolvedValueOnce({ result: 'ALLOW' }),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
+    const client = new OpaClient(mockConfig, mockLogger);
     const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -76,28 +70,29 @@ describe('OpaClient', () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          policyInput: mockInput,
+          input: mockInput,
         }),
       },
     );
-    expect(result).toEqual(mockResponse);
+    expect(result).toEqual('ALLOW');
   });
 
-  it('should handle ALLOW result', async () => {
+  it('should handle DENY result', async () => {
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'write' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
     const mockOpaPackage = 'some.package.admin';
-    const baseUrl = await mockDiscovery.getBaseUrl('opa');
-    const url = `${baseUrl}/opa-permissions/${mockOpaPackage}`;
-    const mockResponse = { result: 'ALLOW' };
+    const url = `http://localhost:8181/v1/data/${mockOpaPackage.replace(
+      /\./g,
+      '/',
+    )}`;
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: jest.fn().mockResolvedValueOnce(mockResponse),
+      json: jest.fn().mockResolvedValueOnce({ result: 'DENY' }),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
+    const client = new OpaClient(mockConfig, mockLogger);
     const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -106,11 +101,11 @@ describe('OpaClient', () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          policyInput: mockInput,
+          input: mockInput,
         }),
       },
     );
-    expect(result).toEqual(mockResponse);
+    expect(result).toEqual('DENY');
   });
 
   it('should throw error when response is not ok', async () => {
@@ -119,7 +114,7 @@ describe('OpaClient', () => {
       json: jest.fn().mockResolvedValueOnce({}),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
+    const client = new OpaClient(mockConfig, mockLogger);
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
@@ -133,7 +128,7 @@ describe('OpaClient', () => {
       json: jest.fn().mockResolvedValueOnce({}),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
+    const client = new OpaClient(mockConfig, mockLogger);
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
@@ -144,7 +139,7 @@ describe('OpaClient', () => {
   it('should throw error when fetch throws an error', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
-    const client = new OpaClient(mockConfig, mockLogger, mockDiscovery);
+    const client = new OpaClient(mockConfig, mockLogger);
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
@@ -153,8 +148,8 @@ describe('OpaClient', () => {
       'Network error',
     );
     expect(mockLogger.error).toHaveBeenCalledWith(
-      'Error during OPA policy evaluation:',
-      expect.objectContaining({ message: 'Network error' }),
+      'An error occurred while sending the policy input to the OPA server:',
+      expect.any(Error),
     );
   });
 });

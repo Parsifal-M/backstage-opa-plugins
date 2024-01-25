@@ -3,7 +3,7 @@ package rbac_policy.admin
 import future.keywords.if
 import future.keywords.in
 
-# Helper method for constructing a conditional decision
+# Helper method for constructing a conditional decision (if you need it)
 conditional(plugin_id, resource_type, conditions) := {
     "result": "CONDITIONAL",
     "pluginId": plugin_id,
@@ -12,29 +12,3 @@ conditional(plugin_id, resource_type, conditions) := {
 }
 
 default decision := {"result": "ALLOW"}
-
-permission := input.permission.name
-
-claims := input.identity.claims
-
-decision := {"result": "ALLOW"} if {
-    permission == "catalog.entity.read"
-    "group:default/maintainers" in claims
-}
-
-# Conditional based on claims (groups a user belongs to)
-# decision := conditional("catalog", "catalog-entity", {"anyOf": [{
-# 	"resourceType": "catalog-entity",
-# 	"rule": "IS_ENTITY_OWNER",
-# 	"params": {"claims": claims},
-# }]}) if {
-# 	permission == "catalog.entity.delete"
-# }
-
-decision := conditional("catalog", "catalog-entity", {"anyOf": [{
-    "resourceType": "catalog-entity",
-    "rule": "IS_ENTITY_KIND",
-    "params": {"kinds": ["API", ""]},
-}]}) if {
-    permission == "catalog.entity.read"
-}

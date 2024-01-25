@@ -19,3 +19,9 @@ curl -X PUT --data-binary @rbac_policy_admin.rego localhost:8181/v1/policies/rba
 ```bash
 curl -X PUT --data-binary @rbac_policy_user.rego localhost:8181/v1/policies/rbac_policy_user
 ```
+
+### By default the `rbac_policy.rego` is expected to be loaded as per the settings in the `app-config.yaml` file.
+
+```bash
+curl -X PUT --data-binary @rbac_policy.rego localhost:8181/v1/policies/rbac_policy
+```

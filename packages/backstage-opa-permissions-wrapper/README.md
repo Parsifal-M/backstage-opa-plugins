@@ -10,7 +10,6 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 ## Pre-requisites
 
-- This plugin requires the [opa-backend](../../plugins/backstage-opa-backend/README.md) plugin to be installed and configured.
 - This plugin also requires and assumes that you have set up and followed the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
 
 ## Key Components
@@ -40,14 +39,16 @@ import {
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
-  const opaClient = new OpaClient(env.config, env.logger, env.discovery);
-  const genericPolicyEvaluator = policyEvaluator(opaClient, env.config);
-  class PermissionsHandler implements PermissionPolicy {
+  const opaClient = new OpaClient(env.config, env.logger);
+
+  const opaRbacPolicy = policyEvaluator(opaClient, env.logger);
+
+  class OpaPermissionPolicy implements PermissionPolicy {
     async handle(
       request: PolicyQuery,
       user?: BackstageIdentityResponse,
     ): Promise<PolicyDecision> {
-      return await genericPolicyEvaluator(request, user);
+      return await opaRbacPolicy(request, user);
     }
   }
 
@@ -55,7 +56,7 @@ export default async function createPlugin(
     config: env.config,
     logger: env.logger,
     discovery: env.discovery,
-    policy: new PermissionsHandler(),
+    policy: new OpaPermissionPolicy(),
     identity: env.identity,
   });
 }
