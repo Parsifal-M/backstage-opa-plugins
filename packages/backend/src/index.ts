@@ -10,4 +10,5 @@ backend.add(
 );
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
 backend.add(import('@backstage/plugin-proxy-backend/alpha'));
+backend.add(import('@backstage/plugin-scaffolder-backend/alpha'));
 backend.start();
