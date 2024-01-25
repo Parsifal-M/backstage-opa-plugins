@@ -104,6 +104,15 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+  providers:
+    githubOrg:
+      id: development
+      githubUrl: https://github.com
+      orgs: ['twocodersbrewing']
+      schedule:
+        frequency: PT2M
+        timeout: PT3M
+
 permission:
   enabled: true
 
