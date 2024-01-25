@@ -29,7 +29,7 @@ export class OpaClient {
   /**
    * Evaluates a policy against a given input.
    * @param input - The input to evaluate the policy against.
-   * @param opaPackage - The OPA package to use. If not provided, falls back to the package set in the constructor.
+   * @param opaPackage - The OPA package to use. You can optionally provide the package here, otherwise it will be taken from the app-config.
    */
   async evaluatePolicy(
     input: PolicyEvaluationInput,
