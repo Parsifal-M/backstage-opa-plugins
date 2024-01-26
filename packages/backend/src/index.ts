@@ -1,5 +1,4 @@
 import { createBackend } from '@backstage/backend-defaults';
-import { legacyPlugin } from '@backstage/backend-common';
 
 const backend = createBackend();
 backend.add(import('@backstage/plugin-app-backend/alpha'));
@@ -10,14 +9,8 @@ backend.add(
   import('@backstage/plugin-catalog-backend-module-scaffolder-entity-model'),
 );
 backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
-
-
-backend.add(legacyPlugin('permission', import('./plugins/permission')));
-
-
-// backend.add(import('@backstage/plugin-permission-backend/alpha'));
-
-
+backend.add(import('@backstage/plugin-permission-backend/alpha'));
+backend.add(import('@internal/plugin-permission-backend-module-opa-wrapper'));
 backend.add(import('@parsifal-m/plugin-opa-backend'));
 backend.add(import('@backstage/plugin-proxy-backend/alpha'));
 backend.add(import('@backstage/plugin-scaffolder-backend/alpha'));
