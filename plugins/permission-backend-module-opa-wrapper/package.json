@@ -1,6 +1,6 @@
 {
-  "name": "@internal/plugin-permission-backend-module-opa-permission-wrapper",
-  "description": "The opa-permission-wrapper backend module for the permission plugin.",
+  "name": "@internal/plugin-permission-backend-module-opa-wrapper",
+  "description": "The opa-wrapper backend module for the permission plugin.",
   "version": "0.1.0",
   "main": "src/index.ts",
   "types": "src/index.ts",

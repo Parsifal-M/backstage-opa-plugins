@@ -1,8 +1,8 @@
 import { coreServices, createBackendModule } from '@backstage/backend-plugin-api';
 
-export const permissionModuleOpaPermissionWrapper = createBackendModule({
+export const permissionModuleOpaWrapper = createBackendModule({
   pluginId: 'permission',
-  moduleId: 'opa-permission-wrapper',
+  moduleId: 'opa-wrapper',
   register(reg) {
     reg.registerInit({
       deps: { logger: coreServices.logger },

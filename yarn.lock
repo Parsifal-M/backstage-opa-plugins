@@ -6250,9 +6250,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@internal/plugin-permission-backend-module-opa-permission-wrapper@^0.1.0, @internal/plugin-permission-backend-module-opa-permission-wrapper@workspace:plugins/permission-backend-module-opa-permission-wrapper":
+"@internal/plugin-permission-backend-module-opa-wrapper@^0.1.0, @internal/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper":
   version: 0.0.0-use.local
-  resolution: "@internal/plugin-permission-backend-module-opa-permission-wrapper@workspace:plugins/permission-backend-module-opa-permission-wrapper"
+  resolution: "@internal/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper"
   dependencies:
     "@backstage/backend-common": ^0.19.9
     "@backstage/backend-plugin-api": ^0.6.7
@@ -13356,7 +13356,7 @@ __metadata:
     "@backstage/plugin-search-backend-module-techdocs": ^0.1.13
     "@backstage/plugin-search-backend-node": ^1.2.11
     "@backstage/plugin-techdocs-backend": ^1.9.0
-    "@internal/plugin-permission-backend-module-opa-permission-wrapper": ^0.1.0
+    "@internal/plugin-permission-backend-module-opa-wrapper": ^0.1.0
     "@parsifal-m/opa-permissions-wrapper": 0.5.0
     "@parsifal-m/plugin-opa-backend": ^1.2.3
     "@types/dockerode": ^3.3.0
