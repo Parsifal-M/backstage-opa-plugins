@@ -1,11 +1,10 @@
 {
-  "name": "@internal/plugin-permission-backend-module-opa-wrapper",
+  "name": "@parsifal-m/plugin-permission-backend-module-opa-wrapper",
   "description": "The opa-wrapper backend module for the permission plugin.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "license": "Apache-2.0",
-  "private": true,
   "publishConfig": {
     "access": "public",
     "main": "dist/index.cjs.js",
@@ -14,6 +13,17 @@
   "backstage": {
     "role": "backend-plugin-module"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Parsifal-M/backstage-opa-plugins.git"
+  },
+  "keywords": [
+    "backstage",
+    "OPA",
+    "Open Policy Agent",
+    "permissions",
+    "RBAC"
+  ],
   "scripts": {
     "start": "backstage-cli package start",
     "build": "backstage-cli package build",

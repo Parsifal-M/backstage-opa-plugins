@@ -38,3 +38,7 @@ export type PolicyEvaluationResult = {
     };
   };
 };
+
+export type PolicyEvaluationResponse = {
+  result: PolicyEvaluationResult;
+};
