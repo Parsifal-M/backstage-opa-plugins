@@ -64,7 +64,7 @@ This will create an OPA client and a permissions handler using the OPA wrapper a
 
 ## I am using the new backend system
 
-Then, make the following changes to the `packages/backend/src/index.ts` file in your Backstage project. 
+Then, make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
 
 ```diff
 import { createBackend } from '@backstage/backend-defaults';

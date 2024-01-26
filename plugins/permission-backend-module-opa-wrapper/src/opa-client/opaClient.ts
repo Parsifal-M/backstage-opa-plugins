@@ -1,7 +1,11 @@
 import fetch from 'node-fetch';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
-import { PolicyEvaluationInput, PolicyEvaluationResult, PolicyEvaluationResponse } from '../types';
+import {
+  PolicyEvaluationInput,
+  PolicyEvaluationResult,
+  PolicyEvaluationResponse,
+} from '../types';
 import { ResponseError } from '@backstage/errors';
 
 /**
@@ -78,7 +82,8 @@ export class OpaClient {
         throw await ResponseError.fromResponse(opaResponse);
       }
 
-      const opaPermissionsResponse = await opaResponse.json() as PolicyEvaluationResponse;
+      const opaPermissionsResponse =
+        (await opaResponse.json()) as PolicyEvaluationResponse;
       return opaPermissionsResponse.result;
     } catch (error: unknown) {
       this.logger.error(
