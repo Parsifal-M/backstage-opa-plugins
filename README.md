@@ -5,7 +5,7 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 ## Plugins
 
 - [backstage-opa-backend](./plugins/backstage-opa-backend/README.md) - A backend plugin that is used to connect to an OPA server and evaluate policies with provided endpoints.
-- [backstage-opa-permissions-wrapper](./packages/backstage-opa-permissions-wrapper/README.md) - A node library that wraps the Backstage permissions framework and uses OPA to evaluate policies, making it possible to use OPA for permissions (like RBAC).
+- [plugin-permission-backend-module-opa-wrapper](./plugins/permission-backend-module-opa-wrapper/README.md) - An OPA Client and a Policy Evaluator that integrates with the Backstage permissions framework and uses OPA to evaluate policies, making it possible to use OPA for permissions (like RBAC).
 - [backstage-opa-entity-checker](./plugins/backstage-opa-entity-checker/README.md) - A frontend plugin that provides a component card that displays if an entity has the expected entity metadata according to an opa policy.
 
 ## Policies
