@@ -1,12 +1,10 @@
-![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fopa-permissions-wrapper?logo=npm)
+![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-permission-backend-module-opa-wrapper) ![NPM Downloads](https://img.shields.io/npm/dw/%40parsifal-m%2Fplugin-permission-backend-module-opa-wrapper)
 
-# OPA Permissions Wrapper for Backstage
+# OPA Permissions Wrapper Module for Backstage
 
 This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) wrapper for the Backstage Permission Framework. The wrapper provides a way to evaluate permissions using OPA, allowing for fine-grained access control and customized policies for your Backstage instance.
 
-### **Please Note! This project is still in development and is not yet ready for production use.**
-
-> This wrapper is still in **development**, you can use it at your own risk, be aware it can change without notice. It is not yet ready for production use.
+This wrapper is still in **development**, you can use it at your own risk, be aware it can change **without** notice.
 
 ## Pre-requisites
 
@@ -18,6 +16,8 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 - `opa-client/opaClient.ts`: Provides the OpaClient class for communication with the OPA server.
 
 To integrate this OPA wrapper with your Backstage instance, you need to first follow the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
+
+## I am using the legacy backend system
 
 Then, make the following changes to the `packages/backend/src/plugins/permission.ts` file in your Backstage project. You can replace the contents with something like the following, this allows for flexible policy evaluation and the ability to use multiple OPA policies for different resource types.
 
@@ -34,7 +34,7 @@ import { PolicyDecision } from '@backstage/plugin-permission-common';
 import {
   OpaClient,
   policyEvaluator,
-} from '@parsifal-m/opa-permissions-wrapper';
+} from '@parsifal-m/plugin-permission-backend-module-opa-wrapper';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -63,6 +63,22 @@ export default async function createPlugin(
 ```
 
 This will create an OPA client and a permissions handler using the OPA wrapper and pass them to the Backstage Permission Framework.
+
+## I am using the new backend system
+
+Then, make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
+
+```diff
+import { createBackend } from '@backstage/backend-defaults';
+
+const backend = createBackend();
+backend.add(import('@backstage/plugin-app-backend/alpha'));
+backend.add(import('@backstage/plugin-auth-backend'));
+// ..... other plugins
++ backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
+```
+
+The policy that will be used can be found in `plugins/permission-backend-module-opa-wrapper/src/policy.ts`. It will simply forward all permission requests to OPA.
 
 ## Configuration
 

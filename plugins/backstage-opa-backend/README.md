@@ -12,9 +12,27 @@ The only pre-requisites to use this plugin is that you have set up an OPA server
 
 ## Installation
 
+This plugin currently works together with the [opa-entity-checker](../backstage-opa-entity-checker/README.md) and the [opa-permissions-wrapper](../../packages/backstage-opa-permissions-wrapper/README.md) plugin(s).
+
+Start with installing the package:
+
 ```bash
 yarn add @parsifal-m/plugin-opa-backend
 ```
+
+In your `app-config.yaml` file, add the following:
+
+```yaml
+opaClient:
+  baseUrl: 'http://localhost:8181'
+  policies:
+    entityChecker: # Entity checker plugin
+      package: 'entity_checker'
+    rbac: # Permission wrapper plugin
+      package: 'rbac_policy'
+```
+
+> NOTE: Currently backstage supports a new way to register backend plugins on the [New Backend System](https://backstage.io/docs/backend-system/), if you are already using the new backend system please continue with the installation of this plugin in the following section: [Register To The New Backend System](#register-to-the-new-backend-system).
 
 Then add `opa.ts` to your packages/backend/src/plugins.ts directory with the following contents:
 
@@ -46,19 +64,24 @@ const opaEnv = useHotMemoize(module, () => createEnv('opa'));
 apiRouter.use('/opa', await opa(opaEnv));
 ```
 
-In your `app-config.yaml` file, add the following:
+### Register To The New Backend System
 
-```yaml
-opaClient:
-  baseUrl: 'http://localhost:8181'
-  policies:
-    entityChecker: # Entity checker plugin
-      package: 'entitymeta_policy'
-    rbac: # Permission wrapper plugin
-      package: 'rbac_policy'
+If you are already using the [New Backend System](https://backstage.io/docs/backend-system/), registering the plugin is much easier.
+
+Add the following to your `packages/backend/src/index.ts` file:
+
+```ts
+// packages/backend/src/index.ts
+import { createBackend } from '@backstage/backend-defaults';
+
+const backend = createBackend();
+
+// ...
+backend.add(import('@parsifal-m/plugin-opa-backend'));
+
+// ...
+backend.start();
 ```
-
-This plugin currently works together with the [opa-entity-checker](../backstage-opa-entity-checker/README.md) and the [opa-permissions-wrapper](../../packages/backstage-opa-permissions-wrapper/README.md) plugin(s).
 
 # Note!
 
