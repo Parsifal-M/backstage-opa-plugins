@@ -62,3 +62,6 @@ site
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Vscode
+.vscode
