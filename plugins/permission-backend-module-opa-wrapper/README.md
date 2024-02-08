@@ -8,14 +8,19 @@ This wrapper is still in **development**, you can use it at your own risk, be aw
 
 ## Pre-requisites
 
-- This plugin also requires and assumes that you have set up and followed the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
+- This plugin requires that you have set up and followed the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it relies on the Backstage permissions framework
+- The [backstage-opa-backend](../backstage-opa-backend) module
+
+## Installation
+
+```shell
+yarn --cwd packages/backend add @parsifal-m/plugin-permission-backend-module-opa-wrapper
+```
 
 ## Key Components
 
 - `permission-evaluator/opaEvaluator.ts`: Defines a policy evaluation function that checks if a given request should be allowed or denied based on a set of policy rules. It uses the OpaClient and configuration provided to evaluate these policies, taking into account the user's identity, and returns a decision accordingly.
 - `opa-client/opaClient.ts`: Provides the OpaClient class for communication with the OPA server.
-
-To integrate this OPA wrapper with your Backstage instance, you need to first follow the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
 
 ## I am using the legacy backend system
 
@@ -110,7 +115,7 @@ package backstage_policy
 import future.keywords.if
 
 # Helper method for constructing a conditional decision
-CONDITIONAL(plugin_id, resource_type, conditions) := conditional_decision if {
+conditional(plugin_id, resource_type, conditions) := conditional_decision if {
 	conditional_decision := {
 		"result": "CONDITIONAL",
 		"pluginId": plugin_id,
@@ -129,7 +134,7 @@ decision := {"result": "ALLOW"} if {
 	permission == "catalog.entity.read"
 }
 
-decision := CONDITIONAL("catalog", "catalog-entity", {"anyOf": [{
+decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 	"resourceType": "catalog-entity",
 	"rule": "IS_ENTITY_OWNER",
 	"params": {"claims": claims},
@@ -137,7 +142,7 @@ decision := CONDITIONAL("catalog", "catalog-entity", {"anyOf": [{
 	permission == "catalog.entity.delete"
 }
 
-decision := CONDITIONAL("catalog", "catalog-entity", {"anyOf": [{
+decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 	"resourceType": "catalog-entity",
 	"rule": "IS_ENTITY_KIND",
 	"params": {"kinds": ["Component"]},
