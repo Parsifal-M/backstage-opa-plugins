@@ -6,7 +6,6 @@ import {
   PolicyEvaluationResult,
   PolicyEvaluationResponse,
 } from '../types';
-import { ResponseError } from '@backstage/errors';
 
 /**
  * OpaClient is a class responsible for interacting with the OPA server.
@@ -24,7 +23,7 @@ export class OpaClient {
    */
   constructor(config: Config, logger: Logger) {
     this.opaPackage = config.getOptionalString(
-      'opaClient.policies.rbac.package',
+      'opaClient.policies.permissions.package',
     );
     this.logger = logger;
     this.opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
@@ -62,9 +61,6 @@ export class OpaClient {
       throw new Error('The policy input is missing!');
     }
 
-    this.logger.info(`Sending request to OPA: ${url}`);
-    this.logger.info(`Sending input to OPA: ${JSON.stringify(input)}`);
-
     try {
       const opaResponse = await fetch(url, {
         method: 'POST',
@@ -74,12 +70,17 @@ export class OpaClient {
         body: JSON.stringify({ input }),
       });
 
-      this.logger.info(
-        `Permission request sent to OPA with input: ${JSON.stringify(input)}`,
+      this.logger.debug(
+        `Permission request sent to OPA`,
       );
 
       if (!opaResponse.ok) {
-        throw await ResponseError.fromResponse(opaResponse);
+        this.logger.error(
+          `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
+        );
+        throw new Error(
+          `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
+        )
       }
 
       const opaPermissionsResponse =
