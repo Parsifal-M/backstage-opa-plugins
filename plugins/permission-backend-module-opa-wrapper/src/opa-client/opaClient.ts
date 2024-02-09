@@ -70,9 +70,7 @@ export class OpaClient {
         body: JSON.stringify({ input }),
       });
 
-      this.logger.debug(
-        `Permission request sent to OPA`,
-      );
+      this.logger.debug(`Permission request sent to OPA`);
 
       if (!opaResponse.ok) {
         this.logger.error(
@@ -80,7 +78,7 @@ export class OpaClient {
         );
         throw new Error(
           `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
-        )
+        );
       }
 
       const opaPermissionsResponse =

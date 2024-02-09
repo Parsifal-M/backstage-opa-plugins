@@ -34,8 +34,12 @@ export const policyEvaluator = (
       const response = await opaClient.evaluatePolicy(input, opaPackage);
 
       if (!response?.decision) {
-        logger.error('The decision is missing in the response from OPA, are you sure the policy is loaded?');
-        throw new Error('The decision is missing in the response from OPA, are you sure the policy is loaded?');
+        logger.error(
+          'The decision is missing in the response from OPA, are you sure the policy is loaded?',
+        );
+        throw new Error(
+          'The decision is missing in the response from OPA, are you sure the policy is loaded?',
+        );
       }
 
       if (response.decision.result === 'CONDITIONAL') {
