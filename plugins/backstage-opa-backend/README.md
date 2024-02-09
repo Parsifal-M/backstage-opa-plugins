@@ -17,7 +17,7 @@ This plugin currently works together with the [opa-entity-checker](../backstage-
 Start with installing the package:
 
 ```bash
-yarn add @parsifal-m/plugin-opa-backend
+yarn --cwd packages/backend add @parsifal-m/plugin-opa-backend
 ```
 
 In your `app-config.yaml` file, add the following:
@@ -54,13 +54,12 @@ export default async function createPlugin(
 And then add the following to your `packages/backend/src/index.ts` file:
 
 ```ts
-//...
+// Add this to your imports
 import opa from './plugins/opa';
 
-//...
+// And the lines below to the main function
 const opaEnv = useHotMemoize(module, () => createEnv('opa'));
 
-//...
 apiRouter.use('/opa', await opa(opaEnv));
 ```
 
@@ -76,10 +75,8 @@ import { createBackend } from '@backstage/backend-defaults';
 
 const backend = createBackend();
 
-// ...
 backend.add(import('@parsifal-m/plugin-opa-backend'));
 
-// ...
 backend.start();
 ```
 
