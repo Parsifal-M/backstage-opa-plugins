@@ -70,7 +70,7 @@ export class OpaClient {
         body: JSON.stringify({ input }),
       });
 
-      this.logger.debug(`Permission request sent to OPA`);
+      this.logger.debug('Sending policy input to the OPA server...');
 
       if (!opaResponse.ok) {
         this.logger.error(
