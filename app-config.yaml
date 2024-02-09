@@ -121,5 +121,5 @@ opaClient:
   policies:
     entityChecker: # Entity checker plugin
       package: 'entity_checker'
-    rbac: # Permission wrapper plugin
+    permissions: # Permission wrapper plugin
       package: 'rbac_policy'

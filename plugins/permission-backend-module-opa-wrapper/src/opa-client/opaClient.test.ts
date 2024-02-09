@@ -33,6 +33,7 @@ describe('OpaClient', () => {
     mockLogger = {
       info: jest.fn(),
       error: jest.fn(),
+      debug: jest.fn(),
     } as unknown as Logger;
     mockConfig = new ConfigReader({
       backend: {
@@ -122,20 +123,6 @@ describe('OpaClient', () => {
     await expect(client.evaluatePolicy(mockInput)).rejects.toThrow();
   });
 
-  it('should throw error when response is not okk', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      json: jest.fn().mockResolvedValueOnce({}),
-    } as any);
-
-    const client = new OpaClient(mockConfig, mockLogger);
-    const mockInput: PolicyEvaluationInput = {
-      permission: { name: 'read' },
-      identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
-    };
-    await expect(client.evaluatePolicy(mockInput)).rejects.toThrow();
-  });
-
   it('should throw error when fetch throws an error', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
@@ -144,8 +131,11 @@ describe('OpaClient', () => {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    await expect(client.evaluatePolicy(mockInput)).rejects.toThrow(
-      'Network error',
+    const mockOpaPackage = 'some.package.admin';
+    await expect(
+      client.evaluatePolicy(mockInput, mockOpaPackage),
+    ).rejects.toThrow(
+      'An error occurred while sending the policy input to the OPA server:',
     );
     expect(mockLogger.error).toHaveBeenCalledWith(
       'An error occurred while sending the policy input to the OPA server:',
