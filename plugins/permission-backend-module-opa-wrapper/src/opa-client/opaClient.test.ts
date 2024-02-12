@@ -13,8 +13,8 @@ jest.mock('@backstage/config', () => {
           if (key === 'opaClient.baseUrl') {
             return 'http://localhost:8181';
           }
-          if (key === 'opaClient.policies.rbac.package') {
-            return 'some.package.admin';
+          if (key === 'opaClient.policies.permission.entrypoint') {
+            return 'rbac_policy/decision';
           }
           return null;
         }),
@@ -52,18 +52,15 @@ describe('OpaClient', () => {
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
 
-    const mockOpaPackage = 'some.package.admin';
-    const url = `http://localhost:8181/v1/data/${mockOpaPackage.replace(
-      /\./g,
-      '/',
-    )}`;
+    const mockOpaEntrypoint = 'some.package.admin';
+    const url = `http://localhost:8181/v1/data/${mockOpaEntrypoint}`;
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: jest.fn().mockResolvedValueOnce({ result: 'ALLOW' }),
     } as any);
 
     const client = new OpaClient(mockConfig, mockLogger);
-    const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
+    const result = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
 
     expect(mockFetch).toHaveBeenCalledWith(
       url, // Use the correct URL here
@@ -83,18 +80,15 @@ describe('OpaClient', () => {
       permission: { name: 'write' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    const mockOpaPackage = 'some.package.admin';
-    const url = `http://localhost:8181/v1/data/${mockOpaPackage.replace(
-      /\./g,
-      '/',
-    )}`;
+    const mockOpaEntrypoint = 'some.package.admin';
+    const url = `http://localhost:8181/v1/data/${mockOpaEntrypoint}`;
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: jest.fn().mockResolvedValueOnce({ result: 'DENY' }),
     } as any);
 
     const client = new OpaClient(mockConfig, mockLogger);
-    const result = await client.evaluatePolicy(mockInput, mockOpaPackage);
+    const result = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
 
     expect(mockFetch).toHaveBeenCalledWith(
       url, // Use the correct URL here
@@ -131,9 +125,9 @@ describe('OpaClient', () => {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    const mockOpaPackage = 'some.package.admin';
+    const mockOpaEntrypoint = 'some/package/admin';
     await expect(
-      client.evaluatePolicy(mockInput, mockOpaPackage),
+      client.evaluatePolicy(mockInput, mockOpaEntrypoint),
     ).rejects.toThrow(
       'An error occurred while sending the policy input to the OPA server:',
     );

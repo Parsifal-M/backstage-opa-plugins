@@ -57,7 +57,7 @@ describe('policyEvaluator', () => {
     const mockOpaPackage = 'some.package.admin';
 
     jest.spyOn(mockOpaClient, 'evaluatePolicy').mockResolvedValueOnce({
-      decision: { result: 'ALLOW' },
+      result: 'ALLOW',
     });
 
     const evaluator = policyEvaluator(
@@ -90,7 +90,7 @@ describe('policyEvaluator', () => {
     const mockOpaPackage = 'some.package.admin';
 
     jest.spyOn(mockOpaClient, 'evaluatePolicy').mockResolvedValueOnce({
-      decision: { result: 'DENY' },
+      result: 'DENY',
     });
 
     const evaluator = policyEvaluator(

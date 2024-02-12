@@ -1,6 +1,7 @@
 package rbac_policy
 
 import future.keywords.if
+import future.keywords.in
 
 # Helper method for constructing a conditional decision
 conditional(plugin_id, resource_type, conditions) := {

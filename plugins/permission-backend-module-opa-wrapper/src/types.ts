@@ -9,33 +9,31 @@ export type PolicyEvaluationInput = {
 };
 
 export type PolicyEvaluationResult = {
-  decision: {
-    result: string;
-    pluginId?: string;
-    resourceType?: string;
-    conditions?: {
-      anyOf?: {
-        params: {
-          [key: string]: any;
-        };
-        resourceType: string;
-        rule: string;
-      }[];
-      allOf?: {
-        params: {
-          [key: string]: any;
-        };
-        resourceType: string;
-        rule: string;
-      }[];
-      none?: {
-        params: {
-          [key: string]: any;
-        };
-        resourceType: string;
-        rule: string;
-      }[];
-    };
+  result: string;
+  pluginId?: string;
+  resourceType?: string;
+  conditions?: {
+    anyOf?: {
+      params: {
+        [key: string]: any;
+      };
+      resourceType: string;
+      rule: string;
+    }[];
+    allOf?: {
+      params: {
+        [key: string]: any;
+      };
+      resourceType: string;
+      rule: string;
+    }[];
+    none?: {
+      params: {
+        [key: string]: any;
+      };
+      resourceType: string;
+      rule: string;
+    }[];
   };
 };
 

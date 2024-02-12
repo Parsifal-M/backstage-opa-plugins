@@ -122,4 +122,4 @@ opaClient:
     entityChecker: # Entity checker plugin
       package: 'entity_checker'
     permissions: # Permission wrapper plugin
-      package: 'rbac_policy'
+      entrypoint: 'rbac_policy/decision'
