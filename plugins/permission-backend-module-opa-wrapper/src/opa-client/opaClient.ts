@@ -32,7 +32,7 @@ export class OpaClient {
   /**
    * Evaluates a policy against a given input.
    * @param input - The input to evaluate the policy against.
-   * @param opaEntryPoint - The OPA package to use. You can optionally provide the package here, otherwise it will be taken from the app-config.
+   * @param opaEntryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
    */
   async evaluatePolicy(
     input: PolicyEvaluationInput,
