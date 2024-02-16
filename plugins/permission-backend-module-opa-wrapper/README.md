@@ -82,23 +82,23 @@ The policy that will be used can be found in `plugins/permission-backend-module-
 
 ## Configuration
 
-The OPA client requires configuration to connect to the OPA server. You need to provide the baseUrl and package for the OPA server in your Backstage app-config.yaml file:
+The OPA client requires configuration to connect to the OPA server. You need to provide the baseUrl and an entrypoint for the OPA server in your Backstage app-config.yaml file:
 
 ```yaml
 opaClient:
   baseUrl: 'http://localhost:8181'
   policies:
     entityChecker: # Entity checker plugin
-      package: 'entitymeta_policy'
-    rbac: # Permission wrapper plugin
-      package: 'rbac_policy'
+      package: 'entity_checker'
+    permissions: # Permission wrapper plugin
+      entrypoint: 'rbac_policy/decision'
 ```
 
-Depending on how you have deployed OPA, you may need to change the `baseUrl` to point to the correct location. You can then set the package for each policy you want to use.
+Depending on how you have deployed OPA, you may need to change the `baseUrl` to point to the correct location. You can then set the entrypoint for each policy you want to use.
 
-It is also possible to provide a package to the `policyEvaluator` function, this will override the package provided in the config. This allows for more flexibility in policy evaluation.
+It is also possible to provide an entrypoint to the `policyEvaluator` function, this will override the entrypoint provided in the config. This allows for more flexibility in policy evaluation.
 
-If you do not override the package, the package provided in the config will be used.
+If you do not override the entrypoint, the entrypoint provided in the config will be used.
 
 ## An Example Policy and Input
 

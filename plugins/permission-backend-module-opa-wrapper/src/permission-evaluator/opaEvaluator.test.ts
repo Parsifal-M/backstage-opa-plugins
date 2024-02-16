@@ -54,7 +54,7 @@ describe('policyEvaluator', () => {
       },
       token: 'mockToken',
     };
-    const mockOpaPackage = 'some.package.admin';
+    const mockopaEntryPoint = 'some/package/admin';
 
     jest.spyOn(mockOpaClient, 'evaluatePolicy').mockResolvedValueOnce({
       result: 'ALLOW',
@@ -63,7 +63,7 @@ describe('policyEvaluator', () => {
     const evaluator = policyEvaluator(
       mockOpaClient,
       mockLogger,
-      mockOpaPackage,
+      mockopaEntryPoint,
     );
     const result = await evaluator(mockRequest, mockUser);
 
@@ -87,7 +87,7 @@ describe('policyEvaluator', () => {
       },
       token: 'mockToken',
     };
-    const mockOpaPackage = 'some.package.admin';
+    const mockopaEntryPoint = 'some/package/admin';
 
     jest.spyOn(mockOpaClient, 'evaluatePolicy').mockResolvedValueOnce({
       result: 'DENY',
@@ -96,7 +96,7 @@ describe('policyEvaluator', () => {
     const evaluator = policyEvaluator(
       mockOpaClient,
       mockLogger,
-      mockOpaPackage,
+      mockopaEntryPoint,
     );
     const result = await evaluator(mockRequest, mockUser);
 

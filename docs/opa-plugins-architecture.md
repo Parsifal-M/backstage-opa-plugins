@@ -33,7 +33,7 @@ sequenceDiagram
     Backstage App->>permissions.ts: Forward request
     permissions.ts->>policyEvaluator: evaluatePolicy(permissionRequest)
     policyEvaluator->>OpaClient: evaluatePolicy(permissionRequest)
-    OpaClient->>OPA Server: POST /v1/data/{opaPackage}
+    OpaClient->>OPA Server: POST /v1/data/{opaEntryPoint}
     OPA Server-->>OpaClient: PolicyEvaluationResult
     OpaClient-->>policyEvaluator: Return PolicyEvaluationResult
     policyEvaluator-->>permissions.ts: Return evaluation result
@@ -56,7 +56,7 @@ sequenceDiagram
     User->>Backstage App: Makes a request
     Backstage App->>permission-backend-module-opa-wrapper: evaluatePolicy(permissionRequest)
     permission-backend-module-opa-wrapper->>opaClient: evaluatePolicy(permissionRequest)
-    opaClient->>OPA Server: POST /v1/data/{opaPackage}
+    opaClient->>OPA Server: POST /v1/data/{opaEntryPoint}
     OPA Server-->>opaClient: PolicyEvaluationResult
     opaClient-->>permission-backend-module-opa-wrapper: Return evaluation result
     permission-backend-module-opa-wrapper-->>Backstage App: Return evaluation result
