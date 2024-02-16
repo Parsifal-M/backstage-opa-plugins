@@ -52,7 +52,7 @@ describe('OpaClient', () => {
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
 
-    const mockOpaEntrypoint = 'some.package.admin';
+    const mockOpaEntrypoint = 'some/admin';
     const url = `http://localhost:8181/v1/data/${mockOpaEntrypoint}`;
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -80,7 +80,7 @@ describe('OpaClient', () => {
       permission: { name: 'write' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    const mockOpaEntrypoint = 'some.package.admin';
+    const mockOpaEntrypoint = 'some/admin';
     const url = `http://localhost:8181/v1/data/${mockOpaEntrypoint}`;
     mockFetch.mockResolvedValueOnce({
       ok: true,

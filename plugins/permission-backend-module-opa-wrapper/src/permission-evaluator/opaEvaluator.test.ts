@@ -24,8 +24,8 @@ describe('policyEvaluator', () => {
         if (key === 'opaClient.baseUrl') {
           return 'http://localhost:8181';
         }
-        if (key === 'opaClient.policies.permissions.package') {
-          return 'some.package.admin';
+        if (key === 'opaClient.policies.permissions.entrypoint') {
+          return 'some/admin';
         }
         return null;
       }),

@@ -49,10 +49,10 @@ export class OpaClient {
 
     if (!setEntryPoint) {
       this.logger.error(
-        'The OPA package is not set in the evaluatePolicy method or in the app-config!',
+        'The OPA entrypoint is not set in the evaluatePolicy method or in the app-config!',
       );
       throw new Error(
-        'The OPA package is not set in the evaluatePolicy method or in the app-config!',
+        'The OPA entrypoint is not set in the evaluatePolicy method or in the app-config!',
       );
     }
 
