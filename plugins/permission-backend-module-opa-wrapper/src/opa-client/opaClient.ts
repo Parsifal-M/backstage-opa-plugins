@@ -12,7 +12,7 @@ import {
  * It provides a method to evaluate a policy against a given input.
  */
 export class OpaClient {
-  private readonly opaPackage?: string;
+  private readonly opaEntryPoint?: string;
   private readonly opaBaseUrl?: string;
   private readonly logger: Logger;
 
@@ -22,8 +22,8 @@ export class OpaClient {
    * @param logger - A logger instance
    */
   constructor(config: Config, logger: Logger) {
-    this.opaPackage = config.getOptionalString(
-      'opaClient.policies.permissions.package',
+    this.opaEntryPoint = config.getOptionalString(
+      'opaClient.policies.permissions.entrypoint',
     );
     this.logger = logger;
     this.opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
@@ -32,27 +32,27 @@ export class OpaClient {
   /**
    * Evaluates a policy against a given input.
    * @param input - The input to evaluate the policy against.
-   * @param opaPackage - The OPA package to use. You can optionally provide the package here, otherwise it will be taken from the app-config.
+   * @param opaEntryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
    */
   async evaluatePolicy(
     input: PolicyEvaluationInput,
-    opaPackage?: string,
+    opaEntryPoint?: string,
   ): Promise<PolicyEvaluationResult> {
-    const setOpaPackage = (opaPackage ?? this.opaPackage)?.replace(/\./g, '/');
+    const setEntryPoint = opaEntryPoint ?? this.opaEntryPoint;
     const opaBaseUrl = this.opaBaseUrl;
-    const url = `${opaBaseUrl}/v1/data/${setOpaPackage}`;
+    const url = `${opaBaseUrl}/v1/data/${setEntryPoint}`;
 
     if (!opaBaseUrl) {
       this.logger.error('The OPA URL is not set in the app-config!');
       throw new Error('The OPA URL is not set in the app-config!');
     }
 
-    if (!setOpaPackage) {
+    if (!setEntryPoint) {
       this.logger.error(
-        'The OPA package is not set in the evaluatePolicy method or in the app-config!',
+        'The OPA entrypoint is not set in the evaluatePolicy method or in the app-config!',
       );
       throw new Error(
-        'The OPA package is not set in the evaluatePolicy method or in the app-config!',
+        'The OPA entrypoint is not set in the evaluatePolicy method or in the app-config!',
       );
     }
 

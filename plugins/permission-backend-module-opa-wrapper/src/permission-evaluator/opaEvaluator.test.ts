@@ -24,8 +24,8 @@ describe('policyEvaluator', () => {
         if (key === 'opaClient.baseUrl') {
           return 'http://localhost:8181';
         }
-        if (key === 'opaClient.policies.permissions.package') {
-          return 'some.package.admin';
+        if (key === 'opaClient.policies.permissions.entrypoint') {
+          return 'some/admin';
         }
         return null;
       }),
@@ -54,16 +54,16 @@ describe('policyEvaluator', () => {
       },
       token: 'mockToken',
     };
-    const mockOpaPackage = 'some.package.admin';
+    const mockopaEntryPoint = 'some/package/admin';
 
     jest.spyOn(mockOpaClient, 'evaluatePolicy').mockResolvedValueOnce({
-      decision: { result: 'ALLOW' },
+      result: 'ALLOW',
     });
 
     const evaluator = policyEvaluator(
       mockOpaClient,
       mockLogger,
-      mockOpaPackage,
+      mockopaEntryPoint,
     );
     const result = await evaluator(mockRequest, mockUser);
 
@@ -87,16 +87,16 @@ describe('policyEvaluator', () => {
       },
       token: 'mockToken',
     };
-    const mockOpaPackage = 'some.package.admin';
+    const mockopaEntryPoint = 'some/package/admin';
 
     jest.spyOn(mockOpaClient, 'evaluatePolicy').mockResolvedValueOnce({
-      decision: { result: 'DENY' },
+      result: 'DENY',
     });
 
     const evaluator = policyEvaluator(
       mockOpaClient,
       mockLogger,
-      mockOpaPackage,
+      mockopaEntryPoint,
     );
     const result = await evaluator(mockRequest, mockUser);
 
