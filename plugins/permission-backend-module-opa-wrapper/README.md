@@ -7,11 +7,11 @@
 
 This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) wrapper for the [Backstage Permission Framework](https://backstage.io/docs/permissions/overview).
 
-- Instead of coding policies directly into your Backstage instance with TypeScript, create, edit and manage your policies in OPA.
+- Instead of coding policies directly into your Backstage instance with TypeScript, create, edit and manage your policies with OPA!
 
 - Manage your policies in a more flexible way, you can use OPA's [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/) language to write your policies.
 
-- No need to redeploy your Backstage instance to update policies, simply update your OPA server and the policies will be updated!
+- No need to redeploy your Backstage instance to update policies, simply update your OPA policies and you are good to go!
 
 - Enable teams to manage their own policies, without needing to know TypeScript or the Backstage codebase!
 
