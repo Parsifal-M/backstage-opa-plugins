@@ -1,6 +1,6 @@
 ![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-permission-backend-module-opa-wrapper) ![NPM Downloads](https://img.shields.io/npm/dw/%40parsifal-m%2Fplugin-permission-backend-module-opa-wrapper)
 
-<img src="../../img/OpaBackstageLogo.png" align="right"
+<img src="../../img/logo.png" align="right"
      alt="OPA Backstage Logo" width="140">
 
 # OPA Permissions Wrapper Module for Backstage
