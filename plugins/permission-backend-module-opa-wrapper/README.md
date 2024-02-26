@@ -1,21 +1,35 @@
 ![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-permission-backend-module-opa-wrapper) ![NPM Downloads](https://img.shields.io/npm/dw/%40parsifal-m%2Fplugin-permission-backend-module-opa-wrapper)
 
+<img src="../../img/OpaBackstageLogo.png" align="right"
+     alt="Size Limit logo by Anton Lovchikov" width="120" height="178">
+
 # OPA Permissions Wrapper Module for Backstage
 
-This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) wrapper for the Backstage Permission Framework. The wrapper provides a way to evaluate permissions using OPA, allowing for fine-grained access control and customized policies for your Backstage instance.
+This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) wrapper for the [Backstage Permission Framework](https://backstage.io/docs/permissions/overview).
 
-This wrapper is still in **development**, you can use it at your own risk, be aware it can change **without** notice.
+- Instead of coding policies directly into your Backstage instance with TypeScript, create, edit and manage your policies in OPA.
+
+- Manage your policies in a more flexible way, you can use OPA's [Rego](https://www.openpolicyagent.org/docs/latest/policy-language/) language to write your policies.
+
+- No need to redeploy your Backstage instance to update policies, simply update your OPA server and the policies will be updated!
+
+- Enable teams to manage their own policies, without needing to know TypeScript or the Backstage codebase!
+
+This wrapper is still in **development**, you can use it at your own risk, be aware it can change **without** notice. (although I will try to keep it as stable as possible).
 
 ## Pre-requisites
 
+- You have a Backstage instance set up and running.
 - This plugin also requires and assumes that you have set up and followed the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
 
-## Key Components
+## How It Works
 
-- `permission-evaluator/opaEvaluator.ts`: Defines a policy evaluation function that checks if a given request should be allowed or denied based on a set of policy rules. It uses the OpaClient and configuration provided to evaluate these policies, taking into account the user's identity, and returns a decision accordingly.
-- `opa-client/opaClient.ts`: Provides the OpaClient class for communication with the OPA server.
+This plugin wraps around the Backstage Permission Framework and uses the OPA client to evaluate policies. It will send a request to OPA with the permission and identity information, OPA will then evaluate the policy and return a decision, which is then passed back to the Permission Framework.
 
-To integrate this OPA wrapper with your Backstage instance, you need to first follow the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
+- Permissions are created in the plugin in which they need to be enforced.
+- The plugin will send a request to the Permission Framework backend with the permission and identity information.
+- The Permission Framework backend will then forward the request to OPA with the permission and identity information.
+- OPA will evaluate the the information against the policy and return a decision.
 
 ## I am using the legacy backend system
 
@@ -62,7 +76,7 @@ export default async function createPlugin(
 }
 ```
 
-This will create an OPA client and a permissions handler using the OPA wrapper and pass them to the Backstage Permission Framework.
+This will replace the default permission evaluation with the OPA client. The OPA client will then evaluate the policy and return a decision.
 
 ## I am using the new backend system
 
@@ -82,7 +96,7 @@ The policy that will be used can be found in `plugins/permission-backend-module-
 
 ## Configuration
 
-The OPA client requires configuration to connect to the OPA server. You need to provide the baseUrl and an entrypoint for the OPA server in your Backstage app-config.yaml file:
+The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and an `entrypoint` for the OPA server in your Backstage app-config.yaml file:
 
 ```yaml
 opaClient:
@@ -94,15 +108,17 @@ opaClient:
       entrypoint: 'rbac_policy/decision'
 ```
 
-Depending on how you have deployed OPA, you may need to change the `baseUrl` to point to the correct location. You can then set the entrypoint for each policy you want to use.
+The `baseUrl` is the URL of the OPA server, and the `entrypoint` is the entrypoint of the policy you want to evaluate.
 
-It is also possible to provide an entrypoint to the `policyEvaluator` function, this will override the entrypoint provided in the config. This allows for more flexibility in policy evaluation.
+It is also possible to provide an entrypoint to the `policyEvaluator` function, this will override the entrypoint provided in the config. This allows for more flexibility in policy evaluation (if you need it).
 
 If you do not override the entrypoint, the entrypoint provided in the config will be used.
 
 ## An Example Policy and Input
 
 An example policy in OPA might look like this, keep in mind you could also use [bundles](https://www.openpolicyagent.org/docs/latest/management-bundles/) to manage your policies and keep the `conditions` object in a `data.json` file.
+
+We use entrypoints to specify which rule to evaluate, the plugin is checking for a 'result' key in the OPA response, this means you do not **have** to use `decision` as I have below, you can use any key you want.
 
 ```rego
 package backstage_policy
