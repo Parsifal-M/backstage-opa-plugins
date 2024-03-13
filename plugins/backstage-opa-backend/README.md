@@ -28,8 +28,8 @@ opaClient:
   policies:
     entityChecker: # Entity checker plugin
       package: 'entity_checker'
-    rbac: # Permission wrapper plugin
-      package: 'rbac_policy'
+    permissions: # Permission wrapper plugin
+      entrypoint: 'rbac_policy'
 ```
 
 > NOTE: Currently backstage supports a new way to register backend plugins on the [New Backend System](https://backstage.io/docs/backend-system/), if you are already using the new backend system please continue with the installation of this plugin in the following section: [Register To The New Backend System](#register-to-the-new-backend-system).
