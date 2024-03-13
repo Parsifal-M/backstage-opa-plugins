@@ -22,13 +22,13 @@ export interface Config {
         package?: string;
       };
       /**
-       * Configuration options for the rbac permission policy
+       * Configuration options for the OPA Permissions Wrapper
        */
-      rbac?: {
+      permissions?: {
         /**
-         * The path to the rbac package in the OPA server
+         * The entrypoint to the OPA Permissions Wrapper
          */
-        package?: string;
+        entrypoint?: string;
       };
     };
   };
