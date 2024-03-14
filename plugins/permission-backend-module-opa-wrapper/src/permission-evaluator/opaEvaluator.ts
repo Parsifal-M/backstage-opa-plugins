@@ -9,11 +9,11 @@ import {
 import { OpaClient } from '../opa-client/opaClient';
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { PolicyEvaluationInput } from '../types';
-import { Logger } from 'winston';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 export const policyEvaluator = (
   opaClient: OpaClient,
-  logger: Logger,
+  logger: LoggerService,
   opaEntryPoint?: string,
 ) => {
   return async (
@@ -35,10 +35,10 @@ export const policyEvaluator = (
 
       if (!response) {
         logger.error(
-          'The decision is missing in the response from OPA, are you sure the policy is loaded?',
+          'The result is missing in the response from OPA, are you sure the policy is loaded?',
         );
         throw new Error(
-          'The decision is missing in the response from OPA, are you sure the policy is loaded?',
+          'The result is missing in the response from OPA, are you sure the policy is loaded?',
         );
       }
 

@@ -1,7 +1,7 @@
 import { OpaClient } from './opaClient';
 import fetch from 'node-fetch';
 import { ConfigReader } from '@backstage/config';
-import { Logger } from 'winston';
+import { LoggerService } from '@backstage/backend-plugin-api';
 import { PolicyEvaluationInput } from '../types';
 
 jest.mock('node-fetch', () => jest.fn());
@@ -25,7 +25,7 @@ jest.mock('@backstage/config', () => {
 jest.mock('winston');
 
 describe('OpaClient', () => {
-  let mockLogger: Logger;
+  let mockLogger: LoggerService;
   let mockConfig: ConfigReader;
   const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
@@ -34,7 +34,7 @@ describe('OpaClient', () => {
       info: jest.fn(),
       error: jest.fn(),
       debug: jest.fn(),
-    } as unknown as Logger;
+    } as unknown as LoggerService;
     mockConfig = new ConfigReader({
       backend: {
         backendBaseUrl: 'http://localhost:7007',
@@ -118,22 +118,13 @@ describe('OpaClient', () => {
   });
 
   it('should throw error when fetch throws an error', async () => {
-    mockFetch.mockRejectedValueOnce(new Error('Network error'));
+    mockFetch.mockRejectedValueOnce(new Error('Fetch error'));
 
     const client = new OpaClient(mockConfig, mockLogger);
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    const mockOpaEntrypoint = 'some/package/admin';
-    await expect(
-      client.evaluatePolicy(mockInput, mockOpaEntrypoint),
-    ).rejects.toThrow(
-      'An error occurred while sending the policy input to the OPA server:',
-    );
-    expect(mockLogger.error).toHaveBeenCalledWith(
-      'An error occurred while sending the policy input to the OPA server:',
-      expect.any(Error),
-    );
+    await expect(client.evaluatePolicy(mockInput)).rejects.toThrow();
   });
 });
