@@ -1,11 +1,11 @@
 import fetch from 'node-fetch';
 import { Config } from '@backstage/config';
-import { Logger } from 'winston';
 import {
   PolicyEvaluationInput,
   PolicyEvaluationResult,
   PolicyEvaluationResponse,
 } from '../types';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 /**
  * OpaClient is a class responsible for interacting with the OPA server.
@@ -14,14 +14,14 @@ import {
 export class OpaClient {
   private readonly opaEntryPoint?: string;
   private readonly opaBaseUrl?: string;
-  private readonly logger: Logger;
+  private readonly logger: LoggerService;
 
   /**
    * Constructs a new OpaClient.
    * @param config - The backend configuration object.
    * @param logger - A logger instance
    */
-  constructor(config: Config, logger: Logger) {
+  constructor(config: Config, logger: LoggerService) {
     this.opaEntryPoint = config.getOptionalString(
       'opaClient.policies.permissions.entrypoint',
     );
@@ -61,6 +61,8 @@ export class OpaClient {
       throw new Error('The policy input is missing!');
     }
 
+    this.logger.debug(`Sent data to OPA: ${JSON.stringify(input)}`);
+
     try {
       const opaResponse = await fetch(url, {
         method: 'POST',
@@ -69,8 +71,6 @@ export class OpaClient {
         },
         body: JSON.stringify({ input }),
       });
-
-      this.logger.debug('Sending policy input to the OPA server...');
 
       if (!opaResponse.ok) {
         this.logger.error(
@@ -83,11 +83,13 @@ export class OpaClient {
 
       const opaPermissionsResponse =
         (await opaResponse.json()) as PolicyEvaluationResponse;
+      this.logger.debug('Received data from OPA:', {
+        opaPermissionsResponse: JSON.stringify(opaPermissionsResponse),
+      });
       return opaPermissionsResponse.result;
     } catch (error: unknown) {
       this.logger.error(
-        'An error occurred while sending the policy input to the OPA server:',
-        error,
+        `An error occurred while sending the policy input to the OPA server: ${error}`,
       );
       throw new Error(
         `An error occurred while sending the policy input to the OPA server: ${error}`,

@@ -5,14 +5,14 @@ import {
   PolicyQuery,
 } from '@backstage/plugin-permission-node';
 import { OpaClient } from './opa-client';
-import { Logger } from 'winston';
+import { LoggerService } from '@backstage/backend-plugin-api';
 import { policyEvaluator } from './permission-evaluator';
 
 export class OpaPermissionPolicy implements PermissionPolicy {
   private opaClient: OpaClient;
-  private logger: Logger;
+  private logger: LoggerService;
 
-  constructor(opaClient: OpaClient, logger: Logger) {
+  constructor(opaClient: OpaClient, logger: LoggerService) {
     this.opaClient = opaClient;
     this.logger = logger;
   }

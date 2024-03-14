@@ -1,5 +1,5 @@
 import { OpaClient } from '../opa-client/opaClient';
-import { Logger } from 'winston';
+import { LoggerService } from '@backstage/backend-plugin-api';
 import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
@@ -12,13 +12,13 @@ jest.mock('@backstage/config');
 
 describe('policyEvaluator', () => {
   let mockOpaClient: OpaClient;
-  let mockLogger: Logger;
+  let mockLogger: LoggerService;
   let mockConfig: Config;
 
   beforeAll(() => {
     mockLogger = {
       error: jest.fn(),
-    } as unknown as Logger;
+    } as unknown as LoggerService;
     mockConfig = {
       getOptionalString: jest.fn().mockImplementation((key: string) => {
         if (key === 'opaClient.baseUrl') {
