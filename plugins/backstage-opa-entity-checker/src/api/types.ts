@@ -11,10 +11,10 @@ export const opaBackendApiRef = createApiRef<OpaBackendApi>({
 
 export interface OpaResult {
   good_entity: boolean;
-  violation?: Violation[];
+  result?: EntityResult[];
 }
 
-export interface Violation {
+export interface EntityResult {
   id?: string;
   check_title?: string;
   level: 'error' | 'warning';

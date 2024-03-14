@@ -1,4 +1,3 @@
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   coreServices,
   createBackendPlugin,
@@ -18,7 +17,7 @@ export const opaPlugin = createBackendPlugin({
         httpRouter.use(
           await createRouter({
             config,
-            logger: loggerToWinstonLogger(logger),
+            logger: logger,
           }),
         );
       },

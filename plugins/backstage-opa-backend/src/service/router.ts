@@ -1,13 +1,13 @@
 import express from 'express';
 import Router from 'express-promise-router';
-import { Logger } from 'winston';
+import { LoggerService } from '@backstage/backend-plugin-api';
 import fetch from 'node-fetch';
 import { errorHandler } from '@backstage/backend-common';
 import { Config } from '@backstage/config';
 import { InputError } from '@backstage/errors';
 
 export type RouterOptions = {
-  logger: Logger;
+  logger: LoggerService;
   config: Config;
 };
 
@@ -23,10 +23,9 @@ export async function createRouter(
   // Get the config options for the OPA plugin
   const opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
 
-  // Get Packages
   // This is the Entity Checker package
-  const entityCheckerPackage = config.getOptionalString(
-    'opaClient.policies.entityChecker.package',
+  const entityCheckerEntrypoint = config.getOptionalString(
+    'opaClient.policies.entityChecker.entrypoint',
   );
 
   router.get('/health', (_, resp) => {
@@ -42,9 +41,9 @@ export async function createRouter(
       throw new InputError('OPA URL not set or missing!');
     }
 
-    const opaUrl = `${opaBaseUrl}/v1/data/${entityCheckerPackage}`;
+    const opaUrl = `${opaBaseUrl}/v1/data/${entityCheckerEntrypoint}`;
 
-    if (!entityCheckerPackage) {
+    if (!entityCheckerEntrypoint) {
       res
         .status(400)
         .json({ message: 'OPA entity checker package not set or missing!' });
@@ -59,6 +58,7 @@ export async function createRouter(
     }
 
     try {
+      logger.debug(`Sending entity metadata to OPA: ${entityMetadata}`);
       const opaResponse = await fetch(opaUrl, {
         method: 'POST',
         headers: {
@@ -67,6 +67,7 @@ export async function createRouter(
         body: JSON.stringify({ input: entityMetadata }),
       });
       const opaEntityCheckerResponse = await opaResponse.json();
+      logger.debug(`Received response from OPA: ${opaEntityCheckerResponse}`);
       return res.json(opaEntityCheckerResponse);
     } catch (error) {
       logger.error(

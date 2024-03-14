@@ -44,7 +44,7 @@
     "@backstage/plugin-search-backend-node": "^1.2.13",
     "@backstage/plugin-techdocs-backend": "^1.9.2",
     "@parsifal-m/plugin-opa-backend": "^1.2.3",
-    "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "^1.0.0",
+    "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "^1.2.0",
     "app": "link:../app",
     "better-sqlite3": "^8.0.0",
     "dockerode": "^3.3.1",

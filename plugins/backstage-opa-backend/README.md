@@ -27,9 +27,9 @@ opaClient:
   baseUrl: 'http://localhost:8181'
   policies:
     entityChecker: # Entity checker plugin
-      package: 'entity_checker'
+      entrypoint: 'entity_checker/violation'
     permissions: # Permission wrapper plugin
-      entrypoint: 'rbac_policy'
+      entrypoint: 'rbac_policy/decision'
 ```
 
 > NOTE: Currently backstage supports a new way to register backend plugins on the [New Backend System](https://backstage.io/docs/backend-system/), if you are already using the new backend system please continue with the installation of this plugin in the following section: [Register To The New Backend System](#register-to-the-new-backend-system).
@@ -85,7 +85,7 @@ backend.start();
 
 # Note!
 
-The `package` name in the `app-config.yaml` file should match the `package` name in the `rego` file. You can find some working example of policies to use with this plugin [here](https://github.com/Parsifal-M/backstage-opa-policies) or in [here](../../example-opa-policies/README.md)
+The `entrypoint` name in the `app-config.yaml` file should be the entrypoint to the policy in the `rego` file. You can find some working example of policies to use with this plugin [here](https://github.com/Parsifal-M/backstage-opa-policies) or in [here](../../example-opa-policies/README.md)
 
 ## Contributing
 

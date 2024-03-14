@@ -7888,7 +7888,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-permission-backend-module-opa-wrapper@^1.0.0, @parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper":
+"@parsifal-m/plugin-permission-backend-module-opa-wrapper@^1.2.0, @parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper"
   dependencies:
@@ -13283,7 +13283,7 @@ __metadata:
     "@backstage/plugin-search-backend-node": ^1.2.13
     "@backstage/plugin-techdocs-backend": ^1.9.2
     "@parsifal-m/plugin-opa-backend": ^1.2.3
-    "@parsifal-m/plugin-permission-backend-module-opa-wrapper": ^1.0.0
+    "@parsifal-m/plugin-permission-backend-module-opa-wrapper": ^1.2.0
     "@types/dockerode": ^3.3.0
     "@types/express": ^4.17.6
     "@types/express-serve-static-core": ^4.17.5
