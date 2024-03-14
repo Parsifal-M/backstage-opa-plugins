@@ -5,7 +5,6 @@ import {
 import { policyExtensionPoint } from '@backstage/plugin-permission-node/alpha';
 import { OpaPermissionPolicy } from './policy';
 import { OpaClient } from './opa-client';
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 
 export const permissionModuleOpaWrapper = createBackendModule({
   pluginId: 'permission',
@@ -20,8 +19,8 @@ export const permissionModuleOpaWrapper = createBackendModule({
       async init({ config, logger, policy }) {
         policy.setPolicy(
           new OpaPermissionPolicy(
-            new OpaClient(config, loggerToWinstonLogger(logger)),
-            loggerToWinstonLogger(logger),
+            new OpaClient(config, logger),
+            logger
           ),
         );
       },
