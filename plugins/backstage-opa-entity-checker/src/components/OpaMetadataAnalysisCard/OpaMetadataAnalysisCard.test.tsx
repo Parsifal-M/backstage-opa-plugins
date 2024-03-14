@@ -62,7 +62,7 @@ test('renders without crashing', async () => {
 
 test('renders violations if they exist', async () => {
   mockEntityCheck.mockResolvedValue({
-    violation: [{ message: 'Test violation', level: 'error' }],
+    result: [{ message: 'Test violation', level: 'error' }],
   });
 
   await act(async () => {

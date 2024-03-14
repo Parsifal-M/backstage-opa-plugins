@@ -5,7 +5,7 @@ import { Alert } from '@material-ui/lab';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { opaBackendApiRef } from '../../api';
-import { OpaResult, Violation } from '../../api/types';
+import { OpaResult, EntityResult } from '../../api/types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const getPassStatus = (violations: Violation[] = []) => {
+const getPassStatus = (violations: EntityResult[] = []) => {
   const errors = violations.filter(v => v.level === 'error').length;
   const warnings = violations.filter(v => v.level !== 'error').length;
 
@@ -67,7 +67,7 @@ export const OpaMetadataAnalysisCard = () => {
   }, [fetchData]);
 
   const passStatus = useMemo(
-    () => getPassStatus(opaResults?.violation),
+    () => getPassStatus(opaResults?.result),
     [opaResults],
   );
 
@@ -81,7 +81,7 @@ export const OpaMetadataAnalysisCard = () => {
   }
 
   const renderCardContent = () => {
-    if (!opaResults || !('violation' in opaResults)) {
+    if (!opaResults) {
       return (
         <Typography>
           OPA did not return any results for this entity. Please make sure you
@@ -90,11 +90,11 @@ export const OpaMetadataAnalysisCard = () => {
       );
     }
 
-    if (!opaResults?.violation?.length) {
+    if (!opaResults?.result?.length) {
       return <Typography>No issues found!</Typography>;
     }
 
-    return opaResults.violation.map((violation: Violation) => (
+    return opaResults.result.map((violation: EntityResult) => (
       <Alert
         severity={violation.level}
         key={violation.id ?? ++violationId}
@@ -110,7 +110,7 @@ export const OpaMetadataAnalysisCard = () => {
       <CardContent>
         <div className={classes.titleBox}>
           <Typography variant="h6">OPA Entity Checker</Typography>
-          {opaResults?.violation && (
+          {opaResults?.result && (
             <Chip
               label={passStatus}
               style={{ backgroundColor: chipColor }}

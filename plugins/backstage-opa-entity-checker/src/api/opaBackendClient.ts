@@ -24,7 +24,7 @@ export class OpaBackendClient implements OpaBackendApi {
     }
 
     const data = await response.json();
-    return data.result as OpaResult;
+    return data as OpaResult;
   }
 
   async entityCheck(entityMetadata: Entity): Promise<OpaResult> {

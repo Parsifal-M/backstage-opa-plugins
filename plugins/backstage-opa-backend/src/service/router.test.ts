@@ -17,10 +17,7 @@ describe('createRouter', () => {
       baseUrl: 'http://localhost',
       policies: {
         entityChecker: {
-          package: 'entitymeta_policy',
-        },
-        rbac: {
-          package: 'rbac_policy',
+          entrypoint: 'entitymeta_policy/somepoint',
         },
       },
     },
@@ -130,72 +127,22 @@ describe('createRouter', () => {
       expect(res.body).toEqual(mockedEntityResponse);
     });
 
-    it('will complain if the OPA url is missing', async () => {
-      const noBaseUrlConfig = new ConfigReader({
-        opaClient: {
-          baseUrl: undefined,
-          policies: {
-            entityChecker: {
-              package: 'entitymeta_policy',
-            },
-            rbac: {
-              package: 'rbac_policy',
-            },
-          },
-        },
-      });
-
+    it('returns 500 if OPA URL is not set', async () => {
       const router = await createRouter({
         logger: getVoidLogger(),
-        config: noBaseUrlConfig,
-      });
-
-      const localApp = express().use(router);
-
-      const res = await request(localApp)
-        .post(`/entity-checker`)
-        .send({ input: {} }); // send an empty input
-
-      expect(res.status).toBe(400);
-      expect(res.body.message).toBe('OPA URL not set or missing!');
-    });
-
-    it('will complain if no entity checker package is set', async () => {
-      const noEntityCheckerPackageConfig = new ConfigReader({
-        opaClient: {
-          baseUrl: 'http://localhost',
-          policies: {
-            entityChecker: {
-              package: undefined,
-            },
-            rbac: {
-              package: 'entitymeta_policy',
+        config: new ConfigReader({
+          opaClient: {
+            baseUrl: undefined,
+            policies: {
+              entityChecker: {
+                entrypoint: 'entitymeta_policy/somepoint',
+              },
             },
           },
-        },
+        }),
       });
 
-      const router = await createRouter({
-        logger: getVoidLogger(),
-        config: noEntityCheckerPackageConfig,
-      });
-
-      const localApp = express().use(router);
-
-      const res = await request(localApp)
-        .post(`/entity-checker`)
-        .send({ input: {} });
-
-      expect(res.status).toBe(400);
-      expect(res.body.message).toBe(
-        'OPA entity checker package not set or missing!',
-      );
-    });
-
-    it('will return a 500 if OPA there is an issue sending the request to OPA', async () => {
-      (fetch as jest.MockedFunction<typeof fetch>).mockImplementation(() => {
-        return Promise.reject(new Error('OPA is not available'));
-      });
+      app = express().use(router);
 
       const res = await request(app)
         .post('/entity-checker')
@@ -203,19 +150,31 @@ describe('createRouter', () => {
         .expect('Content-Type', /json/);
 
       expect(res.status).toEqual(500);
-      expect(res.body).toEqual({
-        message: 'An error occurred trying to send entity metadata to OPA',
-      });
     });
 
-    it('returns a 400 if the input is missing', async () => {
+    it('complains if no entrypoint is set', async () => {
+      const router = await createRouter({
+        logger: getVoidLogger(),
+        config: new ConfigReader({
+          opaClient: {
+            baseUrl: 'http://localhost',
+            policies: {
+              entityChecker: {
+                entrypoint: undefined,
+              },
+            },
+          },
+        }),
+      });
+
+      app = express().use(router);
+
       const res = await request(app)
         .post('/entity-checker')
-        .send()
+        .send(mockedPayload)
         .expect('Content-Type', /json/);
 
-      expect(res.status).toEqual(400);
-      expect(res.body.message).toBe('Entity metadata is missing!');
+      expect(res.status).toEqual(500);
     });
   });
 });

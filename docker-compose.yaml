@@ -1,18 +1,23 @@
 version: '4'
 services:
   postgres:
-    image: postgres:15.3-alpine
+    image: postgres:15.5-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: devPostgres
     ports:
       - 5432:5432
   opa:
-    image: openpolicyagent/opa:0.54.0-static
+    image: openpolicyagent/opa:0.60.0-static
     command:
       - 'run'
       - '--server'
+      - '--watch'
       - '--log-format=json-pretty'
       - '--set=decision_logs.console=true'
+      - '/policies/rbac_policy.rego'
+      - '/policies/entity_checker.rego'
     ports:
       - 8181:8181
+    volumes:
+      - ./example-opa-policies:/policies

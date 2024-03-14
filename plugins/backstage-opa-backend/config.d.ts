@@ -19,7 +19,7 @@ export interface Config {
         /**
          * The path to the entity metadata checker package in the OPA server
          */
-        package?: string;
+        entrypoint?: string;
       };
       /**
        * Configuration options for the OPA Permissions Wrapper
