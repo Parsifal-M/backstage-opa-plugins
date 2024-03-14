@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.1 - 14-03-2024
+
+### Added
+
+N/A
+
+### Changed
+
+- #158 Updated the way logs are handled, we now use `LoggerService` from `@backstage/backend-plugin-api` what this allows now is that if you start up the backend with `LOG_LEVEL=debug` you will see debug logs from the OPA wrapper.
+
+### Fixed
+
+N/A
+
 ## 1.2.0 - 26-02-2024
 
 ### Added
