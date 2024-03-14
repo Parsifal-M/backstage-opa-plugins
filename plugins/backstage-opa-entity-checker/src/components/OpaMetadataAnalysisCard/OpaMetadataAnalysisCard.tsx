@@ -81,7 +81,7 @@ export const OpaMetadataAnalysisCard = () => {
   }
 
   const renderCardContent = () => {
-    if (!opaResults){
+    if (!opaResults) {
       return (
         <Typography>
           OPA did not return any results for this entity. Please make sure you
