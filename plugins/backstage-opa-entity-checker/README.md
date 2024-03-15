@@ -6,7 +6,7 @@ If you need help with OPA, you can find the documentation [here](https://www.ope
 
 ## Pre-requisites
 
-To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](https://github.com/Parsifal-M/backstage-opa-backend#opa-backend)
+To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](../backstage-opa-backend/README.md).
 
 ## Installation
 
@@ -35,10 +35,10 @@ opaClient:
   baseUrl: 'http://localhost:8181'
   policies:
     entityChecker: # Entity checker plugin
-      package: 'entity_checker'
+      entrypoint: 'entity_checker/violation'
 ```
 
-Then in your OPA Policy (the `rego` file) you can use the following to set any violations you want to display:
+Then in your OPA Policy (the `rego` file) you can use the following to set any violations you want to display (you do not have to use violation, you can use any rule head you want, but you will need to change the `entrypoint` in the `app-config.yaml` file to match the rule head you use):
 
 ```rego
 package entity_checker
@@ -101,8 +101,6 @@ const overviewContent = (
   //...
 );
 ```
-
-You can also find the example policy [here](policy/example_policy.rego)
 
 ## Contributing
 
