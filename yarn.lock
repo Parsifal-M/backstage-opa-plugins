@@ -7864,7 +7864,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-entity-checker@workspace:plugins/backstage-opa-entity-checker"
   dependencies:
-    "@backstage/catalog-model": ^1.4.3
+    "@backstage/catalog-model": ^1.4.4
     "@backstage/cli": ^0.25.1
     "@backstage/config": ^1.1.1
     "@backstage/core-app-api": ^1.11.3
@@ -12543,7 +12543,7 @@ __metadata:
   resolution: "app@workspace:packages/app"
   dependencies:
     "@backstage/app-defaults": ^1.4.7
-    "@backstage/catalog-model": ^1.4.3
+    "@backstage/catalog-model": ^1.4.4
     "@backstage/cli": ^0.25.1
     "@backstage/core-app-api": ^1.11.3
     "@backstage/core-components": ^0.13.10
@@ -13259,7 +13259,7 @@ __metadata:
     "@backstage/backend-plugin-api": ^0.6.9
     "@backstage/backend-tasks": ^0.5.14
     "@backstage/catalog-client": ^1.5.2
-    "@backstage/catalog-model": ^1.4.3
+    "@backstage/catalog-model": ^1.4.4
     "@backstage/cli": ^0.25.1
     "@backstage/config": ^1.1.1
     "@backstage/plugin-app-backend": ^0.3.57
