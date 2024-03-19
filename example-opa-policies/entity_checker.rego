@@ -1,8 +1,6 @@
 package entity_checker
 
-import future.keywords.contains
-import future.keywords.if
-import future.keywords.in
+import rego.v1
 
 default good_entity := false
 

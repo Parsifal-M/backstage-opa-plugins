@@ -24,9 +24,9 @@ Step by step guide to developing locally:
 2. Create an `app-config.local.yaml` file in the root of the repository copying the contents from `app-config.yaml`
 3. Create a PAT (Personal Access Token) for your GitHub account with these scopes: `read:org`, `read:user`, `user:email`. This token should be placed under `integrations.github.token` in the `app-config.local.yaml` file.
 4. Run `yarn install --immutable` in the root of the repository
-5. Use `docker-compose up -d` to start the OPA server and postgres database
-6. Load the `rbac_policy.rego` in this project into the OPA server, [read here on how to do this](example-opa-policies/README.md).
-7. Run `yarn dev` in the root of the repository to start the Backstage app
+5. Use `docker-compose up -d` to start the OPA server and postgres database (this will also load the two policies in the `example-opa-policies` folder automatically)
+6. Update the OPA rbac policy in here [rbac_policy.rego](./example-opa-policies/rbac_policy.rego), or use your own! If you want to use the default policy, you'll have to update `is_admin if "group:twocodersbrewing/maintainers" in claims` to what ever your user entity claims are.
+7. Run `yarn dev` or `yarn debug` in the root of the repository to start the Backstage app (use debug if you want to see what is happening in the OPA plugin)
 
 # Contributing
 
