@@ -74,4 +74,47 @@ decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 
 ## Scaffolder Rules
 
-TODO: Add documentation for scaffolder rules
+Similarly, permissions can be set for the scaffolder. Here are some examples of how to use the rules in the scaffolder.
+
+### HAS_TAG
+
+Stop users from being able to see a template based on a tag.
+
+```rego
+# Conditional based on scaffolder template tags unless they are an admin
+decision := conditional("scaffolder", "scaffolder-template", {"anyOf": [{
+    "resourceType": "scaffolder-template",
+    "rule": "HAS_TAG",
+    "params": {"tag": "admin"},
+}]}) if {
+	permission == "scaffolder.template.parameter.read"
+}
+```
+### HAS_ACTION_ID
+
+Stop users from being able to trigger/execute certain actions based on the action ID in this case `debug:log`.
+
+```rego
+decision := conditional("scaffolder", "scaffolder-action", {"anyOf": [{
+    "resourceType": "scaffolder-action",
+    "rule": "HAS_ACTION_ID",
+    "params": {"actionId": "debug:log"},
+}]}) if {
+	permission == "scaffolder.action.execute"
+}
+```
+
+### HAS_PROPERTY
+
+Has property can also be `HAS_BOOLEAN_PROPERTY`, `HAS_NUMBER_PROPERTY`, `HAS_STRING_PROPERTY` this allows actions with the specified property.
+
+
+```rego
+decision := conditional("scaffolder", "scaffolder-action", {"anyOf": [{
+    "resourceType": "scaffolder-action",
+    "rule": "HAS_PROPERTY",
+    "params": {"key": "message", "value": "foobar"},
+}]}) if {
+    permission == "scaffolder.action.execute"
+}
+```
