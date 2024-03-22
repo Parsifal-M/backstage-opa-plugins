@@ -45,31 +45,22 @@ decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 
 # Conditional based on scaffolder template tags unless they are an admin
 decision := conditional("scaffolder", "scaffolder-template", {"anyOf": [{
-    "resourceType": "scaffolder-template",
-    "rule": "HAS_TAG",
-    "params": {"tag": "admin"},
-}]}) if {
-	permission == "scaffolder.template.parameter.read"
-    not is_admin
-}
-
-# Conditional based on scaffolder template tags unless they are an admin
-decision := conditional("scaffolder", "scaffolder-template", {"anyOf": [{
-    "resourceType": "scaffolder-template",
-    "rule": "HAS_TAG",
-    "params": {"tag": "admin"},
+	"resourceType": "scaffolder-template",
+	"rule": "HAS_TAG",
+	"params": {"tag": "admin"},
 }]}) if {
 	permission == "scaffolder.template.step.read"
-    not is_admin
+	not is_admin
 }
+
 # Conditional based on scaffolder actionID tags unless they are an admin
 decision := conditional("scaffolder", "scaffolder-action", {"anyOf": [{
-    "resourceType": "scaffolder-action",
-    "rule": "HAS_ACTION_ID",
-    "params": {"actionId": "action123"},
+	"resourceType": "scaffolder-action",
+	"rule": "HAS_ACTION_ID",
+	"params": {"actionId": "debug:log"},
 }]}) if {
 	permission == "scaffolder.action.execute"
-    not is_admin
+	not is_admin
 }
 
 # Conditional based on scaffolder properties unless they are an admin
@@ -81,6 +72,3 @@ decision := conditional("scaffolder", "scaffolder-action", {"anyOf": [{
 	permission == "scaffolder.template.parameter.read"
 	not is_admin
 }
-
-# export const RESOURCE_TYPE_SCAFFOLDER_TEMPLATE = 'scaffolder-template';
-# export const RESOURCE_TYPE_SCAFFOLDER_ACTION = 'scaffolder-action';

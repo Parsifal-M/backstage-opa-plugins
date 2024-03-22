@@ -90,6 +90,7 @@ decision := conditional("scaffolder", "scaffolder-template", {"anyOf": [{
 	permission == "scaffolder.template.parameter.read"
 }
 ```
+
 ### HAS_ACTION_ID
 
 Stop users from being able to trigger/execute certain actions based on the action ID in this case `debug:log`.
@@ -108,13 +109,14 @@ decision := conditional("scaffolder", "scaffolder-action", {"anyOf": [{
 
 Has property can also be `HAS_BOOLEAN_PROPERTY`, `HAS_NUMBER_PROPERTY`, `HAS_STRING_PROPERTY` this allows actions with the specified property.
 
-
 ```rego
-decision := conditional("scaffolder", "scaffolder-action", {"anyOf": [{
+decision := conditional("scaffolder", "scaffolder-action",
+{not
+{"anyOf": [{
     "resourceType": "scaffolder-action",
     "rule": "HAS_PROPERTY",
     "params": {"key": "message", "value": "foobar"},
-}]}) if {
+}]}}) if {
     permission == "scaffolder.action.execute"
 }
 ```
