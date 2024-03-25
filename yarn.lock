@@ -2675,6 +2675,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/backend-app-api@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "@backstage/backend-app-api@npm:0.6.1"
+  dependencies:
+    "@backstage/backend-common": ^0.21.5
+    "@backstage/backend-plugin-api": ^0.6.15
+    "@backstage/backend-tasks": ^0.5.20
+    "@backstage/cli-common": ^0.1.13
+    "@backstage/cli-node": ^0.2.4
+    "@backstage/config": ^1.2.0
+    "@backstage/config-loader": ^1.7.0
+    "@backstage/errors": ^1.2.4
+    "@backstage/plugin-auth-node": ^0.4.10
+    "@backstage/plugin-permission-node": ^0.7.26
+    "@backstage/types": ^1.1.1
+    "@manypkg/get-packages": ^1.1.3
+    "@types/cors": ^2.8.6
+    "@types/express": ^4.17.6
+    compression: ^1.7.4
+    cookie: ^0.6.0
+    cors: ^2.8.5
+    express: ^4.17.1
+    express-promise-router: ^4.1.0
+    fs-extra: ^11.2.0
+    helmet: ^6.0.0
+    jose: ^5.0.0
+    lodash: ^4.17.21
+    logform: ^2.3.2
+    minimatch: ^9.0.0
+    minimist: ^1.2.5
+    morgan: ^1.10.0
+    node-forge: ^1.3.1
+    path-to-regexp: ^6.2.1
+    selfsigned: ^2.0.0
+    stoppable: ^1.1.0
+    winston: ^3.2.1
+    winston-transport: ^4.5.0
+  checksum: 7110f26dd5fca3f9c9cfbb7c82ae7ec64908d291e399e2c84c2bd96f8cc4f35447e40ef69fecce6dcdbce3fb3b29b18755f38c6ff1a93e36a2e05c114638118e
+  languageName: node
+  linkType: hard
+
 "@backstage/backend-common@npm:^0.21.4":
   version: 0.21.4
   resolution: "@backstage/backend-common@npm:0.21.4"
@@ -2744,6 +2785,75 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/backend-common@npm:^0.21.5":
+  version: 0.21.5
+  resolution: "@backstage/backend-common@npm:0.21.5"
+  dependencies:
+    "@aws-sdk/abort-controller": ^3.347.0
+    "@aws-sdk/client-s3": ^3.350.0
+    "@aws-sdk/credential-providers": ^3.350.0
+    "@aws-sdk/types": ^3.347.0
+    "@backstage/backend-app-api": ^0.6.1
+    "@backstage/backend-dev-utils": ^0.1.4
+    "@backstage/backend-plugin-api": ^0.6.15
+    "@backstage/cli-common": ^0.1.13
+    "@backstage/config": ^1.2.0
+    "@backstage/config-loader": ^1.7.0
+    "@backstage/errors": ^1.2.4
+    "@backstage/integration": ^1.9.1
+    "@backstage/integration-aws-node": ^0.1.11
+    "@backstage/plugin-auth-node": ^0.4.10
+    "@backstage/types": ^1.1.1
+    "@google-cloud/storage": ^7.0.0
+    "@keyv/memcache": ^1.3.5
+    "@keyv/redis": ^2.5.3
+    "@kubernetes/client-node": 0.20.0
+    "@manypkg/get-packages": ^1.1.3
+    "@octokit/rest": ^19.0.3
+    "@types/cors": ^2.8.6
+    "@types/dockerode": ^3.3.0
+    "@types/express": ^4.17.6
+    "@types/luxon": ^3.0.0
+    "@types/webpack-env": ^1.15.2
+    archiver: ^6.0.0
+    base64-stream: ^1.0.0
+    compression: ^1.7.4
+    concat-stream: ^2.0.0
+    cors: ^2.8.5
+    dockerode: ^4.0.0
+    express: ^4.17.1
+    express-promise-router: ^4.1.0
+    fs-extra: ^11.2.0
+    git-url-parse: ^14.0.0
+    helmet: ^6.0.0
+    isomorphic-git: ^1.23.0
+    jose: ^5.0.0
+    keyv: ^4.5.2
+    knex: ^3.0.0
+    lodash: ^4.17.21
+    logform: ^2.3.2
+    luxon: ^3.0.0
+    minimatch: ^9.0.0
+    mysql2: ^3.0.0
+    node-fetch: ^2.6.7
+    p-limit: ^3.1.0
+    pg: ^8.11.3
+    raw-body: ^2.4.1
+    tar: ^6.1.12
+    uuid: ^9.0.0
+    winston: ^3.2.1
+    winston-transport: ^4.5.0
+    yauzl: ^3.0.0
+    yn: ^4.0.0
+  peerDependencies:
+    pg-connection-string: ^2.3.0
+  peerDependenciesMeta:
+    pg-connection-string:
+      optional: true
+  checksum: be082ab135849dadb9d83075e5b5eac50a52a2bb6c7b0670cda61d7c0553535445b33573ec7c3381ab01e71f5c0d9b6f858bf2ec1194d39bddd4534772eb1c82
+  languageName: node
+  linkType: hard
+
 "@backstage/backend-defaults@npm:^0.2.14":
   version: 0.2.14
   resolution: "@backstage/backend-defaults@npm:0.2.14"
@@ -2796,6 +2906,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/backend-plugin-api@npm:^0.6.15":
+  version: 0.6.15
+  resolution: "@backstage/backend-plugin-api@npm:0.6.15"
+  dependencies:
+    "@backstage/backend-tasks": ^0.5.20
+    "@backstage/config": ^1.2.0
+    "@backstage/plugin-auth-node": ^0.4.10
+    "@backstage/plugin-permission-common": ^0.7.13
+    "@backstage/types": ^1.1.1
+    "@types/express": ^4.17.6
+    express: ^4.17.1
+    knex: ^3.0.0
+  checksum: a9febe188c41efa2565b141a09fe74491dbd21ed464b5ecf12008f8e7033d5a1424c00b9f0dafb39121b48a0f360968a260d1e9539e950e19be008899dcb8673
+  languageName: node
+  linkType: hard
+
 "@backstage/backend-tasks@npm:^0.5.19":
   version: 0.5.19
   resolution: "@backstage/backend-tasks@npm:0.5.19"
@@ -2814,6 +2940,27 @@ __metadata:
     winston: ^3.2.1
     zod: ^3.22.4
   checksum: ea27fd6f8b348867929c917b396695c2b173d210ae75b5161108316f585ebed88adcef5e580b9f800a2d5ca4eeb48f819302911b63f1c0a9ac20036d8def8f28
+  languageName: node
+  linkType: hard
+
+"@backstage/backend-tasks@npm:^0.5.20":
+  version: 0.5.20
+  resolution: "@backstage/backend-tasks@npm:0.5.20"
+  dependencies:
+    "@backstage/backend-common": ^0.21.5
+    "@backstage/config": ^1.2.0
+    "@backstage/errors": ^1.2.4
+    "@backstage/types": ^1.1.1
+    "@opentelemetry/api": ^1.3.0
+    "@types/luxon": ^3.0.0
+    cron: ^3.0.0
+    knex: ^3.0.0
+    lodash: ^4.17.21
+    luxon: ^3.0.0
+    uuid: ^9.0.0
+    winston: ^3.2.1
+    zod: ^3.22.4
+  checksum: 5a088ac83a9c7ee27298f28a8138868105a4b43b58fc8e38887faca5144cadd3f4fc1b36aa016095c5c58667ccd4e39263d44e7ed7d16328846318ffe92ac7a1
   languageName: node
   linkType: hard
 
@@ -2854,6 +3001,18 @@ __metadata:
     cross-fetch: ^4.0.0
     uri-template: ^2.0.0
   checksum: ebce3e285f8f3b3c4287cd9895a45df9484e3729487622f26ecc5a976dcfd1fef8036883022a9751d4a32ecd479223e206ec1c6247ce958422a1f3b00e8f4097
+  languageName: node
+  linkType: hard
+
+"@backstage/catalog-client@npm:^1.6.2":
+  version: 1.6.2
+  resolution: "@backstage/catalog-client@npm:1.6.2"
+  dependencies:
+    "@backstage/catalog-model": ^1.4.5
+    "@backstage/errors": ^1.2.4
+    cross-fetch: ^4.0.0
+    uri-template: ^2.0.0
+  checksum: b69187fb5bd7ef3f5aeba0d1e924f66c730853bc7098dabea9acfd02e7182d22e26b7ef086d9df252dde5b7316ed8e756725cd2de6cbf16eb804fa311376aff9
   languageName: node
   linkType: hard
 
@@ -3287,6 +3446,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/integration-aws-node@npm:^0.1.11":
+  version: 0.1.11
+  resolution: "@backstage/integration-aws-node@npm:0.1.11"
+  dependencies:
+    "@aws-sdk/client-sts": ^3.350.0
+    "@aws-sdk/credential-provider-node": ^3.350.0
+    "@aws-sdk/credential-providers": ^3.350.0
+    "@aws-sdk/types": ^3.347.0
+    "@aws-sdk/util-arn-parser": ^3.310.0
+    "@backstage/config": ^1.2.0
+    "@backstage/errors": ^1.2.4
+  checksum: 16299056ac317071c986ecb7600a647da86483a6773cf203f13c178d79ffe0c39cd5e5968a140feac3dd01d2bceafd3675e242cdcb5a30edeb774691e836aa85
+  languageName: node
+  linkType: hard
+
 "@backstage/integration-react@npm:^1.1.25":
   version: 1.1.25
   resolution: "@backstage/integration-react@npm:1.1.25"
@@ -3597,6 +3771,31 @@ __metadata:
     winston: ^3.2.1
     yn: ^4.0.0
   checksum: ecab1ee5b9a8942d56f2e2bc8faffaf5a84868b190e8b6241301d6642360c637b425a5a46160b255ddfff789e96afa5f9e8f3b501ac8904f0db875a6b9b66084
+  languageName: node
+  linkType: hard
+
+"@backstage/plugin-auth-node@npm:^0.4.10":
+  version: 0.4.10
+  resolution: "@backstage/plugin-auth-node@npm:0.4.10"
+  dependencies:
+    "@backstage/backend-common": ^0.21.5
+    "@backstage/backend-plugin-api": ^0.6.15
+    "@backstage/catalog-client": ^1.6.2
+    "@backstage/catalog-model": ^1.4.5
+    "@backstage/config": ^1.2.0
+    "@backstage/errors": ^1.2.4
+    "@backstage/types": ^1.1.1
+    "@types/express": "*"
+    "@types/passport": ^1.0.3
+    express: ^4.17.1
+    jose: ^5.0.0
+    lodash: ^4.17.21
+    node-fetch: ^2.6.7
+    passport: ^0.7.0
+    winston: ^3.2.1
+    zod: ^3.22.4
+    zod-to-json-schema: ^3.21.4
+  checksum: 97df0c0e38ee8bd145aaa5577568f0fc6ca7c4deee404f83f3dd75e92c25915d1d179346663507d50d0b531ac1c3fab605274890dba27aafd54efbdc8c691ee3
   languageName: node
   linkType: hard
 
@@ -4024,6 +4223,25 @@ __metadata:
     zod: ^3.22.4
     zod-to-json-schema: ^3.20.4
   checksum: 02b5c390d647ead04935209d33e2a48b4c04480f566fb61052eda6ff6e166b8fbd20954983ff11690d43671aadecf497390d7e06610239e70c270ee7e554f483
+  languageName: node
+  linkType: hard
+
+"@backstage/plugin-permission-node@npm:^0.7.26":
+  version: 0.7.26
+  resolution: "@backstage/plugin-permission-node@npm:0.7.26"
+  dependencies:
+    "@backstage/backend-common": ^0.21.5
+    "@backstage/backend-plugin-api": ^0.6.15
+    "@backstage/config": ^1.2.0
+    "@backstage/errors": ^1.2.4
+    "@backstage/plugin-auth-node": ^0.4.10
+    "@backstage/plugin-permission-common": ^0.7.13
+    "@types/express": ^4.17.6
+    express: ^4.17.1
+    express-promise-router: ^4.1.0
+    zod: ^3.22.4
+    zod-to-json-schema: ^3.20.4
+  checksum: 0268c081d21b3aabd64efe6afb8ba674713eb9e8fc791c309543bca963028fe08bbc44d936fb99925bc5029e610cd608c43aa54d628ec2d2394a176f359a0a8c
   languageName: node
   linkType: hard
 
@@ -7698,7 +7916,7 @@ __metadata:
     "@backstage/cli": ^0.26.0
     "@backstage/config": ^1.2.0
     "@backstage/errors": ^1.2.4
-    "@backstage/plugin-auth-node": ^0.4.9
+    "@backstage/plugin-auth-node": ^0.4.10
     "@backstage/plugin-permission-common": ^0.7.13
     "@backstage/plugin-permission-node": ^0.7.25
     node-fetch: 2.6.7
@@ -13156,7 +13374,7 @@ __metadata:
     "@backstage/plugin-app-backend": ^0.3.62
     "@backstage/plugin-auth-backend": ^0.22.0
     "@backstage/plugin-auth-backend-module-github-provider": ^0.1.11
-    "@backstage/plugin-auth-node": ^0.4.9
+    "@backstage/plugin-auth-node": ^0.4.10
     "@backstage/plugin-catalog-backend": ^1.18.0
     "@backstage/plugin-catalog-backend-module-github": ^0.5.4
     "@backstage/plugin-catalog-backend-module-github-org": ^0.1.8
