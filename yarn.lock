@@ -3038,6 +3038,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/catalog-model@npm:^1.4.5":
+  version: 1.4.5
+  resolution: "@backstage/catalog-model@npm:1.4.5"
+  dependencies:
+    "@backstage/errors": ^1.2.4
+    "@backstage/types": ^1.1.1
+    ajv: ^8.10.0
+    lodash: ^4.17.21
+  checksum: 34aaa4b82d29bf3b0a4b52552f8eb8189041df826f87a7bbdef5107a1efb8ce1f7eb1c1a343868718ca2af9be76d9f5184f6a92076d893d3a3951d16881647b7
+  languageName: node
+  linkType: hard
+
 "@backstage/cli-common@npm:^0.1.13":
   version: 0.1.13
   resolution: "@backstage/cli-common@npm:0.1.13"
@@ -3409,6 +3421,16 @@ __metadata:
     "@backstage/types": ^1.1.1
     serialize-error: ^8.0.1
   checksum: 00e367ed9c47404d391d3c4125f5e279fe99393734f86ec0b0102cbea2573c9e9a4a58ca6a09c159b4b543bb3adabe81554a5af6d4d12ee7f45c92ed404705d9
+  languageName: node
+  linkType: hard
+
+"@backstage/errors@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "@backstage/errors@npm:1.2.4"
+  dependencies:
+    "@backstage/types": ^1.1.1
+    serialize-error: ^8.0.1
+  checksum: ed988b2d3594a2fe989dd45fe197154e522194e30602552224e4a2bf6ed895c671e7f832d5c01b8e24881484698ccf3abaf2930dba5374bccfdaa283f4850fb9
   languageName: node
   linkType: hard
 
@@ -7864,7 +7886,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-entity-checker@workspace:plugins/backstage-opa-entity-checker"
   dependencies:
-    "@backstage/catalog-model": ^1.4.3
+    "@backstage/catalog-model": ^1.4.5
     "@backstage/cli": ^0.25.1
     "@backstage/config": ^1.1.1
     "@backstage/core-app-api": ^1.11.3
@@ -12543,7 +12565,7 @@ __metadata:
   resolution: "app@workspace:packages/app"
   dependencies:
     "@backstage/app-defaults": ^1.4.7
-    "@backstage/catalog-model": ^1.4.3
+    "@backstage/catalog-model": ^1.4.5
     "@backstage/cli": ^0.25.1
     "@backstage/core-app-api": ^1.11.3
     "@backstage/core-components": ^0.13.10
@@ -13259,7 +13281,7 @@ __metadata:
     "@backstage/backend-plugin-api": ^0.6.9
     "@backstage/backend-tasks": ^0.5.14
     "@backstage/catalog-client": ^1.5.2
-    "@backstage/catalog-model": ^1.4.3
+    "@backstage/catalog-model": ^1.4.5
     "@backstage/cli": ^0.25.1
     "@backstage/config": ^1.1.1
     "@backstage/plugin-app-backend": ^0.3.57
