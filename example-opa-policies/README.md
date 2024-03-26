@@ -4,7 +4,7 @@ These policies are example policies that are automatically loaded into the OPA c
 
 This is purely for local development.
 
-## Catalog "Rules"
+## Catalog Rules
 
 Here are some helpful rules that can be used in the catalog to build conditional rules and some examples of how they can be used. Keep in mind you can also construct your own rules using the documentation found [here](https://backstage.io/docs/permissions/custom-rules) and use them in the same way below.
 
