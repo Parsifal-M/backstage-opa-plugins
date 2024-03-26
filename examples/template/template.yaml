@@ -36,6 +36,15 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+    - title: Secret Admin Step
+      properties:
+        secret:
+          title: Secret
+          type: string
+          ui:field: SecretField
+      backstage:permissions:
+        tags:
+          - admin
 
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
