@@ -42,7 +42,7 @@
     "@backstage/plugin-search-backend-module-pg": "^0.5.23",
     "@backstage/plugin-search-backend-module-techdocs": "^0.1.18",
     "@backstage/plugin-search-backend-node": "^1.2.18",
-    "@backstage/plugin-techdocs-backend": "^1.10.0",
+    "@backstage/plugin-techdocs-backend": "^1.10.3",
     "@parsifal-m/plugin-opa-backend": "^1.2.3",
     "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "^1.2.0",
     "app": "link:../app",
