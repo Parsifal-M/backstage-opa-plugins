@@ -72,6 +72,28 @@ export async function createRouter(
     }
   });
 
+  router.get('/get-policy/*', async (req: { params: { [key: string]: string } }, res, next) => {
+    const policyPath = req.params['0'];
+  
+    if (!opaBaseUrl) {
+      logger.error('OPA URL not set or missing!');
+      throw new Error('OPA URL not set or missing!');
+    }
+  
+    const opaUrl = `${opaBaseUrl}/v1/policies/${policyPath}`;
+  
+    try {
+      logger.debug(`Fetching policy from OPA: ${policyPath}`);
+      const opaResponse = await fetch(opaUrl);
+      const opaPolicy = await opaResponse.json();
+      logger.debug(`Received response from OPA: ${opaPolicy}`);
+      return res.json(opaPolicy);
+    } catch (error) {
+      logger.error('An error occurred trying to fetch policy from OPA:', error);
+      return next(error);
+    }
+  });
+
   router.use(errorHandler());
   return router;
 }

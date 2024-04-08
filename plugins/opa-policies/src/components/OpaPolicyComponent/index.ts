@@ -1,0 +1,1 @@
+export { OpaPolicyPage } from './OpaPolicyComponent';
