@@ -19,4 +19,4 @@ services:
     ports:
       - 8181:8181
     volumes:
-      - ./example-opa-policies:/policies
+      - ./policies:/policies
