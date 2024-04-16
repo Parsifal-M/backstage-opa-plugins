@@ -15,12 +15,11 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 
 - Enable teams to manage their own policies, without needing to know TypeScript or the Backstage codebase!
 
-This wrapper is still in **development**, you can use it at your own risk, be aware it can change **without** notice. (although I will try to keep it as stable as possible).
-
 ## Pre-requisites
 
 - You have a Backstage instance set up and running.
-- This plugin also requires and assumes that you have set up and followed the instructions in the [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
+- You have deployed OPA, kindly see how to do that [here](https://www.openpolicyagent.org/docs/latest/deployments/).
+- This plugin also requires and assumes that you have at least setup the permission framework (without any policies) as outlined here [Backstage Permissions Docs](https://backstage.io/docs/permissions/overview) as it of course relies on the permissions framework to be there and set up.
 
 ## How It Works
 
@@ -102,8 +101,6 @@ The OPA client requires configuration to connect to the OPA server. You need to 
 opaClient:
   baseUrl: 'http://localhost:8181'
   policies:
-    entityChecker: # Entity checker plugin
-      package: 'entity_checker'
     permissions: # Permission wrapper plugin
       entrypoint: 'rbac_policy/decision'
 ```
