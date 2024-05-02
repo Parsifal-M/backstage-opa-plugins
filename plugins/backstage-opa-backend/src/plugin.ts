@@ -17,7 +17,9 @@ export const opaPlugin = createBackendPlugin({
         httpAuth: coreServices.httpAuth,
       },
       async init({ config, logger, httpRouter, auth, httpAuth, discovery }) {
-        httpRouter.use(await createRouter({ config, logger, auth, httpAuth, discovery }));
+        httpRouter.use(
+          await createRouter({ config, logger, auth, httpAuth, discovery }),
+        );
 
         httpRouter.addAuthPolicy({
           path: '/health',

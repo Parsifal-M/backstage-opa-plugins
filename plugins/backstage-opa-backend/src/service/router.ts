@@ -1,6 +1,11 @@
 import express from 'express';
 import Router from 'express-promise-router';
-import { AuthService, DiscoveryService, HttpAuthService, LoggerService } from '@backstage/backend-plugin-api';
+import {
+  AuthService,
+  DiscoveryService,
+  HttpAuthService,
+  LoggerService,
+} from '@backstage/backend-plugin-api';
 import fetch from 'node-fetch';
 import { errorHandler } from '@backstage/backend-common';
 import { Config } from '@backstage/config';
@@ -18,7 +23,6 @@ export async function createRouter(
 ): Promise<express.Router> {
   const { logger, config } = options;
 
-
   const router = Router();
   router.use(express.json());
 
@@ -35,9 +39,7 @@ export async function createRouter(
   });
 
   router.post('/entity-checker', async (req, res, next) => {
-
     const entityMetadata = req.body.input;
-
 
     if (!opaBaseUrl) {
       logger.error('OPA URL not set or missing!');
@@ -62,7 +64,6 @@ export async function createRouter(
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ input: entityMetadata }),
       });
