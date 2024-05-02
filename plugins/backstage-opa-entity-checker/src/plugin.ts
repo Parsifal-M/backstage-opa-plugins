@@ -3,6 +3,7 @@ import {
   createPlugin,
   createRoutableExtension,
   discoveryApiRef,
+  identityApiRef,
 } from '@backstage/core-plugin-api';
 import { rootRouteRef } from './routes';
 import { opaBackendApiRef } from './api';
@@ -15,8 +16,9 @@ export const opaEntityCheckerPlugin = createPlugin({
       api: opaBackendApiRef,
       deps: {
         discoveryApi: discoveryApiRef,
+        identityApi: identityApiRef,
       },
-      factory: ({ discoveryApi }) => new OpaBackendClient({ discoveryApi }),
+      factory: ({ discoveryApi, identityApi }) => new OpaBackendClient({ discoveryApi, identityApi }),
     }),
   ],
   routes: {
