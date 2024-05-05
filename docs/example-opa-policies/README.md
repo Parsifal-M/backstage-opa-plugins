@@ -1,8 +1,6 @@
 ## This Directory Contains Example OPA Policies
 
-These policies are example policies that are automatically loaded into the OPA container when you run `docker compose up -d`. Feel free to modify them as needed!
-
-This is purely for local development.
+You could use these policies as a starting point for your own policies. The policies are written in Rego, the policy language used by OPA.
 
 ## Catalog Rules
 
@@ -58,7 +56,7 @@ decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 
 ### IS_ENTITY_KIND
 
-This rule checks if the entity is of a given kind. (API, GROUP, USER, etc.)
+This rule checks if the entity is of a given kind. (e.g. API, Component, Template, Group, etc.)
 
 ```rego
 # Allow all users to read API and Component entities

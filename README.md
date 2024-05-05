@@ -2,6 +2,14 @@
 
 This repository contains a collection of plugins for [Backstage](https://backstage.io) that integrate with [Open Policy Agent](https://www.openpolicyagent.org/).
 
+## Blogs!
+
+- [Going Backstage with OPA](https://www.styra.com/blog/going-backstage-with-opa/)
+
+## Talks!
+
+- [Can It Be Done? Building Fine-Grained Access Control for Backstage with OPA](https://www.youtube.com/watch?v=N0n_czYo_kE&list=PLj6h78yzYM2P4KPyeDFexAVm6ZvfAWMU8&index=15&ab_channel=CNCF%5BCloudNativeComputingFoundation%5D)
+
 ## Plugins
 
 - [backstage-opa-backend](./plugins/backstage-opa-backend/README.md) - A Backend Plugin that the [backstage-opa-entity-checker](./plugins/backstage-opa-entity-checker/README.md) consumes to evaluate policies.

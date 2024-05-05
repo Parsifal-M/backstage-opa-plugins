@@ -1,11 +1,11 @@
 import { Entity } from '@backstage/catalog-model';
 import { OpaBackendApi, OpaResult } from './types';
-import { DiscoveryApi } from '@backstage/core-plugin-api';
+import { FetchApi } from '@backstage/core-plugin-api';
 
 export class OpaBackendClient implements OpaBackendApi {
-  private readonly discoveryApi: DiscoveryApi;
-  constructor(options: { discoveryApi: DiscoveryApi }) {
-    this.discoveryApi = options.discoveryApi;
+  private readonly fetchApi: FetchApi;
+  constructor(options: { fetchApi: FetchApi }) {
+    this.fetchApi = options.fetchApi;
   }
   private async handleResponse(response: Response): Promise<OpaResult> {
     if (!response.ok) {
@@ -28,8 +28,8 @@ export class OpaBackendClient implements OpaBackendApi {
   }
 
   async entityCheck(entityMetadata: Entity): Promise<OpaResult> {
-    const url = `${await this.discoveryApi.getBaseUrl('opa')}/entity-checker`;
-    const response = await fetch(url, {
+    const url = `plugin://opa/entity-checker`;
+    const response = await this.fetchApi.fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

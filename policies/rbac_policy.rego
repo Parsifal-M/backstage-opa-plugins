@@ -64,16 +64,3 @@ decision := conditional("scaffolder", "scaffolder-action", {"not": {"anyOf": [{
 	permission == "scaffolder.action.execute"
 	not is_admin
 }
-
-# Conditional based on scaffolder properties unless they are an admin If you want to use this one,
-# you need to comment out the HAS_TAG one as they use the same permission, you could also combine them.
-# decision := conditional("scaffolder", "scaffolder-action", {"not": {
-#     "anyOf": [{
-#         "resourceType": "scaffolder-action",
-#         "rule": "HAS_PROPERTY", # OR HAS_BOOLEAN_PROPERTY, HAS_NUMBER_PROPERTY, HAS_STRING_PROPERTY
-#         "params": {"property": "admin"},
-#     }]
-# }}) if {
-#     permission == "scaffolder.template.parameter.read"
-#     is_admin
-# }
