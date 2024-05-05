@@ -3,9 +3,7 @@ import { createApiRef } from "@backstage/core-plugin-api";
 export type OpaPolicyAst = Record<string, unknown>;
 
 export type OpaPolicy = {
-  id: string;
-  raw: string;
-  ast: OpaPolicyAst;
+  policyContent: string;
 };
 
 export type OpaApiResponse = {
@@ -13,7 +11,7 @@ export type OpaApiResponse = {
 };
 
 export interface OpaPolicyBackendApi {
-    getPolicy(policyId: string): Promise<OpaPolicy>;
+    getPolicyFromRepo(opaPolicy: string): Promise<OpaPolicy>;
 }
 
 export const opaPolicyBackendApiRef = createApiRef<OpaPolicyBackendApi>({

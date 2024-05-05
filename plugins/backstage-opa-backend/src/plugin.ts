@@ -15,10 +15,11 @@ export const opaPlugin = createBackendPlugin({
         discovery: coreServices.discovery,
         auth: coreServices.auth,
         httpAuth: coreServices.httpAuth,
+        urlReader: coreServices.urlReader,
       },
-      async init({ config, logger, httpRouter, auth, httpAuth, discovery }) {
+      async init({ config, logger, httpRouter, auth, httpAuth, discovery, urlReader }) {
         httpRouter.use(
-          await createRouter({ config, logger, auth, httpAuth, discovery }),
+          await createRouter({ config, logger, auth, httpAuth, discovery, urlReader }),
         );
 
         httpRouter.addAuthPolicy({

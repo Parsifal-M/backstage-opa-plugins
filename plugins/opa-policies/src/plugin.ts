@@ -2,7 +2,7 @@ import {
   createApiFactory,
   createPlugin,
   createRoutableExtension,
-  discoveryApiRef,
+  fetchApiRef,
 } from '@backstage/core-plugin-api';
 
 import { rootRouteRef } from './routes';
@@ -15,9 +15,9 @@ export const opaPoliciesPlugin = createPlugin({
     createApiFactory({
       api: opaPolicyBackendApiRef,
       deps: {
-        discoveryApi: discoveryApiRef,
+        fetchApi: fetchApiRef,
       },
-      factory: ({ discoveryApi }) => new OpaPolicyBackendClient({ discoveryApi }),
+      factory: ({ fetchApi }) => new OpaPolicyBackendClient({ fetchApi }),
     }),
   ],
   routes: {

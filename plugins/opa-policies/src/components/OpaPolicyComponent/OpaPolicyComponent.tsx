@@ -4,31 +4,33 @@ import { Content, Page } from '@backstage/core-components';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { opaPolicyBackendApiRef, OpaPolicy } from '../../api/types';
-import { useApi } from '@backstage/core-plugin-api';
+import { useApi, alertApiRef } from '@backstage/core-plugin-api';
 import { useEntity } from '@backstage/plugin-catalog-react';
-
 
 export const OpaPolicyPage = () => {
   const [policy, setPolicy] = useState<OpaPolicy | null>(null);
   const opaApi = useApi(opaPolicyBackendApiRef);
   const { entity } = useEntity();
+  const alertApi = useApi(alertApiRef);
   const opaPolicy = entity.metadata?.annotations?.['open-policy-agent/policy'];
-
-  console.log('opaPolicy:', opaPolicy);
 
   useEffect(() => {
     const fetchData = async () => {
       if (opaPolicy) {
         try {
-          const response = await opaApi.getPolicy(opaPolicy);
-          setPolicy(response.id ? response : null);
-        } catch (error) {
-          console.error('Error fetching OPA policy:', error);
+          const response = await opaApi.getPolicyFromRepo(opaPolicy);
+          setPolicy(response.policyContent ? response : null);
+        } catch (error: unknown) {
+          alertApi.post({
+            message: `Could not fetch OPA policy: ${error}`,
+            severity: 'error',
+            display: 'transient',
+          });
         }
       }
     };
     fetchData();
-  }, [opaApi, opaPolicy]);
+  }, [opaApi, entity, opaPolicy, alertApi]);
 
   return (
     <Page themeId='tool'>
@@ -36,10 +38,10 @@ export const OpaPolicyPage = () => {
         {policy && (
           <>
             <Typography variant="h6">
-              Policy: {policy.id}
+              {entity.metadata.name} uses the following OPA policy
             </Typography>
             <SyntaxHighlighter language="rego" style={materialLight}>
-              {policy.raw}
+              {policy.policyContent}
             </SyntaxHighlighter>
           </>
         )}

@@ -6571,6 +6571,7 @@ __metadata:
     "@backstage/core-components": ^0.14.1
     "@backstage/core-plugin-api": ^1.9.1
     "@backstage/dev-utils": ^1.0.28
+    "@backstage/plugin-catalog-react": ^1.11.3
     "@backstage/test-utils": ^1.5.1
     "@backstage/theme": ^0.5.2
     "@material-ui/core": ^4.9.13
@@ -8454,6 +8455,7 @@ __metadata:
     "@backstage/cli": ^0.26.4
     "@backstage/config": ^1.2.0
     "@backstage/errors": ^1.2.4
+    "@backstage/integration": ^1.10.0
     "@types/express": "*"
     "@types/supertest": ^2.0.12
     express: ^4.17.1

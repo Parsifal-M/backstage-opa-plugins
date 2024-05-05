@@ -37,6 +37,7 @@
     "@backstage/backend-plugin-api": "^0.6.17",
     "@backstage/config": "^1.2.0",
     "@backstage/errors": "^1.2.4",
+    "@backstage/integration": "^1.10.0",
     "@types/express": "*",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
