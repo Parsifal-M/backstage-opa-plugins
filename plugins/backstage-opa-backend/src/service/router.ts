@@ -84,16 +84,15 @@ export async function createRouter(
 
   router.get('/get-policy', async (req, res, next) => {
     const opaPolicy = req.query.opaPolicy as string;
-  
-    console.log(`OPA Policy: ${opaPolicy}`);
-  
+    
     if (!opaPolicy) {
-      logger.error('Policy URL is missing!');
-      throw new Error('Policy URL is missing!');
+      logger.error('No OPA policy provided!, please check the open-policy-agent/policy annotation');
+      throw new Error('No OPA policy provided!, please check the open-policy-agent/policy annotation');
     }
   
     try {
       // Fetch the content of the policy file
+      logger.debug(`Fetching policy file from ${opaPolicy}`);
       const policyContent = await readPolicyFile(urlReader, opaPolicy);
   
       return res.json({ policyContent });

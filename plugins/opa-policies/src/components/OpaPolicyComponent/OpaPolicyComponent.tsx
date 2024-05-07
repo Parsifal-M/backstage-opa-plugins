@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Typography } from '@material-ui/core';
-import { Content, Page } from '@backstage/core-components';
+import { Content, InfoCard } from '@backstage/core-components';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { opaPolicyBackendApiRef, OpaPolicy } from '../../api/types';
 import { useApi, alertApiRef } from '@backstage/core-plugin-api';
 import { useEntity } from '@backstage/plugin-catalog-react';
@@ -33,19 +31,14 @@ export const OpaPolicyPage = () => {
   }, [opaApi, entity, opaPolicy, alertApi]);
 
   return (
-    <Page themeId='tool'>
       <Content>
         {policy && (
-          <>
-            <Typography variant="h6">
-              {entity.metadata.name} uses the following OPA policy
-            </Typography>
-            <SyntaxHighlighter language="rego" style={materialLight}>
+          <InfoCard title={`${entity.metadata.name} OPA Policy`}>
+            <SyntaxHighlighter language="rego" showLineNumbers>
               {policy.policyContent}
             </SyntaxHighlighter>
-          </>
+          </InfoCard>
         )}
       </Content>
-    </Page>
   );
 };
