@@ -12,12 +12,12 @@ The only pre-requisites to use this plugin is that you have set up an OPA server
 
 ## Installation
 
-This plugin currently works together with the [opa-entity-checker](../backstage-opa-entity-checker/README.md) and the [opa-permissions-wrapper](../../packages/backstage-opa-permissions-wrapper/README.md) plugin(s).
+This plugin is currently used by the [backstage-opa-entity-checker](../backstage-opa-entity-checker/README.md).
 
 Start with installing the package:
 
 ```bash
-yarn add @parsifal-m/plugin-opa-backend
+yarn add --cwd packages/backend @parsifal-m/plugin-opa-backend
 ```
 
 In your `app-config.yaml` file, add the following:
@@ -28,45 +28,11 @@ opaClient:
   policies:
     entityChecker: # Entity checker plugin
       entrypoint: 'entity_checker/violation'
-    permissions: # Permission wrapper plugin
-      entrypoint: 'rbac_policy/decision'
 ```
 
-> NOTE: Currently backstage supports a new way to register backend plugins on the [New Backend System](https://backstage.io/docs/backend-system/), if you are already using the new backend system please continue with the installation of this plugin in the following section: [Register To The New Backend System](#register-to-the-new-backend-system).
+### Import the plugin into the Backstage Backend
 
-Then add `opa.ts` to your packages/backend/src/plugins.ts directory with the following contents:
-
-```ts
-import { createRouter } from '@parsifal-m/plugin-opa-backend';
-import { Router } from 'express';
-import { PluginEnvironment } from '../types';
-
-export default async function createPlugin(
-  env: PluginEnvironment,
-): Promise<Router> {
-  return await createRouter({
-    logger: env.logger,
-    config: env.config,
-  });
-}
-```
-
-And then add the following to your `packages/backend/src/index.ts` file:
-
-```ts
-//...
-import opa from './plugins/opa';
-
-//...
-const opaEnv = useHotMemoize(module, () => createEnv('opa'));
-
-//...
-apiRouter.use('/opa', await opa(opaEnv));
-```
-
-### Register To The New Backend System
-
-If you are already using the [New Backend System](https://backstage.io/docs/backend-system/), registering the plugin is much easier.
+This assumes you are using the [New Backend System](https://backstage.io/docs/backend-system/), (you should be!) registering the plugin is much easier.
 
 Add the following to your `packages/backend/src/index.ts` file:
 

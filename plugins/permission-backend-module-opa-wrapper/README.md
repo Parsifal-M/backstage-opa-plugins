@@ -30,56 +30,9 @@ This plugin wraps around the Backstage Permission Framework and uses the OPA cli
 - The Permission Framework backend will then forward the request to OPA with the permission and identity information.
 - OPA will evaluate the the information against the policy and return a decision.
 
-## I am using the legacy backend system
+## Installation
 
-Then, make the following changes to the `packages/backend/src/plugins/permission.ts` file in your Backstage project. You can replace the contents with something like the following, this allows for flexible policy evaluation and the ability to use multiple OPA policies for different resource types.
-
-```typescript
-import { createRouter } from '@backstage/plugin-permission-backend';
-import { Router } from 'express-serve-static-core';
-import { PluginEnvironment } from '../types';
-import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
-import {
-  PermissionPolicy,
-  PolicyQuery,
-} from '@backstage/plugin-permission-node';
-import { PolicyDecision } from '@backstage/plugin-permission-common';
-import {
-  OpaClient,
-  policyEvaluator,
-} from '@parsifal-m/plugin-permission-backend-module-opa-wrapper';
-
-export default async function createPlugin(
-  env: PluginEnvironment,
-): Promise<Router> {
-  const opaClient = new OpaClient(env.config, env.logger);
-
-  const opaRbacPolicy = policyEvaluator(opaClient, env.logger);
-
-  class OpaPermissionPolicy implements PermissionPolicy {
-    async handle(
-      request: PolicyQuery,
-      user?: BackstageIdentityResponse,
-    ): Promise<PolicyDecision> {
-      return await opaRbacPolicy(request, user);
-    }
-  }
-
-  return await createRouter({
-    config: env.config,
-    logger: env.logger,
-    discovery: env.discovery,
-    policy: new OpaPermissionPolicy(),
-    identity: env.identity,
-  });
-}
-```
-
-This will replace the default permission evaluation with the OPA client. The OPA client will then evaluate the policy and return a decision.
-
-## I am using the new backend system
-
-Then, make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
+Make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
 
 ```diff
 import { createBackend } from '@backstage/backend-defaults';
