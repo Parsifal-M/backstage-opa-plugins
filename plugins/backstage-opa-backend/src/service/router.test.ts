@@ -4,9 +4,7 @@ import request from 'supertest';
 import { createRouter } from './router';
 import { ConfigReader } from '@backstage/config';
 import fetch from 'node-fetch';
-import {
-  mockServices
-} from '@backstage/backend-test-utils';
+import { mockServices } from '@backstage/backend-test-utils';
 
 jest.mock('node-fetch');
 
@@ -202,36 +200,42 @@ describe('createRouter', () => {
     it('returns policy content when valid opaPolicy is provided', async () => {
       const opaPolicy = 'https://github.com/some/opa/repo/rbac.rego';
       const policyContent = 'policy content';
-  
+
       // Mock the readPolicyFile function to return a predefined policy content
       mockUrlReader.readUrl = jest.fn().mockResolvedValue({
         buffer: async () => Buffer.from(policyContent),
         etag: 'buffer',
         stream: jest.fn(),
       });
-  
-      const res = await request(app).get(`/get-policy?opaPolicy=${encodeURIComponent(opaPolicy)}`);
-  
+
+      const res = await request(app).get(
+        `/get-policy?opaPolicy=${encodeURIComponent(opaPolicy)}`,
+      );
+
       expect(res.status).toEqual(200);
       expect(res.body).toEqual({ policyContent });
     });
-  
+
     it('returns 500 when no opaPolicy is provided', async () => {
       const res = await request(app).get('/get-policy');
-  
+
       expect(res.status).toEqual(500);
     });
-  
+
     it('returns 500 when an error occurs while fetching the policy file', async () => {
-      const opaPolicy = 'https://github.com/Parsifal-M/backstage-testing-grounds/blob/main/rbac.rego';
-  
+      const opaPolicy =
+        'https://github.com/Parsifal-M/backstage-testing-grounds/blob/main/rbac.rego';
+
       // Mock the readPolicyFile function to throw an error
-      mockUrlReader.readUrl = jest.fn().mockRejectedValue(new Error('An error occurred'));
-  
-      const res = await request(app).get(`/get-policy?opaPolicy=${encodeURIComponent(opaPolicy)}`);
-  
+      mockUrlReader.readUrl = jest
+        .fn()
+        .mockRejectedValue(new Error('An error occurred'));
+
+      const res = await request(app).get(
+        `/get-policy?opaPolicy=${encodeURIComponent(opaPolicy)}`,
+      );
+
       expect(res.status).toEqual(500);
     });
   });
-
 });

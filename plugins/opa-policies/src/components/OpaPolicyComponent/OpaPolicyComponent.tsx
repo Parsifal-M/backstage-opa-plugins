@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Content, InfoCard } from '@backstage/core-components';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { CodeSnippet, Content, InfoCard } from '@backstage/core-components';
 import { opaPolicyBackendApiRef, OpaPolicy } from '../../api/types';
 import { useApi, alertApiRef } from '@backstage/core-plugin-api';
 import { useEntity } from '@backstage/plugin-catalog-react';
@@ -31,14 +30,18 @@ export const OpaPolicyPage = () => {
   }, [opaApi, entity, opaPolicy, alertApi]);
 
   return (
-      <Content>
-        {policy && (
-          <InfoCard title={`${entity.metadata.name} OPA Policy`}>
-            <SyntaxHighlighter language="rego" showLineNumbers>
-              {policy.policyContent}
-            </SyntaxHighlighter>
-          </InfoCard>
-        )}
-      </Content>
+    <Content>
+      {policy && (
+        <InfoCard title={`${entity.metadata.name} OPA Policy`}>
+          <CodeSnippet
+            text={policy.policyContent}
+            language="rego"
+            showLineNumbers
+            showCopyCodeButton
+            customStyle={{ background: 'inherit', fontSize: '110%' }}
+          />
+        </InfoCard>
+      )}
+    </Content>
   );
 };

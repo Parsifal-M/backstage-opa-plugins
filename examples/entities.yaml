@@ -45,7 +45,7 @@ kind: Component
 metadata:
   name: example-website-opa-thing
   annotations:
-    open-policy-agent/policy: "policies/entity_checker.rego"
+    open-policy-agent/policy: 'policies/entity_checker.rego'
 spec:
   type: website
   lifecycle: experimental

@@ -1,4 +1,4 @@
-import { createApiRef } from "@backstage/core-plugin-api";
+import { createApiRef } from '@backstage/core-plugin-api';
 
 export type OpaPolicyAst = Record<string, unknown>;
 
@@ -11,7 +11,7 @@ export type OpaApiResponse = {
 };
 
 export interface OpaPolicyBackendApi {
-    getPolicyFromRepo(opaPolicy: string): Promise<OpaPolicy>;
+  getPolicyFromRepo(opaPolicy: string): Promise<OpaPolicy>;
 }
 
 export const opaPolicyBackendApiRef = createApiRef<OpaPolicyBackendApi>({

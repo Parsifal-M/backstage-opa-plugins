@@ -199,7 +199,7 @@ const websiteEntityPage = (
       </Grid>
     </EntityLayout.Route>
 
-    <EntityLayout.Route path='/opa' title='Open Policy Agent'>
+    <EntityLayout.Route path="/opa" title="Open Policy Agent">
       <OpaPolicyPage />
     </EntityLayout.Route>
 
