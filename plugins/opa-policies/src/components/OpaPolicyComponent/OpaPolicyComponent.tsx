@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { CodeSnippet, Content, InfoCard } from '@backstage/core-components';
+import {
+  CodeSnippet,
+  Content,
+  InfoCard,
+  Progress,
+} from '@backstage/core-components';
 import { opaPolicyBackendApiRef, OpaPolicy } from '../../api/types';
 import { useApi, alertApiRef } from '@backstage/core-plugin-api';
 import { useEntity } from '@backstage/plugin-catalog-react';
@@ -29,19 +34,24 @@ export const OpaPolicyPage = () => {
     fetchData();
   }, [opaApi, entity, opaPolicy, alertApi]);
 
+  if (!policy) {
+    return <Progress />;
+  }
+
   return (
     <Content>
-      {policy && (
-        <InfoCard title={`${entity.metadata.name} OPA Policy`}>
-          <CodeSnippet
-            text={policy.policyContent}
-            language="rego"
-            showLineNumbers
-            showCopyCodeButton
-            customStyle={{ background: 'inherit', fontSize: '110%' }}
-          />
-        </InfoCard>
-      )}
+      <InfoCard
+        title={`${entity.metadata.name} OPA Policy`}
+        data-testid="opa-policy-card"
+      >
+        <CodeSnippet
+          text={policy.policyContent}
+          language="rego"
+          showLineNumbers
+          showCopyCodeButton
+          customStyle={{ background: 'inherit', fontSize: '110%' }}
+        />
+      </InfoCard>
     </Content>
   );
 };

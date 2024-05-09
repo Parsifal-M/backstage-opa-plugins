@@ -87,10 +87,10 @@ export async function createRouter(
 
     if (!opaPolicy) {
       logger.error(
-        'No OPA policy provided!, please check the open-policy-agent/policy annotation',
+        'No OPA policy provided!, please check the open-policy-agent/policy annotation and provide a URL to the policy file',
       );
       throw new Error(
-        'No OPA policy provided!, please check the open-policy-agent/policy annotation',
+        'No OPA policy provided!, please check the open-policy-agent/policy annotation and provide a URL to the policy file',
       );
     }
 

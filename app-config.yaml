@@ -1,9 +1,9 @@
 app:
-  title: Brewed-Backstage
+  title: OPA-Backstage-Plugins
   baseUrl: http://localhost:3000
 
 organization:
-  name: Brewed-Backstage
+  name: OPA-Backstage-Plugins
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
