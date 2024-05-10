@@ -1,1 +1,1 @@
-export { OpaPolicyPage } from './plugin';
+export { OpaPolicyPage, isOpaPoliciesEnabled } from './plugin';

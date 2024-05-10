@@ -6566,6 +6566,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@internal/plugin-opa-policies@workspace:plugins/opa-policies"
   dependencies:
+    "@backstage/catalog-model": ^1.4.5
     "@backstage/cli": ^0.26.0
     "@backstage/core-app-api": ^1.12.1
     "@backstage/core-components": ^0.14.1

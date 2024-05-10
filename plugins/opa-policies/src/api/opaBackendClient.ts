@@ -7,7 +7,18 @@ export class OpaPolicyBackendClient implements OpaPolicyBackendApi {
     this.fetchApi = options.fetchApi;
   }
 
-  private async handleResponse(response: Response): Promise<OpaPolicy> {
+  async getPolicyFromRepo(opaPolicy: string): Promise<OpaPolicy> {
+    const url = `plugin://opa/get-policy?opaPolicy=${encodeURIComponent(
+      opaPolicy,
+    )}`;
+
+    const response = await this.fetchApi.fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
     if (!response.ok) {
       const message = `Error ${response.status}: ${response.statusText}.`;
 
@@ -25,19 +36,5 @@ export class OpaPolicyBackendClient implements OpaPolicyBackendApi {
 
     const data = await response.json();
     return data as OpaPolicy;
-  }
-
-  async getPolicyFromRepo(opaPolicy: string): Promise<OpaPolicy> {
-    const url = `plugin://opa/get-policy?opaPolicy=${encodeURIComponent(
-      opaPolicy,
-    )}`;
-
-    const response = await this.fetchApi.fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return await this.handleResponse(response);
   }
 }

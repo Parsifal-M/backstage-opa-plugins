@@ -11,6 +11,7 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 
 export const OpaPolicyPage = () => {
   const [policy, setPolicy] = useState<OpaPolicy | null>(null);
+  const [loading, setLoading] = useState(true);
   const opaApi = useApi(opaPolicyBackendApiRef);
   const { entity } = useEntity();
   const alertApi = useApi(alertApiRef);
@@ -21,7 +22,10 @@ export const OpaPolicyPage = () => {
       if (opaPolicy) {
         try {
           const response = await opaApi.getPolicyFromRepo(opaPolicy);
-          setPolicy(response.policyContent ? response : null);
+          if (response.policyContent) {
+            setPolicy(response);
+            setLoading(false);
+          }
         } catch (error: unknown) {
           alertApi.post({
             message: `Could not fetch OPA policy: ${error}`,
@@ -34,8 +38,8 @@ export const OpaPolicyPage = () => {
     fetchData();
   }, [opaApi, entity, opaPolicy, alertApi]);
 
-  if (!policy) {
-    return <Progress />;
+  if (loading) {
+    return <Progress data-testid="progress" />;
   }
 
   return (
@@ -45,7 +49,7 @@ export const OpaPolicyPage = () => {
         data-testid="opa-policy-card"
       >
         <CodeSnippet
-          text={policy.policyContent}
+          text={policy?.policyContent ?? ''}
           language="rego"
           showLineNumbers
           showCopyCodeButton

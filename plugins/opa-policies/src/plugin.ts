@@ -4,6 +4,7 @@ import {
   createRoutableExtension,
   fetchApiRef,
 } from '@backstage/core-plugin-api';
+import { Entity } from '@backstage/catalog-model';
 
 import { rootRouteRef } from './routes';
 import { opaPolicyBackendApiRef } from './api/types';
@@ -33,3 +34,7 @@ export const OpaPolicyPage = opaPoliciesPlugin.provide(
     mountPoint: rootRouteRef,
   }),
 );
+
+export const isOpaPoliciesEnabled = (entity: Entity) => {
+  return Boolean(entity?.metadata.annotations?.['open-policy-agent/policy']);
+};

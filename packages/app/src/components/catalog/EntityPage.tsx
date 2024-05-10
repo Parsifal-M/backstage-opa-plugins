@@ -56,7 +56,10 @@ import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
 import { DevQuote } from '@parsifal-m/plugin-dev-quotes-homepage';
-import { OpaPolicyPage } from '@internal/plugin-opa-policies';
+import {
+  OpaPolicyPage,
+  isOpaPoliciesEnabled,
+} from '@internal/plugin-opa-policies';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -199,7 +202,11 @@ const websiteEntityPage = (
       </Grid>
     </EntityLayout.Route>
 
-    <EntityLayout.Route path="/opa" title="Open Policy Agent">
+    <EntityLayout.Route
+      if={isOpaPoliciesEnabled}
+      path="/opa"
+      title="Open Policy Agent"
+    >
       <OpaPolicyPage />
     </EntityLayout.Route>
 

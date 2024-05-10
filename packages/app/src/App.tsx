@@ -38,7 +38,6 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
-import { OpaPolicyPage } from '@internal/plugin-opa-policies';
 
 const app = createApp({
   components: {
@@ -115,7 +114,6 @@ const routes = (
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     {/* <Route path="/gitlab-runners" element={<GitlabRunnersPage />} /> */}
     {/* <Route path="/gitlab-my-mr-card" element={<GitlabMyMrCardPage />} /> */}
-    <Route path="/opa-policies" element={<OpaPolicyPage />} />
   </FlatRoutes>
 );
 
