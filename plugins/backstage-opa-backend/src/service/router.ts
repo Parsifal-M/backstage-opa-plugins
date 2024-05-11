@@ -5,15 +5,18 @@ import {
   DiscoveryService,
   HttpAuthService,
   LoggerService,
+  UrlReaderService,
 } from '@backstage/backend-plugin-api';
 import fetch from 'node-fetch';
 import { errorHandler } from '@backstage/backend-common';
 import { Config } from '@backstage/config';
+import { readPolicyFile } from '../lib/read';
 
 export type RouterOptions = {
   logger: LoggerService;
   config: Config;
   discovery: DiscoveryService;
+  urlReader: UrlReaderService;
   auth?: AuthService;
   httpAuth?: HttpAuthService;
 };
@@ -21,7 +24,7 @@ export type RouterOptions = {
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, config } = options;
+  const { logger, config, urlReader } = options;
 
   const router = Router();
   router.use(express.json());
@@ -75,6 +78,30 @@ export async function createRouter(
         'An error occurred trying to send entity metadata to OPA:',
         error,
       );
+      return next(error);
+    }
+  });
+
+  router.get('/get-policy', async (req, res, next) => {
+    const opaPolicy = req.query.opaPolicy as string;
+
+    if (!opaPolicy) {
+      logger.error(
+        'No OPA policy provided!, please check the open-policy-agent/policy annotation and provide a URL to the policy file',
+      );
+      throw new Error(
+        'No OPA policy provided!, please check the open-policy-agent/policy annotation and provide a URL to the policy file',
+      );
+    }
+
+    try {
+      // Fetch the content of the policy file
+      logger.debug(`Fetching policy file from ${opaPolicy}`);
+      const policyContent = await readPolicyFile(urlReader, opaPolicy);
+
+      return res.json({ policyContent });
+    } catch (error) {
+      logger.error('An error occurred trying to fetch the policy file:', error);
       return next(error);
     }
   });

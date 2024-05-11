@@ -41,7 +41,7 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
-test('renders without crashing', async () => {
+it('renders without crashing', async () => {
   await act(async () => {
     render(
       <TestApiProvider
@@ -60,7 +60,7 @@ test('renders without crashing', async () => {
   });
 });
 
-test('renders violations if they exist', async () => {
+it('renders violations if they exist', async () => {
   mockEntityCheck.mockResolvedValue({
     result: [{ message: 'Test violation', level: 'error' }],
   });
@@ -84,7 +84,7 @@ test('renders violations if they exist', async () => {
   });
 });
 
-test('handles error from the api call', async () => {
+it('handles error from the api call', async () => {
   mockEntityCheck.mockRejectedValue(new Error());
   const someError = new Error();
 
