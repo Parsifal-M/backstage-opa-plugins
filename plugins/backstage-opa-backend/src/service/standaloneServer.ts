@@ -1,6 +1,8 @@
 import {
   createServiceBuilder,
+  HostDiscovery,
   loadBackendConfig,
+  UrlReaders,
 } from '@backstage/backend-common';
 import { Server } from 'http';
 import { Logger } from 'winston';
@@ -17,10 +19,13 @@ export async function startStandaloneServer(
 ): Promise<Server> {
   const logger = options.logger.child({ service: 'opa-backend' });
   const config = await loadBackendConfig({ logger, argv: process.argv });
+  const discovery = HostDiscovery.fromConfig(config);
   logger.debug('Starting application server...');
   const router = await createRouter({
     logger,
     config,
+    discovery,
+    urlReader: UrlReaders.default({ logger, config }),
   });
 
   let service = createServiceBuilder(module)

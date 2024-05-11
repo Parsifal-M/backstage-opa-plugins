@@ -59,7 +59,7 @@ import { DevQuote } from '@parsifal-m/plugin-dev-quotes-homepage';
 import {
   OpaPolicyPage,
   isOpaPoliciesEnabled,
-} from '@internal/plugin-opa-policies';
+} from '@parsifal-m/plugin-opa-policies';
 
 const techdocsContent = (
   <EntityTechdocsContent>
