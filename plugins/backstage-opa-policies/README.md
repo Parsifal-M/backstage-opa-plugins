@@ -1,6 +1,8 @@
 # OPA Policies Plugin
 
-This plugin will fetch and display the OPA Policy an entity consumes!
+This plugin will fetch and display the OPA Policy an entity consumes! This is useful for displaying the OPA Policy for an entity in the Backstage catalog.
+
+![OPA Policy](../../img/opa-policies-plugin.png)
 
 ## Installation
 
