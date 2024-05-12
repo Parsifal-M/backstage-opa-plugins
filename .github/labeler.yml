@@ -1,0 +1,23 @@
+opa-backend:
+  - changed-files:
+      - any-glob-to-any-file: ['plugins/backstage-opa-backend/**/*']
+
+opa-entity-checker:
+  - changed-files:
+      - any-glob-to-any-file: ['plugins/backstage-opa-entity-checker/**/*']
+
+opa-policies:
+  - changed-files:
+      - any-glob-to-any-file: ['plugins/backstage-opa-policies/**/*']
+
+opa-permissions-wrapper:
+  - changed-files:
+      - any-glob-to-any-file: ['plugins/permissions-backend-module-opa-wrapper/**/*']
+
+cicd:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/workflows/**/*']
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ['docs/**/*', 'README.md']
