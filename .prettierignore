@@ -3,3 +3,5 @@ dist-types
 coverage
 .vscode
 .yarn
+.yarnrc.yml
+.github
