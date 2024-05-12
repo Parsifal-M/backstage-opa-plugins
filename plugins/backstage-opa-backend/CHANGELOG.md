@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.4.4 - 12-04-2024
+
+### Added
+
+- Added a new route `/get-policy` to the plugin. This route is designed to fetch and display the content of Open Policy Agent (OPA) policy files. Currently the [backstage-opa-policies](../backstage-opa-policies/README.md) plugin uses this route to fetch and display the content of OPA policies in the Backstage UI on entity pages.
+
+### Changed
+
+N/A
+
+### Fixed
+
+N/A
+
 ## 1.3.4 - 15-03-2024
 
 ### Added

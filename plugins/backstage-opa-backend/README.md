@@ -12,7 +12,7 @@ The only pre-requisites to use this plugin is that you have set up an OPA server
 
 ## Installation
 
-This plugin is currently used by the [backstage-opa-entity-checker](../backstage-opa-entity-checker/README.md).
+This plugin is currently used by the [backstage-opa-entity-checker](../backstage-opa-entity-checker/README.md), and the [backstage-opa-policies](../backstage-opa-policies/README.md) plugins. You can install it by running the following command:
 
 Start with installing the package:
 
@@ -29,6 +29,8 @@ opaClient:
     entityChecker: # Entity checker plugin
       entrypoint: 'entity_checker/violation'
 ```
+
+> Note, the `backstage-opa-policies` plugin does not require the above configuration.
 
 ### Import the plugin into the Backstage Backend
 
