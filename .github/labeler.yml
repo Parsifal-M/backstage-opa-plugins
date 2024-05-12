@@ -21,4 +21,4 @@ cicd:
 
 documentation:
   - changed-files:
-      - any-glob-to-any-file: ['docs/**/*', 'README.md']
+      - any-glob-to-any-file: ['docs/**/*', 'README.md', '**/README.md']
