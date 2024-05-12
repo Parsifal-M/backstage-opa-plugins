@@ -12,7 +12,8 @@ opa-policies:
 
 opa-permissions-wrapper:
   - changed-files:
-      - any-glob-to-any-file: ['plugins/permissions-backend-module-opa-wrapper/**/*']
+      - any-glob-to-any-file:
+          ['plugins/permissions-backend-module-opa-wrapper/**/*']
 
 cicd:
   - changed-files:
