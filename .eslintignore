@@ -10,3 +10,6 @@
 **/templates/**
 **/sample-templates/**
 playwright.config.ts
+.yarn/*
+.yarnrc.yml
+.github/*
