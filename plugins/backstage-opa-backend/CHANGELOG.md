@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.4.5 - 24-05-2024
+
+### Added
+
+N/A
+
+### Changed
+
+Bumps the Backstage packages to the latest version.
+
+### Fixed
+
+N/A
+
 ## 1.4.4 - 12-04-2024
 
 ### Added
