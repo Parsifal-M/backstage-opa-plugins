@@ -13,3 +13,4 @@ playwright.config.ts
 .yarn/*
 .yarnrc.yml
 .github/*
+.changeset
