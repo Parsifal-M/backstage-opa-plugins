@@ -112,8 +112,6 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
-    {/* <Route path="/gitlab-runners" element={<GitlabRunnersPage />} /> */}
-    {/* <Route path="/gitlab-my-mr-card" element={<GitlabMyMrCardPage />} /> */}
   </FlatRoutes>
 );
 

@@ -34,14 +34,14 @@ decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 }
 
 # Allow users to only see components unless they are an admin
-decision := conditional("catalog", "catalog-entity", {"anyOf": [{
-	"resourceType": "catalog-entity",
-	"rule": "IS_ENTITY_KIND",
-	"params": {"kinds": ["API"]},
-}]}) if {
-	permission == "catalog.entity.read"
-	not is_admin
-}
+# decision := conditional("catalog", "catalog-entity", {"anyOf": [{
+# 	"resourceType": "catalog-entity",
+# 	"rule": "IS_ENTITY_KIND",
+# 	"params": {"kinds": ["API"]},
+# }]}) if {
+# 	permission == "catalog.entity.read"
+# 	not is_admin
+# }
 
 # Scaffolder Permissions
 
