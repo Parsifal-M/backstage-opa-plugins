@@ -12,6 +12,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: example-website
+  annotations:
+    open-policy-agent/policy: https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/policies/rbac_policy.rego
 spec:
   type: website
   lifecycle: experimental
@@ -39,15 +41,3 @@ spec:
     message ExampleMessage {
       string example = 1;
     };
----
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: example-website-opa-thing
-  annotations:
-    open-policy-agent/policy: 'policies/entity_checker.rego'
-spec:
-  type: website
-  lifecycle: experimental
-  owner: guests
-  system: examples
