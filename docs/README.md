@@ -4,10 +4,10 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 ## Plugins
 
-- [backstage-opa-backend](./plugins/backstage-opa-backend/README.md) - A Backend Plugin that the [backstage-opa-entity-checker](./plugins/backstage-opa-entity-checker/README.md) consumes to evaluate policies.
+- [backstage-opa-backend](../plugins/backstage-opa-backend/README.md) - A Backend Plugin that the [backstage-opa-entity-checker](./plugins/backstage-opa-entity-checker/README.md) consumes to evaluate policies.
 - [plugin-permission-backend-module-opa-wrapper](/opa-permissions-wrapper-module/introduction.md) - An isolated OPA Client and a Policy Evaluator that integrates with the Backstage permissions framework and uses OPA to evaluate policies, making it possible to use OPA for permissions (like RBAC).
-- [backstage-opa-entity-checker](./plugins/backstage-opa-entity-checker/README.md) - A frontend plugin that provides a component card that displays if an entity has the expected entity metadata according to an opa policy.
-- [backstage-opa-policies](./plugins/backstage-opa-policies/README.md) - A frontend component designed to be added to entity pages to fetch and display the OPA policy that entity uses based on a URL provided in an annotation in the `catalog-info.yaml` file.
+- [backstage-opa-entity-checker](../plugins/backstage-opa-entity-checker/README.md) - A frontend plugin that provides a component card that displays if an entity has the expected entity metadata according to an opa policy.
+- [backstage-opa-policies](../plugins/backstage-opa-policies/README.md) - A frontend component designed to be added to entity pages to fetch and display the OPA policy that entity uses based on a URL provided in an annotation in the `catalog-info.yaml` file.
 
 ## Policies
 
@@ -15,7 +15,7 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 ## Additional Documentation
 
-You can find some additional documentation including an architecture overview in the [docs](./docs) folder.
+Each plugin also has its own documentation in the README file in the plugin folder.
 
 ## Local Development
 
