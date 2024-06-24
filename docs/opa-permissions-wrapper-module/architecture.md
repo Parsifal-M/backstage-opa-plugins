@@ -5,6 +5,7 @@ This document describes the high-level flow of interactions and the sequence dia
 ## High-Level Flow of Interactions
 
 ```mermaid
+%%{init: {'theme': 'dark'}}%%
 graph LR
     A[Backstage] --> B[Permissions Framework]
     B --> C[OPA Permissions Wrapper Plugin]
@@ -14,38 +15,12 @@ graph LR
     B --> A
 ```
 
-## Sequence Diagram of the Plugin Interactions (Old Backend)
-
-This flowchart represents the high-level flow of interactions between the different components in the OPA plugins architecture.
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant Backstage App
-    participant permissions.ts
-    box "permission-backend-module-opa-wrapper"
-        participant policyEvaluator
-        participant OpaClient
-    end
-    participant OPA Server
-
-    User->>Backstage App: Makes a request
-    Backstage App->>permissions.ts: Forward request
-    permissions.ts->>policyEvaluator: evaluatePolicy(permissionRequest)
-    policyEvaluator->>OpaClient: evaluatePolicy(permissionRequest)
-    OpaClient->>OPA Server: POST /v1/data/{opaEntryPoint}
-    OPA Server-->>OpaClient: PolicyEvaluationResult
-    OpaClient-->>policyEvaluator: Return PolicyEvaluationResult
-    policyEvaluator-->>permissions.ts: Return evaluation result
-    permissions.ts-->>Backstage App: Return evaluation result
-    Backstage App-->>User: Return response
-```
-
 ## Sequence Diagram of the Plugin Interactions (New Backend)
 
 This flowchart represents the high-level flow of interactions between the different components in the OPA plugins architecture on the new backend system.
 
 ```mermaid
+%%{init: {'theme': 'dark'}}%%
 sequenceDiagram
     participant User
     participant Backstage App

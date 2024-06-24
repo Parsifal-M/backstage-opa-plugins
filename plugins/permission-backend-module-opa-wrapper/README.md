@@ -32,6 +32,10 @@ This plugin wraps around the Backstage Permission Framework and uses the OPA cli
 
 ## Installation
 
+```bash
+yarn add --cwd packages/backend @parsifal-m/plugin-permission-backend-module-opa-wrapper
+```
+
 Make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
 
 ```diff
@@ -130,7 +134,7 @@ It will then return either just an allow decision or both an allow decision and 
 
 ## Contributing
 
-I am happy to accept contributions and suggestions for this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
+I am happy to accept contributions and suggestions for this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal)
 
 ## License
 
