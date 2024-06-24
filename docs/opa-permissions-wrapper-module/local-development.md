@@ -107,4 +107,3 @@ decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 	not is_admin
 }
 ```
-

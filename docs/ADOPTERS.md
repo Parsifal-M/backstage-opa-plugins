@@ -5,8 +5,8 @@ It's awesome to see that this project is being used by other companies and proje
 ## Companies and Organizations
 
 - VodafoneZiggo
-    - **Website:** [https://www.vodafoneziggo.nl/](https://www.vodafoneziggo.nl/)
-    - **Use Case:** Using the permissions wrapper module for RBAC and the entity checker module to evaluate policies and display entity metadata.
+  - **Website:** [https://www.vodafoneziggo.nl/](https://www.vodafoneziggo.nl/)
+  - **Use Case:** Using the permissions wrapper module for RBAC and the entity checker module to evaluate policies and display entity metadata.
 
 ## Open Source Projects
 
@@ -24,10 +24,11 @@ Thank you for supporting our project!
 
 ```markdown
 - **Organization Name**
-    - **Website:** [https://www.example.com/](https://www.example.com/)
-    - **Use Case:** Brief description of how they're using your project.
+
+  - **Website:** [https://www.example.com/](https://www.example.com/)
+  - **Use Case:** Brief description of how they're using your project.
 
 - **Project Name 2**
-    - **Repository:** [github.com/project2](https://github.com/project2)
-    - **Use Case:** Brief description of how they're using your project.
+  - **Repository:** [github.com/project2](https://github.com/project2)
+  - **Use Case:** Brief description of how they're using your project.
 ```

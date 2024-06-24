@@ -28,14 +28,14 @@ spec:
       ports:
         - name: http
           containerPort: 8181
-      args: 
-        - "run"
-        - "--server"
-        - "--log-format=json-pretty"
-        - "--set=decision_logs.console=true"
-        - "--ignore=.*"
-        - "--watch" # Watch for policy changes, this allows updating the policy without restarting OPA
-        - "/policies"
+      args:
+        - 'run'
+        - '--server'
+        - '--log-format=json-pretty'
+        - '--set=decision_logs.console=true'
+        - '--ignore=.*'
+        - '--watch' # Watch for policy changes, this allows updating the policy without restarting OPA
+        - '/policies'
       volumeMounts:
         - readOnly: true
           name: opa-rbac-policy
@@ -45,6 +45,7 @@ spec:
       configMap:
         name: opa-rbac-policy
 ```
+
 For simplicity you can then create a policy in a `ConfigMap` and mount it into the OPA container.
 
 > Note: Update "kind:namespace/name" in the policy to match your user entity claims.
@@ -68,7 +69,7 @@ data:
         "resourceType": resource_type,
         "conditions": conditions,
     }
-    
+
     permission := input.permission.name
 
     claims := input.identity.claims
