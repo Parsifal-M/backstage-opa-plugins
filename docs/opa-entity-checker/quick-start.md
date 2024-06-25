@@ -1,6 +1,6 @@
 # Quick Start
 
-This guide will help you get started with the OPA Permissions Wrapper module for Backstage.
+This guide will help you get started with the OPA Entity Checker module for Backstage.
 
 ## Pre-requisites
 

@@ -1,72 +1,29 @@
-# OPA Policies Plugin
+# OPA Policies Plugin Overview
 
-This plugin will fetch and display the OPA Policy an entity consumes! This is useful for displaying the OPA Policy for an entity in the Backstage catalog.
+The OPA Policies Plugin is designed to enhance visibility and understanding of the policies applied to entities within the Backstage catalog. By fetching and displaying the specific OPA Policy associated with an entity, this plugin makes it straightforward for users to see at a glance which policies are in effect for any given entity.
 
-![OPA Policy](../../img/opa-policies-plugin.png)
+This functionality is particularly useful for teams looking to maintain compliance and governance standards across their services, as it provides a clear, accessible view of policy application directly on the entity page in Backstage.
 
-## Installation
+![OPA Policy](../assets/opa-policies-plugin.png)
 
-You will need to install the backend plugin first into your `packages/backend` directory:
+To quickly get started with this plugin, follow the steps below.
 
-```bash
-yarn add @parsifal-m/plugin-opa-backend
-```
+- [Quick-start Guide](./quick-start.md)
 
-Then you will need to install the frontend plugin into your `packages/app` directory:
+## Community
 
-```bash
-yarn add @parsifal-m/plugin-opa-policies
-```
+This project is part of the Backstage and Open Policy Agent communities. For more information, please visit:
 
-## Configuration
+- [Backstage](https://backstage.io)
+- [Open Policy Agent](https://www.openpolicyagent.org)
+- [Styra](https://www.styra.com)
+- [OPA Slack](https://slack.openpolicyagent.org/)
+- [Backstage Discord](https://discord.com/invite/MUpMjP2)
 
-You need to add the following annotation to the entity you want to display the OPA Policy for:
+## Get Involved
 
-```yaml
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: backstage-testing-grounds
-  description: An example of a Backstage application.
-  annotations:
-    # Add the OPA Policy URL here
-    open-policy-agent/policy: https://github.com/Parsifal-M/backstage-testing-grounds/blob/main/rbac.rego
-spec:
-  type: website
-  owner: john@example.com
-  lifecycle: experimental
-```
+Your contributions can make opa-entity-checker even better. Fork the repository, make your changes, and submit a PR. If you have questions or ideas, reach out on [Mastodon](https://hachyderm.io/@parcifal).
 
-You need to provide the full URL to the OPA Policy file as above in order for the plugin to fetch and display it.
+## License
 
-## Usage
-
-You can then add it to your entity pages in `packages/app/src/components/catalog/EntityPage.tsx`:
-
-```tsx
-import {
-  OpaPolicyPage,
-  isOpaPoliciesEnabled,
-} from '@parsifal-m/plugin-opa-policies';
-
-const websiteEntityPage = (
-  <EntityLayout>
-    <EntityLayout.Route path="/" title="Overview">
-      {overviewContent}
-    </EntityLayout.Route>
-    // Other routes...
-    <EntityLayout.Route
-      if={isOpaPoliciesEnabled}
-      path="/opa"
-      title="Open Policy Agent"
-    >
-      <OpaPolicyPage />
-    </EntityLayout.Route>
-    <EntityLayout.Route path="/docs" title="Docs">
-      {techdocsContent}
-    </EntityLayout.Route>
-  </EntityLayout>
-);
-```
-
-Note that using `isOpaPoliciesEnabled` will then only display the OPA Policy tab if the entity has the annotation set.
+This project is licensed under the Apache 2.0 License.
