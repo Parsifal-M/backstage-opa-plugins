@@ -21,19 +21,19 @@ For more details, check out:
 - [Quick-start Guide](/opa-entity-checker/quick-start.md)
 - [Local Development Guide](/opa-entity-checker/local-development.md)
 
-## Community
+## Join The Community
 
-This project is part of the Backstage and Open Policy Agent communities. For more information, please visit:
+This project is a part of the broader Backstage and Open Policy Agent ecosystems. Explore more about these communities:
 
-- [Backstage](https://backstage.io)
-- [Open Policy Agent](https://www.openpolicyagent.org)
+- [Backstage Community](https://backstage.io)
+- [Open Policy Agent Community](https://www.openpolicyagent.org)
 - [Styra](https://www.styra.com)
-- [OPA Slack](https://slack.openpolicyagent.org/)
+- [Join OPA on Slack](https://slack.openpolicyagent.org/)
 - [Backstage Discord](https://discord.com/invite/MUpMjP2)
 
 ## Get Involved
 
-Your contributions can make opa-entity-checker even better. Fork the repository, make your changes, and submit a PR. If you have questions or ideas, reach out on [Mastodon](https://hachyderm.io/@parcifal).
+Your contributions can make this plugin even better. Fork the repository, make your changes, and submit a PR! If you have questions or ideas, reach out on [Mastodon](https://hachyderm.io/@parcifal).
 
 ## License
 
