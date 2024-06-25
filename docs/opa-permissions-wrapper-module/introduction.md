@@ -32,7 +32,7 @@ This project is a part of the broader Backstage and Open Policy Agent ecosystems
 - [Join OPA on Slack](https://slack.openpolicyagent.org/)
 - [Backstage Discord](https://discord.com/invite/MUpMjP2)
 
-### Learn More
+## Learn More
 
 - [Blog: Going Backstage with OPA](https://www.styra.com/blog/going-backstage-with-opa/)
 - [Talk: Building Fine-Grained Access Control for Backstage with OPA](https://www.youtube.com/watch?v=N0n_czYo_kE&list=PLj6h78yzYM2P4KPyeDFexAVm6ZvfAWMU8&index=15&ab_channel=CNCF%5BCloudNativeComputingFoundation%5D)
