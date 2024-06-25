@@ -1,113 +1,40 @@
 ![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-opa-entity-checker?logo=npm)
 
-# opa-entity-checker
+# Keep Your Entity Data In Check With OPA Entity Checker
 
-Welcome to the opa-entity-checker plugin! This plugin uses [OPA](https://github.com/open-policy-agent/opa) to check your entities against a policy you set. It will then display the results of the check on the entity page. This is a good way to remind people of the data quality that is expected in your Backstage instance.
+Welcome to a smarter way to ensure data quality! The opa-entity-checker plugin, powered by [OPA](https://github.com/open-policy-agent/opa), offers a straightforward solution to validate your entities against custom policies. It's a great tool for maintaining high data standards in your Backstage instance. And keeps teams on their toes to ensure data quality is always good.
 
-If you need help with OPA, you can find the documentation [here](https://www.openpolicyagent.org/docs/latest/).
+## How It Works
 
-## Pre-requisites
+With opa-entity-checker, you can automatically verify if your entities comply with the policies you've set. It displays a clear, concise card on the entity page, indicating the compliance status:
 
-To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](../backstage-opa-backend/README.md).
+- **Compliant Entities:** A clean card signifies everything is in order.
 
-## Installation
+  ![MetaData Card No Violations](../assets/card2.png)
 
-To add this plugin to Backstage, run the following command:
+- **Non-Compliant Entities:** A detailed card highlights what needs attention.
 
-```bash
-yarn add @parsifal-m/plugin-opa-entity-checker
-```
+  ![MetaData Card Violations](../assets/card1.png)
 
-## What does this do?
+For more details, check out:
 
-This plugin will allow you to run OPA against your entities in Backstage and see if they are compliant with your policies. It will display a card on the entity page with the results of the check which looks like this:
+- [Quick-start Guide](/opa-entity-checker/quick-start.md)
+- [Local Development Guide](/opa-entity-checker/local-development.md)
 
-![MetaData Card Violations](docs/card1.png)
+## Community
 
-If there are no issues or violations, the card will look like this:
+This project is part of the Backstage and Open Policy Agent communities. For more information, please visit:
 
-![MetaData Card No Violations](docs/card2.png)
+- [Backstage](https://backstage.io)
+- [Open Policy Agent](https://www.openpolicyagent.org)
+- [Styra](https://www.styra.com)
+- [OPA Slack](https://slack.openpolicyagent.org/)
+- [Backstage Discord](https://discord.com/invite/MUpMjP2)
 
-## How do I set the policy?
+## Get Involved
 
-The policy is set in the `app-config.yaml` file like so:
-
-```yaml
-opaClient:
-  baseUrl: 'http://localhost:8181'
-  policies:
-    entityChecker: # Entity checker plugin
-      entrypoint: 'entity_checker/violation'
-```
-
-Then in your OPA Policy (the `rego` file) you can use the following to set any violations you want to display (you do not have to use violation, you can use any rule head you want, but you will need to change the `entrypoint` in the `app-config.yaml` file to match the rule head you use):
-
-```rego
-package entity_checker
-
-import future.keywords.contains
-import future.keywords.if
-import future.keywords.in
-
-default good_entity := false
-
-good_entity if {
-	count({v | some v in violation; v.level == "error"}) == 0
-}
-
-violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
-	not input.metadata.tags
-	entity_check := "Tags"
-	msg := "You do not have any tags set!"
-}
-
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	valid_lifecycles = {"production", "development"}
-	not valid_lifecycles[input.spec.lifecycle]
-	entity_check := "Lifecycle"
-	msg := "Incorrect lifecycle, should be one of production or development"
-}
-
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	not is_system_present
-	entity_check := "System"
-	msg := "System is missing!"
-}
-
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	valid_types = {"website", "library", "service"}
-	not valid_types[input.spec.type]
-	entity_check := "Type"
-	msg := "Incorrect component type!"
-}
-
-is_system_present if {
-	input.spec.system
-}
-```
-
-## Add the card to your entity page
-
-Add the following to your `EntityPage.tsx` file:
-
-```tsx
-import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
-
-//...
-
-const overviewContent = (
-  //...
-  <Grid item md={6} xs={12}>
-    <OpaMetadataAnalysisCard />
-  </Grid>
-  //...
-);
-```
-
-## Contributing
-
-I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
+Your contributions can make opa-entity-checker even better. Fork the repository, make your changes, and submit a PR. If you have questions or ideas, reach out on [Mastodon](https://hachyderm.io/@parcifal).
 
 ## License
 
-This project is released under the Apache 2.0 License.
+This project is licensed under the Apache 2.0 License.

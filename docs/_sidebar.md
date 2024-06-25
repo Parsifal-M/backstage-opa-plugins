@@ -6,6 +6,7 @@
   - [Architecture](opa-permissions-wrapper-module/architecture.md)
 - [OPA Backend](opa-backend/introduction.md)
 - [OPA Entity Checker](opa-entity-checker/introduction.md)
+  - [Quick Start](opa-entity-checker/quick-start.md)
 - [OPA Policies](opa-policies/introduction.md)
 - [Contributing](CONTRIBUTING.md)
 - [Adopters](ADOPTERS.md)
