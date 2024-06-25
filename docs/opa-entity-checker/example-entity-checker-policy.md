@@ -1,3 +1,8 @@
+# Example Entity Checker Policy
+
+This is an example policy for the OPA Entity Checker plugin. This policy is used to check if an entity has the correct metadata set. This could be used as a starting point for your own policies.
+
+```rego
 package entity_checker
 
 import rego.v1
@@ -45,3 +50,4 @@ violation contains {"check_title": entity_check, "message": msg, "level": "error
 	entity_check := "Type"
 	msg := "Incorrect component type!"
 }
+```

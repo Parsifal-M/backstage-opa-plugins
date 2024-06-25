@@ -1,3 +1,8 @@
+# Example Permissions (RBAC) Policy
+
+The below rego is an example of what a policy might look like for your Backstage application. You could use this as a starting point and modify it to fit your needs!
+
+```rego
 package rbac_policy
 
 import rego.v1
@@ -20,7 +25,7 @@ permission := input.permission.name
 claims := input.identity.claims
 
 # An example of setting the is_admin flag based on the claims
-is_admin if "[<kind>:][<namespace>/]<name>" in claims
+is_admin if "kind:namespace:name" in claims
 
 # Catalog Permission: Allow users to only delete entities they claim ownership of.
 # Allow admins to delete any entity regardless of ownership.
@@ -68,3 +73,4 @@ decision := conditional("scaffolder", "scaffolder-action", {"not": {"anyOf": [{
 	permission == "scaffolder.action.execute"
 	not is_admin
 }
+```

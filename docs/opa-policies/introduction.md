@@ -1,3 +1,5 @@
+![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-opa-policies) ![NPM Downloads](https://img.shields.io/npm/dw/%40parsifal-m%2Fplugin-opa-policies)
+
 # OPA Policies Plugin Overview
 
 The OPA Policies Plugin is designed to enhance visibility and understanding of the policies applied to entities within the Backstage catalog. By fetching and displaying the specific OPA Policy associated with an entity, this plugin makes it straightforward for users to see at a glance which policies are in effect for any given entity.
