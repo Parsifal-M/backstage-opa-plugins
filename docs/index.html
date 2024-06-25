@@ -7,8 +7,12 @@
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no, viewport-fit=cover"
     />
-    <meta name="description" content="" />
-    <title></title>
+    <meta name="description" content="OPA Plugins for Backstage." />
+    <meta
+      name="keywords"
+      content="OPA, Backstage, Permissions, Security, Policy Management, Open Policy Agent"
+    />
+    <title>Backstage OPA Plugins Documentation</title>
 
     <!-- Theme: Simple (light + dark) -->
     <link
@@ -21,24 +25,22 @@
       media="(prefers-color-scheme: dark)"
       href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
     />
-
-    <!-- Custom Styles -->
-    <style>
-      :root {
-        /* --theme-hue: 325; */
-      }
-    </style>
+    <!-- Favicon -->
+    <link rel="icon" href="path/to/your/favicon.ico" type="../img/logo.png" />
   </head>
 
   <body>
     <div id="app"></div>
     <!--Edit on Github-->
     <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
-    <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
     <script>
       // Docsify Configuration
       window.$docsify = {
         loadSidebar: true,
+        alias: {
+          '/.*/_sidebar.md': '/_sidebar.md',
+        },
+        sidebarDisplayLevel: 1, // set sidebar display level
         plugins: [
           EditOnGithubPlugin.create(
             'https://github.com/Parsifal-M/backstage-opa-plugins/tree/main/docs',
@@ -54,6 +56,7 @@
     <!-- Recommended -->
     <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
     <!--Copy To Clipboard-->
     <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
     <!--Mermaid-->
