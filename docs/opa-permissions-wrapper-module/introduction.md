@@ -37,6 +37,10 @@ This project is a part of the broader Backstage and Open Policy Agent ecosystems
 - [Blog: Going Backstage with OPA](https://www.styra.com/blog/going-backstage-with-opa/)
 - [Talk: Building Fine-Grained Access Control for Backstage with OPA](https://www.youtube.com/watch?v=N0n_czYo_kE&list=PLj6h78yzYM2P4KPyeDFexAVm6ZvfAWMU8&index=15&ab_channel=CNCF%5BCloudNativeComputingFoundation%5D)
 
+## Get Involved
+
+Your contributions can make this plugin even better. Fork the repository, make your changes, and submit a PR! If you have questions or ideas, reach out on [Mastodon](https://hachyderm.io/@parcifal).
+
 ## License
 
 Licensed under the Apache 2.0 License.
