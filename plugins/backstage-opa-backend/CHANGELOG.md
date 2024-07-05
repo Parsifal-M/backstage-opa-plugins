@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.6
+
+### Patch Changes
+
+- 958115b: Updates dependencies, also includes the new mandatory metadata in the package.json
+
 All notable changes to this project will be documented in this file.
 
 ## 1.4.5 - 24-05-2024
