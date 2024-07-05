@@ -10,7 +10,11 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "backend-plugin"
+    "role": "backend-plugin",
+    "pluginId": "opa",
+    "pluginPackages": [
+      "@parsifal-m/plugin-opa-backend"
+    ]
   },
   "repository": {
     "type": "git",
@@ -33,11 +37,11 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@backstage/backend-common": "^0.22.0",
-    "@backstage/backend-plugin-api": "^0.6.18",
+    "@backstage/backend-common": "^0.23.2",
+    "@backstage/backend-plugin-api": "^0.6.21",
     "@backstage/config": "^1.2.0",
     "@backstage/errors": "^1.2.4",
-    "@backstage/integration": "^1.11.0",
+    "@backstage/integration": "^1.12.0",
     "@types/express": "*",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
@@ -46,8 +50,8 @@
     "yn": "^4.0.0"
   },
   "devDependencies": {
-    "@backstage/backend-test-utils": "^0.3.8",
-    "@backstage/cli": "^0.26.5",
+    "@backstage/backend-test-utils": "^0.4.3",
+    "@backstage/cli": "^0.26.10",
     "@types/supertest": "^2.0.12",
     "msw": "^1.0.0",
     "supertest": "^6.2.4"
