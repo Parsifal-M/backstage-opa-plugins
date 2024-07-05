@@ -26,7 +26,6 @@ import {
 } from '@backstage/core-components';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
