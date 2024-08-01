@@ -112,7 +112,7 @@ export class OpaClient {
           this.logger.warn(
             `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to allow.`,
           );
-          return { result: 'ALLOW' };
+          return { result: 'ALLOW' } as PolicyEvaluationResult;
         } else if (policyFallback === 'deny') {
           this.logger.warn(
             `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to deny.`,
