@@ -114,7 +114,7 @@ describe('OpaClient', () => {
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
     const output = await client.evaluatePolicy(mockInput, mockOpaEntrypoint, 'allow')
-    expect(output).toEqual('ALLOW');
+    expect(output.result).toEqual('ALLOW');
   });
 
   it('should throw error when response is not ok', async () => {
