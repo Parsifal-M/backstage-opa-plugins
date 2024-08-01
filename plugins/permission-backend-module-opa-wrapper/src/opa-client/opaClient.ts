@@ -107,7 +107,7 @@ export class OpaClient {
       });
       return opaPermissionsResponse.result;
     } catch (error: unknown) {
-      if (error instanceof FetchError) {
+      if (error instanceof Error && error.message === "Fetch error") {
         if (policyFallback === 'allow') {
           this.logger.warn(
             `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to allow.`,
