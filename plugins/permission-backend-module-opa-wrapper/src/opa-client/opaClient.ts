@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch, { FetchError } from 'node-fetch';
 import { Config } from '@backstage/config';
 import {
   PolicyEvaluationInput,
@@ -14,6 +14,7 @@ import { LoggerService } from '@backstage/backend-plugin-api';
 export class OpaClient {
   private readonly opaEntryPoint?: string;
   private readonly opaBaseUrl?: string;
+  private readonly opaPolicyFallback?: string;
   private readonly logger: LoggerService;
 
   /**
@@ -25,8 +26,11 @@ export class OpaClient {
     this.opaEntryPoint = config.getOptionalString(
       'opaClient.policies.permissions.entrypoint',
     );
-    this.logger = logger;
     this.opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
+    this.opaPolicyFallback = config.getOptionalString(
+      'opaClient.policies.permissions.policyFallback',
+    );
+    this.logger = logger;
   }
 
   /**
@@ -40,6 +44,7 @@ export class OpaClient {
   ): Promise<PolicyEvaluationResult> {
     const setEntryPoint = opaEntryPoint ?? this.opaEntryPoint;
     const opaBaseUrl = this.opaBaseUrl;
+    const policyFallback = this.opaPolicyFallback ?? 'fail';
     const url = `${opaBaseUrl}/v1/data/${setEntryPoint}`;
 
     if (!opaBaseUrl) {
@@ -73,12 +78,24 @@ export class OpaClient {
       });
 
       if (!opaResponse.ok) {
-        this.logger.error(
-          `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
-        );
-        throw new Error(
-          `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
-        );
+        if (policyFallback === 'allow') {
+          this.logger.warn(
+            `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}. Falling back to allow.`,
+          );
+          return { result: 'ALLOW' };
+        } else if (policyFallback === 'deny') {
+          this.logger.warn(
+            `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}. Falling back to deny.`,
+          );
+          return { result: 'DENY' };
+        } else {
+          this.logger.error(
+            `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
+          );
+          throw new Error(
+            `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
+          );
+        }
       }
 
       const opaPermissionsResponse =
@@ -88,6 +105,19 @@ export class OpaClient {
       });
       return opaPermissionsResponse.result;
     } catch (error: unknown) {
+      if (error instanceof FetchError) {
+        if (policyFallback === 'allow') {
+          this.logger.warn(
+            `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to allow.`,
+          );
+          return { result: 'ALLOW' };
+        } else if (policyFallback === 'deny') {
+          this.logger.warn(
+            `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to deny.`,
+          );
+          return { result: 'DENY' };
+        }
+      }
       this.logger.error(
         `An error occurred while sending the policy input to the OPA server: ${error}`,
       );
