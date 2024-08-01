@@ -34,6 +34,7 @@ describe('OpaClient', () => {
       info: jest.fn(),
       error: jest.fn(),
       debug: jest.fn(),
+      warn: jest.fn(),
     } as unknown as LoggerService;
     mockConfig = new ConfigReader({
       backend: {
