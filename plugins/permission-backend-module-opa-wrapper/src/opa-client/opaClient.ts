@@ -1,4 +1,4 @@
-import fetch, { FetchError } from 'node-fetch';
+import fetch from 'node-fetch';
 import { Config } from '@backstage/config';
 import {
   PolicyEvaluationInput,
@@ -37,14 +37,16 @@ export class OpaClient {
    * Evaluates a policy against a given input.
    * @param input - The input to evaluate the policy against.
    * @param opaEntryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
+   * @param opaPolicyFallback - The fallback policy to use when the OPA server is unavailable or unresponsive. You can optionally provide the fallback policy here, otherwise it will be taken from the app-config.
    */
   async evaluatePolicy(
     input: PolicyEvaluationInput,
     opaEntryPoint?: string,
+    opaPolicyFallback?: string,
   ): Promise<PolicyEvaluationResult> {
     const setEntryPoint = opaEntryPoint ?? this.opaEntryPoint;
     const opaBaseUrl = this.opaBaseUrl;
-    const policyFallback = this.opaPolicyFallback ?? 'fail';
+    const policyFallback = opaPolicyFallback ?? this.opaPolicyFallback;
     const url = `${opaBaseUrl}/v1/data/${setEntryPoint}`;
 
     if (!opaBaseUrl) {
