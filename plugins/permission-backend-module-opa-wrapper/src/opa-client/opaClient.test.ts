@@ -104,41 +104,52 @@ describe('OpaClient', () => {
     expect(result).toEqual('DENY');
   });
 
-  it.each(['ALLOW', 'DENY'])('should return %s if policyFallback is set to that value and fetch fails', async (policy) => {
-    const mockError = new Error('FetchError');
-    mockError.name = 'FetchError';
-    mockFetch.mockRejectedValueOnce(mockError);
+  it.each(['ALLOW', 'DENY'])(
+    'should return %s if policyFallback is set to that value and fetch fails',
+    async policy => {
+      const mockError = new Error('FetchError');
+      mockError.name = 'FetchError';
+      mockFetch.mockRejectedValueOnce(mockError);
 
-    const client = new OpaClient(mockConfig, mockLogger);
-    const mockOpaEntrypoint = 'some/admin';
-    const mockInput: PolicyEvaluationInput = {
-      permission: { name: 'read' },
-      identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
-    };
-    const output = await client.evaluatePolicy(
-      mockInput,
-      mockOpaEntrypoint,
-      policy,
-    );
-    expect(output.result).toEqual(policy);
-  });
+      const client = new OpaClient(mockConfig, mockLogger);
+      const mockOpaEntrypoint = 'some/admin';
+      const mockInput: PolicyEvaluationInput = {
+        permission: { name: 'read' },
+        identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
+      };
+      const output = await client.evaluatePolicy(
+        mockInput,
+        mockOpaEntrypoint,
+        policy,
+      );
+      expect(output.result).toEqual(policy);
+    },
+  );
 
-  it('should throw error if policyFallback is set to unknown/null value and fetch fails', async () => {
-    const mockError = new Error('FetchError');
-    mockError.name = 'FetchError';
-    mockFetch.mockRejectedValueOnce(mockError);
+  it.each(['ALLOW', 'DENY'])(
+    'should return %s if policyFallback is set to that value and OPA response is not OK',
+    async policy => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        json: jest.fn().mockResolvedValueOnce({}),
+        statusText: 'Bad Request',
+        status: 400,
+      } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger);
-    const mockOpaEntrypoint = 'some/admin';
-    const mockInput: PolicyEvaluationInput = {
-      permission: { name: 'read' },
-      identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
-    };
-    await expect(client.evaluatePolicy(
-      mockInput,
-      mockOpaEntrypoint
-    )).rejects.toThrow("FetchError");
-  });
+      const client = new OpaClient(mockConfig, mockLogger);
+      const mockOpaEntrypoint = 'some/admin';
+      const mockInput: PolicyEvaluationInput = {
+        permission: { name: 'read' },
+        identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
+      };
+      const output = await client.evaluatePolicy(
+        mockInput,
+        mockOpaEntrypoint,
+        policy,
+      );
+      expect(output.result).toEqual(policy);
+    },
+  );
 
   it('should throw error when response is not ok', async () => {
     mockFetch.mockResolvedValueOnce({
