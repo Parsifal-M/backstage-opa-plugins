@@ -108,12 +108,12 @@ export class OpaClient {
       return opaPermissionsResponse.result;
     } catch (error: unknown) {
       if ( error instanceof Error && error.name === "FetchError" ) {
-        if (policyFallback === 'allow') {
+        if (policyFallback?.toLowerCase() === 'allow') {
           this.logger.warn(
             `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to allow.`,
           );
-          return { result: 'ALLOW' } as PolicyEvaluationResult;
-        } else if (policyFallback === 'deny') {
+          return { result: 'ALLOW' };
+        } else if (policyFallback?.toLowerCase() === 'deny') {
           this.logger.warn(
             `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to deny.`,
           );
