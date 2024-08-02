@@ -155,6 +155,8 @@ describe('OpaClient', () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
       json: jest.fn().mockResolvedValueOnce({}),
+      status: 400,
+      statusText: 'Bad Request',
     } as any);
 
     const client = new OpaClient(mockConfig, mockLogger);
@@ -162,7 +164,10 @@ describe('OpaClient', () => {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    await expect(client.evaluatePolicy(mockInput)).rejects.toThrow();
+    const mockOpaEntrypoint = 'some/admin';
+    await expect(client.evaluatePolicy(mockInput, mockOpaEntrypoint))
+        .rejects
+        .toThrow("An error response was returned after sending the policy input to the OPA server:");
   });
 
   it('should throw error when fetch throws an error', async () => {
