@@ -91,7 +91,6 @@ export class OpaClient {
         }
         this.logger.error(message);
         throw new Error(message);
-
       }
 
       const opaPermissionsResponse =

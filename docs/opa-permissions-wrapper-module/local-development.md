@@ -50,7 +50,7 @@ opaClient:
   policies:
     permissions: # Permission wrapper plugin
       entrypoint: 'rbac_policy/decision'
-      policyFallback: 'deny' 
+      policyFallback: 'deny'
 ```
 
 The previous example would return a `DENY` decision to any request if the OPA server is not reachable.

@@ -165,9 +165,11 @@ describe('OpaClient', () => {
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
     const mockOpaEntrypoint = 'some/admin';
-    await expect(client.evaluatePolicy(mockInput, mockOpaEntrypoint))
-        .rejects
-        .toThrow("An error response was returned after sending the policy input to the OPA server:");
+    await expect(
+      client.evaluatePolicy(mockInput, mockOpaEntrypoint),
+    ).rejects.toThrow(
+      'An error response was returned after sending the policy input to the OPA server:',
+    );
   });
 
   it('should throw error when fetch throws an error', async () => {
