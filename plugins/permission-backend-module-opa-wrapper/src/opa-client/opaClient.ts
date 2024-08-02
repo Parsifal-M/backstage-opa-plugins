@@ -80,23 +80,17 @@ export class OpaClient {
       });
 
       if (!opaResponse.ok) {
-        if (policyFallback === 'allow') {
-          this.logger.warn(
-            `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}. Falling back to allow.`,
-          );
+        const message = `An error response was returned after sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`;
+
+        if (policyFallback?.toLowerCase() === 'allow') {
+          this.logger.warn(`${message}. Falling back to allow.`);
           return { result: 'ALLOW' };
-        } else if (policyFallback === 'deny') {
-          this.logger.warn(
-            `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}. Falling back to deny.`,
-          );
+        } else if (policyFallback?.toLowerCase() === 'deny') {
+          this.logger.warn(`${message}. Falling back to deny.`);
           return { result: 'DENY' };
         } else {
-          this.logger.error(
-            `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
-          );
-          throw new Error(
-            `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
-          );
+          this.logger.error(message);
+          throw new Error(message);
         }
       }
 
@@ -107,25 +101,19 @@ export class OpaClient {
       });
       return opaPermissionsResponse.result;
     } catch (error: unknown) {
-      if ( error instanceof Error && error.name === "FetchError" ) {
+      const message = `An error occurred while sending the policy input to the OPA server:`;
+
+      if (error instanceof Error && error.name === 'FetchError') {
         if (policyFallback?.toLowerCase() === 'allow') {
-          this.logger.warn(
-            `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to allow.`,
-          );
+          this.logger.warn(`${message} ${error}. Falling back to allow.`);
           return { result: 'ALLOW' };
         } else if (policyFallback?.toLowerCase() === 'deny') {
-          this.logger.warn(
-            `A network error occurred while sending the policy input to the OPA server: ${error.message}. Falling back to deny.`,
-          );
+          this.logger.warn(`${message} ${error}. Falling back to deny.`);
           return { result: 'DENY' };
         }
       }
-      this.logger.error(
-        `An error occurred while sending the policy input to the OPA server: ${error}`,
-      );
-      throw new Error(
-        `An error occurred while sending the policy input to the OPA server: ${error}`,
-      );
+      this.logger.error(`${message} ${error}`);
+      throw new Error(`${message} ${error}`);
     }
   }
 }
