@@ -104,8 +104,10 @@ describe('OpaClient', () => {
     expect(result).toEqual('DENY');
   });
 
-  it('should return an ALLOW if policyFallback is set to allow', async () => {
-    mockFetch.mockRejectedValueOnce(new Error('Fetch error'));
+  it('should return an ALLOW if policyFallback is set to allow and fetch fails', async () => {
+    const mockError = new Error('FetchError');
+    mockError.name = 'FetchError';
+    mockFetch.mockRejectedValueOnce(mockError);
 
     const client = new OpaClient(mockConfig, mockLogger);
     const mockOpaEntrypoint = 'some/admin';
@@ -113,8 +115,31 @@ describe('OpaClient', () => {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    const output = await client.evaluatePolicy(mockInput, mockOpaEntrypoint, 'allow')
+    const output = await client.evaluatePolicy(
+      mockInput,
+      mockOpaEntrypoint,
+      'allow',
+    );
     expect(output.result).toEqual('ALLOW');
+  });
+
+  it('should return a DENY if policyFallback is set to allow and fetch fails', async () => {
+    const mockError = new Error('FetchError');
+    mockError.name = 'FetchError';
+    mockFetch.mockRejectedValueOnce(mockError);
+
+    const client = new OpaClient(mockConfig, mockLogger);
+    const mockOpaEntrypoint = 'some/admin';
+    const mockInput: PolicyEvaluationInput = {
+      permission: { name: 'read' },
+      identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
+    };
+    const output = await client.evaluatePolicy(
+      mockInput,
+      mockOpaEntrypoint,
+      'deny',
+    );
+    expect(output.result).toEqual('DENY');
   });
 
   it('should throw error when response is not ok', async () => {
