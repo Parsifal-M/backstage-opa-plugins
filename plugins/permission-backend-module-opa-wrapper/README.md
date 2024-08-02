@@ -62,11 +62,31 @@ opaClient:
       entrypoint: 'rbac_policy/decision'
 ```
 
+
+
 The `baseUrl` is the URL of the OPA server, and the `entrypoint` is the entrypoint of the policy you want to evaluate.
 
 It is also possible to provide an entrypoint to the `policyEvaluator` function, this will override the entrypoint provided in the config. This allows for more flexibility in policy evaluation (if you need it).
 
 If you do not override the entrypoint, the entrypoint provided in the config will be used.
+
+
+### Fallback policy
+
+Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the default policy in the `app-config.yaml` file with the `policyFallback` key:
+
+```yaml
+opaClient:
+  baseUrl: 'http://localhost:8181'
+  policies:
+    permissions: # Permission wrapper plugin
+      entrypoint: 'rbac_policy/decision'
+      policyFallback: 'deny' 
+```
+
+The previous example would return a `DENY` decision to any request if the OPA server is not reachable.
+If the value is set to any value other than `allow` or `deny`, the wrapper is allowed to throw an error if the OPA server is not reachable. The values are case-insensitive.
+
 
 ## An Example Policy and Input
 

@@ -123,3 +123,7 @@ opaClient:
       entrypoint: 'entity_checker/violation'
     permissions: # Permission wrapper plugin
       entrypoint: 'rbac_policy/decision'
+      ## Uncomment this line to add a fallback policy in case the connection with OPA fails
+      ##   Values can be 'allow' to blindly ALLOW all requests or 'deny' to blindly DENY all requests. Any other value
+      ##   allows errors to be thrown when the connection with OPA fails.
+      # policyFallback: 'allow' # Values: 'allow' or 'deny'
