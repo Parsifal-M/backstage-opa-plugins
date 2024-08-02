@@ -88,10 +88,10 @@ export class OpaClient {
         } else if (policyFallback?.toLowerCase() === 'deny') {
           this.logger.warn(`${message}. Falling back to deny.`);
           return { result: 'DENY' };
-        } else {
-          this.logger.error(message);
-          throw new Error(message);
         }
+        this.logger.error(message);
+        throw new Error(message);
+
       }
 
       const opaPermissionsResponse =
