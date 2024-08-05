@@ -53,8 +53,8 @@ opaClient:
       policyFallback: 'deny'
 ```
 
-The previous example would return a `DENY` decision to any request if the OPA server is not reachable.
-If the value is set to any value other than `allow` or `deny`, the wrapper is allowed to throw an error if the OPA server is not reachable. The values are case-insensitive.
+The previous example would return a `DENY` decision to any permission request if the OPA server is not reachable.
+If you do not enable a `policyFallback`, the wrapper will simply throw an error if the OPA server is not reachable and a permission request is made. The values are case-insensitive.
 
 ## Docker Compose
 
