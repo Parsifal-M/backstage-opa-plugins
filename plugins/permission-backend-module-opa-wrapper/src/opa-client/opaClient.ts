@@ -1,11 +1,7 @@
 import fetch from 'node-fetch';
-import { Config } from '@backstage/config';
-import {
-  PolicyEvaluationInput,
-  PolicyEvaluationResult,
-  PolicyEvaluationResponse,
-} from '../types';
-import { LoggerService } from '@backstage/backend-plugin-api';
+import {Config} from '@backstage/config';
+import {OpaFallbackPolicy, PolicyEvaluationInput, PolicyEvaluationResponse, PolicyEvaluationResult,} from '../types';
+import {LoggerService} from '@backstage/backend-plugin-api';
 
 /**
  * OpaClient is a class responsible for interacting with the OPA server.
@@ -14,7 +10,7 @@ import { LoggerService } from '@backstage/backend-plugin-api';
 export class OpaClient {
   private readonly opaEntryPoint?: string;
   private readonly opaBaseUrl?: string;
-  private readonly opaPolicyFallback?: string;
+  private readonly opaFallbackPolicy?: OpaFallbackPolicy;
   private readonly logger: LoggerService;
 
   /**
@@ -27,17 +23,24 @@ export class OpaClient {
       'opaClient.policies.permissions.entrypoint',
     );
     this.opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
-    this.opaPolicyFallback = config.getOptionalString(
-      'opaClient.policies.permissions.policyFallback',
-    );
+
     this.logger = logger;
+
+    const bareFallbackPolicy = config
+      .getOptionalString('opaClient.policies.permissions.policyFallback')
+      ?.toLocaleLowerCase('en-US');
+    if (bareFallbackPolicy === 'allow' || bareFallbackPolicy === 'deny') {
+      this.opaFallbackPolicy = bareFallbackPolicy;
+    } else {
+      this.opaFallbackPolicy = undefined;
+    }
   }
 
   /**
    * Evaluates a policy against a given input.
    * @param input - The input to evaluate the policy against.
    * @param opaEntryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
-   * @param opaPolicyFallback - The fallback policy to use when the OPA server is unavailable or unresponsive. You can optionally provide the fallback policy here, otherwise it will be taken from the app-config.
+   * @param opaFallbackPolicy - The fallback policy to use when the OPA server is unavailable or unresponsive. You can optionally provide the fallback policy here, otherwise it will be taken from the app-config.
    */
   async evaluatePolicy(
     input: PolicyEvaluationInput,
@@ -45,7 +48,7 @@ export class OpaClient {
   ): Promise<PolicyEvaluationResult> {
     const setEntryPoint = opaEntryPoint ?? this.opaEntryPoint;
     const opaBaseUrl = this.opaBaseUrl;
-    const policyFallback = this.opaPolicyFallback;
+    const policyFallback = this.opaFallbackPolicy;
     const url = `${opaBaseUrl}/v1/data/${setEntryPoint}`;
 
     if (!opaBaseUrl) {
@@ -81,10 +84,10 @@ export class OpaClient {
       if (!opaResponse.ok) {
         const message = `An error response was returned after sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`;
 
-        if (policyFallback?.toLowerCase() === 'allow') {
+        if (policyFallback === 'allow') {
           this.logger.warn(`${message}. Falling back to allow.`);
           return { result: 'ALLOW' };
-        } else if (policyFallback?.toLowerCase() === 'deny') {
+        } else if (policyFallback === 'deny') {
           this.logger.warn(`${message}. Falling back to deny.`);
           return { result: 'DENY' };
         }
@@ -102,10 +105,10 @@ export class OpaClient {
       const message = `An error occurred while sending the policy input to the OPA server:`;
 
       if (error instanceof Error && error.name === 'FetchError') {
-        if (policyFallback?.toLowerCase() === 'allow') {
+        if (policyFallback === 'allow') {
           this.logger.warn(`${message} ${error}. Falling back to allow.`);
           return { result: 'ALLOW' };
-        } else if (policyFallback?.toLowerCase() === 'deny') {
+        } else if (policyFallback === 'deny') {
           this.logger.warn(`${message} ${error}. Falling back to deny.`);
           return { result: 'DENY' };
         }

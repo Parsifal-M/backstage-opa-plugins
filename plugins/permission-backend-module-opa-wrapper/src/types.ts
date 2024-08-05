@@ -40,3 +40,5 @@ export type PolicyEvaluationResult = {
 export type PolicyEvaluationResponse = {
   result: PolicyEvaluationResult;
 };
+
+export type OpaFallbackPolicy = 'allow' | 'deny' | undefined;

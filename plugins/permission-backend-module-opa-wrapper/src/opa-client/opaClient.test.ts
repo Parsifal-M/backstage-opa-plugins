@@ -146,6 +146,29 @@ describe('OpaClient', () => {
     },
   );
 
+  it('should throw an error if policyFallback is an unknown value and OPA response is not OK', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        json: jest.fn().mockResolvedValueOnce({}),
+        statusText: 'Bad Request',
+        status: 400,
+      } as any);
+
+      const mockConfigWithPolicyObject: any = structuredClone(mockConfigObject);
+      mockConfigWithPolicyObject.opaClient.policies.permissions.policyFallback = 'TEST_VALUE';
+      const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
+
+      const client = new OpaClient(mockConfigWithPolicy, mockLogger);
+      const mockOpaEntrypoint = 'some/admin';
+      const mockInput: PolicyEvaluationInput = {
+        permission: { name: 'read' },
+        identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
+      };
+        await expect(client.evaluatePolicy(mockInput, mockOpaEntrypoint)).rejects.toThrow();
+
+    },
+  );
+
   it('should throw error when response is not ok', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
