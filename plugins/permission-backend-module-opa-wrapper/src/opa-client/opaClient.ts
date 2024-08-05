@@ -42,11 +42,10 @@ export class OpaClient {
   async evaluatePolicy(
     input: PolicyEvaluationInput,
     opaEntryPoint?: string,
-    opaPolicyFallback?: string,
   ): Promise<PolicyEvaluationResult> {
     const setEntryPoint = opaEntryPoint ?? this.opaEntryPoint;
     const opaBaseUrl = this.opaBaseUrl;
-    const policyFallback = opaPolicyFallback ?? this.opaPolicyFallback;
+    const policyFallback = this.opaPolicyFallback;
     const url = `${opaBaseUrl}/v1/data/${setEntryPoint}`;
 
     if (!opaBaseUrl) {

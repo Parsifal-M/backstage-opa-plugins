@@ -5,28 +5,12 @@ import { LoggerService } from '@backstage/backend-plugin-api';
 import { PolicyEvaluationInput } from '../types';
 
 jest.mock('node-fetch', () => jest.fn());
-jest.mock('@backstage/config', () => {
-  return {
-    ConfigReader: jest.fn().mockImplementation(() => {
-      return {
-        getOptionalString: jest.fn().mockImplementation((key: string) => {
-          if (key === 'opaClient.baseUrl') {
-            return 'http://localhost:8181';
-          }
-          if (key === 'opaClient.policies.permission.entrypoint') {
-            return 'rbac_policy/decision';
-          }
-          return null;
-        }),
-      };
-    }),
-  };
-});
 jest.mock('winston');
 
 describe('OpaClient', () => {
   let mockLogger: LoggerService;
   let mockConfig: ConfigReader;
+  let mockConfigObject: object;
   const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
   beforeAll(() => {
@@ -36,11 +20,20 @@ describe('OpaClient', () => {
       debug: jest.fn(),
       warn: jest.fn(),
     } as unknown as LoggerService;
-    mockConfig = new ConfigReader({
+    mockConfigObject = {
       backend: {
         backendBaseUrl: 'http://localhost:7007',
       },
-    });
+      opaClient: {
+        baseUrl: 'http://localhost:8181',
+        policies: {
+          permissions: {
+            entrypoint: 'rbac_policy/decision',
+          },
+        },
+      },
+    };
+    mockConfig = new ConfigReader(mockConfigObject);
   });
 
   beforeEach(() => {
@@ -111,17 +104,18 @@ describe('OpaClient', () => {
       mockError.name = 'FetchError';
       mockFetch.mockRejectedValueOnce(mockError);
 
-      const client = new OpaClient(mockConfig, mockLogger);
+      const mockConfigWithPolicyObject: any = structuredClone(mockConfigObject);
+      mockConfigWithPolicyObject.opaClient.policies.permissions.policyFallback =
+        policy;
+      const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
+
+      const client = new OpaClient(mockConfigWithPolicy, mockLogger);
       const mockOpaEntrypoint = 'some/admin';
       const mockInput: PolicyEvaluationInput = {
         permission: { name: 'read' },
         identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
       };
-      const output = await client.evaluatePolicy(
-        mockInput,
-        mockOpaEntrypoint,
-        policy,
-      );
+      const output = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
       expect(output.result).toEqual(policy);
     },
   );
@@ -136,17 +130,18 @@ describe('OpaClient', () => {
         status: 400,
       } as any);
 
-      const client = new OpaClient(mockConfig, mockLogger);
+      const mockConfigWithPolicyObject: any = structuredClone(mockConfigObject);
+      mockConfigWithPolicyObject.opaClient.policies.permissions.policyFallback =
+        policy;
+      const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
+
+      const client = new OpaClient(mockConfigWithPolicy, mockLogger);
       const mockOpaEntrypoint = 'some/admin';
       const mockInput: PolicyEvaluationInput = {
         permission: { name: 'read' },
         identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
       };
-      const output = await client.evaluatePolicy(
-        mockInput,
-        mockOpaEntrypoint,
-        policy,
-      );
+      const output = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
       expect(output.result).toEqual(policy);
     },
   );
