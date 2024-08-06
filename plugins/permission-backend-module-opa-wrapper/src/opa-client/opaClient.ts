@@ -1,9 +1,10 @@
 import fetch from 'node-fetch';
 import { Config } from '@backstage/config';
 import {
+  OpaFallbackPolicy,
   PolicyEvaluationInput,
-  PolicyEvaluationResult,
   PolicyEvaluationResponse,
+  PolicyEvaluationResult,
 } from '../types';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
@@ -14,6 +15,7 @@ import { LoggerService } from '@backstage/backend-plugin-api';
 export class OpaClient {
   private readonly opaEntryPoint?: string;
   private readonly opaBaseUrl?: string;
+  private readonly opaFallbackPolicy?: OpaFallbackPolicy;
   private readonly logger: LoggerService;
 
   /**
@@ -25,14 +27,25 @@ export class OpaClient {
     this.opaEntryPoint = config.getOptionalString(
       'opaClient.policies.permissions.entrypoint',
     );
-    this.logger = logger;
     this.opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
+
+    this.logger = logger;
+
+    const bareFallbackPolicy = config
+      .getOptionalString('opaClient.policies.permissions.policyFallback')
+      ?.toLocaleLowerCase('en-US');
+    if (bareFallbackPolicy === 'allow' || bareFallbackPolicy === 'deny') {
+      this.opaFallbackPolicy = bareFallbackPolicy;
+    } else {
+      this.opaFallbackPolicy = undefined;
+    }
   }
 
   /**
    * Evaluates a policy against a given input.
    * @param input - The input to evaluate the policy against.
    * @param opaEntryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
+   * @param opaFallbackPolicy - The fallback policy to use when the OPA server is unavailable or unresponsive. You can optionally provide the fallback policy here, otherwise it will be taken from the app-config.
    */
   async evaluatePolicy(
     input: PolicyEvaluationInput,
@@ -40,6 +53,7 @@ export class OpaClient {
   ): Promise<PolicyEvaluationResult> {
     const setEntryPoint = opaEntryPoint ?? this.opaEntryPoint;
     const opaBaseUrl = this.opaBaseUrl;
+    const policyFallback = this.opaFallbackPolicy;
     const url = `${opaBaseUrl}/v1/data/${setEntryPoint}`;
 
     if (!opaBaseUrl) {
@@ -73,12 +87,17 @@ export class OpaClient {
       });
 
       if (!opaResponse.ok) {
-        this.logger.error(
-          `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
-        );
-        throw new Error(
-          `An error occurred while sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
-        );
+        const message = `An error response was returned after sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`;
+
+        if (policyFallback === 'allow') {
+          this.logger.warn(`${message}. Falling back to allow.`);
+          return { result: 'ALLOW' };
+        } else if (policyFallback === 'deny') {
+          this.logger.warn(`${message}. Falling back to deny.`);
+          return { result: 'DENY' };
+        }
+        this.logger.error(message);
+        throw new Error(message);
       }
 
       const opaPermissionsResponse =
@@ -88,12 +107,19 @@ export class OpaClient {
       });
       return opaPermissionsResponse.result;
     } catch (error: unknown) {
-      this.logger.error(
-        `An error occurred while sending the policy input to the OPA server: ${error}`,
-      );
-      throw new Error(
-        `An error occurred while sending the policy input to the OPA server: ${error}`,
-      );
+      const message = `An error occurred while sending the policy input to the OPA server:`;
+
+      if (error instanceof Error && error.name === 'FetchError') {
+        if (policyFallback === 'allow') {
+          this.logger.warn(`${message} ${error}. Falling back to allow.`);
+          return { result: 'ALLOW' };
+        } else if (policyFallback === 'deny') {
+          this.logger.warn(`${message} ${error}. Falling back to deny.`);
+          return { result: 'DENY' };
+        }
+      }
+      this.logger.error(`${message} ${error}`);
+      throw new Error(`${message} ${error}`);
     }
   }
 }

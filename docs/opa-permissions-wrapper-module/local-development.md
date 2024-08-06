@@ -40,6 +40,22 @@ opaClient:
       entrypoint: 'rbac_policy/decision'
 ```
 
+### Fallback policy
+
+Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the default policy in the `app-config.yaml` file with the `policyFallback` key:
+
+```yaml
+opaClient:
+  baseUrl: 'http://localhost:8181'
+  policies:
+    permissions: # Permission wrapper plugin
+      entrypoint: 'rbac_policy/decision'
+      policyFallback: 'deny'
+```
+
+The previous example would return a `DENY` decision to any permission request if the OPA server is not reachable.
+If you do not enable a `policyFallback`, the wrapper will simply throw an error if the OPA server is not reachable and a permission request is made. The values are case-insensitive.
+
 ## Docker Compose
 
 You can create a `docker-compose.yaml` file in the root of the repository with the following content:

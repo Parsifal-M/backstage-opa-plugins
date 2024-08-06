@@ -68,6 +68,22 @@ It is also possible to provide an entrypoint to the `policyEvaluator` function, 
 
 If you do not override the entrypoint, the entrypoint provided in the config will be used.
 
+### Fallback policy
+
+Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the default policy in the `app-config.yaml` file with the `policyFallback` key:
+
+```yaml
+opaClient:
+  baseUrl: 'http://localhost:8181'
+  policies:
+    permissions: # Permission wrapper plugin
+      entrypoint: 'rbac_policy/decision'
+      policyFallback: 'deny'
+```
+
+The previous example would return a `DENY` decision to any request if the OPA server is not reachable.
+If the value is set to any value other than `allow` or `deny`, the wrapper is allowed to throw an error if the OPA server is not reachable. The values are case-insensitive.
+
 ## An Example Policy and Input
 
 An example policy in OPA might look like this, keep in mind you could also use [bundles](https://www.openpolicyagent.org/docs/latest/management-bundles/) to manage your policies and keep the `conditions` object in a `data.json` file.

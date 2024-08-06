@@ -29,6 +29,11 @@ export interface Config {
          * The entrypoint to the OPA Permissions Wrapper
          */
         entrypoint?: string;
+
+        /**
+         * The fallback policy to use when the OPA server is unavailable
+         */
+        policyFallback?: string;
       };
     };
   };
