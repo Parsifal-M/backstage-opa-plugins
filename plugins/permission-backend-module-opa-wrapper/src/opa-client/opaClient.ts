@@ -1,7 +1,12 @@
 import fetch from 'node-fetch';
-import {Config} from '@backstage/config';
-import {OpaFallbackPolicy, PolicyEvaluationInput, PolicyEvaluationResponse, PolicyEvaluationResult,} from '../types';
-import {LoggerService} from '@backstage/backend-plugin-api';
+import { Config } from '@backstage/config';
+import {
+  OpaFallbackPolicy,
+  PolicyEvaluationInput,
+  PolicyEvaluationResponse,
+  PolicyEvaluationResult,
+} from '../types';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 /**
  * OpaClient is a class responsible for interacting with the OPA server.
