@@ -116,6 +116,9 @@ catalog:
 permission:
   enabled: true
 
+opaAuthz:
+  baseUrl: 'http://localhost:8181'
+
 opaClient:
   baseUrl: 'http://localhost:8181'
   policies:
