@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0
+
+### Minor Changes
+
+- ca79146: Added configuration option to add blanket fallback policies in the case that OPA server is unreachable. No functional changes occur if the config variable is not added in the app-config.yaml, save for a reworded logger message.
+
 ## 1.2.3
 
 ### Patch Changes
