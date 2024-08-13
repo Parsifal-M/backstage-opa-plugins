@@ -4,7 +4,7 @@
 
 This serves as the OPA Backend Plugin, eventually to route all your OPA needs through!
 
-This plugin is still in development so please use with caution.
+> There may be breaking changes as this plugin is still in development! Please be aware of this!
 
 # Pre-requisites
 

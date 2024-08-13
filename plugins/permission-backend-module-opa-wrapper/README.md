@@ -1,8 +1,5 @@
 ![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-permission-backend-module-opa-wrapper) ![NPM Downloads](https://img.shields.io/npm/dw/%40parsifal-m%2Fplugin-permission-backend-module-opa-wrapper)
 
-<img src="../../img/logo.png" align="right"
-     alt="OPA Backstage Logo" width="160">
-
 # OPA Permissions Wrapper Module for Backstage
 
 This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) wrapper for the [Backstage Permission Framework](https://backstage.io/docs/permissions/overview).
@@ -16,6 +13,8 @@ This project is an [Open Policy Agent (OPA)](https://github.com/open-policy-agen
 - Enable teams to manage their own policies, without needing to know TypeScript or the Backstage codebase!
 
 ## Pre-requisites
+
+> This plugin does not require the `backstage-opa-backend` plugin!
 
 - You have a Backstage instance set up and running.
 - You have deployed OPA, kindly see how to do that [here](https://www.openpolicyagent.org/docs/latest/deployments/).

@@ -2,6 +2,8 @@
 
 # Simplify Permissions with OPA in Backstage
 
+> Does not require the `backstage-opa-backend` plugin!
+
 Integrate dynamic policy management into your Backstage instance with the OPA Permissions Wrapper Module. This tool leverages [Open Policy Agent (OPA)](https://github.com/open-policy-agent/opa) for flexible, easy-to-update permissions management within the [Backstage Permission Framework](https://backstage.io/docs/permissions/overview).
 
 - **Dynamic Policy Management:** Use OPA's [Rego language](https://www.openpolicyagent.org/docs/latest/policy-language/) for creating and managing policies without hardcoding them.
