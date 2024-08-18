@@ -6847,7 +6847,7 @@ __metadata:
     "@backstage/config": ^1.2.0
     "@backstage/plugin-auth-backend": ^0.22.8
     "@backstage/plugin-auth-backend-module-guest-provider": ^0.1.7
-    "@internal/opa-authz": "workspace:^"
+    "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:*"
     "@types/express": "*"
     "@types/supertest": ^2.0.12
     express: ^4.17.1
@@ -6857,17 +6857,6 @@ __metadata:
     supertest: ^6.2.4
     winston: ^3.2.1
     yn: ^4.0.0
-  languageName: unknown
-  linkType: soft
-
-"@internal/opa-authz@workspace:^, @internal/opa-authz@workspace:packages/opa-authz":
-  version: 0.0.0-use.local
-  resolution: "@internal/opa-authz@workspace:packages/opa-authz"
-  dependencies:
-    "@backstage/backend-plugin-api": ^0.6.21
-    "@backstage/cli": ^0.26.10
-    "@backstage/config": ^1.2.0
-    node-fetch: ^2.6.7
   languageName: unknown
   linkType: soft
 
@@ -8676,6 +8665,7 @@ __metadata:
     "@backstage/plugin-auth-node": ^0.4.16
     "@backstage/plugin-permission-common": ^0.7.14
     "@backstage/plugin-permission-node": ^0.7.32
+    express: ^4.17.1
     node-fetch: 2.6.7
     winston: ^3.11.0
   languageName: unknown

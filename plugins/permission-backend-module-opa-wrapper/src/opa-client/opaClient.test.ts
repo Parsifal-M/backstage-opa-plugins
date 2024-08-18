@@ -54,7 +54,7 @@ describe('OpaClient', () => {
     } as any);
 
     const client = new OpaClient(mockConfig, mockLogger);
-    const result = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
+    const result = await client.evaluatePermissionFrameworkPolicy(mockInput);
 
     expect(mockFetch).toHaveBeenCalledWith(
       url, // Use the correct URL here
@@ -82,7 +82,7 @@ describe('OpaClient', () => {
     } as any);
 
     const client = new OpaClient(mockConfig, mockLogger);
-    const result = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
+    const result = await client.evaluatePermissionFrameworkPolicy(mockInput);
 
     expect(mockFetch).toHaveBeenCalledWith(
       url, // Use the correct URL here
@@ -110,12 +110,11 @@ describe('OpaClient', () => {
       const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
 
       const client = new OpaClient(mockConfigWithPolicy, mockLogger);
-      const mockOpaEntrypoint = 'some/admin';
       const mockInput: PolicyEvaluationInput = {
         permission: { name: 'read' },
         identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
       };
-      const output = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
+      const output = await client.evaluatePermissionFrameworkPolicy(mockInput);
       expect(output.result).toEqual(policy);
     },
   );
@@ -136,12 +135,11 @@ describe('OpaClient', () => {
       const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
 
       const client = new OpaClient(mockConfigWithPolicy, mockLogger);
-      const mockOpaEntrypoint = 'some/admin';
       const mockInput: PolicyEvaluationInput = {
         permission: { name: 'read' },
         identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
       };
-      const output = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
+      const output = await client.evaluatePermissionFrameworkPolicy(mockInput);
       expect(output.result).toEqual(policy);
     },
   );
@@ -160,13 +158,12 @@ describe('OpaClient', () => {
     const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
 
     const client = new OpaClient(mockConfigWithPolicy, mockLogger);
-    const mockOpaEntrypoint = 'some/admin';
     const mockInput: PolicyEvaluationInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
     await expect(
-      client.evaluatePolicy(mockInput, mockOpaEntrypoint),
+      client.evaluatePermissionFrameworkPolicy(mockInput),
     ).rejects.toThrow();
   });
 
@@ -183,9 +180,8 @@ describe('OpaClient', () => {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    const mockOpaEntrypoint = 'some/admin';
     await expect(
-      client.evaluatePolicy(mockInput, mockOpaEntrypoint),
+      client.evaluatePermissionFrameworkPolicy(mockInput),
     ).rejects.toThrow(
       'An error response was returned after sending the policy input to the OPA server:',
     );
@@ -199,6 +195,6 @@ describe('OpaClient', () => {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    await expect(client.evaluatePolicy(mockInput)).rejects.toThrow();
+    await expect(client.evaluatePermissionFrameworkPolicy(mockInput)).rejects.toThrow();
   });
 });

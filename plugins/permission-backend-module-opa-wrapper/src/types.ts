@@ -42,3 +42,11 @@ export type PolicyEvaluationResponse = {
 };
 
 export type OpaFallbackPolicy = 'allow' | 'deny' | undefined;
+
+export interface PermissionInput {
+  [key: string]: unknown;
+}
+
+export interface OpaResponse {
+  [key: string]: unknown;
+}

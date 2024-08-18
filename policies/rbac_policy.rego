@@ -16,7 +16,7 @@ permission := input.permission.name
 
 claims := input.identity.claims
 
-is_admin if "group:twocodersbrewing/maintainers" in claims
+is_admin if "group:default/maintainers" in claims
 
 # decision := {"result": "DENY"} if {
 # 	permission == "catalog.entity.read"

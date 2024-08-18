@@ -6,7 +6,7 @@ import {
 } from '@backstage/plugin-permission-node';
 import { OpaClient } from './opa-client';
 import { LoggerService } from '@backstage/backend-plugin-api';
-import { policyEvaluator } from './permission-evaluator';
+import { permissionFrameWorkPolicyEvaluator } from './permission-evaluator';
 
 export class OpaPermissionPolicy implements PermissionPolicy {
   private opaClient: OpaClient;
@@ -21,7 +21,7 @@ export class OpaPermissionPolicy implements PermissionPolicy {
     request: PolicyQuery,
     user?: BackstageIdentityResponse,
   ): Promise<PolicyDecision> {
-    const opaRbacPolicy = policyEvaluator(this.opaClient, this.logger);
-    return await opaRbacPolicy(request, user);
+    const opaPermissionsFrameworkPolicy = permissionFrameWorkPolicyEvaluator(this.opaClient, this.logger);
+    return await opaPermissionsFrameworkPolicy(request, user);
   }
 }

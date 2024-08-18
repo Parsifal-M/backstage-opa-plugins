@@ -11,10 +11,9 @@ import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { PolicyEvaluationInput } from '../types';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
-export const policyEvaluator = (
+export const permissionFrameWorkPolicyEvaluator = (
   opaClient: OpaClient,
   logger: LoggerService,
-  opaEntryPoint?: string,
 ) => {
   return async (
     request: PolicyQuery,
@@ -31,7 +30,7 @@ export const policyEvaluator = (
     };
 
     try {
-      const response = await opaClient.evaluatePolicy(input, opaEntryPoint);
+      const response = await opaClient.evaluatePermissionFrameworkPolicy(input);
 
       if (!response) {
         logger.error(
