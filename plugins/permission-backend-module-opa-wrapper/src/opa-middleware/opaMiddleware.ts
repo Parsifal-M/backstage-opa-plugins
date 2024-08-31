@@ -3,6 +3,14 @@ import { PermissionInput } from '../types';
 import { OpaClient } from '../opa-client/opaClient';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
+/**
+ * Middleware function that performs authorization using OPA (Open Policy Agent).
+ * 
+ * @param opaClient - The OPA client used to evaluate the policy.
+ * @param input - The input data for the policy evaluation.
+ * @param logger - The logger service used for logging debug information.
+ * @returns A middleware function that handles the authorization process.
+ */
 export const opaMiddleware = (opaClient: OpaClient, input: PermissionInput, logger: LoggerService) => {
   return async (_: Request, res: Response, next: NextFunction) => {
     try {

@@ -11,6 +11,12 @@ import { PolicyQuery } from '@backstage/plugin-permission-node';
 import { PolicyEvaluationInput } from '../types';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
+/**
+ * Evaluates a permission framework policy using the provided OpaClient and LoggerService.
+ * @param opaClient - The OpaClient used to evaluate the policy.
+ * @param logger - The LoggerService used for logging errors.
+ * @returns A function that accepts a PolicyQuery and an optional BackstageIdentityResponse, and returns a Promise of PolicyDecision.
+ */
 export const permissionFrameWorkPolicyEvaluator = (
   opaClient: OpaClient,
   logger: LoggerService,
