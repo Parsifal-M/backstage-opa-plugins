@@ -229,7 +229,9 @@ export class OpaClient {
     this.validateInputs(opaBaseUrl, entryPoint, input);
 
     const url = `${opaBaseUrl}/v1/data/${entryPoint}`;
-    this.logger.debug(`Sent data to OPA: ${JSON.stringify(input)}`);
+    this.logger.error(`Sent data to OPA: ${JSON.stringify(input)}`);
+    this.logger.error(`Using entry point: ${entryPoint}`);
+    this.logger.error(`Using OPA URL: ${opaBaseUrl}`);
 
     try {
       const opaResponse = await this.sendRequest(url, input);

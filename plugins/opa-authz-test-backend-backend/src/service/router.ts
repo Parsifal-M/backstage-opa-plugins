@@ -19,16 +19,17 @@ export async function createRouter(
   router.use(express.json());
 
   const opaClient = new OpaClient(config, logger);
-
-  const permissionInput: PermissionInput = {
-    request: {
-      hello: 'world',
-    },
-    date: new Date().toISOString(),
-  };
+  const entryPoint = 'authz';
 
   // Use the OPA middleware for all routes
-  router.use(opaMiddleware(opaClient, permissionInput, logger));
+  router.use((req, res, next) => {
+    const input: PermissionInput = {
+      user: 'peter',
+      resource: req.path,
+      method: req.method,
+    };
+    opaMiddleware(opaClient, entryPoint, input, logger)(req, res, next);
+  });
 
   router.get('/health', (_, response) => {
     logger.info('PONG!');
@@ -48,5 +49,6 @@ export async function createRouter(
   const middleware = MiddlewareFactory.create({ logger, config });
 
   router.use(middleware.error());
+
   return router;
 }

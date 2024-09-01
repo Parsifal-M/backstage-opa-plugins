@@ -8584,6 +8584,7 @@ __metadata:
     "@backstage/config": ^1.2.0
     "@backstage/errors": ^1.2.4
     "@backstage/integration": ^1.12.0
+    "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:*"
     "@types/express": "*"
     "@types/supertest": ^2.0.12
     express: ^4.17.1

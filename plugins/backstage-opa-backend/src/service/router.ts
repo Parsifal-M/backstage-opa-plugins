@@ -6,11 +6,17 @@ import {
   HttpAuthService,
   LoggerService,
   UrlReaderService,
+  UserInfoService,
 } from '@backstage/backend-plugin-api';
 import fetch from 'node-fetch';
 import { errorHandler } from '@backstage/backend-common';
 import { Config } from '@backstage/config';
 import { readPolicyFile } from '../lib/read';
+import {
+  OpaClient,
+  opaMiddleware,
+  PermissionInput,
+} from '@parsifal-m/plugin-permission-backend-module-opa-wrapper';
 
 export type RouterOptions = {
   logger: LoggerService;
@@ -19,15 +25,43 @@ export type RouterOptions = {
   urlReader: UrlReaderService;
   auth?: AuthService;
   httpAuth?: HttpAuthService;
+  userInfo: UserInfoService;
 };
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, config, urlReader } = options;
+  const { logger, config, urlReader, httpAuth, userInfo, auth } = options;
 
   const router = Router();
   router.use(express.json());
+
+  const opaClient = new OpaClient(config, logger);
+  const entryPoint = 'authz';
+  const useOpaMiddleware = config.getOptionalBoolean(
+    'opaClient.useOpaMiddleware',
+  );
+
+  if (useOpaMiddleware) {
+    // Use the OPA middleware for all routes
+    router.use(async (req, res, next) => {
+      try {
+        const credentials = await httpAuth!.credentials(req);
+
+        const info = await userInfo.getUserInfo(credentials);
+        const input: PermissionInput = {
+          info,
+          resource: req.path,
+          method: req.method,
+        };
+
+        opaMiddleware(opaClient, entryPoint, input, logger)(req, res, next);
+      } catch (error) {
+        logger.error('Failed to extract user credentials:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    });
+  }
 
   // Get the config options for the OPA plugin
   const opaBaseUrl = config.getOptionalString('opaClient.baseUrl');

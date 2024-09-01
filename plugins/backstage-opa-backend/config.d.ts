@@ -9,6 +9,11 @@ export interface Config {
     baseUrl?: string;
 
     /**
+     * Whether to use the OPA middleware for all routes
+     */
+    useOpaMiddleware?: boolean;
+
+    /**
      * Configuration options for the OPA policies
      */
     policies?: {

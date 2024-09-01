@@ -48,5 +48,8 @@ export interface PermissionInput {
 }
 
 export interface OpaResponse {
+  result: {
+    allow: boolean;
+  }
   [key: string]: unknown;
 }

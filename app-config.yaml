@@ -118,6 +118,7 @@ permission:
 
 opaClient:
   baseUrl: 'http://localhost:8181'
+  useOpaMiddleware: true
   policies:
     entityChecker: # Entity checker plugin
       entrypoint: 'entity_checker/violation'

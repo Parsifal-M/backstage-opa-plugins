@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, Chip } from '@material-ui/core';
+import { Card, CardContent, Typography, Chip, CircularProgress } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
@@ -26,6 +26,12 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       marginBottom: theme.spacing(2),
     },
+    loading: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+    },
   }),
 );
 
@@ -46,6 +52,8 @@ export const OpaMetadataAnalysisCard = () => {
   const { entity } = useEntity();
   const opaApi = useApi(opaBackendApiRef);
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
+  const [isForbidden, setIsForbidden] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const alertApi = useApi(alertApiRef);
   let violationId = 0;
 
@@ -54,11 +62,17 @@ export const OpaMetadataAnalysisCard = () => {
       const results = await opaApi.entityCheck(entity);
       setOpaResults(results);
     } catch (error: unknown) {
-      alertApi.post({
-        message: `Could not fetch data from OPA: ${error}`,
-        severity: 'error',
-        display: 'transient',
-      });
+      if (error instanceof Error && error.message.includes('403')) {
+        setIsForbidden(true);
+      } else {
+        alertApi.post({
+          message: `Could not fetch data from OPA: ${error}`,
+          severity: 'error',
+          display: 'transient',
+        });
+      }
+    } finally {
+      setIsLoading(false);
     }
   }, [entity, alertApi, opaApi]);
 
@@ -104,6 +118,18 @@ export const OpaMetadataAnalysisCard = () => {
       </Alert>
     ));
   };
+
+  if (isLoading) {
+    return (
+      <div className={classes.loading}>
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  if (isForbidden) {
+    return null;
+  }
 
   return (
     <Card className={classes.card}>
