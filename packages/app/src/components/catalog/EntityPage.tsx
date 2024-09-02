@@ -54,12 +54,13 @@ import {
 } from '@backstage/catalog-model';
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
+import {OpaMetadataAnalysisCard, OpaMetadataAnalysisCardV2} from '@parsifal-m/plugin-opa-entity-checker';
 import { DevQuote } from '@parsifal-m/plugin-dev-quotes-homepage';
 import {
   OpaPolicyPage,
   isOpaPoliciesEnabled,
 } from '@parsifal-m/plugin-opa-policies';
+import {hasOPAValidationErrors} from "@parsifal-m/plugin-opa-entity-checker/src/components/OpaMetadataAnalysisCardV2";
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -113,6 +114,14 @@ const entityWarningContent = (
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
+
+      <EntitySwitch>
+          <EntitySwitch.Case if={hasOPAValidationErrors}>
+              <Grid item xs={12}>
+                  <OpaMetadataAnalysisCardV2 />
+              </Grid>
+          </EntitySwitch.Case>
+      </EntitySwitch>
   </>
 );
 

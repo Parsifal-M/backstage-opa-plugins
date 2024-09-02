@@ -34,3 +34,14 @@ export const OpaMetadataAnalysisCard = opaEntityCheckerPlugin.provide(
     mountPoint: rootRouteRef,
   }),
 );
+
+export const OpaMetadataAnalysisCardV2 = opaEntityCheckerPlugin.provide(
+    createRoutableExtension({
+      name: 'OpaMetadataAnalysisCardV2',
+      component: () =>
+          import('./components/OpaMetadataAnalysisCardV2').then(
+              m => m.OpaMetadataAnalysisCardV2,
+          ),
+      mountPoint: rootRouteRef,
+    }),
+);
