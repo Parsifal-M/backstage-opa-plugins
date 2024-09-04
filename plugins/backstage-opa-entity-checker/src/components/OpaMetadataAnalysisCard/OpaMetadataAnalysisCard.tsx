@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Card,
   CardContent,
@@ -9,39 +9,54 @@ import {
   AccordionSummary,
   AccordionDetails,
   Box, Fab, useMediaQuery, useTheme
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+} from '@mui/material';
+import { Alert } from '@mui/material';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { opaBackendApiRef } from '../../api';
 import { OpaResult, EntityResult } from '../../api/types';
 import {Entity} from "@backstage/catalog-model";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ErrorIcon from '@material-ui/icons/Error';
-import WarningIcon from '@material-ui/icons/Warning';
-import InfoIcon from '@material-ui/icons/Info';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ErrorIcon from '@mui/icons-material/Error';
+import WarningIcon from '@mui/icons-material/Warning';
+import InfoIcon from '@mui/icons-material/Info';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      marginBottom: theme.spacing(2),
-    },
-    title: {
-      marginBottom: theme.spacing(2),
-    },
-    alert: {
-      marginBottom: theme.spacing(1),
-    },
-    chip: {
-      marginLeft: 'auto',
-    },
-    titleBox: {
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: theme.spacing(2),
-    },
-  }),
-);
+const PREFIX = 'OpaMetadataAnalysisCard';
+
+const classes = {
+  card: `${PREFIX}-card`,
+  title: `${PREFIX}-title`,
+  alert: `${PREFIX}-alert`,
+  chip: `${PREFIX}-chip`,
+  titleBox: `${PREFIX}-titleBox`
+};
+
+const StylesAlert = styled(Alert)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+}))
+
+const StyledCard = styled(Card)(({
+    theme
+  }
+) => ({
+  [`& .${classes.card}`]: {
+    marginBottom: theme.spacing(2),
+  },
+
+  [`& .${classes.title}`]: {
+    marginBottom: theme.spacing(2),
+  },
+
+  [`& .${classes.chip}`]: {
+    marginLeft: 'auto',
+  },
+
+  [`& .${classes.titleBox}`]: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: theme.spacing(2),
+  }
+}));
 
 /**
  * Returns true if the given entity has any validation errors
@@ -80,7 +95,7 @@ export interface OpaMetadataAnalysisCardProps {
 export const OpaMetadataAnalysisCard = (
   props: OpaMetadataAnalysisCardProps,
 ) => {
-  const classes = useStyles();
+
   const { entity } = useEntity();
   const opaApi = useApi(opaBackendApiRef);
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
@@ -123,7 +138,7 @@ export const OpaMetadataAnalysisCard = (
     }
     default: {
       return (
-        <Card className={classes.card}>
+        <StyledCard>
           <CardContent>
             <div className={classes.titleBox}>
               <Typography variant="h6">{props.title}</Typography>
@@ -137,7 +152,7 @@ export const OpaMetadataAnalysisCard = (
             </div>
             {renderCardContent(opaResults)}
           </CardContent>
-        </Card>
+        </StyledCard>
       );
       break;
     }
@@ -146,7 +161,7 @@ export const OpaMetadataAnalysisCard = (
 
 const renderCompactCard = (props: OpaMetadataAnalysisCardProps, results: OpaResult | null) => {
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
       <Accordion>
@@ -181,7 +196,7 @@ const renderCompactCard = (props: OpaMetadataAnalysisCardProps, results: OpaResu
 }
 
 const renderCardContent = (results: OpaResult | null) => {
-  const classes = useStyles();
+
   let violationId = 0;
 
   if (!results) {
@@ -198,13 +213,13 @@ const renderCardContent = (results: OpaResult | null) => {
   }
 
   return results.result.map((violation: EntityResult) => (
-      <Alert
+      <StylesAlert
           severity={violation.level}
           key={violation.id ?? ++violationId}
           className={classes.alert}
       >
         {violation.message}
-      </Alert>
+      </StylesAlert>
   ));
 };
 
