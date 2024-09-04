@@ -193,17 +193,17 @@ const renderCompactCard = (props: OpaMetadataAnalysisCardProps, results: OpaResu
             <Typography variant="h6">{props.title}</Typography>
             {count['error'] > 0 &&
               <Fab variant="extended" size="small" color="error">
-                <ErrorIcon/>{count['error']} Errors
+                <ErrorIcon sx={{ mr: 1 }}/>{count['error']} Errors
               </Fab>
             }
             {count['warning'] > 0 &&
               <Fab variant="extended" size="small" color="warning" >
-                <WarningIcon /> {count['warning']} Warnings
+                <WarningIcon sx={{ mr: 1 }}/> {count['warning']} Warnings
               </Fab>
             }
             {count['info'] > 0 &&
               <Fab variant="extended" size="small">
-                <InfoIcon/> {count['info']} Infos
+                <InfoIcon sx={{ mr: 1 }}/> {count['info']} Infos
               </Fab>
             }
           </Box>
