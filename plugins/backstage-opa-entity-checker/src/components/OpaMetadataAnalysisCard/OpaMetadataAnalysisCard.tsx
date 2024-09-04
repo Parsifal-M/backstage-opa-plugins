@@ -85,6 +85,17 @@ const getPassStatus = (violations: EntityResult[] = []) => {
 
 type OpaMetadataAnalysisCard = 'compact';
 
+const countBy = (arr: any[] | undefined, prop: string) => {
+  if (arr === undefined || arr.length === 0) {
+    return {}
+  }
+
+  return arr.reduce(
+      (prev: any, curr: any) => ((prev[curr[prop]] = ++prev[curr[prop]] || 1), prev),
+      {},
+  );
+}
+
 
 export interface OpaMetadataAnalysisCardProps {
   title?: string;
@@ -118,50 +129,58 @@ export const OpaMetadataAnalysisCard = (
     fetchData();
   }, [fetchData]);
 
-  const passStatus = useMemo(
-    () => getPassStatus(opaResults?.result),
-    [opaResults],
-  );
-
-  let chipColor: 'orange' | 'green' | 'red';
-  if (passStatus === 'FAIL') {
-    chipColor = 'red';
-  } else if (passStatus === 'PASS') {
-    chipColor = 'green';
-  } else {
-    chipColor = 'orange';
-  }
-
   switch (props.variant) {
     case 'compact': {
       return renderCompactCard(props, opaResults)
     }
     default: {
-      return (
-        <StyledCard>
-          <CardContent>
-            <div className={classes.titleBox}>
-              <Typography variant="h6">{props.title}</Typography>
-              {opaResults?.result && (
-                <Chip
-                  label={passStatus}
-                  style={{ backgroundColor: chipColor }}
-                  className={classes.chip}
-                />
-              )}
-            </div>
-            {renderCardContent(opaResults)}
-          </CardContent>
-        </StyledCard>
-      );
-      break;
+      return renderDefaultCard(props, opaResults)
     }
   }
 };
 
+const renderDefaultCard = (props: OpaMetadataAnalysisCardProps, results: OpaResult | null) => {
+  const passStatus = useMemo(
+      () => getPassStatus(results?.result),
+      [results],
+  );
+
+  let chipColor: 'warning' | 'error' | 'success';
+  switch (passStatus) {
+    case 'FAIL':
+      chipColor = 'error';
+      break;
+    case 'PASS':
+      chipColor = 'success';
+      break;
+    default:
+      chipColor = 'warning';
+  }
+
+  return (
+      <StyledCard>
+        <CardContent>
+          <div className={classes.titleBox}>
+            <Typography variant="h6">{props.title}</Typography>
+            {results?.result && (
+                <Chip
+                    label={passStatus}
+                    color={chipColor}
+                    className={classes.chip}
+                />
+            )}
+          </div>
+          {renderCardContent(results)}
+        </CardContent>
+      </StyledCard>
+  );
+
+}
+
 const renderCompactCard = (props: OpaMetadataAnalysisCardProps, results: OpaResult | null) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const count = countBy(results?.result, 'level')
 
   return (
       <Accordion>
@@ -172,18 +191,21 @@ const renderCompactCard = (props: OpaMetadataAnalysisCardProps, results: OpaResu
         >
           <Box sx={{ display: isMobile ? "block": "flex", alignItems:"center", gridColumnGap:20 }}>
             <Typography variant="h6">{props.title}</Typography>
-            <Fab variant="extended" size="small">
-              <ErrorIcon/>
-              Errors
-            </Fab>
-            <Fab variant="extended" size="small">
-              <WarningIcon />
-              Warnings
-            </Fab>
-            <Fab variant="extended" size="small">
-              <InfoIcon/>
-              Infos
-            </Fab>
+            {count['error'] > 0 &&
+              <Fab variant="extended" size="small" color="error">
+                <ErrorIcon/>{count['error']} Errors
+              </Fab>
+            }
+            {count['warning'] > 0 &&
+              <Fab variant="extended" size="small" color="warning" >
+                <WarningIcon /> {count['warning']} Warnings
+              </Fab>
+            }
+            {count['info'] > 0 &&
+              <Fab variant="extended" size="small">
+                <InfoIcon/> {count['info']} Infos
+              </Fab>
+            }
           </Box>
         </AccordionSummary>
         <AccordionDetails>
