@@ -31,19 +31,20 @@ export type RouterOptions = {
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, config, urlReader, httpAuth, userInfo, auth } = options;
+  const { logger, config, urlReader, httpAuth, userInfo } = options;
 
   const router = Router();
   router.use(express.json());
 
   const opaClient = new OpaClient(config, logger);
   const entryPoint = 'authz';
+  // Optional config to enable the OPA middleware (should be disabled by default)
   const useOpaMiddleware = config.getOptionalBoolean(
     'opaClient.useOpaMiddleware',
   );
 
+  // If the OPA middleware is enabled, use it for all routes in this plugin
   if (useOpaMiddleware) {
-    // Use the OPA middleware for all routes
     router.use(async (req, res, next) => {
       try {
         const credentials = await httpAuth!.credentials(req);
