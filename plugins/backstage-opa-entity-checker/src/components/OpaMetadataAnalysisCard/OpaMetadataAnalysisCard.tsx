@@ -162,6 +162,7 @@ const DefaultOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
                 />
             )}
           </div>
+          {props.children}
           {renderCardContent(props.results)}
         </CardContent>
       </StyledCard>
@@ -199,6 +200,7 @@ const CompactOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
           </Box>
         </AccordionSummary>
         <AccordionDetails>
+          {props.children}
           <Box sx={{ flexGrow: 1}}>
             {renderCardContent(props.results)}
           </Box>
@@ -213,6 +215,8 @@ export interface OpaMetadataAnalysisCardProps {
   variant?: MetadataAnalysisCardVariants;
   // provide the validation results
   results?: OpaResult | null;
+  // Description of additional element to add to the OpaMetadataAnalysisCard
+  children?: string | React.ReactNode;
 }
 
 export const OpaMetadataAnalysisCard = (
