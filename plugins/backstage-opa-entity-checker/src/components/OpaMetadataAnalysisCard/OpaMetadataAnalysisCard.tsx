@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -19,7 +19,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/Warning';
 import InfoIcon from '@mui/icons-material/Info';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 const PREFIX = 'OpaMetadataAnalysisCard';
 
@@ -88,7 +87,7 @@ export async function hasOPAValidationErrors(
   return getPassStatus(results.result) !== 'PASS';
 }
 
-type OpaMetadataAnalysisCardVariantes = 'default' | 'compact';
+type MetadataAnalysisCardVariants = 'default' | 'compact';
 
 const countBy = (arr: any[] | undefined, prop: string) => {
   if (arr === undefined || arr.length === 0) {
@@ -171,8 +170,6 @@ const DefaultOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
 }
 
 const CompactOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const count = countBy(props.results?.result, 'level')
 
   return (
@@ -182,7 +179,7 @@ const CompactOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
             aria-controls="panel1-content"
             id="panel1-header"
         >
-          <Box sx={{ display: isMobile ? "block": "flex", alignItems:"center", gridColumnGap:20 }}>
+          <Box sx={{ display: "flex", alignItems:"center", gridColumnGap:20 }}>
             <Typography variant="h6">{props.title}</Typography>
             {count.error > 0 &&
                 <Fab variant="extended" size="small" color="error">
@@ -213,7 +210,7 @@ const CompactOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
 export interface OpaMetadataAnalysisCardProps {
   title?: string;
   // Select how the card looks like
-  variant?: OpaMetadataAnalysisCardVariantes;
+  variant?: MetadataAnalysisCardVariants;
   // provide the validation results
   results?: OpaResult | null;
 }
@@ -247,12 +244,12 @@ export const OpaMetadataAnalysisCard = (
   switch (props.variant) {
     case 'compact': {
       return (
-          <CompactOpaMetadataCard results={opaResults} />
+          <CompactOpaMetadataCard {...props} results={opaResults}/>
       )
     }
     default: {
       return (
-          <DefaultOpaMetadataCard />
+          <DefaultOpaMetadataCard {...props} results={opaResults}/>
       )
     }
   }
