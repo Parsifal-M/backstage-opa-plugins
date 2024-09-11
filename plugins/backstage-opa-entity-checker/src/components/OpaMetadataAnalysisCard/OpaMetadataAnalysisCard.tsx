@@ -27,17 +27,14 @@ const classes = {
   title: `${PREFIX}-title`,
   alert: `${PREFIX}-alert`,
   chip: `${PREFIX}-chip`,
-  titleBox: `${PREFIX}-titleBox`
+  titleBox: `${PREFIX}-titleBox`,
 };
 
 const StylesAlert = styled(Alert)(({ theme }) => ({
   marginBottom: theme.spacing(1),
-}))
+}));
 
-const StyledCard = styled(Card)(({
-    theme
-  }
-) => ({
+const StyledCard = styled(Card)(({ theme }) => ({
   [`& .${classes.card}`]: {
     marginBottom: theme.spacing(2),
   },
@@ -54,7 +51,7 @@ const StyledCard = styled(Card)(({
     display: 'flex',
     alignItems: 'center',
     marginBottom: theme.spacing(2),
-  }
+  },
 }));
 
 const getPassStatus = (violations: EntityResult[] = []) => {
@@ -75,10 +72,10 @@ const getPassStatus = (violations: EntityResult[] = []) => {
  * @public
  */
 export async function hasOPAValidationErrors(
-    entity: Entity,
-    context: { apis: ApiHolder },
+  entity: Entity,
+  context: { apis: ApiHolder },
 ) {
-  const opaApi = context.apis.get(opaBackendApiRef)
+  const opaApi = context.apis.get(opaBackendApiRef);
   if (!opaApi) {
     throw new Error(`No implementation available for ${opaBackendApiRef}`);
   }
@@ -91,28 +88,24 @@ type MetadataAnalysisCardVariants = 'default' | 'compact';
 
 const countBy = (arr: any[] | undefined, prop: string) => {
   if (arr === undefined || arr.length === 0) {
-    return {}
+    return {};
   }
 
-  return arr.reduce(
-      (prev: any, curr: any) => {
-          prev[curr[prop]] = ++prev[curr[prop]] || 1
-          return prev
-      },
-      {},
-  );
-}
+  return arr.reduce((prev: any, curr: any) => {
+    prev[curr[prop]] = ++prev[curr[prop]] || 1;
+    return prev;
+  }, {});
+};
 
 const renderCardContent = (results: OpaResult | null | undefined) => {
-
   let violationId = 0;
 
   if (!results) {
     return (
-        <Typography>
-          OPA did not return any results for this entity. Please make sure you
-          are using the correct OPA package name.
-        </Typography>
+      <Typography>
+        OPA did not return any results for this entity. Please make sure you are
+        using the correct OPA package name.
+      </Typography>
     );
   }
 
@@ -121,20 +114,20 @@ const renderCardContent = (results: OpaResult | null | undefined) => {
   }
 
   return results.result.map((violation: EntityResult) => (
-      <StylesAlert
-          severity={violation.level}
-          key={violation.id ?? ++violationId}
-          className={classes.alert}
-      >
-        {violation.message}
-      </StylesAlert>
+    <StylesAlert
+      severity={violation.level}
+      key={violation.id ?? ++violationId}
+      className={classes.alert}
+    >
+      {violation.message}
+    </StylesAlert>
   ));
 };
 
 const DefaultOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
   const passStatus = useMemo(
-      () => getPassStatus(props.results?.result),
-      [props.results],
+    () => getPassStatus(props.results?.result),
+    [props.results],
   );
 
   let chipColor: 'warning' | 'error' | 'success';
@@ -150,64 +143,62 @@ const DefaultOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
   }
 
   return (
-      <StyledCard>
-        <CardContent>
-          <div className={classes.titleBox}>
-            <Typography variant="h6">{props.title}</Typography>
-            {props.results?.result && (
-                <Chip
-                    label={passStatus}
-                    color={chipColor}
-                    className={classes.chip}
-                />
-            )}
-          </div>
-          {props.children}
-          {renderCardContent(props.results)}
-        </CardContent>
-      </StyledCard>
+    <StyledCard>
+      <CardContent>
+        <div className={classes.titleBox}>
+          <Typography variant="h6">{props.title}</Typography>
+          {props.results?.result && (
+            <Chip
+              label={passStatus}
+              color={chipColor}
+              className={classes.chip}
+            />
+          )}
+        </div>
+        {props.children}
+        {renderCardContent(props.results)}
+      </CardContent>
+    </StyledCard>
   );
-
-}
+};
 
 const CompactOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
-  const count = countBy(props.results?.result, 'level')
+  const count = countBy(props.results?.result, 'level');
 
   return (
-      <Accordion>
-        <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-        >
-          <Box sx={{ display: "flex", alignItems:"center", gridColumnGap:20 }}>
-            <Typography variant="h6">{props.title}</Typography>
-            {count.error > 0 &&
-                <Fab variant="extended" size="small" color="error">
-                  <ErrorIcon sx={{ mr: 1 }}/>{count.error} Errors
-                </Fab>
-            }
-            {count.warning > 0 &&
-                <Fab variant="extended" size="small" color="warning" >
-                  <WarningIcon sx={{ mr: 1 }}/> {count.warning} Warnings
-                </Fab>
-            }
-            {count.info > 0 &&
-                <Fab variant="extended" size="small">
-                  <InfoIcon sx={{ mr: 1 }}/> {count.info} Infos
-                </Fab>
-            }
-          </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          {props.children}
-          <Box sx={{ flexGrow: 1}}>
-            {renderCardContent(props.results)}
-          </Box>
-        </AccordionDetails>
-      </Accordion>
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1-content"
+        id="panel1-header"
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gridColumnGap: 20 }}>
+          <Typography variant="h6">{props.title}</Typography>
+          {count.error > 0 && (
+            <Fab variant="extended" size="small" color="error">
+              <ErrorIcon sx={{ mr: 1 }} />
+              {count.error} Errors
+            </Fab>
+          )}
+          {count.warning > 0 && (
+            <Fab variant="extended" size="small" color="warning">
+              <WarningIcon sx={{ mr: 1 }} /> {count.warning} Warnings
+            </Fab>
+          )}
+          {count.info > 0 && (
+            <Fab variant="extended" size="small">
+              <InfoIcon sx={{ mr: 1 }} /> {count.info} Infos
+            </Fab>
+          )}
+        </Box>
+      </AccordionSummary>
+      <AccordionDetails>
+        {props.children}
+        <Box sx={{ flexGrow: 1 }}>{renderCardContent(props.results)}</Box>
+      </AccordionDetails>
+    </Accordion>
   );
-}
+};
 
 export interface OpaMetadataAnalysisCardProps {
   title?: string;
@@ -222,7 +213,6 @@ export interface OpaMetadataAnalysisCardProps {
 export const OpaMetadataAnalysisCard = (
   props: OpaMetadataAnalysisCardProps,
 ) => {
-
   const { entity } = useEntity();
   const opaApi = useApi(opaBackendApiRef);
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
@@ -247,18 +237,14 @@ export const OpaMetadataAnalysisCard = (
 
   switch (props.variant) {
     case 'compact': {
-      return (
-          <CompactOpaMetadataCard {...props} results={opaResults}/>
-      )
+      return <CompactOpaMetadataCard {...props} results={opaResults} />;
     }
     default: {
-      return (
-          <DefaultOpaMetadataCard {...props} results={opaResults}/>
-      )
+      return <DefaultOpaMetadataCard {...props} results={opaResults} />;
     }
   }
 };
 
 OpaMetadataAnalysisCard.defaultProps = {
   title: 'OPA Entity Checker',
-}
+};

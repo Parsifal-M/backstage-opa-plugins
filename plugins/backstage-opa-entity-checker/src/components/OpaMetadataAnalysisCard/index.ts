@@ -1,1 +1,4 @@
-export { OpaMetadataAnalysisCard, hasOPAValidationErrors } from './OpaMetadataAnalysisCard';
+export {
+  OpaMetadataAnalysisCard,
+  hasOPAValidationErrors,
+} from './OpaMetadataAnalysisCard';

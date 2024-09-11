@@ -62,24 +62,27 @@ it('renders without crashing', async () => {
 
 it('renders the compact variant when selected', async () => {
   mockEntityCheck.mockResolvedValue({
-    result: [{ message: 'Test violation', level: 'error' }, { message: 'Test warning violation', level: 'warning' }],
+    result: [
+      { message: 'Test violation', level: 'error' },
+      { message: 'Test warning violation', level: 'warning' },
+    ],
   });
 
   await act(async () => {
     render(
-        <TestApiProvider
-            apis={[
-              [alertApiRef, { post: mockAlertPost }],
-              [opaBackendApiRef, { entityCheck: mockEntityCheck }],
-            ]}
-        >
-          <OpaMetadataAnalysisCard variant="compact"/>
-        </TestApiProvider>,
+      <TestApiProvider
+        apis={[
+          [alertApiRef, { post: mockAlertPost }],
+          [opaBackendApiRef, { entityCheck: mockEntityCheck }],
+        ]}
+      >
+        <OpaMetadataAnalysisCard variant="compact" />
+      </TestApiProvider>,
     );
 
     await waitFor(() => {
       expect(mockEntityCheck).toHaveBeenCalled();
-      expect(screen.getByText(/OPA Entity Checker/i)).toBeInTheDocument()
+      expect(screen.getByText(/OPA Entity Checker/i)).toBeInTheDocument();
     });
 
     // The fab icon are specific of the compact version, if they are there it proves we have the compact

@@ -54,7 +54,10 @@ import {
 } from '@backstage/catalog-model';
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-import {OpaMetadataAnalysisCard, hasOPAValidationErrors} from '@parsifal-m/plugin-opa-entity-checker';
+import {
+  OpaMetadataAnalysisCard,
+  hasOPAValidationErrors,
+} from '@parsifal-m/plugin-opa-entity-checker';
 import { DevQuote } from '@parsifal-m/plugin-dev-quotes-homepage';
 import {
   OpaPolicyPage,
@@ -114,13 +117,16 @@ const entityWarningContent = (
       </EntitySwitch.Case>
     </EntitySwitch>
 
-      <EntitySwitch>
-          <EntitySwitch.Case if={hasOPAValidationErrors}>
-              <Grid item xs={12}>
-                  <OpaMetadataAnalysisCard title="Entity Validation" variant="compact" />
-              </Grid>
-          </EntitySwitch.Case>
-      </EntitySwitch>
+    <EntitySwitch>
+      <EntitySwitch.Case if={hasOPAValidationErrors}>
+        <Grid item xs={12}>
+          <OpaMetadataAnalysisCard
+            title="Entity Validation"
+            variant="compact"
+          />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
   </>
 );
 
