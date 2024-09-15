@@ -43,7 +43,6 @@
     "@backstage/plugin-search-backend-module-techdocs": "^0.1.26",
     "@backstage/plugin-search-backend-node": "^1.2.26",
     "@backstage/plugin-techdocs-backend": "^1.10.8",
-    "@internal/backstage-plugin-opa-authz-test-backend-backend": "^0.1.0",
     "@parsifal-m/plugin-opa-backend": "workspace:*",
     "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:*",
     "app": "link:../app",
