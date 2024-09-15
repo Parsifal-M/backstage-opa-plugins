@@ -25,12 +25,7 @@ In your `app-config.yaml` file, add the following:
 ```yaml
 opaClient:
   baseUrl: 'http://localhost:8181'
-  policies:
-    entityChecker: # Entity checker plugin
-      entrypoint: 'entity_checker/violation'
 ```
-
-> Note, the `backstage-opa-policies` plugin does not require the above configuration.
 
 ### Import the plugin into the Backstage Backend
 
