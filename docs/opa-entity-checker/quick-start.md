@@ -142,6 +142,30 @@ const overviewContent = (
 );
 ```
 
+You can also use the compact Card variant as follows. The card is intended to be used as a warning content banner.
+
+```tsx
+import {
+    OpaMetadataAnalysisCard,
+    hasOPAValidationErrors,
+} from '@parsifal-m/plugin-opa-entity-checker';
+
+const entityWarningContent = (
+    //...
+    <EntitySwitch>
+      <EntitySwitch.Case if={hasOPAValidationErrors}>
+        <Grid item xs={12}>
+          <OpaMetadataAnalysisCard
+            title="Entity Validation"
+            variant="compact"
+          />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+    //...
+}
+```
+
 ## Configuration
 
 The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and an `entrypoint` for the OPA server in your Backstage app-config.yaml, based on the example above we would have the following configuration:
