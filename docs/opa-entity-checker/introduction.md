@@ -21,11 +21,11 @@ For more details, check out:
 - [Quick-start Guide](/opa-entity-checker/quick-start.md)
 - [Local Development Guide](/opa-entity-checker/local-development.md)
 
-## Card Violations Variants 
+## Card Violations Variants
 
 The card comes in two flavor: `default` and `compact`. The version you have seen above is the default card.
 
-The compact version is intended to be used as a banner that display how many errors where found, with a dropdown to 
+The compact version is intended to be used as a banner that display how many errors where found, with a dropdown to
 see the details.
 
 ![Compact MetaData Card Violations Closed](../assets/card-compact-closed.png)
