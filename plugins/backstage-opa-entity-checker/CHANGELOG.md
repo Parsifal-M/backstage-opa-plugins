@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+### Minor Changes
+
+- 6e68b21: Added a compact variant of the OpaMetadataAnalysisCard React Component
+
 ## 1.3.3
 
 ### Patch Changes
