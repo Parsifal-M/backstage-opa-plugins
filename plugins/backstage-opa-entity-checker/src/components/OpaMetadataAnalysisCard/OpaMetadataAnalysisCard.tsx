@@ -1,33 +1,58 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, Chip } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import Alert from '@mui/material/Alert';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { alertApiRef, useApi } from '@backstage/core-plugin-api';
+import { alertApiRef, ApiHolder, useApi } from '@backstage/core-plugin-api';
 import { opaBackendApiRef } from '../../api';
-import { OpaResult, EntityResult } from '../../api/types';
+import { EntityResult, OpaResult } from '../../api/types';
+import { Entity } from '@backstage/catalog-model';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ErrorIcon from '@mui/icons-material/Error';
+import WarningIcon from '@mui/icons-material/Warning';
+import InfoIcon from '@mui/icons-material/Info';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      marginBottom: theme.spacing(2),
-    },
-    title: {
-      marginBottom: theme.spacing(2),
-    },
-    alert: {
-      marginBottom: theme.spacing(1),
-    },
-    chip: {
-      marginLeft: 'auto',
-    },
-    titleBox: {
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: theme.spacing(2),
-    },
-  }),
-);
+const PREFIX = 'OpaMetadataAnalysisCard';
+
+const classes = {
+  card: `${PREFIX}-card`,
+  title: `${PREFIX}-title`,
+  alert: `${PREFIX}-alert`,
+  chip: `${PREFIX}-chip`,
+  titleBox: `${PREFIX}-titleBox`,
+};
+
+const StylesAlert = styled(Alert)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+}));
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  [`& .${classes.card}`]: {
+    marginBottom: theme.spacing(2),
+  },
+
+  [`& .${classes.title}`]: {
+    marginBottom: theme.spacing(2),
+  },
+
+  [`& .${classes.chip}`]: {
+    marginLeft: 'auto',
+  },
+
+  [`& .${classes.titleBox}`]: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 const getPassStatus = (violations: EntityResult[] = []) => {
   const errors = violations.filter(v => v.level === 'error').length;
@@ -41,13 +66,157 @@ const getPassStatus = (violations: EntityResult[] = []) => {
   return 'PASS';
 };
 
-export const OpaMetadataAnalysisCard = () => {
-  const classes = useStyles();
+/**
+ * Returns true if the given entity has any validation errors
+ *
+ * @public
+ */
+export async function hasOPAValidationErrors(
+  entity: Entity,
+  context: { apis: ApiHolder },
+) {
+  const opaApi = context.apis.get(opaBackendApiRef);
+  if (!opaApi) {
+    throw new Error(`No implementation available for ${opaBackendApiRef}`);
+  }
+
+  const results = await opaApi.entityCheck(entity);
+  return getPassStatus(results.result) !== 'PASS';
+}
+
+type MetadataAnalysisCardVariants = 'default' | 'compact';
+
+const countBy = (arr: any[] | undefined, prop: string) => {
+  if (arr === undefined || arr.length === 0) {
+    return {};
+  }
+
+  return arr.reduce((prev: any, curr: any) => {
+    prev[curr[prop]] = ++prev[curr[prop]] || 1;
+    return prev;
+  }, {});
+};
+
+const renderCardContent = (results: OpaResult | null | undefined) => {
+  let violationId = 0;
+
+  if (!results) {
+    return (
+      <Typography>
+        OPA did not return any results for this entity. Please make sure you are
+        using the correct OPA package name.
+      </Typography>
+    );
+  }
+
+  if (!results?.result?.length) {
+    return <Typography>No issues found!</Typography>;
+  }
+
+  return results.result.map((violation: EntityResult) => (
+    <StylesAlert
+      severity={violation.level}
+      key={violation.id ?? ++violationId}
+      className={classes.alert}
+    >
+      {violation.message}
+    </StylesAlert>
+  ));
+};
+
+const DefaultOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
+  const passStatus = useMemo(
+    () => getPassStatus(props.results?.result),
+    [props.results],
+  );
+
+  let chipColor: 'warning' | 'error' | 'success';
+  switch (passStatus) {
+    case 'FAIL':
+      chipColor = 'error';
+      break;
+    case 'PASS':
+      chipColor = 'success';
+      break;
+    default:
+      chipColor = 'warning';
+  }
+
+  return (
+    <StyledCard>
+      <CardContent>
+        <div className={classes.titleBox}>
+          <Typography variant="h6">{props.title}</Typography>
+          {props.results?.result && (
+            <Chip
+              label={passStatus}
+              color={chipColor}
+              className={classes.chip}
+            />
+          )}
+        </div>
+        {props.children}
+        {renderCardContent(props.results)}
+      </CardContent>
+    </StyledCard>
+  );
+};
+
+const CompactOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
+  const count = countBy(props.results?.result, 'level');
+
+  return (
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1-content"
+        id="panel1-header"
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gridColumnGap: 20 }}>
+          <Typography variant="h6">{props.title}</Typography>
+          {count.error > 0 && (
+            <Fab variant="extended" size="small" color="error">
+              <ErrorIcon sx={{ mr: 1 }} />
+              {count.error} Errors
+            </Fab>
+          )}
+          {count.warning > 0 && (
+            <Fab variant="extended" size="small" color="warning">
+              <WarningIcon sx={{ mr: 1 }} /> {count.warning} Warnings
+            </Fab>
+          )}
+          {count.info > 0 && (
+            <Fab variant="extended" size="small">
+              <InfoIcon sx={{ mr: 1 }} /> {count.info} Infos
+            </Fab>
+          )}
+        </Box>
+      </AccordionSummary>
+      <AccordionDetails>
+        {props.children}
+        <Box sx={{ flexGrow: 1 }}>{renderCardContent(props.results)}</Box>
+      </AccordionDetails>
+    </Accordion>
+  );
+};
+
+export interface OpaMetadataAnalysisCardProps {
+  title?: string;
+  // Select how the card looks like
+  variant?: MetadataAnalysisCardVariants;
+  // provide the validation results
+  results?: OpaResult | null;
+  // Description of additional element to add to the OpaMetadataAnalysisCard
+  children?: string | React.ReactNode;
+}
+
+export const OpaMetadataAnalysisCard = (
+  props: OpaMetadataAnalysisCardProps,
+) => {
   const { entity } = useEntity();
   const opaApi = useApi(opaBackendApiRef);
   const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
   const alertApi = useApi(alertApiRef);
-  let violationId = 0;
 
   const fetchData = useCallback(async () => {
     try {
@@ -66,60 +235,16 @@ export const OpaMetadataAnalysisCard = () => {
     fetchData();
   }, [fetchData]);
 
-  const passStatus = useMemo(
-    () => getPassStatus(opaResults?.result),
-    [opaResults],
-  );
-
-  let chipColor: 'orange' | 'green' | 'red';
-  if (passStatus === 'FAIL') {
-    chipColor = 'red';
-  } else if (passStatus === 'PASS') {
-    chipColor = 'green';
-  } else {
-    chipColor = 'orange';
+  switch (props.variant) {
+    case 'compact': {
+      return <CompactOpaMetadataCard {...props} results={opaResults} />;
+    }
+    default: {
+      return <DefaultOpaMetadataCard {...props} results={opaResults} />;
+    }
   }
+};
 
-  const renderCardContent = () => {
-    if (!opaResults) {
-      return (
-        <Typography>
-          OPA did not return any results for this entity. Please make sure you
-          are using the correct OPA package name.
-        </Typography>
-      );
-    }
-
-    if (!opaResults?.result?.length) {
-      return <Typography>No issues found!</Typography>;
-    }
-
-    return opaResults.result.map((violation: EntityResult) => (
-      <Alert
-        severity={violation.level}
-        key={violation.id ?? ++violationId}
-        className={classes.alert}
-      >
-        {violation.message}
-      </Alert>
-    ));
-  };
-
-  return (
-    <Card className={classes.card}>
-      <CardContent>
-        <div className={classes.titleBox}>
-          <Typography variant="h6">OPA Entity Checker</Typography>
-          {opaResults?.result && (
-            <Chip
-              label={passStatus}
-              style={{ backgroundColor: chipColor }}
-              className={classes.chip}
-            />
-          )}
-        </div>
-        {renderCardContent()}
-      </CardContent>
-    </Card>
-  );
+OpaMetadataAnalysisCard.defaultProps = {
+  title: 'OPA Entity Checker',
 };
