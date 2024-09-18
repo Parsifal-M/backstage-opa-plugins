@@ -98,23 +98,60 @@ is_system_present if {
 }
 ```
 
-## Add the card to your entity page
+## Add The OPA Entity Checker Plugin To Your Frontend
 
 Add the following to your `EntityPage.tsx` file:
 
 ```tsx
-import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
+import {
+    OpaMetadataAnalysisCard,
+    hasOPAValidationErrors,
+} from '@parsifal-m/plugin-opa-entity-checker';
 
 //...
 
 const overviewContent = (
   //...
-  <Grid item md={6} xs={12}>
-    <OpaMetadataAnalysisCard />
-  </Grid>
+    <EntitySwitch>
+      <EntitySwitch.Case if={hasOPAValidationErrors}>
+        <Grid item xs={6}>
+          <OpaMetadataAnalysisCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
   //...
 );
 ```
+
+You can also use the compact Card variant as follows. The card is intended to be used as a warning content banner.
+
+```tsx
+import {
+    OpaMetadataAnalysisCard,
+    hasOPAValidationErrors,
+} from '@parsifal-m/plugin-opa-entity-checker';
+
+const entityWarningContent = (
+    //...
+    <EntitySwitch>
+      <EntitySwitch.Case if={hasOPAValidationErrors}>
+        <Grid item xs={12}>
+          <OpaMetadataAnalysisCard
+            title="Entity Validation"
+            variant="compact"
+          />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+    //...
+}
+```
+
+Although not mandatory, we recommend using the `<EntitySwitch>` in both the `default` and `compact` versions with `hasOPAValidationErrors` as this will then only display the cards if there are validation errors.
+
+## Additional Information
+
+Please see the [Docs Site](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-entity-checker/introduction) for additional information on this plugin!
 
 ## Contributing
 
