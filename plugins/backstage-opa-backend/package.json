@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@backstage/backend-common": "^0.23.2",
+    "@backstage/backend-defaults": "^0.3.3",
     "@backstage/backend-plugin-api": "^0.6.21",
     "@backstage/config": "^1.2.0",
     "@backstage/errors": "^1.2.4",
