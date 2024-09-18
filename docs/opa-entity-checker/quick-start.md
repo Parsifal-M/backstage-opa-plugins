@@ -129,15 +129,22 @@ backend.add(import('@backstage/plugin-auth-backend'));
 Add the following to your `EntityPage.tsx` file:
 
 ```tsx
-import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
+import {
+  OpaMetadataAnalysisCard,
+  hasOPAValidationErrors,
+} from '@parsifal-m/plugin-opa-entity-checker';
 
 //...
 
 const overviewContent = (
   //...
-  <Grid item md={6} xs={12}>
-    <OpaMetadataAnalysisCard />
-  </Grid>
+  <EntitySwitch>
+    <EntitySwitch.Case if={hasOPAValidationErrors}>
+      <Grid item xs={6}>
+        <OpaMetadataAnalysisCard />
+      </Grid>
+    </EntitySwitch.Case>
+  </EntitySwitch>
   //...
 );
 ```
@@ -165,6 +172,8 @@ const entityWarningContent = (
     //...
 }
 ```
+
+Although not mandatory, we recommend using the `<EntitySwitch>` in both the `default` and `compact` versions with `hasOPAValidationErrors` as this will then only display the cards if there are validation errors.
 
 ## Configuration
 

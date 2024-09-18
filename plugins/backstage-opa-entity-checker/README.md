@@ -20,13 +20,25 @@ yarn add @parsifal-m/plugin-opa-entity-checker
 
 ## What does this do?
 
-This plugin will allow you to run OPA against your entities in Backstage and see if they are compliant with your policies. It will display a card on the entity page with the results of the check which looks like this:
+This plugin will allow you to run OPA against your entities in Backstage and see if they are compliant with your policies. You can choose between two components to display, a `compact` one or the `default`.
 
-![MetaData Card Violations](docs/card1.png)
+The `compact` version is intended to be used as a banner that displays how many errors were found, with a dropdown to see the details as you can see below:
 
-If there are no issues or violations, the card will look like this:
+![Compact MetaData Card Violations Closed](../../docs/assets/card-compact-closed.png)
 
-![MetaData Card No Violations](docs/card2.png)
+Expanded, you can see the details of the violations:
+
+![Compact MetaData Card Violations Open](../../docs/assets/card-compact-opened.png)
+
+With the compact version, if there are no violations, the card will not be displayed.
+
+The `default` version, currently looks like this:
+
+![MetaData Card Violations](../../docs/assets/card1.png)
+
+And with no violations:
+
+![MetaData Card No Violations](../../docs/assets/card2.png)
 
 ## How do I set the policy?
 
@@ -86,23 +98,60 @@ is_system_present if {
 }
 ```
 
-## Add the card to your entity page
+## Add The OPA Entity Checker Plugin To Your Frontend
 
 Add the following to your `EntityPage.tsx` file:
 
 ```tsx
-import { OpaMetadataAnalysisCard } from '@parsifal-m/plugin-opa-entity-checker';
+import {
+  OpaMetadataAnalysisCard,
+  hasOPAValidationErrors,
+} from '@parsifal-m/plugin-opa-entity-checker';
 
 //...
 
 const overviewContent = (
   //...
-  <Grid item md={6} xs={12}>
-    <OpaMetadataAnalysisCard />
-  </Grid>
+  <EntitySwitch>
+    <EntitySwitch.Case if={hasOPAValidationErrors}>
+      <Grid item xs={6}>
+        <OpaMetadataAnalysisCard />
+      </Grid>
+    </EntitySwitch.Case>
+  </EntitySwitch>
   //...
 );
 ```
+
+You can also use the compact Card variant as follows. The card is intended to be used as a warning content banner.
+
+```tsx
+import {
+    OpaMetadataAnalysisCard,
+    hasOPAValidationErrors,
+} from '@parsifal-m/plugin-opa-entity-checker';
+
+const entityWarningContent = (
+    //...
+    <EntitySwitch>
+      <EntitySwitch.Case if={hasOPAValidationErrors}>
+        <Grid item xs={12}>
+          <OpaMetadataAnalysisCard
+            title="Entity Validation"
+            variant="compact"
+          />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+    //...
+}
+```
+
+Although not mandatory, we recommend using the `<EntitySwitch>` in both the `default` and `compact` versions with `hasOPAValidationErrors` as this will then only display the cards if there are validation errors.
+
+## Additional Information
+
+Please see the [Docs Site](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-entity-checker/introduction) for additional information on this plugin!
 
 ## Contributing
 

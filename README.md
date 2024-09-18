@@ -1,12 +1,12 @@
-# Welcome to the OPA Plugins Repository for Backstage!
+# Welcome to the OPA Plugins Repository for Backstage
 
 This repository contains a collection of plugins for [Backstage](https://backstage.io) that integrate with [Open Policy Agent](https://www.openpolicyagent.org/).
 
-## Blogs!
+## Blogs
 
 - [Going Backstage with OPA](https://www.styra.com/blog/going-backstage-with-opa/)
 
-## Talks!
+## Talks
 
 - [Can It Be Done? Building Fine-Grained Access Control for Backstage with OPA](https://www.youtube.com/watch?v=N0n_czYo_kE&list=PLj6h78yzYM2P4KPyeDFexAVm6ZvfAWMU8&index=15&ab_channel=CNCF%5BCloudNativeComputingFoundation%5D)
 
@@ -37,7 +37,7 @@ Step by step guide to developing locally:
 6. Update the OPA rbac policy in here [rbac_policy.rego](./example-opa-policies/rbac_policy.rego), or use your own! If you want to use the default policy, you'll have to update `is_admin if "group:twocodersbrewing/maintainers" in claims` to what ever your user entity claims are.
 7. Run `yarn dev` or `yarn debug` in the root of the repository to start the Backstage app (use debug if you want to see what is happening in the OPA plugin)
 
-# Contributing
+## Contributing
 
 Contributions are welcome! However, still figuring out the best approach as this does require user and group entities to be in the system.
 
