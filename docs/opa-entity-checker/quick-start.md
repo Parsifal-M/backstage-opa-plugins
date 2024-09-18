@@ -130,21 +130,21 @@ Add the following to your `EntityPage.tsx` file:
 
 ```tsx
 import {
-    OpaMetadataAnalysisCard,
-    hasOPAValidationErrors,
+  OpaMetadataAnalysisCard,
+  hasOPAValidationErrors,
 } from '@parsifal-m/plugin-opa-entity-checker';
 
 //...
 
 const overviewContent = (
   //...
-    <EntitySwitch>
-      <EntitySwitch.Case if={hasOPAValidationErrors}>
-        <Grid item xs={6}>
-          <OpaMetadataAnalysisCard />
-        </Grid>
-      </EntitySwitch.Case>
-    </EntitySwitch>
+  <EntitySwitch>
+    <EntitySwitch.Case if={hasOPAValidationErrors}>
+      <Grid item xs={6}>
+        <OpaMetadataAnalysisCard />
+      </Grid>
+    </EntitySwitch.Case>
+  </EntitySwitch>
   //...
 );
 ```
