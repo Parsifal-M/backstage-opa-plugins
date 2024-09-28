@@ -11,14 +11,15 @@ import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { entityCheckerRouter } from './routers/entityChecker';
 import { policyCheckerRouter } from './routers/policyContent';
+import { authzRouter } from './routers/authz';
 
 export type RouterOptions = {
   logger: LoggerService;
   config: Config;
   discovery: DiscoveryService;
   urlReader: UrlReaderService;
-  auth?: AuthService;
-  httpAuth?: HttpAuthService;
+  auth: AuthService;
+  httpAuth: HttpAuthService;
 };
 
 export async function createRouter(
@@ -31,6 +32,7 @@ export async function createRouter(
 
   router.use(entityCheckerRouter(options));
   router.use(policyCheckerRouter(options));
+  router.use(authzRouter(config, logger));
 
   const middleware = MiddlewareFactory.create({ logger, config });
 

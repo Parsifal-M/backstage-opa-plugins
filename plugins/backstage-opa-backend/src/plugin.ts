@@ -3,12 +3,14 @@ import {
   createBackendPlugin,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 
 export const opaPlugin = createBackendPlugin({
   pluginId: 'opa',
   register(env) {
     env.registerInit({
       deps: {
+        catalogApi: catalogServiceRef,
         config: coreServices.rootConfig,
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
@@ -18,6 +20,7 @@ export const opaPlugin = createBackendPlugin({
         urlReader: coreServices.urlReader,
       },
       async init({
+        catalogApi,
         config,
         logger,
         httpRouter,
@@ -28,6 +31,7 @@ export const opaPlugin = createBackendPlugin({
       }) {
         httpRouter.use(
           await createRouter({
+            catalogApi,
             config,
             logger,
             auth,

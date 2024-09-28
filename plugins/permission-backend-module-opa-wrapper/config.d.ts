@@ -14,15 +14,6 @@ export interface Config {
      */
     policies?: {
       /**
-       * Configuration options for the entity metadata checker policy
-       */
-      entityChecker?: {
-        /**
-         * The path to the entity metadata checker package in the OPA server
-         */
-        entrypoint?: string;
-      };
-      /**
        * Configuration options for the OPA Permissions Wrapper
        */
       permissions?: {
