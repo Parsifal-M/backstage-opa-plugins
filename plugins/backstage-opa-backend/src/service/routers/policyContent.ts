@@ -27,12 +27,11 @@ export const policyCheckerRouter = (
   router.get('/get-policy', async (req, res, next) => {
     const opaPolicy = req.query.opaPolicy as string;
     const credentials = await httpAuth.credentials(req, { allow: ['user'] });
-
-    console.log('credentials are:', credentials);
+    const userEntityRef = credentials.principal.userEntityRef;
 
     // Set the Policy Input
     const input = {
-      user: credentials,
+      user: userEntityRef,
     };
 
     console.log('input for OPA is:', input);

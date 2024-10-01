@@ -1,19 +1,19 @@
-import { createApiRef } from '@backstage/core-plugin-api';
+import { ApiRef, createApiRef } from '@backstage/core-plugin-api';
 
 export type PolicyInput = Record<string, unknown>;
 
 export type PolicyResult = {
-    decision_id: string;
+    decision_id?: string;
     result: {
       allow: boolean;
     }
   };
 
 
-export interface OpaAuthzApi {
+export type OpaAuthzApi = {
   evalPolicy(input: PolicyInput, entryPoint: string): Promise<PolicyResult>;
 }
 
-export const opaPolicyBackendApiRef = createApiRef<OpaAuthzApi>({
-  id: 'plugin.opa-authz.service',
+export const opaAuthzBackendApiRef: ApiRef<OpaAuthzApi> = createApiRef<OpaAuthzApi>({
+  id: 'plugin.opa-authz.api',
 });

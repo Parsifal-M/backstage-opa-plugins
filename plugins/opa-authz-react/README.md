@@ -1,4 +1,4 @@
-# @internal/backstage-plugin-opa-authz-react
+# @parsifal-m/backstage-plugin-opa-authz-react
 
 Welcome to the web library package for the opa-authz plugin!
 

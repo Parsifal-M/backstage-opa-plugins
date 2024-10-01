@@ -2,7 +2,7 @@ import { FetchApi } from "@backstage/core-plugin-api";
 import { OpaAuthzApi, PolicyInput, PolicyResult } from "./types";
 
 
-export class OpaAuthzClient implements OpaAuthzApi {
+export class OpaAuthzClientReact implements OpaAuthzApi {
   private readonly fetchApi: FetchApi;
   constructor(options: { fetchApi: FetchApi }) {
     this.fetchApi = options.fetchApi;
@@ -12,7 +12,7 @@ export class OpaAuthzClient implements OpaAuthzApi {
     const url = `plugin://opa/opa-authz`;
 
     const response = await this.fetchApi.fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },

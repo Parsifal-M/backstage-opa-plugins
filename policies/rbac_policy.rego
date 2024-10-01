@@ -18,10 +18,10 @@ claims := input.identity.claims
 
 is_admin if "group:twocodersbrewing/maintainers" in claims
 
-# decision := {"result": "DENY"} if {
-# 	permission == "catalog.entity.read"
-# 	not is_admin
-# }
+decision := {"result": "DENY"} if {
+	permission == "catalog.entity.create"
+	not is_admin
+}
 
 # Conditional based on claims (groups a user belongs to) unless they are an admin
 decision := conditional("catalog", "catalog-entity", {"anyOf": [{

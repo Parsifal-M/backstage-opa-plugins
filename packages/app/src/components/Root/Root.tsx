@@ -26,6 +26,7 @@ import {
 } from '@backstage/core-components';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import { RequireOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
