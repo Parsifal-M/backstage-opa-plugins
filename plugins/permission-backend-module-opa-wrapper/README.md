@@ -151,6 +151,10 @@ It will then return either just an allow decision or both an allow decision and 
 
 I am happy to accept contributions and suggestions for this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal)
 
+## Ecosystem
+
+- [PlaTT Policy Template](https://github.com/ap-communications/platt-policy-template) contains policy templates that will work with the [plugin-permission-backend-module-opa-wrapper](./plugins/permission-backend-module-opa-wrapper/README.md) plugin!
+
 ## License
 
 This project is released under the Apache 2.0 License.
