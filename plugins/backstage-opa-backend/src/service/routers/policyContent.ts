@@ -6,7 +6,10 @@ import {
 } from '@backstage/backend-plugin-api';
 import { Config } from '@backstage/config';
 import { readPolicyFile } from '../../lib/read';
-import { OpaAuthzClient, opaMiddleware } from '@parsifal-m/backstage-opa-authz';
+import {
+  OpaAuthzClient,
+  opaAuthzMiddleware,
+} from '@parsifal-m/backstage-opa-authz';
 
 export type PolicyCheckerRouterOptions = {
   logger: LoggerService;
@@ -18,31 +21,18 @@ export type PolicyCheckerRouterOptions = {
 export const policyCheckerRouter = (
   options: PolicyCheckerRouterOptions,
 ): express.Router => {
-  const { logger, urlReader, config, httpAuth } = options;
+  const { logger, config, urlReader } = options;
+  const opaAuthzClient = new OpaAuthzClient(config, logger);
 
-  // Create the OPA Client
-  const opaClient = new OpaAuthzClient(config, logger);
+  const entryPoint = 'authz';
+  const input = {
+    user: 'user1',
+  };
+
   const router = express.Router();
 
   router.get('/get-policy', async (req, res, next) => {
     const opaPolicy = req.query.opaPolicy as string;
-    const credentials = await httpAuth.credentials(req, { allow: ['user'] });
-    const userEntityRef = credentials.principal.userEntityRef;
-
-    // Set the Policy Input
-    const input = {
-      user: userEntityRef,
-    };
-
-    console.log('input for OPA is:', input);
-
-    // Set the OPA entrypoint
-    const entryPoint = 'authz';
-
-    // Use the OPA Middleware on all routes
-    if (config.getOptionalBoolean('opaClient.useMiddleware')) {
-      router.use(opaMiddleware(opaClient, entryPoint, input));
-    }
 
     if (!opaPolicy) {
       logger.error(

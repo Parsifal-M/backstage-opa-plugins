@@ -3,14 +3,19 @@ import { Config } from '@backstage/config';
 import { LoggerService } from '@backstage/backend-plugin-api';
 import { PolicyInput, PolicyResult } from '../types';
 
+/**
+ * OpaAuthzClient is a client for interacting with an Open Policy Agent (OPA) server.
+ * It allows evaluating policies against given inputs and retrieving the results.
+ */
 export class OpaAuthzClient {
   private readonly baseUrl: string;
   private readonly logger: LoggerService;
 
   /**
    * Constructs a new OpaAuthzClient.
+   *
    * @param config - The backend configuration object.
-   * @param logger - A logger instance
+   * @param logger - A logger instance used for logging.
    */
   constructor(config: Config, logger: LoggerService) {
     this.baseUrl = config.getString('opaClient.baseUrl');
@@ -19,8 +24,11 @@ export class OpaAuthzClient {
 
   /**
    * Evaluates a policy against a given input.
+   *
    * @param input - The input to evaluate the policy against.
    * @param entryPoint - The entry point into the OPA policy to use.
+   * @returns A promise that resolves to the result of the policy evaluation.
+   * @throws An error if the OPA URL is not set or if the request to the OPA server fails.
    */
   async evaluatePolicy(
     input: PolicyInput,
@@ -35,21 +43,9 @@ export class OpaAuthzClient {
       throw new Error('The OPA URL is not set in the app-config!');
     }
 
-    if (!setEntryPoint) {
-      this.logger.error(
-        'The OPA entrypoint is not set in the evaluatePolicy method or in the app-config!',
-      );
-      throw new Error(
-        'The OPA entrypoint is not set in the evaluatePolicy method or in the app-config!',
-      );
-    }
-
-    if (!input) {
-      this.logger.error('The policy input is missing!');
-      throw new Error('The policy input is missing!');
-    }
-
-    this.logger.debug(`Sent data to OPA: ${JSON.stringify(input)}`);
+    this.logger.debug(
+      `OpaAuthzClient sending data to OPA: ${JSON.stringify(input)}`,
+    );
 
     try {
       const opaResponse = await fetch(url, {
@@ -68,15 +64,18 @@ export class OpaAuthzClient {
 
       const opaPermissionsResponse = (await opaResponse.json()) as PolicyResult;
 
-      this.logger.debug('Received data from OPA:', {
-        opaPermissionsResponse: JSON.stringify(opaPermissionsResponse),
-      });
+      this.logger.debug(
+        `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
+      );
 
       return opaPermissionsResponse;
     } catch (error: unknown) {
-      const message = `An error occurred while sending the policy input to the OPA server:`;
-      this.logger.error(`${message} ${error}`);
-      throw new Error(`${message} ${error}`);
+      this.logger.error(
+        `An error occurred while sending the policy input to the OPA server: ${error}`,
+      );
+      throw new Error(
+        `An error occurred while sending the policy input to the OPA server: ${error}`,
+      );
     }
   }
 }

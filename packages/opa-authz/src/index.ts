@@ -1,2 +1,2 @@
 export { OpaAuthzClient } from './api/opaClient';
-export { opaMiddleware } from './middleware/opaMiddleware';
+export { opaAuthzMiddleware } from './middleware/opaMiddleware';
