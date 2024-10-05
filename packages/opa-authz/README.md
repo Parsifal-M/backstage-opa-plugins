@@ -57,7 +57,7 @@ opaClient.evaluatePolicy(policyInput, entryPoint)
 
 ### Using the opaAuthzMiddleware
 
-The `opaAuthzMiddleware` is an Express middleware function that uses OPA to authorize requests based on policy evaluations.
+You'll probably want to use the `opaAuthzMiddleware` in your express routes to protect your API endpoints instead of using the `OpaAuthzClient` directly.
 
 ```typescript
 import express from 'express';
@@ -68,14 +68,14 @@ import {
 import { Config } from '@backstage/config';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
-export type someRouteOptions = {
+export type someRoutesOptions = {
   logger: LoggerService;
   config: Config;
   // more options...
 };
 
-export const someRoute = (
-  options: someRouteOptions,
+export const someRoutes = (
+  options: someRoutesOptions,
 ): express.Router => {
   const { logger, config } = options;
   const router = express.Router();
@@ -90,7 +90,7 @@ export const someRoute = (
   const policyInput = { user: 'alice', action: 'read', resource: 'document' };
 
   // Set the middleware
-  router.use(opaAuthzMiddleware(opaAuthzClient, entryPoint, input));
+  router.use(opaAuthzMiddleware(opaAuthzClient, entryPoint, policyInput));
 
   // Define the route
   router.get('/some-route', middleware, (req, res) => {

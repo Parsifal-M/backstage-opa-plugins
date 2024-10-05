@@ -1,3 +1,3 @@
-export * from './components';
-export * from './hooks';
+export * from './components/OpaAuthzComponent';
+export * from './hooks/useOpaAuthz';
 export * from './api';

@@ -1,1 +1,1 @@
-export { RequireOpaAuthz } from './OpaAuthzComponent';
+export { RequireOpaAuthz } from './RequireOpaAuthz';

@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { PolicyInput } from '../../api/types';
-import { useOpaAuthz } from '../../hooks';
+import { useOpaAuthz } from '../../hooks/useOpaAuthz/useOpaAuthz';
 
-interface OpaAuthzComponentProps {
+interface RequireOpaAuthzProps {
   input: PolicyInput;
   entryPoint: string;
   errorPage?: ReactNode;
@@ -10,7 +10,7 @@ interface OpaAuthzComponentProps {
 }
 
 export function RequireOpaAuthz(
-  props: Readonly<OpaAuthzComponentProps>,
+  props: Readonly<RequireOpaAuthzProps>,
 ): React.JSX.Element | null {
   const { input, entryPoint } = props;
 
