@@ -4,7 +4,7 @@ import useSWR from 'swr';
 
 export type AsyncOpaAuthzResult = {
   loading: boolean;
-  allow: PolicyResult | null;
+  data: PolicyResult | null;
   error?: Error;
 };
 
@@ -17,12 +17,12 @@ export function useOpaAuthz(input: PolicyInput, entryPoint: string): AsyncOpaAut
   });
   
   if (error) {
-    return { error, loading: false, allow: null };
+    return { error, loading: false, data: null };
   }
 
   if (!data) {
-    return { loading: true, allow: null };
+    return { loading: true, data: null };
   }
 
-  return { loading: false, allow: data };
+  return { loading: false, data: data };
 }

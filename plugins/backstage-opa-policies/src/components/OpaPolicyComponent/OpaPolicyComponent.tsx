@@ -8,7 +8,6 @@ import {
 import { opaPolicyBackendApiRef, OpaPolicy } from '../../api/types';
 import { useApi, alertApiRef } from '@backstage/core-plugin-api';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { RequireOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
 
 export const OpaPolicyPage = () => {
   const [policy, setPolicy] = useState<OpaPolicy | null>(null);
@@ -44,7 +43,6 @@ export const OpaPolicyPage = () => {
   }
 
   return (
-    <RequireOpaAuthz input={{ action: 'read-policy' }} entryPoint="authz">
       <Content>
         <InfoCard
           title={`${entity.metadata.name} OPA Policy`}
@@ -59,6 +57,5 @@ export const OpaPolicyPage = () => {
           />
         </InfoCard>
       </Content>
-    </RequireOpaAuthz>
   );
 };

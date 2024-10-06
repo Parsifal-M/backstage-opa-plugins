@@ -14,10 +14,10 @@ export function RequireOpaAuthz(
 ): React.JSX.Element | null {
   const { input, entryPoint } = props;
 
-  const { loading, allow, error } = useOpaAuthz(input, entryPoint);
+  const { loading, data, error } = useOpaAuthz(input, entryPoint);
 
-  // Hide children elements if loading, error, or allow is not explicitly true
-  if (loading || error || !allow || !allow.result || !allow.result.allow) {
+
+  if (loading ?? error ?? !data?.result.allow) {
     return null;
   }
 

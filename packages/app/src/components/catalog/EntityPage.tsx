@@ -63,7 +63,6 @@ import {
   OpaPolicyPage,
   isOpaPoliciesEnabled,
 } from '@parsifal-m/plugin-opa-policies';
-import { RequireOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
 
 const techdocsContent = (
   <EntityTechdocsContent>

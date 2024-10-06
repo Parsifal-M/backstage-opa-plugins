@@ -38,7 +38,7 @@ export const opaAuthzMiddleware = (
       if (opaResponse.result.allow) {
         next();
       } else {
-        res.status(403).json({ error: 'Forbidden' } || { customErrorMessage });
+        res.status(403).json({ error: customErrorMessage ?? 'Forbidden' });
       }
     } catch (error) {
       res.status(500).json({ error: 'Internal Server Error' });
