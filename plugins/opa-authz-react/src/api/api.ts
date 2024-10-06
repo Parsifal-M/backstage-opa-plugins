@@ -3,7 +3,7 @@ import { OpaAuthzApi, PolicyInput, PolicyResult } from "./types";
 
 
 export class OpaAuthzClientReact implements OpaAuthzApi {
-  private readonly fetchApi: FetchApi;
+  private fetchApi: FetchApi;
   constructor(options: { fetchApi: FetchApi }) {
     this.fetchApi = options.fetchApi;
   }
