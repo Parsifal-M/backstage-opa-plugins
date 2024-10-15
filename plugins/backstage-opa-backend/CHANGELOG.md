@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.7
+
+### Patch Changes
+
+- 9f7ddea: Core Backstage Version Bumps
+
 ## 1.4.6
 
 ### Patch Changes
