@@ -43,6 +43,10 @@ This project is a part of the broader Backstage and Open Policy Agent ecosystems
 
 Your contributions can make this plugin even better. Fork the repository, make your changes, and submit a PR! If you have questions or ideas, reach out on [Mastodon](https://hachyderm.io/@parcifal).
 
+## Ecosystem
+
+- [PlaTT Policy Template](https://github.com/ap-communications/platt-policy-template) contains policy templates that will work with the [plugin-permission-backend-module-opa-wrapper](./plugins/permission-backend-module-opa-wrapper/README.md) plugin!
+
 ## License
 
 Licensed under the Apache 2.0 License.
