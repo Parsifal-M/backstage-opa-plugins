@@ -12,8 +12,6 @@ export function authzRouter(config: Config, logger: LoggerService): Router {
 
     logger.error(`OPA Backend received request with input: ${JSON.stringify(input)} and entryPoint: ${entryPoint}`);
 
-    console.log(`OPA Backend received request with input: ${JSON.stringify(input)} and entryPoint: ${entryPoint}`);
-
     if (!input || !entryPoint) {
       res.status(400).json({ error: 'Missing input or entryPoint in request body' });
       return;

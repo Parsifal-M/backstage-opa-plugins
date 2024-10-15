@@ -18,7 +18,11 @@ export class OpaAuthzClient {
    * @param logger - A logger instance used for logging.
    */
   constructor(config: Config, logger: LoggerService) {
-    this.baseUrl = config.getString('opaClient.baseUrl');
+    this.baseUrl = config.getOptionalString('opaClient.baseUrl') || '';
+    if (!this.baseUrl) {
+      logger.error('The OPA URL is not set in the app-config!');
+      throw new Error('The OPA URL is not set in the app-config!');
+    }
     this.logger = logger;
   }
 
@@ -34,14 +38,7 @@ export class OpaAuthzClient {
     input: PolicyInput,
     entryPoint: string,
   ): Promise<PolicyResult> {
-    const setEntryPoint = entryPoint;
-    const baseUrl = this.baseUrl;
-    const url = `${baseUrl}/v1/data/${setEntryPoint}`;
-
-    if (!baseUrl) {
-      this.logger.error('The OPA URL is not set in the app-config!');
-      throw new Error('The OPA URL is not set in the app-config!');
-    }
+    const url = `${this.baseUrl}/v1/data/${entryPoint}`;
 
     this.logger.debug(
       `OpaAuthzClient sending data to OPA: ${JSON.stringify(input)}`,

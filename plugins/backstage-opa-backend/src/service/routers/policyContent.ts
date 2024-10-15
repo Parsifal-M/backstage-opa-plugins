@@ -25,13 +25,19 @@ export const policyCheckerRouter = (
   const opaAuthzClient = new OpaAuthzClient(config, logger);
 
   const entryPoint = 'authz';
-  const input = {
-    user: 'user1',
-  };
+  const setInput = (req: express.Request) => {
+    return {
+      method: req.method,
+      path: req.path,
+      permission: { name: 'read' },
+      user: 'testUser',
+      dateTime: new Date().toISOString(),
+    };
+  }
 
   const router = express.Router();
 
-  router.get('/get-policy', async (req, res, next) => {
+  router.get('/get-policy', opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput, logger), async (req, res, next) => {
     const opaPolicy = req.query.opaPolicy as string;
 
     if (!opaPolicy) {

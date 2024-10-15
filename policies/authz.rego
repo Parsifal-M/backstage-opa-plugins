@@ -11,9 +11,5 @@ default allow := false
 
 # Deny requests to the /info route
 allow if {
-	input.action == "read-policy"
-}
-
-allow if {
-    input.user == "user:default/parsifal-m"
+	input.method == "GET"
 }

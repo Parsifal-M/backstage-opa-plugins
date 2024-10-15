@@ -4,27 +4,49 @@ import { LoggerService } from '@backstage/backend-plugin-api';
 import { OpaAuthzClient } from '../api';
 
 /**
- * Middleware function for authorization using Open Policy Agent (OPA).
+ * Middleware function for handling authorization using OPA (Open Policy Agent).
  *
- * This middleware function evaluates a policy using OPA and determines whether
- * the request should be allowed or denied based on the policy evaluation result.
+ * @param opaClient - An instance of OpaAuthzClient used to evaluate policies.
+ * @param entryPoint - The entry point for the OPA policy evaluation.
+ * @param setInput - A function that sets the policy input based on the request.
+ * @param logger - (Optional) An instance of LoggerService for logging debug information.
+ * @param customErrorMessage - (Optional) Custom error message to return when access is forbidden.
  *
- * @param opaClient - An instance of the OPA client used to evaluate the policy.
- * @param entryPoint - The entry point (path) for the policy evaluation within OPA.
- * @param input - The input data provided to the policy for evaluation.
- * @param logger - An optional logger service for logging debug information.
- * @param customErrorMessage - An optional custom error message to return when access is forbidden.
- * @returns A middleware function that handles the authorization process.
+ * @returns An Express middleware function that evaluates the policy and either allows the request to proceed or responds with an error.
+ *
+ * @example
+ * 
+ * // Create an instance of OpaAuthzClient
+ * const opaAuthzClient = new OpaAuthzClient(config, logger);
+ * 
+ * // Set an entry point for the OPA policy
+ * const entryPoint = 'authz';
+ *
+ * // Construct your policy input
+ * const setInput = (req: Request): PolicyInput => {
+ *   return {
+ *     method: req.method,
+ *     path: req.path,
+ *     headers: req.headers,
+ *     someFoo: 'bar',
+ *   };
+ * };
+ *
+ * router.get('/some-url', opaAuthzMiddleware(opaClient, entryPoint, setInput, logger), async (req, res, next) => {
+ *   // Route handler logic
+ * });
  *
  */
+
 export const opaAuthzMiddleware = (
   opaClient: OpaAuthzClient,
   entryPoint: string,
-  input: PolicyInput,
+  setInput: (req: Request) => PolicyInput,
   logger?: LoggerService,
   customErrorMessage?: string,
 ) => {
-  return async (_: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const input = setInput(req);
     try {
       if (logger) {
         logger.debug(
@@ -40,7 +62,12 @@ export const opaAuthzMiddleware = (
       } else {
         res.status(403).json({ error: customErrorMessage ?? 'Forbidden' });
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      if (logger) {
+        logger.error(
+          `An error occurred while sending the policy input to the OPA server: ${error}`,
+        );
+      }
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };

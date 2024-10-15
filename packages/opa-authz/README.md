@@ -20,6 +20,7 @@ This library is a more generic way to interact with OPA, and can be used in any 
 ### Using the OpaAuthzClient
 
 The `OpaAuthzClient` allows you to interact with an Open Policy Agent (OPA) server to evaluate policies against given inputs.
+
 You are pretty much free to use this in any way you like in your Backstage Backend.
 
 ```typescript
@@ -83,17 +84,22 @@ export const someRoutes = (
   // Instantiate the OpaAuthzClient
   const opaAuthzClient = new OpaAuthzClient(config, logger);
 
-  // Define the policy input and entry point
-  const entryPoint = 'example/allow';
+  // Define the entry point
+  const entryPoint = 'authz';
 
-  // Define some input for the policy
-  const policyInput = { user: 'alice', action: 'read', resource: 'document' };
-
-  // Set the middleware
-  router.use(opaAuthzMiddleware(opaAuthzClient, entryPoint, policyInput));
+  // Define the input
+  const setInput = (req: express.Request) => {
+    return {
+      method: req.method,
+      path: req.path,
+      permission: { name: 'read' },
+      someFoo: 'bar',
+      dateTime: new Date().toISOString(),
+    };
+  }
 
   // Define the route
-  router.get('/some-route', middleware, (req, res) => {
+  router.get('/some-route', opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput, logger), (req, res) => {
     res.send('Hello, World!');
   });
 
