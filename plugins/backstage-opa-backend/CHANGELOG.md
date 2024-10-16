@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.8
+
+### Patch Changes
+
+- def1136: Removes all dependencies on the backend common deprecated Backstage package. And updates them to the new packages.
+
 ## 1.4.7
 
 ### Patch Changes
