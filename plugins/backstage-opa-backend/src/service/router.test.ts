@@ -1,16 +1,17 @@
-import { getVoidLogger, UrlReader } from '@backstage/backend-common';
+import { getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
 import { createRouter } from './router';
 import { ConfigReader } from '@backstage/config';
 import fetch from 'node-fetch';
 import { mockServices } from '@backstage/backend-test-utils';
+import { UrlReaderService } from '@backstage/backend-plugin-api';
 
 jest.mock('node-fetch');
 
 const { Response: FetchResponse } = jest.requireActual('node-fetch');
 
-const mockUrlReader: UrlReader = {
+const mockUrlReader: UrlReaderService = {
   readUrl: url =>
     Promise.resolve({
       buffer: async () => Buffer.from(url),
