@@ -1,16 +1,16 @@
-import { getVoidLogger, UrlReader } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
 import { createRouter } from './router';
 import { ConfigReader } from '@backstage/config';
 import fetch from 'node-fetch';
 import { mockServices } from '@backstage/backend-test-utils';
+import { UrlReaderService } from '@backstage/backend-plugin-api';
 
 jest.mock('node-fetch');
 
 const { Response: FetchResponse } = jest.requireActual('node-fetch');
 
-const mockUrlReader: UrlReader = {
+const mockUrlReader: UrlReaderService = {
   readUrl: url =>
     Promise.resolve({
       buffer: async () => Buffer.from(url),
@@ -37,7 +37,7 @@ describe('createRouter', () => {
 
   beforeAll(async () => {
     const router = await createRouter({
-      logger: getVoidLogger(),
+      logger: mockServices.logger.mock(),
       config: config,
       discovery: mockServices.discovery(),
       urlReader: mockUrlReader,
@@ -143,7 +143,7 @@ describe('createRouter', () => {
 
     it('returns 500 if OPA URL is not set', async () => {
       const router = await createRouter({
-        logger: getVoidLogger(),
+        logger: mockServices.logger.mock(),
         config: new ConfigReader({
           opaClient: {
             baseUrl: undefined,
@@ -170,7 +170,7 @@ describe('createRouter', () => {
 
     it('complains if no entrypoint is set', async () => {
       const router = await createRouter({
-        logger: getVoidLogger(),
+        logger: mockServices.logger.mock(),
         config: new ConfigReader({
           opaClient: {
             baseUrl: 'http://localhost',

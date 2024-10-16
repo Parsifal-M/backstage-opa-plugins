@@ -7,11 +7,11 @@ import {
   LoggerService,
   UrlReaderService,
 } from '@backstage/backend-plugin-api';
-import { Config } from '@backstage/config';
-import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { entityCheckerRouter } from './routers/entityChecker';
 import { policyCheckerRouter } from './routers/policyContent';
 import { authzRouter } from './routers/authz';
+import { Config } from '@backstage/config';
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 
 export type RouterOptions = {
   logger: LoggerService;

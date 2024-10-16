@@ -10267,7 +10267,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend"
   dependencies:
-    "@backstage/backend-common": ^0.25.0
+    "@backstage/backend-defaults": ^0.5.1
     "@backstage/backend-plugin-api": ^1.0.1
     "@backstage/backend-test-utils": ^1.0.1
     "@backstage/cli": ^0.28.0
@@ -10347,7 +10347,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper"
   dependencies:
-    "@backstage/backend-common": ^0.25.0
     "@backstage/backend-plugin-api": ^1.0.1
     "@backstage/backend-test-utils": ^1.0.1
     "@backstage/cli": ^0.28.0
@@ -16142,7 +16141,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backend@workspace:packages/backend"
   dependencies:
-    "@backstage/backend-common": ^0.25.0
     "@backstage/backend-defaults": ^0.5.1
     "@backstage/backend-plugin-api": ^1.0.1
     "@backstage/backend-tasks": ^0.6.1
