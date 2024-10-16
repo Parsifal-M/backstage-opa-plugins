@@ -1,4 +1,3 @@
-import { getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
 import { createRouter } from './router';
@@ -38,7 +37,7 @@ describe('createRouter', () => {
 
   beforeAll(async () => {
     const router = await createRouter({
-      logger: getVoidLogger(),
+      logger: mockServices.logger.mock(),
       config: config,
       discovery: mockServices.discovery(),
       urlReader: mockUrlReader,
@@ -144,7 +143,7 @@ describe('createRouter', () => {
 
     it('returns 500 if OPA URL is not set', async () => {
       const router = await createRouter({
-        logger: getVoidLogger(),
+        logger: mockServices.logger.mock(),
         config: new ConfigReader({
           opaClient: {
             baseUrl: undefined,
@@ -171,7 +170,7 @@ describe('createRouter', () => {
 
     it('complains if no entrypoint is set', async () => {
       const router = await createRouter({
-        logger: getVoidLogger(),
+        logger: mockServices.logger.mock(),
         config: new ConfigReader({
           opaClient: {
             baseUrl: 'http://localhost',
