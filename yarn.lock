@@ -9433,6 +9433,7 @@ __metadata:
   resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend"
   dependencies:
     "@backstage/backend-common": ^0.25.0
+    "@backstage/backend-defaults": ^0.5.1
     "@backstage/backend-plugin-api": ^1.0.1
     "@backstage/backend-test-utils": ^1.0.1
     "@backstage/cli": ^0.28.0
