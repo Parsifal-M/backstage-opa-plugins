@@ -8,9 +8,9 @@ import {
   UrlReaderService,
 } from '@backstage/backend-plugin-api';
 import fetch from 'node-fetch';
-import { errorHandler } from '@backstage/backend-common';
 import { Config } from '@backstage/config';
 import { readPolicyFile } from '../lib/read';
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 
 export type RouterOptions = {
   logger: LoggerService;
@@ -106,6 +106,8 @@ export async function createRouter(
     }
   });
 
-  router.use(errorHandler());
+  const middleware = MiddlewareFactory.create({ logger, config });
+
+  router.use(middleware.error());
   return router;
 }

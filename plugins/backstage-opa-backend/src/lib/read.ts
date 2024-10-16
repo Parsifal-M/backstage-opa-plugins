@@ -1,8 +1,8 @@
-import { UrlReader } from '@backstage/backend-common';
+import { UrlReaderService } from '@backstage/backend-plugin-api';
 import { NotFoundError } from '@backstage/errors';
 
 export async function readPolicyFile(
-  reader: UrlReader,
+  reader: UrlReaderService,
   policyFilePath: string,
 ): Promise<string | undefined> {
   const url = `${policyFilePath}`;
