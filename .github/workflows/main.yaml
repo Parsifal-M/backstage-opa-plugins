@@ -35,7 +35,12 @@ jobs:
         run: yarn install --immutable
 
       - name: Run Tests
-        run: yarn test:all
+        run: yarn test:all --coverage
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Lint and Check Formatting
         run: |
