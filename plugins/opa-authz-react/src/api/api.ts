@@ -1,6 +1,5 @@
-import { FetchApi } from "@backstage/core-plugin-api";
-import { OpaAuthzApi, PolicyInput, PolicyResult } from "./types";
-
+import { FetchApi } from '@backstage/core-plugin-api';
+import { OpaAuthzApi, PolicyInput, PolicyResult } from './types';
 
 export class OpaAuthzClientReact implements OpaAuthzApi {
   private readonly fetchApi: FetchApi;
@@ -8,7 +7,10 @@ export class OpaAuthzClientReact implements OpaAuthzApi {
     this.fetchApi = options.fetchApi;
   }
 
-  async evalPolicy(input: PolicyInput, entryPoint: string): Promise<PolicyResult> {
+  async evalPolicy(
+    input: PolicyInput,
+    entryPoint: string,
+  ): Promise<PolicyResult> {
     const url = `plugin://opa/opa-authz`;
 
     const response = await this.fetchApi.fetch(url, {

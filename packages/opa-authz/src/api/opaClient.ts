@@ -18,7 +18,8 @@ export class OpaAuthzClient {
    * @param logger - A logger instance used for logging.
    */
   constructor(logger: LoggerService, config: Config) {
-    this.baseUrl = config.getOptionalString('opaClient.baseUrl') || 'http://localhost:8181';
+    this.baseUrl =
+      config.getOptionalString('opaClient.baseUrl') || 'http://localhost:8181';
     this.logger = logger;
   }
 

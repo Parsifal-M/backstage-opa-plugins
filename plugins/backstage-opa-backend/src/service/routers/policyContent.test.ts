@@ -26,10 +26,14 @@ describe('policyContentRouter', () => {
     it('should return the content of the policy file', async () => {
       (readPolicyFile as jest.Mock).mockResolvedValue('test-policy-content');
 
-      const response = await request(app).get('/get-policy?opaPolicy=test-policy-url');
+      const response = await request(app).get(
+        '/get-policy?opaPolicy=test-policy-url',
+      );
 
       expect(response.status).toBe(200);
-      expect(response.body).toEqual({ opaPolicyContent: 'test-policy-content' });
+      expect(response.body).toEqual({
+        opaPolicyContent: 'test-policy-content',
+      });
     });
   });
 });

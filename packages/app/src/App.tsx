@@ -98,10 +98,7 @@ const routes = (
 
     <Route
       path="/tech-radar"
-      element={
-
-        <TechRadarPage width={1500} height={800} />
-      }
+      element={<TechRadarPage width={1500} height={800} />}
     />
 
     <Route

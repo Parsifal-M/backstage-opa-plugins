@@ -24,7 +24,7 @@ describe('RequireOpaAuthz', () => {
         <RequireOpaAuthz input={mockInput} entryPoint={mockEntryPoint}>
           <div>Protected Content</div>
         </RequireOpaAuthz>
-      </TestApiProvider>
+      </TestApiProvider>,
     );
 
     await waitFor(() => {
@@ -33,14 +33,18 @@ describe('RequireOpaAuthz', () => {
   });
 
   it('renders null when there is an error', async () => {
-    (useOpaAuthz as jest.Mock).mockReturnValue({ loading: false, data: null, error: new Error('Error') });
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: false,
+      data: null,
+      error: new Error('Error'),
+    });
 
     renderInTestApp(
       <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
         <RequireOpaAuthz input={mockInput} entryPoint={mockEntryPoint}>
           <div>Protected Content</div>
         </RequireOpaAuthz>
-      </TestApiProvider>
+      </TestApiProvider>,
     );
 
     await waitFor(() => {
@@ -49,14 +53,17 @@ describe('RequireOpaAuthz', () => {
   });
 
   it('renders null when access is not allowed', async () => {
-    (useOpaAuthz as jest.Mock).mockReturnValue({ loading: false, data: { result: { allow: false } } });
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: false,
+      data: { result: { allow: false } },
+    });
 
     renderInTestApp(
       <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
         <RequireOpaAuthz input={mockInput} entryPoint={mockEntryPoint}>
           <div>Protected Content</div>
         </RequireOpaAuthz>
-      </TestApiProvider>
+      </TestApiProvider>,
     );
 
     await waitFor(() => {
@@ -65,14 +72,17 @@ describe('RequireOpaAuthz', () => {
   });
 
   it('renders children when access is allowed', async () => {
-    (useOpaAuthz as jest.Mock).mockReturnValue({ loading: false, data: { result: { allow: true } } });
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: false,
+      data: { result: { allow: true } },
+    });
 
     renderInTestApp(
       <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
         <RequireOpaAuthz input={mockInput} entryPoint={mockEntryPoint}>
           <div>Protected Content</div>
         </RequireOpaAuthz>
-      </TestApiProvider>
+      </TestApiProvider>,
     );
 
     await waitFor(() => {

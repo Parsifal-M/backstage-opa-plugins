@@ -43,19 +43,19 @@ export const OpaPolicyPage = () => {
   }
 
   return (
-      <Content>
-        <InfoCard
-          title={`${entity.metadata.name} OPA Policy`}
-          data-testid="opa-policy-card"
-        >
-          <CodeSnippet
-            text={policy?.policyContent ?? ''}
-            language="rego"
-            showLineNumbers
-            showCopyCodeButton
-            customStyle={{ background: 'inherit', fontSize: '110%' }}
-          />
-        </InfoCard>
-      </Content>
+    <Content>
+      <InfoCard
+        title={`${entity.metadata.name} OPA Policy`}
+        data-testid="opa-policy-card"
+      >
+        <CodeSnippet
+          text={policy?.policyContent ?? ''}
+          language="rego"
+          showLineNumbers
+          showCopyCodeButton
+          customStyle={{ background: 'inherit', fontSize: '110%' }}
+        />
+      </InfoCard>
+    </Content>
   );
 };

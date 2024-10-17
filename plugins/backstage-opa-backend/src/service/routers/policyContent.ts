@@ -1,14 +1,11 @@
 import express from 'express';
-import {
-  LoggerService,
-  UrlReaderService,
-} from '@backstage/backend-plugin-api';
+import { LoggerService, UrlReaderService } from '@backstage/backend-plugin-api';
 import { readPolicyFile } from '../../lib/read';
 
-
-
-export const policyContentRouter = (logger: LoggerService, urlReader: UrlReaderService): express.Router => {
-
+export const policyContentRouter = (
+  logger: LoggerService,
+  urlReader: UrlReaderService,
+): express.Router => {
   const router = express.Router();
 
   router.get('/get-policy', async (req, res, next) => {

@@ -9,7 +9,10 @@ import {
   createApiFactory,
   fetchApiRef,
 } from '@backstage/core-plugin-api';
-import { opaAuthzBackendApiRef, OpaAuthzClientReact } from '@parsifal-m/backstage-plugin-opa-authz-react';
+import {
+  opaAuthzBackendApiRef,
+  OpaAuthzClientReact,
+} from '@parsifal-m/backstage-plugin-opa-authz-react';
 
 export const apis: AnyApiFactory[] = [
   createApiFactory({

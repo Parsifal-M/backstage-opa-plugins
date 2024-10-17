@@ -51,7 +51,10 @@ import React from 'react';
 import { useOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
 
 const MyComponent = () => {
-  const { loading, data, error } = useOpaAuthz({ action: 'read-policy' }, 'authz');
+  const { loading, data, error } = useOpaAuthz(
+    { action: 'read-policy' },
+    'authz',
+  );
 
   if (loading) {
     return <div>Loading...</div>;

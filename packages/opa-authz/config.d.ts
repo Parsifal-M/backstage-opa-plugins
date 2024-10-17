@@ -8,6 +8,5 @@ export interface Config {
      * This is used across all the OPA plugins.
      */
     baseUrl?: string;
-
   };
 }

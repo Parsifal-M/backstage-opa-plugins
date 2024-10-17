@@ -3,11 +3,15 @@ import fetch from 'node-fetch';
 import { LoggerService } from '@backstage/backend-plugin-api';
 import { Config } from '@backstage/config';
 
-export const entityCheckerRouter = (logger: LoggerService, config: Config): express.Router => {
+export const entityCheckerRouter = (
+  logger: LoggerService,
+  config: Config,
+): express.Router => {
   const router = express.Router();
 
   // Get the config options for the OPA plugin
-  const opaBaseUrl = config.getOptionalString('opaClient.baseUrl') || 'http://localhost:8181';
+  const opaBaseUrl =
+    config.getOptionalString('opaClient.baseUrl') || 'http://localhost:8181';
 
   // This is the Entity Checker package
   const entityCheckerEntrypoint = config.getOptionalString(

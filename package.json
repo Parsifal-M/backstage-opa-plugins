@@ -63,8 +63,8 @@
       "prettier:check"
     ]
   },
-  "jest":{
-    "coveragePathIgnorePatterns" : [
+  "jest": {
+    "coveragePathIgnorePatterns": [
       "packages/app",
       "packages/backend"
     ]

@@ -44,7 +44,8 @@ const policyInput = { user: 'alice', action: 'read', resource: 'document' };
 const entryPoint = 'example/allow';
 
 // Evaluate the policy
-opaClient.evaluatePolicy(policyInput, entryPoint)
+opaClient
+  .evaluatePolicy(policyInput, entryPoint)
   .then(result => {
     console.log('Policy evaluation result:', result);
   })
@@ -75,9 +76,7 @@ export type someRoutesOptions = {
   // more options...
 };
 
-export const someRoutes = (
-  options: someRoutesOptions,
-): express.Router => {
+export const someRoutes = (options: someRoutesOptions): express.Router => {
   const { logger, config } = options;
   const router = express.Router();
 
@@ -96,12 +95,16 @@ export const someRoutes = (
       someFoo: 'bar',
       dateTime: new Date().toISOString(),
     };
-  }
+  };
 
   // Define the route
-  router.get('/some-route', opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput, logger), (req, res) => {
-    res.send('Hello, World!');
-  });
+  router.get(
+    '/some-route',
+    opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput, logger),
+    (req, res) => {
+      res.send('Hello, World!');
+    },
+  );
 
   return router;
 };

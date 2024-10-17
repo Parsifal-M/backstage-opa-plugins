@@ -17,7 +17,7 @@ describe('OpaAuthzClient', () => {
   const mockLogger = mockServices.logger.mock();
 
   beforeAll(() => {
-    opaAuthzClient = new OpaAuthzClient(mockLogger, config );
+    opaAuthzClient = new OpaAuthzClient(mockLogger, config);
   });
 
   it('should evaluate policy correctly', async () => {

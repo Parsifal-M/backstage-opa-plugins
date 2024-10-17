@@ -20,7 +20,10 @@ describe('authzRouter', () => {
     });
 
     const mockLogger = mockServices.logger.mock();
-    mockOpaAuthzClient = new OpaAuthzClient(mockLogger, mockConfig) as jest.Mocked<OpaAuthzClient>;
+    mockOpaAuthzClient = new OpaAuthzClient(
+      mockLogger,
+      mockConfig,
+    ) as jest.Mocked<OpaAuthzClient>;
     (OpaAuthzClient as jest.Mock).mockImplementation(() => mockOpaAuthzClient);
 
     const router = authzRouter(mockLogger, mockConfig);
@@ -36,11 +39,16 @@ describe('authzRouter', () => {
       const res = await request(app).post('/opa-authz').send({});
 
       expect(res.status).toEqual(400);
-      expect(res.body).toEqual({ error: 'Missing input or entryPoint in request body' });
+      expect(res.body).toEqual({
+        error: 'Missing input or entryPoint in request body',
+      });
     });
 
     it('returns the policy evaluation result', async () => {
-      const mockResult = { decision_id: 'test-decision-id', result: { allow: true } };
+      const mockResult = {
+        decision_id: 'test-decision-id',
+        result: { allow: true },
+      };
       mockOpaAuthzClient.evaluatePolicy.mockResolvedValueOnce(mockResult);
 
       const res = await request(app)
@@ -49,11 +57,16 @@ describe('authzRouter', () => {
 
       expect(res.status).toEqual(200);
       expect(res.body).toEqual(mockResult);
-      expect(mockOpaAuthzClient.evaluatePolicy).toHaveBeenCalledWith({ user: 'testUser' }, 'testEntryPoint');
+      expect(mockOpaAuthzClient.evaluatePolicy).toHaveBeenCalledWith(
+        { user: 'testUser' },
+        'testEntryPoint',
+      );
     });
 
     it('returns 500 if an error occurs during policy evaluation', async () => {
-      mockOpaAuthzClient.evaluatePolicy.mockRejectedValueOnce(new Error('OPA Error'));
+      mockOpaAuthzClient.evaluatePolicy.mockRejectedValueOnce(
+        new Error('OPA Error'),
+      );
 
       const res = await request(app)
         .post('/opa-authz')
@@ -61,7 +74,10 @@ describe('authzRouter', () => {
 
       expect(res.status).toEqual(500);
       expect(res.body).toEqual({ error: 'Error evaluating policy' });
-      expect(mockOpaAuthzClient.evaluatePolicy).toHaveBeenCalledWith({ user: 'testUser' }, 'testEntryPoint');
+      expect(mockOpaAuthzClient.evaluatePolicy).toHaveBeenCalledWith(
+        { user: 'testUser' },
+        'testEntryPoint',
+      );
     });
   });
 });

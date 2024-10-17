@@ -3,18 +3,23 @@ import { Config } from '@backstage/config';
 import { LoggerService } from '@backstage/backend-plugin-api';
 import { OpaAuthzClient } from '@parsifal-m/backstage-opa-authz';
 
-export function authzRouter(logger: LoggerService, config: Config, ): Router {
-
+export function authzRouter(logger: LoggerService, config: Config): Router {
   const router = Router();
   const opaClient = new OpaAuthzClient(logger, config);
 
   router.post('/opa-authz', async (req, res) => {
     const { input, entryPoint } = req.body;
 
-    logger.error(`OPA Backend received request with input: ${JSON.stringify(input)} and entryPoint: ${entryPoint}`);
+    logger.error(
+      `OPA Backend received request with input: ${JSON.stringify(
+        input,
+      )} and entryPoint: ${entryPoint}`,
+    );
 
     if (!input || !entryPoint) {
-      res.status(400).json({ error: 'Missing input or entryPoint in request body' });
+      res
+        .status(400)
+        .json({ error: 'Missing input or entryPoint in request body' });
     }
 
     try {

@@ -15,10 +15,10 @@ import { OpaAuthzClient } from '../api';
  * @returns An Express middleware function that evaluates the policy and either allows the request to proceed or responds with an error.
  *
  * @example
- * 
+ *
  * // Create an instance of OpaAuthzClient
  * const opaAuthzClient = new OpaAuthzClient(config, logger);
- * 
+ *
  * // Set an entry point for the OPA policy
  * const entryPoint = 'authz';
  *
