@@ -16,8 +16,7 @@ export function RequireOpaAuthz(
 
   const { loading, data, error } = useOpaAuthz(input, entryPoint);
 
-
-  if (loading ?? error ?? !data?.result.allow) {
+  if (loading || error || !data?.result.allow) {
     return null;
   }
 
