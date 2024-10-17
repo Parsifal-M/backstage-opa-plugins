@@ -9,10 +9,5 @@ export interface Config {
      */
     baseUrl?: string;
 
-    /**
-     * A flag to enable or disable the middleware in backend plugin routes, this is only for the opa-authz plugin! 
-     * The OPA Permissions Wrapper plugin does not use any middleware.
-     */
-    useMiddleware?: boolean;
   };
 }

@@ -3,9 +3,10 @@ import { Config } from '@backstage/config';
 import { LoggerService } from '@backstage/backend-plugin-api';
 import { OpaAuthzClient } from '@parsifal-m/backstage-opa-authz';
 
-export function authzRouter(config: Config, logger: LoggerService): Router {
+export function authzRouter(logger: LoggerService, config: Config, ): Router {
+
   const router = Router();
-  const opaClient = new OpaAuthzClient(config, logger);
+  const opaClient = new OpaAuthzClient(logger, config);
 
   router.post('/opa-authz', async (req, res) => {
     const { input, entryPoint } = req.body;

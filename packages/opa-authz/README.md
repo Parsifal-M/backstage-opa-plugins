@@ -27,7 +27,7 @@ You are pretty much free to use this in any way you like in your Backstage Backe
 import express from 'express';
 import { Config } from '@backstage/config';
 import { LoggerService } from '@backstage/backend-plugin-api';
-import { OpaAuthzClient } from './path-to-your-client';
+import { OpaAuthzClient } from '@parsifal-m/backstage-opa-authz';
 
 export type someRouteOptions = {
   logger: LoggerService;
@@ -106,3 +106,11 @@ export const someRoutes = (
   return router;
 };
 ```
+
+## Contributing
+
+I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal)
+
+## License
+
+This project is released under the Apache 2.0 License.

@@ -1,43 +1,17 @@
 import express from 'express';
 import {
-  HttpAuthService,
   LoggerService,
   UrlReaderService,
 } from '@backstage/backend-plugin-api';
-import { Config } from '@backstage/config';
 import { readPolicyFile } from '../../lib/read';
-import {
-  OpaAuthzClient,
-  opaAuthzMiddleware,
-} from '@parsifal-m/backstage-opa-authz';
 
-export type PolicyCheckerRouterOptions = {
-  logger: LoggerService;
-  config: Config;
-  urlReader: UrlReaderService;
-  httpAuth: HttpAuthService;
-};
 
-export const policyCheckerRouter = (
-  options: PolicyCheckerRouterOptions,
-): express.Router => {
-  const { logger, config, urlReader } = options;
-  const opaAuthzClient = new OpaAuthzClient(config, logger);
 
-  const entryPoint = 'authz';
-  const setInput = (req: express.Request) => {
-    return {
-      method: req.method,
-      path: req.path,
-      permission: { name: 'read' },
-      user: 'testUser',
-      dateTime: new Date().toISOString(),
-    };
-  }
+export const policyCheckerRouter = (logger: LoggerService, urlReader: UrlReaderService): express.Router => {
 
   const router = express.Router();
 
-  router.get('/get-policy', opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput, logger), async (req, res, next) => {
+  router.get('/get-policy', async (req, res, next) => {
     const opaPolicy = req.query.opaPolicy as string;
 
     if (!opaPolicy) {

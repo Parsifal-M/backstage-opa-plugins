@@ -17,8 +17,8 @@ export class OpaAuthzClient {
    * @param config - The backend configuration object.
    * @param logger - A logger instance used for logging.
    */
-  constructor(config: Config, logger: LoggerService) {
-    this.baseUrl = config.getOptionalString('opaClient.baseUrl') || '';
+  constructor(logger: LoggerService, config: Config) {
+    this.baseUrl = config.getOptionalString('opaClient.baseUrl') ?? '';
     if (!this.baseUrl) {
       logger.error('The OPA URL is not set in the app-config!');
       throw new Error('The OPA URL is not set in the app-config!');

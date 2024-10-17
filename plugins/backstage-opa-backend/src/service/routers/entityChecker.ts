@@ -1,16 +1,9 @@
 import express from 'express';
 import fetch from 'node-fetch';
-import { LoggerService, UrlReaderService } from '@backstage/backend-plugin-api';
+import { LoggerService } from '@backstage/backend-plugin-api';
 import { Config } from '@backstage/config';
 
-export type EntityCheckerRouterOptions = {
-  logger: LoggerService;
-  config: Config;
-  urlReader: UrlReaderService;
-};
-
-export const entityCheckerRouter = (options: EntityCheckerRouterOptions): express.Router => {
-  const { logger, config } = options;
+export const entityCheckerRouter = (logger: LoggerService, config: Config): express.Router => {
   const router = express.Router();
 
   // Get the config options for the OPA plugin
@@ -26,19 +19,16 @@ export const entityCheckerRouter = (options: EntityCheckerRouterOptions): expres
 
     if (!opaBaseUrl) {
       logger.error('OPA URL not set or missing!');
-      throw new Error('OPA URL not set or missing!');
     }
 
     const opaUrl = `${opaBaseUrl}/v1/data/${entityCheckerEntrypoint}`;
 
     if (!entityCheckerEntrypoint) {
       logger.error('OPA package not set or missing!');
-      throw new Error('OPA package not set or missing!');
     }
 
     if (!entityMetadata) {
       logger.error('Entity metadata is missing!');
-      throw new Error('Entity metadata is missing!');
     }
 
     try {
