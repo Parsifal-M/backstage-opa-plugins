@@ -27,7 +27,7 @@ export class OpaClient {
     this.opaEntryPoint = config.getOptionalString(
       'opaClient.policies.permissions.entrypoint',
     );
-    this.opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
+    this.opaBaseUrl = config.getString('opaClient.baseUrl');
 
     this.logger = logger;
 

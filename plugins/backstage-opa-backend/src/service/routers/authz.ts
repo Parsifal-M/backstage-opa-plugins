@@ -15,7 +15,6 @@ export function authzRouter(logger: LoggerService, config: Config, ): Router {
 
     if (!input || !entryPoint) {
       res.status(400).json({ error: 'Missing input or entryPoint in request body' });
-      return;
     }
 
     try {

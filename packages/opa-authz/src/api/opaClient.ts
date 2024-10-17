@@ -18,12 +18,11 @@ export class OpaAuthzClient {
    * @param logger - A logger instance used for logging.
    */
   constructor(logger: LoggerService, config: Config) {
-    this.baseUrl = config.getOptionalString('opaClient.baseUrl') ?? '';
+    this.baseUrl = config.getString('opaClient.baseUrl');
+    this.logger = logger;
     if (!this.baseUrl) {
       logger.error('The OPA URL is not set in the app-config!');
-      throw new Error('The OPA URL is not set in the app-config!');
     }
-    this.logger = logger;
   }
 
   /**

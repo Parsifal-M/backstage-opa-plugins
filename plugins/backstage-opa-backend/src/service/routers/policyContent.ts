@@ -18,11 +18,6 @@ export const policyCheckerRouter = (logger: LoggerService, urlReader: UrlReaderS
       logger.error(
         'No OPA policy provided! Please check the open-policy-agent/policy annotation and provide a URL to the policy file.',
       );
-      return next(
-        new Error(
-          'No OPA policy provided! Please check the open-policy-agent/policy annotation and provide a URL to the policy file.',
-        ),
-      );
     }
 
     try {

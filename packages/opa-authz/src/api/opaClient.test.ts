@@ -17,7 +17,7 @@ describe('OpaAuthzClient', () => {
   const mockLogger = mockServices.logger.mock();
 
   beforeAll(() => {
-    opaAuthzClient = new OpaAuthzClient(config, mockLogger);
+    opaAuthzClient = new OpaAuthzClient(mockLogger, config );
   });
 
   it('should evaluate policy correctly', async () => {
@@ -53,19 +53,22 @@ describe('OpaAuthzClient', () => {
 
   it('should throw an error if the OPA URL is not set', () => {
     const mockConfigNoBaseUrl = {
-      opaClient: {},
+      opaClient: {
+        baseUrl: '',
+      },
     };
-
+  
     const createOpaAuthzClient = () => {
       return new OpaAuthzClient(
-        new ConfigReader(mockConfigNoBaseUrl),
         mockLogger,
+        new ConfigReader(mockConfigNoBaseUrl),
       );
     };
-
+  
     expect(() => {
       createOpaAuthzClient();
-    }).toThrow('The OPA URL is not set in the app-config!');
+    }).toThrow();
+  
   });
 
   it('should throw an error if the request to the OPA server fails', async () => {

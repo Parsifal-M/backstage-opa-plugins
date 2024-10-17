@@ -7,7 +7,7 @@ export const entityCheckerRouter = (logger: LoggerService, config: Config): expr
   const router = express.Router();
 
   // Get the config options for the OPA plugin
-  const opaBaseUrl = config.getOptionalString('opaClient.baseUrl');
+  const opaBaseUrl = config.getString('opaClient.baseUrl');
 
   // This is the Entity Checker package
   const entityCheckerEntrypoint = config.getOptionalString(
@@ -19,6 +19,7 @@ export const entityCheckerRouter = (logger: LoggerService, config: Config): expr
 
     if (!opaBaseUrl) {
       logger.error('OPA URL not set or missing!');
+      throw new Error('OPA URL not set or missing!');
     }
 
     const opaUrl = `${opaBaseUrl}/v1/data/${entityCheckerEntrypoint}`;
