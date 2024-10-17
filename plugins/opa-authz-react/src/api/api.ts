@@ -26,11 +26,7 @@ export class OpaAuthzClientReact implements OpaAuthzApi {
 
       try {
         const responseBody = await response.json();
-        throw new Error(
-          `${message} Details: ${
-            responseBody.error || 'No additional details provided.'
-          }`,
-        );
+        throw new Error(`${message} ${responseBody.error}`);
       } catch (error) {
         throw new Error(message);
       }
