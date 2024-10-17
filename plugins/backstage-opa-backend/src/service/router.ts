@@ -6,7 +6,7 @@ import {
   UrlReaderService,
 } from '@backstage/backend-plugin-api';
 import { entityCheckerRouter } from './routers/entityChecker';
-import { policyCheckerRouter } from './routers/policyContent';
+import { policyContentRouter } from './routers/policyContent';
 import { authzRouter } from './routers/authz';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
@@ -33,7 +33,7 @@ export async function createRouter(
 
   router.use(entityCheckerRouter(logger, config));
   router.use(authzRouter(logger, config));
-  router.use(policyCheckerRouter(logger, urlReader));
+  router.use(policyContentRouter(logger, urlReader));
 
   const middleware = MiddlewareFactory.create({ logger, config });
 

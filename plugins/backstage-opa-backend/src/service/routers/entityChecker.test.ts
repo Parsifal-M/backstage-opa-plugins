@@ -59,31 +59,6 @@ describe('entityCheckerRouter', () => {
       );
     });
 
-    it('should throw an error if OPA URL is not set', async () => {
-      const mockConfigNoUrl = mockServices.rootConfig({
-        data: {
-          opaClient: {
-            policies: {
-              entityChecker: {
-                entrypoint: 'entityCheckerEntrypoint',
-              },
-            },
-          },
-        },
-      });
-
-      const mockLogger = mockServices.logger.mock();
-      const router = entityCheckerRouter(mockLogger, mockConfigNoUrl);
-      const appNoUrl = express().use(express.json()).use(router);
-
-      const res = await request(appNoUrl)
-        .post('/entity-checker')
-        .send({ input: { metadata: 'test' } });
-
-      expect(res.status).toEqual(500);
-      expect(mockLogger.error).toHaveBeenCalledWith('OPA URL not set or missing!');
-    });
-
     it('returns 500 if OPA package is not set', async () => {
       const mockConfigNoPackage = mockServices.rootConfig({
         data: {

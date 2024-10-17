@@ -7,7 +7,7 @@ import { readPolicyFile } from '../../lib/read';
 
 
 
-export const policyCheckerRouter = (logger: LoggerService, urlReader: UrlReaderService): express.Router => {
+export const policyContentRouter = (logger: LoggerService, urlReader: UrlReaderService): express.Router => {
 
   const router = express.Router();
 
@@ -23,9 +23,9 @@ export const policyCheckerRouter = (logger: LoggerService, urlReader: UrlReaderS
     try {
       // Fetch the content of the policy file
       logger.debug(`Fetching policy file from ${opaPolicy}`);
-      const policyContent = await readPolicyFile(urlReader, opaPolicy);
+      const opaPolicyContent = await readPolicyFile(urlReader, opaPolicy);
 
-      return res.json({ policyContent });
+      return res.json({ opaPolicyContent });
     } catch (error) {
       logger.error('An error occurred trying to fetch the policy file:', error);
       return next(error);

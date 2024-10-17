@@ -51,26 +51,6 @@ describe('OpaAuthzClient', () => {
     expect(result).toEqual({ result: 'ALLOW' });
   });
 
-  it('should throw an error if the OPA URL is not set', () => {
-    const mockConfigNoBaseUrl = {
-      opaClient: {
-        baseUrl: '',
-      },
-    };
-  
-    const createOpaAuthzClient = () => {
-      return new OpaAuthzClient(
-        mockLogger,
-        new ConfigReader(mockConfigNoBaseUrl),
-      );
-    };
-  
-    expect(() => {
-      createOpaAuthzClient();
-    }).toThrow();
-  
-  });
-
   it('should throw an error if the request to the OPA server fails', async () => {
     const mockInput = {
       permission: { name: 'read' },
