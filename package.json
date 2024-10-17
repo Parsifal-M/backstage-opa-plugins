@@ -63,5 +63,11 @@
       "prettier:check"
     ]
   },
+  "jest":{
+    "coveragePathIgnorePatterns" : [
+      "packages/app",
+      "packages/backend"
+    ]
+  },
   "packageManager": "yarn@3.6.4"
 }
