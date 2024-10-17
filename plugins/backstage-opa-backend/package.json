@@ -42,12 +42,12 @@
     "@backstage/config": "^1.2.0",
     "@backstage/errors": "^1.2.4",
     "@backstage/integration": "^1.15.1",
+    "@backstage/plugin-catalog-node": "^1.13.1",
     "@parsifal-m/backstage-opa-authz": "workspace:^",
     "@types/express": "^4.17.6",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
     "node-fetch": "^2.6.7",
-    "winston": "^3.2.1",
     "yn": "^4.0.0"
   },
   "devDependencies": {
