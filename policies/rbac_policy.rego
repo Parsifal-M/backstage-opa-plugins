@@ -19,7 +19,7 @@ claims := input.identity.claims
 is_admin if "group:twocodersbrewing/maintainers" in claims
 
 # decision := {"result": "DENY"} if {
-# 	permission == "catalog.entity.read"
+# 	permission == "catalog.entity.create"
 # 	not is_admin
 # }
 

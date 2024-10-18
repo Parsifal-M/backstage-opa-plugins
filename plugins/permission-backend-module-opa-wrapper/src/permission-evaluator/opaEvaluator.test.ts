@@ -20,7 +20,7 @@ describe('policyEvaluator', () => {
       error: jest.fn(),
     } as unknown as LoggerService;
     mockConfig = {
-      getOptionalString: jest.fn().mockImplementation((key: string) => {
+      getString: jest.fn().mockImplementation((key: string) => {
         if (key === 'opaClient.baseUrl') {
           return 'http://localhost:8181';
         }

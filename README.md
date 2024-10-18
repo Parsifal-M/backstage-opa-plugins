@@ -1,5 +1,7 @@
 # Welcome to the OPA Plugins Repository for Backstage
 
+[![codecov](https://codecov.io/gh/Parsifal-M/backstage-opa-plugins/graph/badge.svg?token=IHZGVSXZY7)](https://codecov.io/gh/Parsifal-M/backstage-opa-plugins)
+
 This repository contains a collection of plugins for [Backstage](https://backstage.io) that integrate with [Open Policy Agent](https://www.openpolicyagent.org/).
 
 ## Blogs
@@ -16,6 +18,11 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 - [plugin-permission-backend-module-opa-wrapper](./plugins/permission-backend-module-opa-wrapper/README.md) - An isolated OPA Client and a Policy Evaluator that integrates with the Backstage permissions framework and uses OPA to evaluate policies, making it possible to use OPA for permissions (like RBAC). Does not require the `backstage-opa-backend` plugin!
 - [backstage-opa-entity-checker](./plugins/backstage-opa-entity-checker/README.md) - A frontend plugin that provides a component card that displays if an entity has the expected entity metadata according to an opa policy.
 - [backstage-opa-policies](./plugins/backstage-opa-policies/README.md) - A frontend component designed to be added to entity pages to fetch and display the OPA policy that entity uses based on a URL provided in an annotation in the `catalog-info.yaml` file.
+
+## Beta Plugins
+
+- [backstage-opa-authz](./plugins/opa-authz-react/README.md) - A frontend plugin that allows you to control the visibility of components based on the result of an OPA policy evaluation.
+- [backstage-opa-authz-backend](./packages/opa-authz/README.md) - A Backstage backend plugin that allows you to use OPA for authorization in the Backstage backend allowing you to protect api routes.
 
 ## Policies
 
