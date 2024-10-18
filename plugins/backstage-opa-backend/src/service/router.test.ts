@@ -21,6 +21,8 @@ describe('createRouter', () => {
       logger: mockServices.logger.mock(),
       discovery: mockServices.discovery.mock(),
       urlReader: mockServices.urlReader.mock(),
+      httpAuth: mockServices.httpAuth.mock(),
+      userInfo: mockServices.userInfo.mock(),
     });
     app = express().use(router);
   });

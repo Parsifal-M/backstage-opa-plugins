@@ -36,7 +36,6 @@ export function authzRouter(
     }
 
     try {
-      console.log(`Input is: ${JSON.stringify(inputWithCredentials)}`);
       const result = await opaClient.evaluatePolicy(
         inputWithCredentials,
         entryPoint,

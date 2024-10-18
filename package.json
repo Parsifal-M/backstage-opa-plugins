@@ -68,6 +68,9 @@
       "packages/app",
       "packages/backend",
       "plugins/opa-frontend-demo"
+    ],
+    "testPathIgnorePatterns": [
+      "plugins/opa-frontend-demo"
     ]
   },
   "packageManager": "yarn@3.6.4"

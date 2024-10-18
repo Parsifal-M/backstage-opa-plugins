@@ -3,6 +3,7 @@ import express from 'express';
 import request from 'supertest';
 import { authzRouter } from './authz';
 import { OpaAuthzClient } from '@parsifal-m/backstage-opa-authz';
+import { BackstageCredentials, BackstageUserInfo } from '@backstage/backend-plugin-api';
 
 jest.mock('@parsifal-m/backstage-opa-authz');
 
@@ -20,13 +21,19 @@ describe('authzRouter', () => {
     });
 
     const mockLogger = mockServices.logger.mock();
+    const mockHttpAuth = mockServices.httpAuth.mock();
+    const mockUserInfo = mockServices.userInfo.mock();
+    const mockUserInfoData = { user: 'testUser', email: 'test@example.com' };
+
+    mockUserInfo.getUserInfo.mockResolvedValue(mockUserInfoData as unknown as BackstageUserInfo);
+
     mockOpaAuthzClient = new OpaAuthzClient(
       mockLogger,
       mockConfig,
     ) as jest.Mocked<OpaAuthzClient>;
     (OpaAuthzClient as jest.Mock).mockImplementation(() => mockOpaAuthzClient);
 
-    const router = authzRouter(mockLogger, mockConfig);
+    const router = authzRouter(mockLogger, mockConfig, mockHttpAuth, mockUserInfo);
     app = express().use(express.json()).use(router);
   });
 
@@ -58,7 +65,7 @@ describe('authzRouter', () => {
       expect(res.status).toEqual(200);
       expect(res.body).toEqual(mockResult);
       expect(mockOpaAuthzClient.evaluatePolicy).toHaveBeenCalledWith(
-        { user: 'testUser' },
+        { user: 'testUser', email: 'test@example.com' },
         'testEntryPoint',
       );
     });
@@ -75,7 +82,7 @@ describe('authzRouter', () => {
       expect(res.status).toEqual(500);
       expect(res.body).toEqual({ error: 'Error evaluating policy' });
       expect(mockOpaAuthzClient.evaluatePolicy).toHaveBeenCalledWith(
-        { user: 'testUser' },
+        { user: 'testUser', email: 'test@example.com' },
         'testEntryPoint',
       );
     });
