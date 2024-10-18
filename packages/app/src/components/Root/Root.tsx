@@ -72,7 +72,11 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
         {/* End global nav */}
         <SidebarDivider />
-        <SidebarItem icon={SecurityIcon} to="opa-frontend-demo" text="OPA Demo" />
+        <SidebarItem
+          icon={SecurityIcon}
+          to="opa-frontend-demo"
+          text="OPA Demo"
+        />
         <SidebarScrollWrapper>
           <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
         </SidebarScrollWrapper>

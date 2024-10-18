@@ -20,7 +20,9 @@ describe('useOpaAuthz', () => {
   it('should return the policy result', async () => {
     mockEvalPolicy.mockResolvedValue({ result: { allow: true } });
 
-    const { result } = renderHook(() => useOpaAuthz({ entity: 'test' }, 'test'));
+    const { result } = renderHook(() =>
+      useOpaAuthz({ entity: 'test' }, 'test'),
+    );
 
     await waitFor(() => result.current.data !== null);
 

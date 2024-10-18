@@ -1,9 +1,18 @@
 import { Router } from 'express';
 import { Config } from '@backstage/config';
-import { HttpAuthService, LoggerService, UserInfoService } from '@backstage/backend-plugin-api';
+import {
+  HttpAuthService,
+  LoggerService,
+  UserInfoService,
+} from '@backstage/backend-plugin-api';
 import { OpaAuthzClient } from '@parsifal-m/backstage-opa-authz';
 
-export function authzRouter(logger: LoggerService, config: Config, httpAuth: HttpAuthService, userInfo: UserInfoService): Router {
+export function authzRouter(
+  logger: LoggerService,
+  config: Config,
+  httpAuth: HttpAuthService,
+  userInfo: UserInfoService,
+): Router {
   const router = Router();
   const opaClient = new OpaAuthzClient(logger, config);
 
@@ -28,7 +37,10 @@ export function authzRouter(logger: LoggerService, config: Config, httpAuth: Htt
 
     try {
       console.log(`Input is: ${JSON.stringify(inputWithCredentials)}`);
-      const result = await opaClient.evaluatePolicy(inputWithCredentials, entryPoint);
+      const result = await opaClient.evaluatePolicy(
+        inputWithCredentials,
+        entryPoint,
+      );
       res.json(result);
     } catch (error) {
       logger.error(`Error evaluating policy: ${error}`);
