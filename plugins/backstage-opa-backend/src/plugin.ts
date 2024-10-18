@@ -18,26 +18,25 @@ export const opaPlugin = createBackendPlugin({
         auth: coreServices.auth,
         httpAuth: coreServices.httpAuth,
         urlReader: coreServices.urlReader,
+        userInfo: coreServices.userInfo,
       },
       async init({
-        catalogApi,
         config,
         logger,
         httpRouter,
-        auth,
         httpAuth,
         discovery,
         urlReader,
+        userInfo,
       }) {
         httpRouter.use(
           await createRouter({
-            catalogApi,
             config,
             logger,
-            auth,
             httpAuth,
             discovery,
             urlReader,
+            userInfo,
           }),
         );
 

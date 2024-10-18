@@ -38,6 +38,7 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
+import { OpaFrontendDemoPage } from '@internal/backstage-plugin-opa-frontend-demo';
 
 const app = createApp({
   components: {
@@ -114,6 +115,7 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/opa-frontend-demo" element={<OpaFrontendDemoPage />} />
   </FlatRoutes>
 );
 

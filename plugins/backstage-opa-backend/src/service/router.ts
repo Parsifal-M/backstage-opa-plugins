@@ -2,8 +2,10 @@ import express from 'express';
 import Router from 'express-promise-router';
 import {
   DiscoveryService,
+  HttpAuthService,
   LoggerService,
   UrlReaderService,
+  UserInfoService,
 } from '@backstage/backend-plugin-api';
 import { entityCheckerRouter } from './routers/entityChecker';
 import { policyContentRouter } from './routers/policyContent';
@@ -16,12 +18,14 @@ export type RouterOptions = {
   config: Config;
   discovery: DiscoveryService;
   urlReader: UrlReaderService;
+  httpAuth: HttpAuthService;
+  userInfo: UserInfoService;
 };
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, config, urlReader } = options;
+  const { logger, config, urlReader, httpAuth, userInfo } = options;
 
   const router = Router();
   router.use(express.json());
@@ -32,7 +36,7 @@ export async function createRouter(
   });
 
   router.use(entityCheckerRouter(logger, config));
-  router.use(authzRouter(logger, config));
+  router.use(authzRouter(logger, config, httpAuth, userInfo));
   router.use(policyContentRouter(logger, urlReader));
 
   const middleware = MiddlewareFactory.create({ logger, config });

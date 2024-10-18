@@ -14,9 +14,7 @@ services:
       - '--watch'
       - '--log-format=json-pretty'
       - '--set=decision_logs.console=true'
-      - '/policies/rbac_policy.rego'
-      - '/policies/entity_checker.rego'
-      - '/policies/authz.rego'
+      - '/policies/'
     ports:
       - 8181:8181
     volumes:

@@ -26,7 +26,7 @@ export function useOpaAuthz(
     return { error, loading: false, data: null };
   }
 
-  if (!data) {
+  if (!data?.result) {
     return { loading: true, data: null };
   }
 
