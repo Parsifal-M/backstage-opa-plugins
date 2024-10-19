@@ -81,7 +81,7 @@ export const someRoutes = (options: someRoutesOptions): express.Router => {
   const router = express.Router();
 
   // Instantiate the OpaAuthzClient
-  const opaAuthzClient = new OpaAuthzClient(config, logger);
+  const opaAuthzClient = new OpaAuthzClient(logger, config);
 
   // Define the entry point
   const entryPoint = 'authz';

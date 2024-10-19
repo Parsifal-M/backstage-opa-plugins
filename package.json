@@ -67,10 +67,12 @@
     "coveragePathIgnorePatterns": [
       "packages/app",
       "packages/backend",
-      "plugins/opa-frontend-demo"
+      "plugins/opa-frontend-demo",
+      "plugins/opa-backend-demo"
     ],
     "testPathIgnorePatterns": [
-      "plugins/opa-frontend-demo"
+      "plugins/opa-frontend-demo",
+      "plugins/opa-backend-demo"
     ]
   },
   "packageManager": "yarn@3.6.4"
