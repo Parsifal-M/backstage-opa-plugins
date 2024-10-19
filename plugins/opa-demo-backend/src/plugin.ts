@@ -35,7 +35,7 @@ export const opaDemoPlugin = createBackendPlugin({
             httpAuth,
             todoListService,
             logger,
-            config
+            config,
           }),
         );
       },

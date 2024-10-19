@@ -11,12 +11,7 @@ export interface TodoItem {
 }
 
 export interface TodoListService {
-  createTodo(
-    input: {
-      title: string;
-      entityRef?: string;
-    },
-  ): Promise<TodoItem>;
+  createTodo(input: { title: string; entityRef?: string }): Promise<TodoItem>;
 
   listTodos(): Promise<{ items: TodoItem[] }>;
 

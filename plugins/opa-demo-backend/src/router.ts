@@ -5,7 +5,10 @@ import express from 'express';
 import Router from 'express-promise-router';
 import { TodoListService } from './services/TodoListService/types';
 import { Config } from '@backstage/config';
-import { OpaAuthzClient, opaAuthzMiddleware } from '@parsifal-m/backstage-opa-authz';
+import {
+  OpaAuthzClient,
+  opaAuthzMiddleware,
+} from '@parsifal-m/backstage-opa-authz';
 
 export async function createRouter({
   todoListService,
@@ -13,7 +16,7 @@ export async function createRouter({
   logger,
 }: {
   httpAuth: HttpAuthService;
-  config: Config,
+  config: Config;
   logger: LoggerService;
   todoListService: TodoListService;
 }): Promise<express.Router> {
@@ -33,7 +36,6 @@ export async function createRouter({
 
   const opaAuthzClient = new OpaAuthzClient(logger, config);
 
-
   const entryPoint = 'opa_demo';
   // Define the input
   const setInput = (req: express.Request) => {
@@ -51,24 +53,36 @@ export async function createRouter({
     return input;
   };
 
-  router.post('/todos', opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput), async (req, res) => {
-    const parsed = todoSchema.safeParse(req.body);
-    if (!parsed.success) {
-      throw new InputError(parsed.error.toString());
-    }
+  router.post(
+    '/todos',
+    opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput),
+    async (req, res) => {
+      const parsed = todoSchema.safeParse(req.body);
+      if (!parsed.success) {
+        throw new InputError(parsed.error.toString());
+      }
 
-    const result = await todoListService.createTodo(parsed.data);
+      const result = await todoListService.createTodo(parsed.data);
 
-    res.status(201).json(result);
-  });
+      res.status(201).json(result);
+    },
+  );
 
-  router.get('/todos', opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput), async (_req, res) => {
-    res.json(await todoListService.listTodos());
-  });
+  router.get(
+    '/todos',
+    opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput),
+    async (_req, res) => {
+      res.json(await todoListService.listTodos());
+    },
+  );
 
-  router.get('/todos/:id',opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput), async (req, res) => {
-    res.json(await todoListService.getTodo({ id: req.params.id }));
-  });
+  router.get(
+    '/todos/:id',
+    opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput),
+    async (req, res) => {
+      res.json(await todoListService.getTodo({ id: req.params.id }));
+    },
+  );
 
   return router;
 }

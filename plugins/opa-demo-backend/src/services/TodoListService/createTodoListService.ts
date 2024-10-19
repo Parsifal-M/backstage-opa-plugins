@@ -60,7 +60,7 @@ export async function createTodoListService({
       }
 
       const id = crypto.randomUUID();
-      const createdBy = "opa-guy";
+      const createdBy = 'opa-guy';
       const newTodo = {
         title,
         id,
