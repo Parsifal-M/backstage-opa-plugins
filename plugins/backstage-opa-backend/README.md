@@ -1,14 +1,24 @@
 ![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-opa-backend?logo=npm)
 
-# backstage-opa-backend
+# Backstage OPA Backend Plugin
 
-This serves as the OPA Backend Plugin, eventually to route all your OPA needs through!
+A backend plugin for Backstage, this plugin integrates with the Open Policy Agent (OPA) to facilitate policy evaluation.
 
-> There may be breaking changes as this plugin is still in development! Please be aware of this!
+It's a dependency of the following plugins:
+
+- [OPA Entity Checker](../opa-entity-checker/introduction.md#keep-your-entity-data-in-check-with-opa-entity-checker)
+- [OPA Policies](../opa-policies/introduction.md)
+- [OPA Authz React](../opa-authz-react/introduction.md)
+
+By itself, this plugin does not provide any user-facing features.
+
+> This plugin is **NOT** required for the [OPA Permissions Wrapper Module](../opa-permissions-wrapper-module/introduction.md).
 
 # Pre-requisites
 
 The only pre-requisites to use this plugin is that you have set up an OPA server. You can find more information on how to do that [here](https://www.openpolicyagent.org/docs/latest/deployments/). And you have a Backstage instance running. More info on how to do that [here](https://backstage.io/docs/getting-started).
+
+Or, you can check [these docs](../../docs/deploying-opa/deploying-opa.md#deploying-opa) for a quick guide on how to deploy OPA as a sidecar to your Backstage instance and add policies to it.
 
 ## Installation
 
@@ -52,7 +62,11 @@ The `entrypoint` name in the `app-config.yaml` file should be the entrypoint to 
 
 ## Contributing
 
-I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal)
+I am happy to accept contributions and suggestions for these plugins, if you are looking to make significant changes, please open an issue first to discuss the changes you would like to make!
+
+Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal).
+
+Please remember to sign your commits with `git commit -s` so that your commits are signed!
 
 ## License
 

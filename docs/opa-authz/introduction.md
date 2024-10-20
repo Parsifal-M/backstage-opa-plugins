@@ -1,5 +1,8 @@
 # OPA Authz Client
 
+> [!TIP|style:flat]
+> This plugin can be used together with [plugin-permission-backend-module-opa-wrapper](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-permissions-wrapper-module/introduction) which may be necessary for some **core** and **community plugins**.
+
 This is a node-library package for Backstage that provides a client and middleware for interacting with an OPA (Open Policy Agent) server for Authorization.
 
 ## Why use this library?
@@ -15,7 +18,7 @@ This library is a more generic way to interact with OPA, and can be used in any 
   not all core and community plugins will natively work with this client, so you can use the wrapper to handle those cases.
 - Has a middleware that can be used in the backend to protect your API endpoints, simply add it to your express routes and you are good to go.
 
-## Usage
+## How It Works
 
 ### Using the OpaAuthzClient
 
@@ -114,14 +117,20 @@ export const someRoutes = (options: someRoutesOptions): express.Router => {
 
 To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `opaAuthzMiddleware` in the backend, you can find the demo code [here](../../plugins/opa-demo-backend/README.md).
 
-## Contributing
+## Join The Community
 
-I am happy to accept contributions and suggestions for these plugins, if you are looking to make significant changes, please open an issue first to discuss the changes you would like to make!
+This project is a part of the broader Backstage and Open Policy Agent ecosystems. Explore more about these communities:
 
-Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal).
+- [Backstage Community](https://backstage.io)
+- [Open Policy Agent Community](https://www.openpolicyagent.org)
+- [Styra](https://www.styra.com)
+- [Join OPA on Slack](https://slack.openpolicyagent.org/)
+- [Backstage Discord](https://discord.com/invite/MUpMjP2)
 
-Please remember to sign your commits with `git commit -s` so that your commits are signed!
+## Get Involved
+
+Your contributions can make this plugin even better. Fork the repository, make your changes, and submit a PR! If you have questions or ideas, reach out on [Mastodon](https://hachyderm.io/@parcifal).
 
 ## License
 
-This project is released under the Apache 2.0 License.
+This project is licensed under the Apache 2.0 License.

@@ -64,37 +64,37 @@ import future.keywords.in
 default good_entity := false
 
 good_entity if {
-	count({v | some v in violation; v.level == "error"}) == 0
+ count({v | some v in violation; v.level == "error"}) == 0
 }
 
 violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
-	not input.metadata.tags
-	entity_check := "Tags"
-	msg := "You do not have any tags set!"
+ not input.metadata.tags
+ entity_check := "Tags"
+ msg := "You do not have any tags set!"
 }
 
 violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	valid_lifecycles = {"production", "development"}
-	not valid_lifecycles[input.spec.lifecycle]
-	entity_check := "Lifecycle"
-	msg := "Incorrect lifecycle, should be one of production or development"
+ valid_lifecycles = {"production", "development"}
+ not valid_lifecycles[input.spec.lifecycle]
+ entity_check := "Lifecycle"
+ msg := "Incorrect lifecycle, should be one of production or development"
 }
 
 violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	not is_system_present
-	entity_check := "System"
-	msg := "System is missing!"
+ not is_system_present
+ entity_check := "System"
+ msg := "System is missing!"
 }
 
 violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	valid_types = {"website", "library", "service"}
-	not valid_types[input.spec.type]
-	entity_check := "Type"
-	msg := "Incorrect component type!"
+ valid_types = {"website", "library", "service"}
+ not valid_types[input.spec.type]
+ entity_check := "Type"
+ msg := "Incorrect component type!"
 }
 
 is_system_present if {
-	input.spec.system
+ input.spec.system
 }
 ```
 
@@ -155,7 +155,11 @@ Please see the [Docs Site](https://parsifal-m.github.io/backstage-opa-plugins/#/
 
 ## Contributing
 
-I am happy to accept contributions to this plugin. Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal) or [Twitter](https://twitter.com/_PeterM_) (I am not as active on Twitter)
+I am happy to accept contributions and suggestions for these plugins, if you are looking to make significant changes, please open an issue first to discuss the changes you would like to make!
+
+Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal).
+
+Please remember to sign your commits with `git commit -s` so that your commits are signed!
 
 ## License
 

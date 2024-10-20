@@ -1,12 +1,8 @@
-# Quick Start
+# How To Deploy OPA!
 
-This guide will help you get started with the OPA Permissions Wrapper module for Backstage.
+The official documentation provided by the Open Policy Agent (OPA) community is a great resource to get started with OPA. You can find the documentation [here](https://www.openpolicyagent.org/docs/latest/deployments/).
 
-## Pre-requisites
-
-- You have a Backstage instance set up and running and the permission framework set up as outlined [here](https://backstage.io/docs/permissions/getting-started/).
-  - **Note** do not set a policy, just enable the framework.
-- You have deployed OPA, kindly see how to do that [here](https://www.openpolicyagent.org/docs/latest/deployments/), or see below.
+However, if you're looking for just a quick way to get started with OPA, here's a simple guide to help you deploy OPA as a sidecar to your Backstage instance.
 
 ## Deploying OPA
 
@@ -46,8 +42,12 @@ spec:
         name: opa-rbac-policy
 ```
 
+> [!ATTENTION|style:flat]
+> The below is a policy designed to work with the [OPA Permissions Wrapper Module](../opa-permissions-wrapper-module/introduction.md#simplify-permissions-with-opa-in-backstage). If you are using [opa-authz](../opa-authz/introduction.md#opa-authz-client) or [opa-authz-react](../opa-authz-react/introduction.md#opa-authz-react), you will need to adjust the policy accordingly!
+
 For simplicity you can then create a policy in a `ConfigMap` and mount it into the OPA container.
 
+> [!NOTE|style:flat]
 > Note: Update "kind:namespace/name" in the policy to match your user entity claims.
 
 ```yaml
@@ -88,41 +88,3 @@ data:
      not is_admin
     }
 ```
-
-## Installing the OPA Permissions Wrapper Module in Backstage
-
-Run the following command to install the OPA Permissions Wrapper Module in your Backstage project.
-
-```bash
-yarn add --cwd packages/backend @parsifal-m/plugin-permission-backend-module-opa-wrapper
-```
-
-Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
-
-```diff
-import { createBackend } from '@backstage/backend-defaults';
-
-const backend = createBackend();
-backend.add(import('@backstage/plugin-app-backend/alpha'));
-backend.add(import('@backstage/plugin-auth-backend'));
-// ..... other plugins
-+ backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
-```
-
-## Configuration
-
-The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and an `entrypoint` for the OPA server in your Backstage app-config.yaml, based on the example above we would have the following configuration:
-
-```yaml
-opaClient:
-  baseUrl: 'http://localhost:8181'
-  policies:
-    permissions: # Permission wrapper plugin
-      entrypoint: 'rbac_policy/decision'
-```
-
-The `baseUrl` is the URL of the OPA server, and the `entrypoint` is the entrypoint of the policy you want to evaluate.
-
-## Recommendations
-
-I recommend using [Regal: A linter and language server for Rego](https://github.com/StyraInc/regal) to help you write your policies. It provides syntax highlighting, linting, and type checking for Rego files.

@@ -18,7 +18,7 @@ Sadly, not all core and community plugins will work with this library for permis
 
 ## Quick Start
 
-### Using the `RequireOpaAuthz` component
+### Using The `RequireOpaAuthz` Component (Recommended)
 
 To control and hide a component based on the result of a policy evaluation, you can use the `RequireOpaAuthz` component.
 
@@ -42,7 +42,7 @@ return (
 
 The above will render `MyComponent` only if the policy evaluation `allow` is `true`. It will send to OPA the input `{ action: 'read-policy' }` and the entry point `authz`.
 
-### Using the `useOpaAuthz` hook directly (optional)
+### Using The `useOpaAuthz` Hook Directly (Optional)
 
 If you want to use the `useOpaAuthz` hook directly, you can do so:
 
@@ -68,18 +68,20 @@ const MyComponent = () => {
 };
 ```
 
-## Example Demo Plugin(s)
+## Join The Community
 
-To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `RequireOpaAuthz` component in the frontend, you can find the demo code [here](../../plugins/opa-frontend-demo/README.md).
+This project is a part of the broader Backstage and Open Policy Agent ecosystems. Explore more about these communities:
 
-## Contributing
+- [Backstage Community](https://backstage.io)
+- [Open Policy Agent Community](https://www.openpolicyagent.org)
+- [Styra](https://www.styra.com)
+- [Join OPA on Slack](https://slack.openpolicyagent.org/)
+- [Backstage Discord](https://discord.com/invite/MUpMjP2)
 
-I am happy to accept contributions and suggestions for these plugins, if you are looking to make significant changes, please open an issue first to discuss the changes you would like to make!
+## Get Involved
 
-Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal).
-
-Please remember to sign your commits with `git commit -s` so that your commits are signed!
+Your contributions can make this plugin even better. Fork the repository, make your changes, and submit a PR! If you have questions or ideas, reach out on [Mastodon](https://hachyderm.io/@parcifal).
 
 ## License
 
-This project is released under the Apache 2.0 License.
+This project is licensed under the Apache 2.0 License.
