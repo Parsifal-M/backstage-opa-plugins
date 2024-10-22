@@ -50,10 +50,10 @@ const entryPoint = 'example/allow';
 opaClient
   .evaluatePolicy(policyInput, entryPoint)
   .then(result => {
-    console.log('Policy evaluation result:', result);
+    logger.info('Policy evaluation result:', result);
   })
   .catch(error => {
-    console.error('Error evaluating policy:', error);
+    logger.info('Error evaluating policy:', error);
   });
 
 // Some more code here

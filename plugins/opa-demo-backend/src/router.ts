@@ -37,20 +37,15 @@ export async function createRouter({
   const opaAuthzClient = new OpaAuthzClient(logger, config);
 
   const entryPoint = 'opa_demo';
-  // Define the input
+
   const setInput = (req: express.Request) => {
-    const input = {
+    return {
       method: req.method,
       path: req.path,
-      body: req.body,
-      params: req.params,
-      plugin: 'todo-list',
+      permission: { name: 'read' },
+      plugin: 'opa-demo-backend-todo',
+      dateTime: new Date().toISOString(),
     };
-
-    // Log the input
-    console.log(`OPA input: ${JSON.stringify(input)}`);
-
-    return input;
   };
 
   router.post(
