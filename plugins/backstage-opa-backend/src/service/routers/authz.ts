@@ -5,7 +5,7 @@ import {
   LoggerService,
   UserInfoService,
 } from '@backstage/backend-plugin-api';
-import { OpaAuthzClient } from '@parsifal-m/backstage-opa-authz';
+import fetch from 'node-fetch';
 
 export function authzRouter(
   logger: LoggerService,
@@ -14,7 +14,8 @@ export function authzRouter(
   userInfo: UserInfoService,
 ): Router {
   const router = Router();
-  const opaClient = new OpaAuthzClient(logger, config);
+  const baseUrl =
+    config.getOptionalString('opaClient.baseUrl') ?? 'http://localhost:8181';
 
   router.post('/opa-authz', async (req, res) => {
     const { input, entryPoint } = req.body;
@@ -30,20 +31,42 @@ export function authzRouter(
     );
 
     if (!input || !entryPoint) {
-      res
+      return res
         .status(400)
         .json({ error: 'Missing input or entryPoint in request body' });
     }
 
     try {
-      const result = await opaClient.evaluatePolicy(
-        inputWithCredentials,
-        entryPoint,
+      const url = `${baseUrl}/v1/data/${entryPoint}`;
+      logger.debug(
+        `Sending data to OPA: ${JSON.stringify(inputWithCredentials)}`,
       );
-      res.json(result);
-    } catch (error) {
-      logger.error(`Error evaluating policy: ${error}`);
-      res.status(500).json({ error: 'Error evaluating policy' });
+
+      const opaResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input: inputWithCredentials }),
+      });
+
+      if (!opaResponse.ok) {
+        const message = `An error response was returned after sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`;
+        logger.error(message);
+        return res.status(opaResponse.status).json({ error: message });
+      }
+
+      const opaPermissionsResponse = await opaResponse.json();
+      logger.debug(
+        `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
+      );
+
+      return res.json(opaPermissionsResponse);
+    } catch (error: unknown) {
+      logger.error(
+        `An error occurred while sending the policy input to the OPA server: ${error}`,
+      );
+      return res.status(500).json({ error: 'Error evaluating policy' });
     }
   });
 

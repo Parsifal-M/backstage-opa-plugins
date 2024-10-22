@@ -6,7 +6,7 @@ default allow := false
 
 # OPA Frontend Demo Rules
 allow if {
-	input.day == "Friday"
+	input.day == "Tuesday"
 	"user:default/parsifal-m" in input.ownershipEntityRefs
 }
 

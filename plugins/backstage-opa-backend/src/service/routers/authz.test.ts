@@ -2,17 +2,14 @@ import { mockServices } from '@backstage/backend-test-utils';
 import express from 'express';
 import request from 'supertest';
 import { authzRouter } from './authz';
-import { OpaAuthzClient } from '@parsifal-m/backstage-opa-authz';
-import {
-  BackstageCredentials,
-  BackstageUserInfo,
-} from '@backstage/backend-plugin-api';
+import fetch from 'node-fetch';
+import { BackstageUserInfo } from '@backstage/backend-plugin-api';
 
-jest.mock('@parsifal-m/backstage-opa-authz');
+jest.mock('node-fetch');
+const { Response } = jest.requireActual('node-fetch');
 
 describe('authzRouter', () => {
   let app: express.Express;
-  let mockOpaAuthzClient: jest.Mocked<OpaAuthzClient>;
 
   beforeAll(async () => {
     const mockConfig = mockServices.rootConfig({
@@ -31,12 +28,6 @@ describe('authzRouter', () => {
     mockUserInfo.getUserInfo.mockResolvedValue(
       mockUserInfoData as unknown as BackstageUserInfo,
     );
-
-    mockOpaAuthzClient = new OpaAuthzClient(
-      mockLogger,
-      mockConfig,
-    ) as jest.Mocked<OpaAuthzClient>;
-    (OpaAuthzClient as jest.Mock).mockImplementation(() => mockOpaAuthzClient);
 
     const router = authzRouter(
       mockLogger,
@@ -66,7 +57,10 @@ describe('authzRouter', () => {
         decision_id: 'test-decision-id',
         result: { allow: true },
       };
-      mockOpaAuthzClient.evaluatePolicy.mockResolvedValueOnce(mockResult);
+
+      (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+        new Response(JSON.stringify(mockResult), { status: 200 }),
+      );
 
       const res = await request(app)
         .post('/opa-authz')
@@ -74,14 +68,20 @@ describe('authzRouter', () => {
 
       expect(res.status).toEqual(200);
       expect(res.body).toEqual(mockResult);
-      expect(mockOpaAuthzClient.evaluatePolicy).toHaveBeenCalledWith(
-        { user: 'testUser', email: 'test@example.com' },
-        'testEntryPoint',
+      expect(fetch).toHaveBeenCalledWith(
+        'http://localhost:8181/v1/data/testEntryPoint',
+        expect.objectContaining({
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            input: { user: 'testUser', email: 'test@example.com' },
+          }),
+        }),
       );
     });
 
     it('returns 500 if an error occurs during policy evaluation', async () => {
-      mockOpaAuthzClient.evaluatePolicy.mockRejectedValueOnce(
+      (fetch as jest.MockedFunction<typeof fetch>).mockRejectedValueOnce(
         new Error('OPA Error'),
       );
 
@@ -91,9 +91,15 @@ describe('authzRouter', () => {
 
       expect(res.status).toEqual(500);
       expect(res.body).toEqual({ error: 'Error evaluating policy' });
-      expect(mockOpaAuthzClient.evaluatePolicy).toHaveBeenCalledWith(
-        { user: 'testUser', email: 'test@example.com' },
-        'testEntryPoint',
+      expect(fetch).toHaveBeenCalledWith(
+        'http://localhost:8181/v1/data/testEntryPoint',
+        expect.objectContaining({
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            input: { user: 'testUser', email: 'test@example.com' },
+          }),
+        }),
       );
     });
   });
