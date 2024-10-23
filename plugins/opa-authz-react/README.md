@@ -18,6 +18,37 @@ Sadly, not all core and community plugins will work with this library for permis
 
 ## Quick Start
 
+### Install the library
+
+Run the yarn install command!
+
+```bash
+yarn add --cwd packages/app @parsifal-m/backstage-plugin-opa-authz-react
+```
+
+### Add the API
+
+In your `app/src/apis.ts` file, add the following:
+
+```ts
+export const apis: AnyApiFactory[] = [
+  createApiFactory({
+    api: scmIntegrationsApiRef,
+    deps: { configApi: configApiRef },
+    factory: ({ configApi }) => ScmIntegrationsApi.fromConfig(configApi),
+  }),
+  // Add the OPA Authz API
+  createApiFactory({
+    api: opaAuthzBackendApiRef,
+    deps: {
+      fetchApi: fetchApiRef,
+    },
+    factory: ({ fetchApi }) => new OpaAuthzClientReact({ fetchApi }),
+  }),
+  ScmAuth.createDefaultApiFactory(),
+];
+```
+
 ### Using the `RequireOpaAuthz` component
 
 To control and hide a component based on the result of a policy evaluation, you can use the `RequireOpaAuthz` component.
@@ -25,7 +56,7 @@ To control and hide a component based on the result of a policy evaluation, you 
 Install the library first to your Backstage plugin:
 
 ```bash
-yarn add @parsifal-m/backstage-plugin-opa-authz-react
+yarn add --cwd <your-plugin-directory> @parsifal-m/backstage-plugin-opa-authz-react
 ```
 
 ```tsx
