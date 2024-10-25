@@ -1,7 +1,7 @@
 import { createApiRef } from '@backstage/core-plugin-api';
 
 export type OpaPolicy = {
-  policyContent: string;
+  opaPolicyContent: string;
 };
 
 export interface OpaPolicyBackendApi {
