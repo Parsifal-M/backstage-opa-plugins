@@ -1,4 +1,4 @@
-# OPA Authz Client
+# OPA Authz
 
 > [!TIP|style:flat]
 > This plugin can be used together with [plugin-permission-backend-module-opa-wrapper](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-permissions-wrapper-module/introduction) which may be necessary for some **core** and **community plugins**.
