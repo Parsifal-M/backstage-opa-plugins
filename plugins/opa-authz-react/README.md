@@ -101,7 +101,7 @@ const MyComponent = () => {
 
 ## Example Demo Plugin(s)
 
-To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `RequireOpaAuthz` component in the frontend, you can find the demo code [here](../../plugins/opa-frontend-demo/README.md).
+To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `RequireOpaAuthz` component in the frontend, you can find the demo code [here](../../plugins/opa-frontend-demo).
 
 ## Contributing
 

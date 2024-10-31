@@ -1,4 +1,4 @@
-# OPA Authz Client
+# OPA Authz
 
 This is a node-library package for Backstage that provides a client and middleware for interacting with an OPA (Open Policy Agent) server for Authorization.
 
@@ -112,7 +112,7 @@ export const someRoutes = (options: someRoutesOptions): express.Router => {
 
 ## Example Demo Plugin(s)
 
-To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `opaAuthzMiddleware` in the backend, you can find the demo code [here](../../plugins/opa-demo-backend/README.md).
+To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `opaAuthzMiddleware` in the backend, you can find the demo code [here](../../plugins/opa-demo-backend).
 
 ## Contributing
 

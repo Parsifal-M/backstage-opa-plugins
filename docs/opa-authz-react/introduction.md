@@ -99,6 +99,10 @@ const MyComponent = () => {
 };
 ```
 
+## Example Demo Plugin(s)
+
+To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `RequireOpaAuthz` component in the frontend, you can find the demo code [here](https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/plugins/opa-frontend-demo/src/components/ExampleComponent/ExampleComponent.tsx).
+
 ## Join The Community
 
 This project is a part of the broader Backstage and Open Policy Agent ecosystems. Explore more about these communities:

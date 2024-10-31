@@ -115,7 +115,7 @@ export const someRoutes = (options: someRoutesOptions): express.Router => {
 
 ## Example Demo Plugin(s)
 
-To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `opaAuthzMiddleware` in the backend, you can find the demo code [here](../../plugins/opa-demo-backend/README.md).
+To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `opaAuthzMiddleware` in the backend, you can find the demo code [here](https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/plugins/opa-demo-backend/src/router.ts).
 
 ## Join The Community
 
