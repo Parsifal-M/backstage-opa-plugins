@@ -1,4 +1,3 @@
-- [Home](home/home.md#welcome-to-the-opa-plugins-repository-for-backstage)
 - [Deploying OPA](deploying-opa/deploying-opa.md#how-to-deploy-opa)
 - [OPA Permissions Wrapper Module](opa-permissions-wrapper-module/introduction.md#simplify-permissions-with-opa-in-backstage)
   - [Quick Start](opa-permissions-wrapper-module/quick-start.md#quick-start)
