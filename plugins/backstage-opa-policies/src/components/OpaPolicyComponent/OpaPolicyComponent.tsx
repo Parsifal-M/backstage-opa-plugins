@@ -22,7 +22,7 @@ export const OpaPolicyPage = () => {
       if (opaPolicy) {
         try {
           const response = await opaApi.getPolicyFromRepo(opaPolicy);
-          if (response.policyContent) {
+          if (response.opaPolicyContent) {
             setPolicy(response);
             setLoading(false);
           }
@@ -49,7 +49,7 @@ export const OpaPolicyPage = () => {
         data-testid="opa-policy-card"
       >
         <CodeSnippet
-          text={policy?.policyContent ?? ''}
+          text={policy?.opaPolicyContent ?? ''}
           language="rego"
           showLineNumbers
           showCopyCodeButton

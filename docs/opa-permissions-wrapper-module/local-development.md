@@ -4,7 +4,7 @@ If you are using this plugin and want to know how to use it in local development
 
 ## Pre-requisites
 
-- You have a Backstage instance set up and running and the permission framework set up as outlined [here](https://backstage.io/docs/permissions/getting-started--new/).
+- You have a Backstage instance set up and running and the permission framework set up as outlined [here](https://backstage.io/docs/permissions/getting-started/).
   - **Note** do not set a policy, just enable the framework.
 - This assumes you are using `Postgres` as your database in your `app-config.yaml` file, although this is not mandatory.
 

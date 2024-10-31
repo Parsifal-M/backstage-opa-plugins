@@ -10,6 +10,8 @@ It's awesome to see that this project is being used by other companies and proje
 
 ## Open Source Projects
 
+None yet! Be the first to add your project here!
+
 ## How to Add Your Organization
 
 If you're using our project and want to be featured on this list, please follow these steps:

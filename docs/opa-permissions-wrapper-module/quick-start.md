@@ -4,7 +4,7 @@ This guide will help you get started with the OPA Permissions Wrapper module for
 
 ## Pre-requisites
 
-- You have a Backstage instance set up and running and the permission framework set up as outlined [here](https://backstage.io/docs/permissions/getting-started--new/).
+- You have a Backstage instance set up and running and the permission framework set up as outlined [here](https://backstage.io/docs/permissions/getting-started/).
   - **Note** do not set a policy, just enable the framework.
 - You have deployed OPA, kindly see how to do that [here](https://www.openpolicyagent.org/docs/latest/deployments/), or see below.
 
@@ -80,12 +80,12 @@ data:
     # Catalog Permission: Allow users to only delete entities they claim ownership of.
     # Allow admins to delete any entity regardless of ownership.
     decision := conditional("catalog", "catalog-entity", {"anyOf": [{
-	    "resourceType": "catalog-entity",
-	    "rule": "IS_ENTITY_OWNER",
-	    "params": {"claims": claims},
+     "resourceType": "catalog-entity",
+     "rule": "IS_ENTITY_OWNER",
+     "params": {"claims": claims},
     }]}) if {
-	    permission == "catalog.entity.delete"
-	    not is_admin
+     permission == "catalog.entity.delete"
+     not is_admin
     }
 ```
 

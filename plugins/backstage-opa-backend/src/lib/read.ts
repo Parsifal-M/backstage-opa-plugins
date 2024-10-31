@@ -1,17 +1,16 @@
 import { UrlReaderService } from '@backstage/backend-plugin-api';
-import { NotFoundError } from '@backstage/errors';
 
 export async function readPolicyFile(
-  reader: UrlReaderService,
+  urlReader: UrlReaderService,
   policyFilePath: string,
 ): Promise<string | undefined> {
   const url = `${policyFilePath}`;
   try {
-    const data = await reader.readUrl(url);
-    const buffer = await data.buffer();
+    const response = await urlReader.readUrl(url);
+    const buffer = await response.buffer();
     return buffer.toString();
   } catch (error) {
-    if (error instanceof NotFoundError) {
+    if (error.name === 'NotFoundError') {
       return undefined;
     }
     throw error;

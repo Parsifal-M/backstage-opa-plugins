@@ -1,5 +1,5 @@
-import React from 'react';
-import { render, waitFor, screen, act } from '@testing-library/react';
+import React, { act } from 'react';
+import { render, waitFor, screen } from '@testing-library/react';
 import { OpaMetadataAnalysisCard } from './OpaMetadataAnalysisCard';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider } from '@backstage/test-utils';
