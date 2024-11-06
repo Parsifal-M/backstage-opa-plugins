@@ -1,8 +1,3 @@
-import {
-  BackstageCredentials,
-  BackstageUserPrincipal,
-} from '@backstage/backend-plugin-api';
-
 export interface TodoItem {
   title: string;
   id: string;

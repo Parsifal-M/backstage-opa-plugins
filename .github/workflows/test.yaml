@@ -1,4 +1,4 @@
-name: Lint and Format
+name: Run Tests
 
 on:
   workflow_dispatch:
@@ -7,8 +7,8 @@ on:
       - main
 
 jobs:
-  lint:
-    name: Lint and Format
+  test:
+    name: Test on Node 18
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +34,13 @@ jobs:
       - name: Install Dependencies
         run: yarn install --immutable
 
-      - name: Lint and Check Formatting
-        run: |
-          yarn lint:all
-          yarn prettier:check
+      - name: TypeScript Type Check
+        run: yarn tsc:full
+
+      - name: Run Tests
+        run: yarn test:all --coverage
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

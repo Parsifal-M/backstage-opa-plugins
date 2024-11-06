@@ -18,6 +18,7 @@
     "clean": "backstage-cli repo clean",
     "test": "backstage-cli repo test",
     "test:all": "backstage-cli repo test --coverage",
+    "test:changed": "backstage-cli repo test --onlyChanged --coverage",
     "lint": "backstage-cli repo lint --since origin/main",
     "lint:all": "backstage-cli repo lint",
     "prettier:write": "prettier --write .",
@@ -37,6 +38,7 @@
     "@spotify/eslint-plugin": "^14.1.3",
     "@spotify/prettier-config": "^15.0.0",
     "concurrently": "^8.0.0",
+    "eslint": "^8.6.0",
     "eslint-plugin-jest": "*",
     "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-react": "^7.28.0",
@@ -56,11 +58,7 @@
   "prettier": "@spotify/prettier-config",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
-      "eslint --fix",
-      "prettier:check"
-    ],
-    "*.{json,md,yaml}": [
-      "prettier:check"
+      "eslint --fix ."
     ]
   },
   "jest": {
@@ -75,5 +73,5 @@
       "plugins/opa-backend-demo"
     ]
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@4.5.1"
 }
