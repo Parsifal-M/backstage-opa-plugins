@@ -1,4 +1,22 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx lint-staged
+echo "🔍 Checking pre-commit requirements..."
+
+echo "🧹 Running lint-staged checks..."
+# Run lint-staged and store exit code
+yarn lint-staged
+LINT_RESULT=$?
+
+# Run tests
+echo "🧪 Running tests..."
+yarn test:all
+TEST_RESULT=$?
+
+# Exit with error if either check failed
+if [ $LINT_RESULT -ne 0 ] || [ $TEST_RESULT -ne 0 ]; then
+  echo "❌ Pre-commit checks failed"
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed"

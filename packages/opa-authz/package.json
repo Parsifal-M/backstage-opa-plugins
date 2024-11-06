@@ -13,6 +13,16 @@
   "backstage": {
     "role": "node-library"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Parsifal-M/backstage-opa-plugins.git"
+  },
+  "keywords": [
+    "backstage",
+    "OPA",
+    "Open Policy Agent",
+    "plugin"
+  ],
   "scripts": {
     "start": "backstage-cli package start",
     "build": "backstage-cli package build",
