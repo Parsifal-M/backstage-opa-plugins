@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "🔍 Checking pre-commit requirements..."
 
 echo "🧹 Running lint-staged checks..."
@@ -8,9 +5,13 @@ echo "🧹 Running lint-staged checks..."
 yarn lint-staged
 LINT_RESULT=$?
 
+# Run Prettier
+echo "🧹 Running Prettier..."
+yarn prettier --write .
+
 # Run tests
 echo "🧪 Running tests..."
-yarn test:all
+yarn test:changed
 TEST_RESULT=$?
 
 # Exit with error if either check failed

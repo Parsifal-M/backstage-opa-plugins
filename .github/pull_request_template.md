@@ -1,32 +1,29 @@
-<!--
-Before submitting your pull request, please ensure you've done the following:
-- [ ] Reviewed the guidelines for contributing to this repository.
-- [ ] Checked for duplicate pull requests that might already be open.
-- [ ] Used clear, concise and meaningful commit messages.
-- [ ] Updated any relevant documentation.
--->
+# 👋 Thanks for contributing
 
-## What type of PR is this?
+## What's this PR about?
 
-Please check the category that applies:
+<!-- Please give us a brief description of what you're working on -->
 
-- [ ] Feature
-- [ ] Bug Fix
-- [ ] Refactor
-- [ ] Documentation Update
+### Type of change
 
-## Description
+- [ ] 🌟 New feature
+- [ ] 🐛 Bug fix
+- [ ] 📝 Documentation update
+- [ ] 🧹 Code cleanup/refactor
 
-Please provide a brief summary of your changes and the problem they solve.
+### What does it solve?
 
-## Related Issues
+<!-- Help us understand the "before" and "after" -->
 
-If applicable, please link any related issues. Use "Closes" keyword to automatically close the issue on PR merge.
+### Testing
 
-Closes #<issue_number>
+- [ ] Added/updated tests
+- [ ] Need help with testing
+- [ ] N/A - documentation only
 
-## Testing
+### Related issues
 
-- [ ] I have included or updated unit tests for my changes.
-- [ ] I would like some help writing tests.
-- [ ] These changes do not require tests.
+<!-- Example: Closes #123 -->
+
+---
+Need any help? Feel free to ask questions in your PR! 💬

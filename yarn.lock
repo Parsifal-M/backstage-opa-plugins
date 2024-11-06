@@ -31278,6 +31278,7 @@ __metadata:
     "@spotify/eslint-plugin": "npm:^14.1.3"
     "@spotify/prettier-config": "npm:^15.0.0"
     concurrently: "npm:^8.0.0"
+    eslint: "npm:^8.6.0"
     eslint-plugin-jest: "npm:*"
     eslint-plugin-notice: "npm:^0.9.10"
     eslint-plugin-react: "npm:^7.28.0"

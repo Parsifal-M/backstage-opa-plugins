@@ -1,0 +1,36 @@
+name: Mark Stale PRs
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-pr-stale: 30
+          days-before-pr-close: 14
+          stale-pr-message: >
+            👋 Hello there! We noticed this PR hasn't had any activity in the last 30 days.
+            
+            We love contributions and want to keep our PR queue healthy! If you're still interested in this PR:
+            - Add a comment
+            - Push a commit
+            - Update the description
+            
+            No action needed if you'd like it to be closed automatically in 14 days. Thanks for contributing! ✨
+          close-pr-message: >
+            Hi again! Since there hasn't been any activity in the last 44 days, we're gently closing this PR.
+            
+            Don't worry though - feel free to reopen it anytime if you'd like to continue working on it! 
+            We appreciate your contribution and are here to help if you need anything. 🙌
+          stale-pr-label: 'stale'
+          exempt-pr-labels: 'ready,work-in-progress,blocked'
+          
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          operations-per-run: 100
+          ascending: true
+          remove-stale-when-updated: true
