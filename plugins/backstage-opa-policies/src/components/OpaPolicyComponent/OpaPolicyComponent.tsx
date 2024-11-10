@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Content, InfoCard, Progress, CopyTextButton } from '@backstage/core-components';
+import {
+  Content,
+  InfoCard,
+  Progress,
+  CopyTextButton,
+} from '@backstage/core-components';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { opaPolicyBackendApiRef, OpaPolicy } from '../../api/types';
 import { useApi, alertApiRef } from '@backstage/core-plugin-api';
@@ -47,8 +52,8 @@ export const OpaPolicyPage = () => {
         title={`${entity.metadata.name} OPA Policy`}
         data-testid="opa-policy-card"
         action={
-          <CopyTextButton 
-            text={policy?.opaPolicyContent ?? ''} 
+          <CopyTextButton
+            text={policy?.opaPolicyContent ?? ''}
             tooltipText="Copied policy to clipboard!"
           />
         }
@@ -58,7 +63,6 @@ export const OpaPolicyPage = () => {
           style={theme.palette.type === 'dark' ? a11yDark : coy}
           customStyle={{ background: 'inherit', fontSize: '110%' }}
           showLineNumbers
-          
         >
           {policy?.opaPolicyContent ?? ''}
         </SyntaxHighlighter>
