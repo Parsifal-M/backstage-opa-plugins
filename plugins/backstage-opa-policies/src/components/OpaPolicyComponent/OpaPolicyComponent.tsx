@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  CodeSnippet,
-  Content,
-  InfoCard,
-  Progress,
-} from '@backstage/core-components';
+import { Content, InfoCard, Progress } from '@backstage/core-components';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { opaPolicyBackendApiRef, OpaPolicy } from '../../api/types';
 import { useApi, alertApiRef } from '@backstage/core-plugin-api';
 import { useEntity } from '@backstage/plugin-catalog-react';
+import { a11yDark, dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export const OpaPolicyPage = () => {
   const [policy, setPolicy] = useState<OpaPolicy | null>(null);
@@ -48,13 +45,13 @@ export const OpaPolicyPage = () => {
         title={`${entity.metadata.name} OPA Policy`}
         data-testid="opa-policy-card"
       >
-        <CodeSnippet
-          text={policy?.opaPolicyContent ?? ''}
+        <SyntaxHighlighter
           language="rego"
-          showLineNumbers
-          showCopyCodeButton
+          style={a11yDark}
           customStyle={{ background: 'inherit', fontSize: '110%' }}
-        />
+        >
+          {policy?.opaPolicyContent}
+        </SyntaxHighlighter>
       </InfoCard>
     </Content>
   );
