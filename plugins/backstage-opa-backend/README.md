@@ -6,9 +6,9 @@ A backend plugin for Backstage, this plugin integrates with the Open Policy Agen
 
 It's a dependency of the following plugins:
 
-- [OPA Entity Checker](../opa-entity-checker/introduction.md#keep-your-entity-data-in-check-with-opa-entity-checker)
-- [OPA Policies](../opa-policies/introduction.md)
-- [OPA Authz React](../opa-authz-react/introduction.md)
+- [OPA Entity Checker](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-entity-checker/introduction?id=keep-your-entity-data-in-check-with-opa-entity-checker)
+- [OPA Policies](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-policies/introduction?id=opa-policies-plugin-overview)
+- [OPA Authz React](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-authz-react/introduction?id=opa-authz-react)
 
 By itself, this plugin does not provide any user-facing features.
 
@@ -18,11 +18,11 @@ By itself, this plugin does not provide any user-facing features.
 
 The only pre-requisites to use this plugin is that you have set up an OPA server. You can find more information on how to do that [here](https://www.openpolicyagent.org/docs/latest/deployments/). And you have a Backstage instance running. More info on how to do that [here](https://backstage.io/docs/getting-started).
 
-Or, you can check [these docs](../../docs/deploying-opa/deploying-opa.md#deploying-opa) for a quick guide on how to deploy OPA as a sidecar to your Backstage instance and add policies to it.
+Or, you can check [these docs](https://parsifal-m.github.io/backstage-opa-plugins/#/deploying-opa/deploying-opa?id=how-to-deploy-opa) for a quick guide on how to deploy OPA as a sidecar to your Backstage instance and add policies to it.
 
 ## Installation
 
-This plugin is currently used by the [backstage-opa-entity-checker](../backstage-opa-entity-checker/README.md), and the [backstage-opa-policies](../backstage-opa-policies/README.md) plugins. You can install it by running the following command:
+This plugin is currently used by the [backstage-opa-entity-checker](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-entity-checker/introduction?id=keep-your-entity-data-in-check-with-opa-entity-checker), and the [backstage-opa-policies](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-policies/introduction?id=opa-policies-plugin-overview) plugins. You can install it by running the following command:
 
 Start with installing the package:
 
