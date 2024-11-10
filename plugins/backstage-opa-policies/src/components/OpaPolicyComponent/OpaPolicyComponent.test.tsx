@@ -26,13 +26,13 @@ const mockAlertApi = {
 const mockOpaBackendApi = {
   getPolicyFromRepo: jest
     .fn()
-    .mockResolvedValue({ opaPolicyContent: 'test-policy-content' }),
+    .mockResolvedValue({ opaPolicyContent: 'policy' }),
 };
 
 describe('OpaPolicyPage', () => {
   it('renders without crashing', async () => {
     mockOpaBackendApi.getPolicyFromRepo.mockResolvedValueOnce({
-      opaPolicyContent: 'test-policy-content',
+      opaPolicyContent: 'policy',
     });
     await act(async () => {
       renderInTestApp(
@@ -47,6 +47,6 @@ describe('OpaPolicyPage', () => {
       );
     });
 
-    expect(await screen.findByText('test-policy-content')).toBeInTheDocument();
+    expect(await screen.findByText('policy')).toBeInTheDocument();
   });
 });
