@@ -6,7 +6,7 @@ import { entityCheckerServiceRef} from "@parsifal-m/plugin-opa-backend/src/plugi
 import {CatalogOPAEntityValidator} from "./processor";
 
 export const catalogModuleEntityChecker = createBackendModule({
-  pluginId: 'opa',
+  pluginId: 'catalog',
   moduleId: 'entity-checker',
   register(reg) {
     reg.registerInit({

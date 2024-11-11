@@ -1,0 +1,3 @@
+GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.entity-checker.opa/good-entity=false
+Content-Type: 'application/json'
+Authorization: Bearer qCuOl5a0shVtYNV1SprEZ1TS+Zh3vP5z
