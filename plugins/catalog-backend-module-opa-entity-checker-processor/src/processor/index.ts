@@ -1,0 +1,2 @@
+export {CatalogOPAEntityValidator} from "./CatalogOPAEntityValidator";
+

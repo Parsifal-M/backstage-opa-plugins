@@ -1,7 +1,6 @@
 import express from 'express';
 import Router from 'express-promise-router';
 import {
-  DiscoveryService,
   HttpAuthService,
   LoggerService,
   UrlReaderService,
@@ -16,7 +15,6 @@ import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 export type RouterOptions = {
   logger: LoggerService;
   config: Config;
-  discovery: DiscoveryService;
   urlReader: UrlReaderService;
   httpAuth: HttpAuthService;
   userInfo: UserInfoService;
