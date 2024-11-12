@@ -42,6 +42,7 @@ export const opaPlugin = createBackendPlugin({
         httpAuth: coreServices.httpAuth,
         urlReader: coreServices.urlReader,
         userInfo: coreServices.userInfo,
+        opaEntityChecker: entityCheckerServiceRef,
       },
       async init({
         config,
@@ -50,6 +51,7 @@ export const opaPlugin = createBackendPlugin({
         httpAuth,
         urlReader,
         userInfo,
+        opaEntityChecker,
       }) {
         httpRouter.use(
           await createRouter({
@@ -58,6 +60,7 @@ export const opaPlugin = createBackendPlugin({
             httpAuth,
             urlReader,
             userInfo,
+            opaEntityChecker,
           }),
         );
 
