@@ -22,16 +22,18 @@ export class CatalogOPAEntityValidator implements CatalogProcessor {
   }
 
   async preProcessEntity(entity: Entity): Promise<Entity> {
+    // This processor doesn't validate:
+    // * locations, those are not meant to be user facing as they originate from providers (GitLab, GitHub, etc.)
+    // * Users, those are also meant to be added by external providers
+    if (['location', 'user'].includes(entity.kind.toLowerCase())) {
+      return entity;
+    }
+
     return await this.api
       .checkEntity({
-        entityMetadata: JSON.stringify(entity),
+        entityMetadata: entity,
       })
       .then(opaResult => {
-        // This processor doesn't validate locations, those are not meant to be user facing as they originate from providers (GitLab, GitHub, etc.)
-        if (entity.kind.toLowerCase() === 'location') {
-          return entity;
-        }
-
         this.logger.debug(
           `CatalogOPAEntityValidator Processing entity ${
             entity.metadata.name

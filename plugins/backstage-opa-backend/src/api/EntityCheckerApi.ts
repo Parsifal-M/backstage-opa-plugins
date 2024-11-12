@@ -1,12 +1,13 @@
 import fetch from 'node-fetch';
 import { LoggerService } from '@backstage/backend-plugin-api';
+import { Entity } from '@backstage/catalog-model';
 
 export interface EntityCheckerApi {
   checkEntity(options: checkEntityOptions): Promise<OpaEntityCheckResult>;
 }
 
 export type checkEntityOptions = {
-  entityMetadata: string;
+  entityMetadata: Entity;
 };
 
 export type EntityCheckerConfig = {
@@ -74,7 +75,7 @@ export class EntityCheckerApiImpl implements EntityCheckerApi {
     options: checkEntityOptions,
   ): Promise<OpaEntityCheckResult> {
     const logger = this.config.logger;
-    const entityMetadata = options;
+    const entityMetadata = options.entityMetadata;
 
     if (!entityMetadata) {
       logger.error('Entity metadata is missing!');
