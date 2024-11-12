@@ -4853,6 +4853,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/plugin-catalog-backend-module-unprocessed@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@backstage/plugin-catalog-backend-module-unprocessed@npm:0.5.1"
+  dependencies:
+    "@backstage/backend-common": "npm:^0.25.0"
+    "@backstage/backend-plugin-api": "npm:^1.0.1"
+    "@backstage/catalog-model": "npm:^1.7.0"
+    "@backstage/errors": "npm:^1.2.4"
+    "@backstage/plugin-auth-node": "npm:^0.5.3"
+    "@backstage/plugin-catalog-node": "npm:^1.13.1"
+    "@backstage/plugin-catalog-unprocessed-entities-common": "npm:^0.0.4"
+    "@backstage/plugin-permission-common": "npm:^0.8.1"
+    express-promise-router: "npm:^4.1.1"
+    knex: "npm:^3.0.0"
+  checksum: 10/6f99725e471f2512f15d0995dd9674570498924bd51a0e3b72d0174609fbedd05fae294ed0e498a3bd6fd316a92032034865fa8205f56d780e6c6a9282735b07
+  languageName: node
+  linkType: hard
+
 "@backstage/plugin-catalog-backend@npm:^1.27.0":
   version: 1.27.0
   resolution: "@backstage/plugin-catalog-backend@npm:1.27.0"
@@ -5031,6 +5049,40 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10/5c6a6ce00cde49deb4cfdfca327ffa6300f938b4726b041c167a268f80020aae8cb1c6fdfa0ad836081cd434159cbc2df000189c988148d78d0764b7c5ebaf52
+  languageName: node
+  linkType: hard
+
+"@backstage/plugin-catalog-unprocessed-entities-common@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@backstage/plugin-catalog-unprocessed-entities-common@npm:0.0.4"
+  dependencies:
+    "@backstage/plugin-permission-common": "npm:^0.8.1"
+  checksum: 10/8a672f8317ad36922f54849dd9ff53572b4b57600f3e6f9003483b95e6e1116cb624f14f13229e04c7f4bf1e95ea0b799c3539284aa4c4ebd761551989b39b8b
+  languageName: node
+  linkType: hard
+
+"@backstage/plugin-catalog-unprocessed-entities@npm:^0.2.9":
+  version: 0.2.9
+  resolution: "@backstage/plugin-catalog-unprocessed-entities@npm:0.2.9"
+  dependencies:
+    "@backstage/catalog-model": "npm:^1.7.0"
+    "@backstage/core-components": "npm:^0.15.1"
+    "@backstage/core-plugin-api": "npm:^1.10.0"
+    "@backstage/errors": "npm:^1.2.4"
+    "@material-ui/core": "npm:^4.9.13"
+    "@material-ui/icons": "npm:^4.9.1"
+    "@material-ui/lab": "npm:^4.0.0-alpha.60"
+    luxon: "npm:^3.5.0"
+    react-use: "npm:^17.2.4"
+  peerDependencies:
+    "@types/react": ^16.13.1 || ^17.0.0 || ^18.0.0
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-router-dom: 6.0.0-beta.0 || ^6.3.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/33eca170d5b2299380255417841bec1133bece1207d935d98d40fc557b159cd943b3afd8503d807b2f32d21105385d4fb0051a427a718c87bf679354d1b06bd0
   languageName: node
   linkType: hard
 
@@ -8527,7 +8579,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@material-ui/lab@npm:4.0.0-alpha.61, @material-ui/lab@npm:^4.0.0-alpha.61":
+"@material-ui/lab@npm:4.0.0-alpha.61, @material-ui/lab@npm:^4.0.0-alpha.60, @material-ui/lab@npm:^4.0.0-alpha.61":
   version: 4.0.0-alpha.61
   resolution: "@material-ui/lab@npm:4.0.0-alpha.61"
   dependencies:
@@ -15053,6 +15105,7 @@ __metadata:
     "@backstage/plugin-catalog-graph": "npm:^0.4.11"
     "@backstage/plugin-catalog-import": "npm:^0.12.5"
     "@backstage/plugin-catalog-react": "npm:^1.14.0"
+    "@backstage/plugin-catalog-unprocessed-entities": "npm:^0.2.9"
     "@backstage/plugin-org": "npm:^0.6.31"
     "@backstage/plugin-permission-react": "npm:^0.4.27"
     "@backstage/plugin-scaffolder": "npm:^1.26.0"
@@ -15845,6 +15898,7 @@ __metadata:
     "@backstage/plugin-catalog-backend-module-github": "npm:^0.7.5"
     "@backstage/plugin-catalog-backend-module-github-org": "npm:^0.3.2"
     "@backstage/plugin-catalog-backend-module-scaffolder-entity-model": "npm:^0.2.1"
+    "@backstage/plugin-catalog-backend-module-unprocessed": "npm:^0.5.1"
     "@backstage/plugin-catalog-common": "npm:^1.1.0"
     "@backstage/plugin-permission-backend": "npm:^0.5.50"
     "@backstage/plugin-permission-common": "npm:^0.8.1"
@@ -20525,7 +20579,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-promise-router@npm:^4.1.0":
+"express-promise-router@npm:^4.1.0, express-promise-router@npm:^4.1.1":
   version: 4.1.1
   resolution: "express-promise-router@npm:4.1.1"
   dependencies:
@@ -25765,7 +25819,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:^3.0.0, luxon@npm:^3.2.1":
+"luxon@npm:^3.0.0, luxon@npm:^3.2.1, luxon@npm:^3.5.0":
   version: 3.5.0
   resolution: "luxon@npm:3.5.0"
   checksum: 10/48f86e6c1c96815139f8559456a3354a276ba79bcef0ae0d4f2172f7652f3ba2be2237b0e103b8ea0b79b47715354ac9fac04eb1db3485dcc72d5110491dd47f

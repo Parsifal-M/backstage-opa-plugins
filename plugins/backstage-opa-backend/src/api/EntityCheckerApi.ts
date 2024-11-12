@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import {LoggerService} from "@backstage/backend-plugin-api";
 
 export interface EntityCheckerApi {
-  checkEntity(options: checkEntityOptions): Promise<OpaResult>
+  checkEntity(options: checkEntityOptions): Promise<OpaEntityCheckResult>
 }
 
 export type checkEntityOptions = {
@@ -15,16 +15,44 @@ export type EntityCheckerConfig = {
   entityCheckerEntrypoint: string | undefined,
 }
 
-export interface OpaResult {
-  good_entity: boolean;
-  result?: EntityResult[];
+export interface OpaEntityCheckResult {
+  result?: OPAResult[];
 }
 
-export interface EntityResult {
+export interface OPAResult {
   id?: string;
   check_title?: string;
   level: 'error' | 'warning' | 'info';
   message: string;
+}
+
+/**
+ * countResultByLevel is a utility function that can be used tha generate statics about policy results
+ * @param arr
+ */
+export function countResultByLevel(arr: OPAResult[]): Map<string, number> {
+  return arr.reduce((acc: Map<string, number>, val) => {
+    const count = acc.get(val.level) || 0;
+    acc.set(val.level, count + 1);
+    return acc;
+  }, new Map<string, number>());
+}
+
+/**
+ * determineOverallStatus is meant to be used in concision with countResultByLevel, the status is which ever >0 given a priority list
+ * @param levelCounts
+ * @param priorityOrder
+ */
+export function determineOverallStatus(
+  levelCounts: Map<string, number>,
+  priorityOrder: string[],
+): string {
+  for (const level of priorityOrder) {
+    if (levelCounts.get(level) && levelCounts.get(level)! > 0) {
+      return level;
+    }
+  }
+  return 'pass'; // Default to 'pass'
 }
 
 export class EntityCheckerApiImpl implements EntityCheckerApi{
@@ -42,7 +70,7 @@ export class EntityCheckerApiImpl implements EntityCheckerApi{
     }
   }
 
-  async checkEntity(options: checkEntityOptions): Promise<OpaResult> {
+  async checkEntity(options: checkEntityOptions): Promise<OpaEntityCheckResult> {
     const logger = this.config.logger;
     const entityMetadata = options;
 
@@ -52,16 +80,15 @@ export class EntityCheckerApiImpl implements EntityCheckerApi{
     }
 
     const opaUrl = `${this.config.opaBaseUrl}/v1/data/${this.config.entityCheckerEntrypoint}`;
-    logger.debug(`Sending entity metadata to OPA: ${entityMetadata}`);
-    const opaResponse = await fetch(opaUrl, {
+    logger.debug(`Sending entity metadata to OPA: ${JSON.stringify(entityMetadata)}`);
+    return await fetch(opaUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ input: entityMetadata }),
-    });
-    const opaEntityCheckerResponse = await opaResponse.json() as OpaResult;
-    logger.debug(`Received response from OPA: ${opaEntityCheckerResponse.result}`);
-    return opaEntityCheckerResponse;
+    }).then(response => {
+      return response.json() as Promise<OpaEntityCheckResult>;
+    })
   }
 }

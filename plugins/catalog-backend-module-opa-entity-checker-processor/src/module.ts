@@ -1,4 +1,5 @@
 import {
+  coreServices,
   createBackendModule,
 } from '@backstage/backend-plugin-api';
 import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
@@ -12,10 +13,11 @@ export const catalogModuleEntityChecker = createBackendModule({
     reg.registerInit({
       deps: {
         catalog: catalogProcessingExtensionPoint,
+        logger: coreServices.logger,
         opa: entityCheckerServiceRef,
       },
-      async init({ catalog, opa }) {
-        catalog.addProcessor(new CatalogOPAEntityValidator(opa))
+      async init({ catalog, logger, opa }) {
+        catalog.addProcessor(new CatalogOPAEntityValidator(logger, opa))
       },
     });
   },
