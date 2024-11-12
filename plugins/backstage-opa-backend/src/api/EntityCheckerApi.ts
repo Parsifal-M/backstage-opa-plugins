@@ -55,7 +55,7 @@ export function determineOverallStatus(
   return 'pass'; // Default to 'pass'
 }
 
-export class EntityCheckerApiImpl implements EntityCheckerApi{
+export class EntityCheckerApiImpl implements EntityCheckerApi {
   constructor(private readonly config: EntityCheckerConfig) {
     const logger = this.config.logger;
 
