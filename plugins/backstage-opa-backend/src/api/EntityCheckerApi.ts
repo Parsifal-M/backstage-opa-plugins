@@ -1,19 +1,19 @@
-import fetch from "node-fetch";
-import {LoggerService} from "@backstage/backend-plugin-api";
+import fetch from 'node-fetch';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 export interface EntityCheckerApi {
-  checkEntity(options: checkEntityOptions): Promise<OpaEntityCheckResult>
+  checkEntity(options: checkEntityOptions): Promise<OpaEntityCheckResult>;
 }
 
 export type checkEntityOptions = {
-  entityMetadata: string,
-}
+  entityMetadata: string;
+};
 
 export type EntityCheckerConfig = {
-  logger: LoggerService,
-  opaBaseUrl: string | undefined,
-  entityCheckerEntrypoint: string | undefined,
-}
+  logger: LoggerService;
+  opaBaseUrl: string | undefined;
+  entityCheckerEntrypoint: string | undefined;
+};
 
 export interface OpaEntityCheckResult {
   result?: OPAResult[];
@@ -70,7 +70,9 @@ export class EntityCheckerApiImpl implements EntityCheckerApi {
     }
   }
 
-  async checkEntity(options: checkEntityOptions): Promise<OpaEntityCheckResult> {
+  async checkEntity(
+    options: checkEntityOptions,
+  ): Promise<OpaEntityCheckResult> {
     const logger = this.config.logger;
     const entityMetadata = options;
 
@@ -80,7 +82,9 @@ export class EntityCheckerApiImpl implements EntityCheckerApi {
     }
 
     const opaUrl = `${this.config.opaBaseUrl}/v1/data/${this.config.entityCheckerEntrypoint}`;
-    logger.debug(`Sending entity metadata to OPA: ${JSON.stringify(entityMetadata)}`);
+    logger.debug(
+      `Sending entity metadata to OPA: ${JSON.stringify(entityMetadata)}`,
+    );
     return await fetch(opaUrl, {
       method: 'POST',
       headers: {
@@ -89,6 +93,6 @@ export class EntityCheckerApiImpl implements EntityCheckerApi {
       body: JSON.stringify({ input: entityMetadata }),
     }).then(response => {
       return response.json() as Promise<OpaEntityCheckResult>;
-    })
+    });
   }
 }

@@ -1,6 +1,6 @@
 import express from 'express';
 import { LoggerService } from '@backstage/backend-plugin-api';
-import {EntityCheckerApi} from "../../api/EntityCheckerApi";
+import { EntityCheckerApi } from '../../api/EntityCheckerApi';
 
 export const entityCheckerRouter = (
   logger: LoggerService,
@@ -16,8 +16,8 @@ export const entityCheckerRouter = (
     }
 
     try {
-      const opaResponse = await opa.checkEntity(entityMetadata)
-      return res.json(opaResponse)
+      const opaResponse = await opa.checkEntity(entityMetadata);
+      return res.json(opaResponse);
     } catch (error) {
       logger.error(
         'An error occurred trying to send entity metadata to OPA:',

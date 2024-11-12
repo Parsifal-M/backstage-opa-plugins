@@ -22,5 +22,5 @@ https://backstage.io/docs/features/software-catalog/extending-the-model/#adding-
 
 ## Further work
 
-* Use the notification backend to notify owner of errors or warning on entities https://backstage.io/docs/notifications/
-* Provide an analytics panel that can be added to a group to list their entities that failed validation
+- Use the notification backend to notify owner of errors or warning on entities https://backstage.io/docs/notifications/
+- Provide an analytics panel that can be added to a group to list their entities that failed validation

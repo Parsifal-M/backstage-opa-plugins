@@ -1,10 +1,12 @@
 import {
   coreServices,
-  createBackendPlugin, createServiceFactory, createServiceRef
+  createBackendPlugin,
+  createServiceFactory,
+  createServiceRef,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service';
-import {catalogServiceRef} from '@backstage/plugin-catalog-node/alpha';
-import {EntityCheckerApi, EntityCheckerApiImpl} from "./api/EntityCheckerApi";
+import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import { EntityCheckerApi, EntityCheckerApiImpl } from './api/EntityCheckerApi';
 
 /**
  * entityCheckerServiceRef expose the OPA Entity Checker implementation so that it can be used by other plugins
@@ -12,20 +14,23 @@ import {EntityCheckerApi, EntityCheckerApiImpl} from "./api/EntityCheckerApi";
 export const entityCheckerServiceRef = createServiceRef<EntityCheckerApi>({
   id: 'opa.entity-checker',
   scope: 'plugin',
-  defaultFactory: async service => createServiceFactory({
-    service: service,
-    deps: {
-      logger: coreServices.logger,
-      config: coreServices.rootConfig,
-    },
-    async factory({logger, config}) {
-      return new EntityCheckerApiImpl({
-        logger: logger,
-        opaBaseUrl: config.getOptionalString('opaClient.baseUrl'),
-        entityCheckerEntrypoint: config.getOptionalString('opaClient.policies.entityChecker.entrypoint')
-      })
-    }
-  })
+  defaultFactory: async service =>
+    createServiceFactory({
+      service: service,
+      deps: {
+        logger: coreServices.logger,
+        config: coreServices.rootConfig,
+      },
+      async factory({ logger, config }) {
+        return new EntityCheckerApiImpl({
+          logger: logger,
+          opaBaseUrl: config.getOptionalString('opaClient.baseUrl'),
+          entityCheckerEntrypoint: config.getOptionalString(
+            'opaClient.policies.entityChecker.entrypoint',
+          ),
+        });
+      },
+    }),
 });
 
 export const opaPlugin = createBackendPlugin({

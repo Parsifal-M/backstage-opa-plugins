@@ -10040,8 +10040,13 @@ __metadata:
   dependencies:
     "@backstage/backend-plugin-api": "npm:^1.0.1"
     "@backstage/backend-test-utils": "npm:^1.0.1"
+    "@backstage/catalog-model": "npm:^1.7.0"
     "@backstage/cli": "npm:^0.28.0"
+    "@backstage/plugin-catalog-node": "npm:^1.13.1"
+    "@parsifal-m/plugin-opa-backend": "workspace:^"
+    "@types/lodash": "npm:^4"
     "@types/lodash-es": "npm:^4.17.12"
+    lodash: "npm:^4.17.21"
     lodash-es: "npm:^4.17.21"
   languageName: unknown
   linkType: soft
@@ -10076,7 +10081,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parsifal-m/plugin-opa-backend@workspace:*, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
+"@parsifal-m/plugin-opa-backend@workspace:*, @parsifal-m/plugin-opa-backend@workspace:^, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend"
   dependencies:
@@ -13624,7 +13629,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:*":
+"@types/lodash@npm:*, @types/lodash@npm:^4":
   version: 4.17.13
   resolution: "@types/lodash@npm:4.17.13"
   checksum: 10/ddb34e20810c71be2d9445bcc4b64ec25b83976738454de709854b79c7f655b03704b76235445699956d65012987720e0e429a35489de65495cdb5420202d905

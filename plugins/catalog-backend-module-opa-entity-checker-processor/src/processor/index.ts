@@ -1,2 +1,1 @@
-export {CatalogOPAEntityValidator} from "./CatalogOPAEntityValidator";
-
+export { CatalogOPAEntityValidator } from './CatalogOPAEntityValidator';

@@ -1,10 +1,10 @@
-import {mockServices, ServiceMock} from '@backstage/backend-test-utils';
+import { mockServices, ServiceMock } from '@backstage/backend-test-utils';
 import express from 'express';
 import request from 'supertest';
 import { entityCheckerRouter } from './entityChecker';
 import fetch from 'node-fetch';
-import {EntityCheckerApiImpl} from "../../api/EntityCheckerApi";
-import {LoggerService} from "@backstage/backend-plugin-api";
+import { EntityCheckerApiImpl } from '../../api/EntityCheckerApi';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 jest.mock('node-fetch');
 const { Response } = jest.requireActual('node-fetch');
@@ -22,7 +22,7 @@ describe('entityCheckerRouter', () => {
       logger: mockLogger,
       opaBaseUrl: 'http://localhost:8181',
       entityCheckerEntrypoint: 'entityCheckerEntrypoint',
-    })
+    });
 
     const router = entityCheckerRouter(mockLogger, entityCheckerApi);
     app = express().use(express.json()).use(router);
@@ -56,9 +56,7 @@ describe('entityCheckerRouter', () => {
     });
 
     it('returns 500 if entity metadata is missing', async () => {
-      const res = await request(app)
-        .post('/entity-checker')
-        .send({});
+      const res = await request(app).post('/entity-checker').send({});
 
       expect(res.status).toEqual(500);
       expect(mockLogger.error).toHaveBeenCalledWith(

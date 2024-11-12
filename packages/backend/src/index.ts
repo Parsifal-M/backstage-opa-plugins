@@ -21,5 +21,9 @@ backend.add(import('@backstage/plugin-search-backend-module-techdocs/alpha'));
 backend.add(import('@backstage/plugin-techdocs-backend/alpha'));
 // backend.add(import('@internal/backstage-plugin-opa-demo-backend'));
 backend.add(import('@backstage/plugin-catalog-backend-module-unprocessed'));
-backend.add(import('@parsifal-m/backstage-plugin-catalog-backend-module-entity-checker-processor'));
+backend.add(
+  import(
+    '@parsifal-m/backstage-plugin-catalog-backend-module-entity-checker-processor'
+  ),
+);
 backend.start();

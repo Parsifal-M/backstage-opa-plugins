@@ -1,29 +1,38 @@
-import {countResultByLevel, determineOverallStatus, EntityCheckerApiImpl, OPAResult} from "./EntityCheckerApi";
-import {mockServices} from "@backstage/backend-test-utils";
+import {
+  countResultByLevel,
+  determineOverallStatus,
+  EntityCheckerApiImpl,
+  OPAResult,
+} from './EntityCheckerApi';
+import { mockServices } from '@backstage/backend-test-utils';
 
 describe('EntityCheckerApiImpl', () => {
   it('should error if OPA package is not set', async () => {
-    const mockLogger = mockServices.logger.mock()
+    const mockLogger = mockServices.logger.mock();
     const config = mockServices.rootConfig({
       data: {
         opaClient: {
           baseUrl: 'http://localhost:8181',
-
         },
       },
     });
 
-    const error = () => {new EntityCheckerApiImpl({
-      logger: mockLogger,
-      opaBaseUrl: config.getOptionalString('opaClient.baseUrl'),
-      entityCheckerEntrypoint: config.getOptionalString('opaClient.policies.entityChecker.entrypoint')
-    })}
+    const error = () => {
+      /* eslint-disable no-new */
+      new EntityCheckerApiImpl({
+        logger: mockLogger,
+        opaBaseUrl: config.getOptionalString('opaClient.baseUrl'),
+        entityCheckerEntrypoint: config.getOptionalString(
+          'opaClient.policies.entityChecker.entrypoint',
+        ),
+      });
+    };
 
-    expect(error).toThrow("OPA package not set or missing!");
+    expect(error).toThrow('OPA package not set or missing!');
   });
 
   it('should error url if OPA not set', async () => {
-    const mockLogger = mockServices.logger.mock()
+    const mockLogger = mockServices.logger.mock();
     const config = mockServices.rootConfig({
       data: {
         opaClient: {
@@ -36,18 +45,20 @@ describe('EntityCheckerApiImpl', () => {
       },
     });
 
-    const error = () => {new EntityCheckerApiImpl({
-      logger: mockLogger,
-      opaBaseUrl: config.getOptionalString('opaClient.baseUrl'),
-      entityCheckerEntrypoint: config.getOptionalString('opaClient.policies.entityChecker.entrypoint')
-    })}
+    const error = () => {
+      /* eslint-disable no-new */
+      new EntityCheckerApiImpl({
+        logger: mockLogger,
+        opaBaseUrl: config.getOptionalString('opaClient.baseUrl'),
+        entityCheckerEntrypoint: config.getOptionalString(
+          'opaClient.policies.entityChecker.entrypoint',
+        ),
+      });
+    };
 
-    expect(error).toThrow("OPA URL not set or missing!");
+    expect(error).toThrow('OPA URL not set or missing!');
   });
-
-
-})
-
+});
 
 describe('countResultByLevel', () => {
   it('should count the occurrences of each level', () => {
@@ -100,9 +111,7 @@ describe('determineOverallStatus', () => {
   });
 
   it('should return "info" when there are no errors nor warnings', () => {
-    const levelCounts = new Map([
-      ['info', 3],
-    ]);
+    const levelCounts = new Map([['info', 3]]);
     const priorityOrder = ['error', 'warning', 'info'];
     expect(determineOverallStatus(levelCounts, priorityOrder)).toBe('info');
   });

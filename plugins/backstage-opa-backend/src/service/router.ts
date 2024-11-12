@@ -11,7 +11,7 @@ import { policyContentRouter } from './routers/policyContent';
 import { authzRouter } from './routers/authz';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
-import {EntityCheckerApi} from "../api/EntityCheckerApi";
+import { EntityCheckerApi } from '../api/EntityCheckerApi';
 
 export type RouterOptions = {
   logger: LoggerService;
@@ -25,7 +25,8 @@ export type RouterOptions = {
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, config, urlReader, httpAuth, userInfo, opaEntityChecker } = options;
+  const { logger, config, urlReader, httpAuth, userInfo, opaEntityChecker } =
+    options;
 
   const router = Router();
   router.use(express.json());

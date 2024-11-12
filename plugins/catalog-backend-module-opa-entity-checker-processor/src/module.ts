@@ -3,8 +3,8 @@ import {
   createBackendModule,
 } from '@backstage/backend-plugin-api';
 import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
-import { entityCheckerServiceRef} from "@parsifal-m/plugin-opa-backend/src/plugin";
-import {CatalogOPAEntityValidator} from "./processor";
+import { entityCheckerServiceRef } from '@parsifal-m/plugin-opa-backend';
+import { CatalogOPAEntityValidator } from './processor';
 
 export const catalogModuleEntityChecker = createBackendModule({
   pluginId: 'catalog',
@@ -17,7 +17,7 @@ export const catalogModuleEntityChecker = createBackendModule({
         opa: entityCheckerServiceRef,
       },
       async init({ catalog, logger, opa }) {
-        catalog.addProcessor(new CatalogOPAEntityValidator(logger, opa))
+        catalog.addProcessor(new CatalogOPAEntityValidator(logger, opa));
       },
     });
   },
