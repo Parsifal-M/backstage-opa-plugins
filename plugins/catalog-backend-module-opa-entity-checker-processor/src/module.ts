@@ -8,7 +8,7 @@ import { CatalogOPAEntityValidator } from './processor';
 
 export const catalogModuleEntityChecker = createBackendModule({
   pluginId: 'catalog',
-  moduleId: 'entity-checker',
+  moduleId: 'opa-entity-checker',
   register(reg) {
     reg.registerInit({
       deps: {
