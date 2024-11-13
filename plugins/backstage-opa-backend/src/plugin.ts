@@ -42,7 +42,6 @@ export const opaPlugin = createBackendPlugin({
         config: coreServices.rootConfig,
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
-        discovery: coreServices.discovery,
         auth: coreServices.auth,
         httpAuth: coreServices.httpAuth,
         urlReader: coreServices.urlReader,

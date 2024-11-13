@@ -1,7 +1,7 @@
 import express from 'express';
 import { LoggerService } from '@backstage/backend-plugin-api';
 import { EntityCheckerApi } from '../../api/EntityCheckerApi';
-import {Entity} from "@backstage/catalog-model";
+import { Entity } from '@backstage/catalog-model';
 
 export const entityCheckerRouter = (
   logger: LoggerService,
@@ -18,7 +18,7 @@ export const entityCheckerRouter = (
 
     try {
       const opaResponse = await opa.checkEntity({
-        entityMetadata: entityMetadata
+        entityMetadata: entityMetadata,
       });
       return res.json(opaResponse);
     } catch (error) {

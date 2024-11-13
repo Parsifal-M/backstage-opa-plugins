@@ -46,8 +46,8 @@ kind: Component
 metadata:
   namespace: default
   annotations:
-    open-policy-agent/entity-checker-violations-error-count: "2"
-    open-policy-agent/entity-checker-violations-warning-count: "1"
+    open-policy-agent/entity-checker-violations-error-count: '2'
+    open-policy-agent/entity-checker-violations-warning-count: '1'
     open-policy-agent/entity-checker-violations-status: error
 ```
 
@@ -58,8 +58,6 @@ GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotati
 Content-Type: 'application/json'
 Authorization: Bearer {{BACKSTAGE_TOKEN}}
 ```
-
-
 
 ## Join The Community
 
