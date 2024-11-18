@@ -8,8 +8,8 @@ import {
 } from '@parsifal-m/plugin-opa-backend';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
-const OPA_ENTITY_CHECKER_ANNOTATION_PREFIX =
-  'open-policy-agent/entity-checker-violations';
+export const OPA_ENTITY_CHECKER_ANNOTATION =
+  'open-policy-agent/entity-checker-violations-status';
 
 export class CatalogOPAEntityValidator implements CatalogProcessor {
   constructor(
@@ -44,6 +44,7 @@ export class CatalogOPAEntityValidator implements CatalogProcessor {
           return entity;
         }
 
+        // Determine and add the overall status annotation
         const violationStats = countResultByLevel(opaResult.result);
         this.logger.debug(
           `CatalogOPAEntityValidator Violation Stats for entity ${
@@ -51,17 +52,8 @@ export class CatalogOPAEntityValidator implements CatalogProcessor {
           } result:${JSON.stringify(violationStats)}`,
         );
         const annotations: { [name: string]: string } = {};
-        violationStats.forEach((count, level) => {
-          if (count > 0) {
-            // Only add annotation if count is greater than 0
-            annotations[
-              `${OPA_ENTITY_CHECKER_ANNOTATION_PREFIX}-${level}-count`
-            ] = count.toString();
-          }
-        });
 
-        // Determine and add the overall status annotation
-        annotations[`${OPA_ENTITY_CHECKER_ANNOTATION_PREFIX}-status`] =
+        annotations[`${OPA_ENTITY_CHECKER_ANNOTATION}`] =
           determineOverallStatus(violationStats, ['error', 'warning', 'info']);
 
         return merge(
