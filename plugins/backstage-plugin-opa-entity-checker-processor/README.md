@@ -1,8 +1,8 @@
 # Backstage OPA Backend Module Entity Processor
 
-When it comes to validating entries the Backend and Frontend plugins are great combo to bring validation errors to the user. However, this doesn't allow you to have the big picture of hom many entities in your catalog have fail the validation.
+Using the [OPA Entity Checker](https://github.com/Parsifal-M/backstage-opa-plugins/tree/main/plugins/backstage-opa-entity-checker#opa-entity-checker) is a great way to display and help your Backstage users know when their entity metadata is incorrect, however by using this processor it will allow you to create a better overview of entities that have validation errors by adding the annotation to them
 
-Then you can search entities by annotation using the API and get a list of all the entities that fails the validation.
+This allows you to, for example query the Backstage API for entities that have failed the policy validation
 
 ```http request
 GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-violations-status=error
@@ -10,17 +10,17 @@ Content-Type: 'application/json'
 Authorization: Bearer {{BACKSTAGE_TOKEN}}
 ```
 
-## Why annotation and Not Status updates
+## Why an annotation and not a status?
 
 Editing errors leads to new entities not to be process, which is not always what we want, some "warning" are acceptable and we do not want to break processing and add additional errors message since we already provide frontend plugin to display those error message in a nicer and mor compact way.
 
 Unfortunate, adding status that is not of the Error type is not supported yet.
 
-> The mechanics for how to emit custom statuses is not in place yet
+> Its currently not possible to emit custom statuses in Backstage.
 
-https://backstage.io/docs/features/software-catalog/extending-the-model/#adding-a-new-status-item-type
+You can read more in the Backstage documentation regarding this [here](https://backstage.io/docs/features/software-catalog/extending-the-model/#adding-a-new-status-item-type)
 
-## Further work
+## What's Next?
 
-- Use the notification backend to notify owner of errors or warning on entities https://backstage.io/docs/notifications/
+- Use the [notification backend](https://backstage.io/docs/notifications/) to notify owner(s) of errors or warning on entities
 - Provide an analytics panel that can be added to a group to list their entities that failed validation
