@@ -12,7 +12,7 @@ This document provides examples of inputs and outputs for the policy evaluation 
     "name": "catalog.entity.read"
   },
   "identity": {
-    "user": "parsifal-m",
+    "user": "user:default/parsifal-m",
     "claims": ["user:default/parsifal-m", "group:default/users"]
   }
 }
@@ -26,7 +26,7 @@ This document provides examples of inputs and outputs for the policy evaluation 
     "name": "catalog.entity.delete"
   },
   "identity": {
-    "user": "john-doe",
+    "user": "user:default/john-doe",
     "claims": [
       "user:default/john-doe",
       "group:default/admins",
