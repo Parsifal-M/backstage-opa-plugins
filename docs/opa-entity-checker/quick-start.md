@@ -192,7 +192,7 @@ opaClient:
 Run the following command to install the OPA Entity Checker Entity Processor in your Backstage project.
 
 ```bash
-yarn add --cwd packages/backend @parsifal-m/backstage-plugin-catalog-backend-module-entity-checker-processor
+yarn add --cwd packages/backend @parsifal-m/backstage-plugin-opa-entity-checker-processor
 ```
 
 Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
@@ -205,7 +205,7 @@ backend.add(import('@backstage/plugin-app-backend/alpha'));
 backend.add(import('@backstage/plugin-auth-backend'));
 // ..... other plugins
 backend.add(import('@parsifal-m/plugin-opa-backend'));
-+ backend.add(import('@parsifal-m/backstage-plugin-catalog-backend-module-entity-checker-processor));
++ backend.add(import('@parsifal-m/backstage-plugin-opa-entity-checker-processor'));
 ```
 
 ## Recommendations

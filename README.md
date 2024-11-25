@@ -28,7 +28,7 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 ### Entity Validation
 
-- [catalog-backend-module-opa-entity-checker-processor](./plugins/catalog-backend-module-opa-entity-checker-processor) - A Backend plugin that validates entities at ingestion time using the `backstage-opa-backend` and adds annotation to reflect the validation status.
+- [catalog-backend-module-opa-entity-checker-processor](./plugins/backstage-plugin-opa-entity-checker-processor) - A Backend plugin that validates entities at ingestion time using the `backstage-opa-backend` and adds annotation to reflect the validation status.
 
 ## Policies
 

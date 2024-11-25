@@ -46,8 +46,6 @@ kind: Component
 metadata:
   namespace: default
   annotations:
-    open-policy-agent/entity-checker-violations-error-count: '2'
-    open-policy-agent/entity-checker-violations-warning-count: '1'
     open-policy-agent/entity-checker-violations-status: error
 ```
 

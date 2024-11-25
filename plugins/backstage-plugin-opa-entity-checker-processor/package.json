@@ -1,5 +1,5 @@
 {
-  "name": "@parsifal-m/backstage-plugin-catalog-backend-module-entity-checker-processor",
+  "name": "@parsifal-m/backstage-plugin-opa-entity-checker-processor",
   "description": "The opa-entity-checker backend module for the catalog plugin.",
   "version": "0.1.0",
   "main": "src/index.ts",
@@ -24,7 +24,9 @@
     "OPA",
     "Open Policy Agent",
     "plugin",
-    "backend"
+    "backend",
+    "processor",
+    "catalog"
   ],
   "scripts": {
     "start": "backstage-cli package start",
