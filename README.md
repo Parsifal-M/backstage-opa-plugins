@@ -26,7 +26,7 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 ## Policies
 
-- [backstage-opa-policies](https://github.com/Parsifal-M/backstage-opa-policies#hello) - A collection of policies that can be used with the plugins in this repository. (WIP)
+- [backstage-opa-policies-templates](https://github.com/Parsifal-M/backstage-opa-policies-templates?tab=readme-ov-file#hello) - A collection of policies that can be used with the plugins in this repository. (WIP)
 
 ## Additional Documentation
 
