@@ -189,7 +189,7 @@ opaClient:
 
 ## Adding the Entity Processor
 
-Run the following command to install the OPA Entity Checker Entity Processor in your Backstage project.
+Run the following command to install the OPA Entity Checker Processor in your Backstage project.
 
 ```bash
 yarn add --cwd packages/backend @parsifal-m/backstage-plugin-opa-entity-checker-processor

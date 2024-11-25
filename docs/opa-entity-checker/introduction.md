@@ -34,9 +34,9 @@ see the details.
 
 ## Entity Processor Validation - Validate all entities always
 
-While the frontend validation allows nice feedback for users, only entities that are visited will be validated. After implementing new rules, you might wonder how many entities are now returning validation error.
+While the frontend validation allows for quick feedback, users will only see the feedback on visiting an entity. After implementing new rules, you might wonder how many entities are now returning validation error.
 
-This is where the catalog processor comes into play. When Backstage discover entities in your repositories it allows plugins called `porcessor` to validate and modify entities. The OPA Entity Checker Catalog Processor will validate your entities whenever they are ingested and add annotation reflecting it's result.
+This is where catalog processors comes into play. When you discover or import entities into the Backstage catalog, you can run `processors` to (in this case) validate and update entities. The OPA Entity Checker Catalog Processor will validate your entities when they are ingested into the catalog and add an annotation based on the evaluation of the policy!
 
 For instance, the final entity in Backstage might look like this:
 
@@ -49,7 +49,7 @@ metadata:
     open-policy-agent/entity-checker-violations-status: error
 ```
 
-This means that your validation reported 2 errors and 1 warning. The `status` of the validation is thus `error`. This can be very handy because now we have a way to query the catalogue to find those entities that violate validation.
+As you can see, an annotation of `open-policy-agent/entity-checker-violations-status: error` has been added to the entity, this is because after the processor ran and checked the metadata against the OPA policy it found a violation which is considered an `error`
 
 ```http request
 GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-violations-status=error
