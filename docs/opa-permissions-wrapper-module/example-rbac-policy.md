@@ -74,3 +74,10 @@ decision := conditional("scaffolder", "scaffolder-action", {"not": {"anyOf": [{
 	not is_admin
 }
 ```
+
+## Dynamic Policies
+
+Its also possible to have a dynamic policy setup, you can read a great blog post by Anders Eknert [Dynamic Policy Composition](https://www.styra.com/blog/dynamic-policy-composition-for-opa/) you can find a similar example of this setup
+[here](https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/policies/rbac_policy.rego) you'll notice the `imports` where we are importing other policies and routing decisions to them.
+
+There are also some great examples of this here [PlaTT Policy Template](https://github.com/ap-communications/platt-policy-template)
