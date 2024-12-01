@@ -3,7 +3,6 @@ package rbac_policy
 import rego.v1
 import data.catalog_rules
 import data.scaffolder_rules
-import data.http_rules
 
 default decision := {"result": "DENY"}
 
