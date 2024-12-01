@@ -1,4 +1,3 @@
-import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import {
   PolicyDecision,
   AuthorizeResult,
@@ -7,7 +6,10 @@ import {
   PermissionRuleParams,
 } from '@backstage/plugin-permission-common';
 import { OpaClient } from '../opa-client/opaClient';
-import { PolicyQuery } from '@backstage/plugin-permission-node';
+import {
+  PolicyQuery,
+  PolicyQueryUser,
+} from '@backstage/plugin-permission-node';
 import { PolicyEvaluationInput } from '../types';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
@@ -18,15 +20,15 @@ export const policyEvaluator = (
 ) => {
   return async (
     request: PolicyQuery,
-    user?: BackstageIdentityResponse,
+    user: PolicyQueryUser,
   ): Promise<PolicyDecision> => {
     const input: PolicyEvaluationInput = {
       permission: {
         name: request.permission.name,
       },
       identity: {
-        user: user?.identity.userEntityRef,
-        claims: user?.identity.ownershipEntityRefs ?? [],
+        user: user.info.userEntityRef,
+        claims: user.info.ownershipEntityRefs ?? [],
       },
     };
 

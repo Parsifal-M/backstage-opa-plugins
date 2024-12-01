@@ -1,8 +1,8 @@
-import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
 import { PolicyDecision } from '@backstage/plugin-permission-common';
 import {
   PermissionPolicy,
   PolicyQuery,
+  PolicyQueryUser,
 } from '@backstage/plugin-permission-node';
 import { OpaClient } from './opa-client';
 import { LoggerService } from '@backstage/backend-plugin-api';
@@ -19,7 +19,7 @@ export class OpaPermissionPolicy implements PermissionPolicy {
 
   async handle(
     request: PolicyQuery,
-    user?: BackstageIdentityResponse,
+    user: PolicyQueryUser,
   ): Promise<PolicyDecision> {
     const opaRbacPolicy = policyEvaluator(this.opaClient, this.logger);
     return await opaRbacPolicy(request, user);
