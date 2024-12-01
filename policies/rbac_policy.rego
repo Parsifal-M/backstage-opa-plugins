@@ -1,66 +1,44 @@
 package rbac_policy
 
 import rego.v1
+import data.catalog_rules
+import data.scaffolder_rules
+import data.http_rules
 
-# Helper method for constructing a conditional decision
-conditional(plugin_id, resource_type, conditions) := {
-	"result": "CONDITIONAL",
-	"pluginId": plugin_id,
-	"resourceType": resource_type,
-	"conditions": conditions,
-}
-
-default decision := {"result": "ALLOW"}
+default decision := {"result": "DENY"}
 
 permission := input.permission.name
-
 claims := input.identity.claims
 
-is_admin if "group:twocodersbrewing/maintainers" in claims
+is_admin if "group:default/maintainers" in claims
 
-# decision := {"result": "DENY"} if {
-# 	permission == "catalog.entity.create"
-# 	not is_admin
-# }
-
-# Conditional based on claims (groups a user belongs to) unless they are an admin
-decision := conditional("catalog", "catalog-entity", {"anyOf": [{
-	"resourceType": "catalog-entity",
-	"rule": "IS_ENTITY_OWNER",
-	"params": {"claims": claims},
-}]}) if {
-	permission == "catalog.entity.delete"
-	not is_admin
+# Admins have god mode
+decision := {"result": "ALLOW"} if {
+	is_admin
 }
 
-# Allow users to only see components unless they are an admin
-# decision := conditional("catalog", "catalog-entity", {"anyOf": [{
-# 	"resourceType": "catalog-entity",
-# 	"rule": "IS_ENTITY_KIND",
-# 	"params": {"kinds": ["API"]},
-# }]}) if {
-# 	permission == "catalog.entity.read"
-# 	not is_admin
-# }
+# Non-admins can only read components
+# Does not apply to admins
+decision := catalog_rules.catalog_entity_read_rule if {
+    permission == "catalog.entity.read"
+    not is_admin
+}
 
-# Scaffolder Permissions
+# Only owners of the entity can delete it
+# Does not apply to admins
+decision := catalog_rules.catalog_entity_delete_rule if {
+    permission == "catalog.entity.delete"
+    not is_admin
+}
 
-# Conditional based on scaffolder template tags unless they are an admin
-decision := conditional("scaffolder", "scaffolder-template", {"not": {"anyOf": [{
-	"resourceType": "scaffolder-template",
-	"rule": "HAS_TAG",
-	"params": {"tag": "admin"},
-}]}}) if {
+# Only admins can read templates with the admin tag
+decision := scaffolder_rules.scaffolder_entity_read_rule if {
 	permission == "scaffolder.template.parameter.read"
 	not is_admin
 }
 
-# Conditional based on scaffolder actionID tags unless they are an admin
-decision := conditional("scaffolder", "scaffolder-action", {"not": {"anyOf": [{
-	"resourceType": "scaffolder-action",
-	"rule": "HAS_ACTION_ID",
-	"params": {"actionId": "debug:log"},
-}]}}) if {
+# Only admins can execute the debug action
+decision := scaffolder_rules.scaffolder_entity_action_rule if {
 	permission == "scaffolder.action.execute"
 	not is_admin
 }
