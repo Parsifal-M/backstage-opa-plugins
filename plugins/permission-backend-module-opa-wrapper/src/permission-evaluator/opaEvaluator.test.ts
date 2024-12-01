@@ -1,13 +1,14 @@
 import { OpaClient } from '../opa-client/opaClient';
 import { LoggerService } from '@backstage/backend-plugin-api';
-import { PolicyQuery } from '@backstage/plugin-permission-node';
-import { BackstageIdentityResponse } from '@backstage/plugin-auth-node';
+import {
+  PolicyQuery,
+  PolicyQueryUser,
+} from '@backstage/plugin-permission-node';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
 import { policyEvaluator } from './opaEvaluator';
 
 jest.mock('../opa-client/opaClient');
-jest.mock('winston');
 jest.mock('@backstage/config');
 
 describe('policyEvaluator', () => {
@@ -46,13 +47,21 @@ describe('policyEvaluator', () => {
         resourceType: 'someResourceType',
       },
     };
-    const mockUser: BackstageIdentityResponse = {
+    const mockUser: PolicyQueryUser = {
       identity: {
-        userEntityRef: 'parsifal-m',
+        userEntityRef: 'user:default/parsifal-m',
         ownershipEntityRefs: ['user:default/parsifal-m', 'group:default/users'],
         type: 'user',
       },
       token: 'mockToken',
+      credentials: {
+        $$type: '@backstage/BackstageCredentials',
+        principal: 'user:default/parsifal-m',
+      },
+      info: {
+        userEntityRef: 'user:default/parsifal-m',
+        ownershipEntityRefs: ['user:default/parsifal-m', 'group:default/users'],
+      },
     };
     const mockopaEntryPoint = 'some/package/admin';
 
@@ -79,13 +88,21 @@ describe('policyEvaluator', () => {
         resourceType: 'someResourceType',
       },
     };
-    const mockUser: BackstageIdentityResponse = {
+    const mockUser: PolicyQueryUser = {
       identity: {
-        userEntityRef: 'parsifal-m',
+        userEntityRef: 'user:default/parsifal-m',
         ownershipEntityRefs: ['user:default/parsifal-m', 'group:default/users'],
         type: 'user',
       },
       token: 'mockToken',
+      credentials: {
+        $$type: '@backstage/BackstageCredentials',
+        principal: 'user:default/parsifal-m',
+      },
+      info: {
+        userEntityRef: 'user:default/parsifal-m',
+        ownershipEntityRefs: ['user:default/parsifal-m', 'group:default/users'],
+      },
     };
     const mockopaEntryPoint = 'some/package/admin';
 
