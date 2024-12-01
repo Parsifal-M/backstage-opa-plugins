@@ -12,13 +12,13 @@ conditional(plugin_id, resource_type, conditions) := {
 
 claims := input.identity.claims
 
-scaffolder_entity__read_rules := conditional("scaffolder", "scaffolder-template", {"not": {"anyOf": [{
+scaffolder_entity_read_admin_tag := conditional("scaffolder", "scaffolder-template", {"not": {"anyOf": [{
         "resourceType": "scaffolder-template",
         "rule": "HAS_TAG",
         "params": {"tag": "admin"},
     }]}})
 
-scaffolder_entity_action_rules := conditional("scaffolder", "scaffolder-action", {"not": {"anyOf": [{
+scaffolder_entity_action_debug_log := conditional("scaffolder", "scaffolder-action", {"not": {"anyOf": [{
         "resourceType": "scaffolder-action",
         "rule": "HAS_ACTION_ID",
         "params": {"actionId": "debug:log"},
