@@ -2,7 +2,10 @@ package catalog_rules
 
 import rego.v1
 
+default decision := {"result": "DENY"}
+
 claims := input.identity.claims
+permission := input.permission.name
 
 # Shared helper functions
 conditional(plugin_id, resource_type, conditions) := {
@@ -12,14 +15,18 @@ conditional(plugin_id, resource_type, conditions) := {
     "conditions": conditions,
 }
 
-catalog_entity_delete_rule := conditional("catalog", "catalog-entity", {"anyOf": [{
-        "resourceType": "catalog-entity",
-        "rule": "IS_ENTITY_OWNER",
-        "params": {"claims": claims},
-    }]})
+decision := conditional("catalog", "catalog-entity", {"anyOf": [{
+	"resourceType": "catalog-entity",
+	"rule": "IS_ENTITY_OWNER",
+	"params": {"claims": claims},
+}]}) if {
+	permission == "catalog.entity.delete"
+}
 
-catalog_entity_read_rules := conditional("catalog", "catalog-entity", {"anyOf": [{
+decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 		"resourceType": "catalog-entity",
 		"rule": "IS_ENTITY_KIND",
 		"params": {"kinds": ["Component"]},
-	}]})
+	}]}) if {
+		permission == "catalog.entity.read"
+}
