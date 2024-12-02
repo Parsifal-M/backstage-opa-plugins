@@ -1,3 +1,0 @@
-GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-violations-status=error
-Content-Type: 'application/json'
-Authorization: Bearer {{BACKSTAGE_TOKEN}}
