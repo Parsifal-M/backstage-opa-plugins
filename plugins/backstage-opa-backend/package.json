@@ -1,6 +1,6 @@
 {
   "name": "@parsifal-m/plugin-opa-backend",
-  "description": "Then opa backend plugin responsible to interact with the OPA server for validation and authorizations",
+  "description": "The opa backend plugin responsible for interacting with the OPA server for validation and authorisation requests",
   "version": "1.5.8",
   "main": "src/index.ts",
   "types": "src/index.ts",
