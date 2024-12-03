@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0
+
+### Minor Changes
+
+- ffd8c74: Add a new plugin that implements a catalog entity processor to validate entities during ingestion. The opa-backend was refactored to exposed the entity Checker Api as a service that can be used by other backend plugins.
+
 ## 1.4.8
 
 ### Patch Changes
