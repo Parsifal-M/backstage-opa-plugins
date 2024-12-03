@@ -187,6 +187,27 @@ opaClient:
       entrypoint: 'entity_checker/violation'
 ```
 
+## Adding the Entity Processor
+
+Run the following command to install the OPA Entity Checker Processor in your Backstage project.
+
+```bash
+yarn add --cwd packages/backend @parsifal-m/backstage-plugin-opa-entity-checker-processor
+```
+
+Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
+
+```diff
+import { createBackend } from '@backstage/backend-defaults';
+
+const backend = createBackend();
+backend.add(import('@backstage/plugin-app-backend/alpha'));
+backend.add(import('@backstage/plugin-auth-backend'));
+// ..... other plugins
+backend.add(import('@parsifal-m/plugin-opa-backend'));
++ backend.add(import('@parsifal-m/backstage-plugin-opa-entity-checker-processor'));
+```
+
 ## Recommendations
 
 I recommend using [Regal: A linter and language server for Rego](https://github.com/StyraInc/regal) to help you write your policies. It provides syntax highlighting, linting, and type checking for Rego files.

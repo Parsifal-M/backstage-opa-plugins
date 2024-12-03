@@ -4863,6 +4863,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/plugin-catalog-backend-module-unprocessed@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@backstage/plugin-catalog-backend-module-unprocessed@npm:0.5.1"
+  dependencies:
+    "@backstage/backend-common": "npm:^0.25.0"
+    "@backstage/backend-plugin-api": "npm:^1.0.1"
+    "@backstage/catalog-model": "npm:^1.7.0"
+    "@backstage/errors": "npm:^1.2.4"
+    "@backstage/plugin-auth-node": "npm:^0.5.3"
+    "@backstage/plugin-catalog-node": "npm:^1.13.1"
+    "@backstage/plugin-catalog-unprocessed-entities-common": "npm:^0.0.4"
+    "@backstage/plugin-permission-common": "npm:^0.8.1"
+    express-promise-router: "npm:^4.1.1"
+    knex: "npm:^3.0.0"
+  checksum: 10/6f99725e471f2512f15d0995dd9674570498924bd51a0e3b72d0174609fbedd05fae294ed0e498a3bd6fd316a92032034865fa8205f56d780e6c6a9282735b07
+  languageName: node
+  linkType: hard
+
 "@backstage/plugin-catalog-backend@npm:^1.27.0":
   version: 1.27.0
   resolution: "@backstage/plugin-catalog-backend@npm:1.27.0"
@@ -5041,6 +5059,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10/5c6a6ce00cde49deb4cfdfca327ffa6300f938b4726b041c167a268f80020aae8cb1c6fdfa0ad836081cd434159cbc2df000189c988148d78d0764b7c5ebaf52
+  languageName: node
+  linkType: hard
+
+"@backstage/plugin-catalog-unprocessed-entities-common@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@backstage/plugin-catalog-unprocessed-entities-common@npm:0.0.4"
+  dependencies:
+    "@backstage/plugin-permission-common": "npm:^0.8.1"
+  checksum: 10/8a672f8317ad36922f54849dd9ff53572b4b57600f3e6f9003483b95e6e1116cb624f14f13229e04c7f4bf1e95ea0b799c3539284aa4c4ebd761551989b39b8b
   languageName: node
   linkType: hard
 
@@ -10010,6 +10037,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@parsifal-m/backstage-plugin-opa-entity-checker-processor@npm:^0.1.0, @parsifal-m/backstage-plugin-opa-entity-checker-processor@workspace:plugins/backstage-plugin-opa-entity-checker-processor":
+  version: 0.0.0-use.local
+  resolution: "@parsifal-m/backstage-plugin-opa-entity-checker-processor@workspace:plugins/backstage-plugin-opa-entity-checker-processor"
+  dependencies:
+    "@backstage/backend-plugin-api": "npm:^1.0.1"
+    "@backstage/backend-test-utils": "npm:^1.0.1"
+    "@backstage/catalog-model": "npm:^1.7.0"
+    "@backstage/cli": "npm:^0.28.0"
+    "@backstage/plugin-catalog-node": "npm:^1.13.1"
+    "@parsifal-m/plugin-opa-backend": "workspace:^"
+    "@types/lodash": "npm:^4"
+    "@types/lodash-es": "npm:^4.17.12"
+    lodash: "npm:^4.17.21"
+    lodash-es: "npm:^4.17.21"
+  languageName: unknown
+  linkType: soft
+
 "@parsifal-m/plugin-dev-quotes-homepage@npm:^3.0.3":
   version: 3.0.4
   resolution: "@parsifal-m/plugin-dev-quotes-homepage@npm:3.0.4"
@@ -10022,13 +10066,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parsifal-m/plugin-opa-backend@workspace:*, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
+"@parsifal-m/plugin-opa-backend@workspace:*, @parsifal-m/plugin-opa-backend@workspace:^, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend"
   dependencies:
     "@backstage/backend-defaults": "npm:^0.5.1"
     "@backstage/backend-plugin-api": "npm:^1.0.1"
     "@backstage/backend-test-utils": "npm:^1.0.1"
+    "@backstage/catalog-model": "npm:^1.7.0"
     "@backstage/cli": "npm:^0.28.0"
     "@backstage/config": "npm:^1.2.0"
     "@backstage/errors": "npm:^1.2.4"
@@ -13584,6 +13629,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash-es@npm:^4.17.12":
+  version: 4.17.12
+  resolution: "@types/lodash-es@npm:4.17.12"
+  dependencies:
+    "@types/lodash": "npm:*"
+  checksum: 10/56b9a433348b11c31051c6fa9028540a033a08fb80b400c589d740446c19444d73b217cf1471d4036448ef686a83e8cf2a35d1fadcb3f2105f26701f94aebb07
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*, @types/lodash@npm:^4":
+  version: 4.17.13
+  resolution: "@types/lodash@npm:4.17.13"
+  checksum: 10/ddb34e20810c71be2d9445bcc4b64ec25b83976738454de709854b79c7f655b03704b76235445699956d65012987720e0e429a35489de65495cdb5420202d905
+  languageName: node
+  linkType: hard
+
 "@types/long@npm:^4.0.0":
   version: 4.0.2
   resolution: "@types/long@npm:4.0.2"
@@ -15850,6 +15911,7 @@ __metadata:
     "@backstage/plugin-catalog-backend-module-github": "npm:^0.7.5"
     "@backstage/plugin-catalog-backend-module-github-org": "npm:^0.3.2"
     "@backstage/plugin-catalog-backend-module-scaffolder-entity-model": "npm:^0.2.1"
+    "@backstage/plugin-catalog-backend-module-unprocessed": "npm:^0.5.1"
     "@backstage/plugin-catalog-common": "npm:^1.1.0"
     "@backstage/plugin-permission-backend": "npm:^0.5.50"
     "@backstage/plugin-permission-common": "npm:^0.8.1"
@@ -15863,6 +15925,7 @@ __metadata:
     "@backstage/plugin-search-backend-node": "npm:^1.3.3"
     "@backstage/plugin-techdocs-backend": "npm:^1.11.0"
     "@internal/backstage-plugin-opa-demo-backend": "npm:^0.1.0"
+    "@parsifal-m/backstage-plugin-opa-entity-checker-processor": "npm:^0.1.0"
     "@parsifal-m/plugin-opa-backend": "workspace:*"
     "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:*"
     "@types/dockerode": "npm:^3.3.0"
@@ -20529,7 +20592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-promise-router@npm:^4.1.0":
+"express-promise-router@npm:^4.1.0, express-promise-router@npm:^4.1.1":
   version: 4.1.1
   resolution: "express-promise-router@npm:4.1.1"
   dependencies:

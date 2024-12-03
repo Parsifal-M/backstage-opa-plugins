@@ -21,8 +21,14 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 ## Beta Plugins
 
+### Authz
+
 - [backstage-opa-authz-react](./plugins/opa-authz-react/README.md) - A frontend plugin that allows you to control the visibility of components based on the result of an OPA policy evaluation.
 - [backstage-opa-authz](./packages/opa-authz/README.md) - A node library that includes an OPA client and middleware to evaluate policies, allowing you to control authorization in your backstage backend plugins using OPA.
+
+### Entity Checker Processor
+
+- [catalog-backend-module-opa-entity-checker-processor](./plugins/catalog-backend-module-opa-entity-checker-processor) - A Backstage catalog processor that validates entities at ingestion time using the `backstage-opa-backend` plugin and adds an annotation based on the OPA policy evaluation result which can be `error`, `warning` or `info`
 
 ## Policies
 

@@ -1,8 +1,10 @@
-import { mockServices } from '@backstage/backend-test-utils';
+import { mockServices, ServiceMock } from '@backstage/backend-test-utils';
 import express from 'express';
 import request from 'supertest';
 import { entityCheckerRouter } from './entityChecker';
 import fetch from 'node-fetch';
+import { EntityCheckerApiImpl } from '../../api/EntityCheckerApi';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 jest.mock('node-fetch');
 const { Response } = jest.requireActual('node-fetch');
@@ -10,25 +12,19 @@ const { Response } = jest.requireActual('node-fetch');
 describe('entityCheckerRouter', () => {
   let app: express.Express;
   let mockFetch: jest.Mock;
+  let mockLogger: ServiceMock<LoggerService>;
 
   beforeAll(async () => {
-    const mockConfig = mockServices.rootConfig({
-      data: {
-        opaClient: {
-          baseUrl: 'http://localhost:8181',
-          policies: {
-            entityChecker: {
-              entrypoint: 'entityCheckerEntrypoint',
-            },
-          },
-        },
-      },
-    });
-
-    const mockLogger = mockServices.logger.mock();
+    mockLogger = mockServices.logger.mock();
     mockFetch = fetch as unknown as jest.Mock;
 
-    const router = entityCheckerRouter(mockLogger, mockConfig);
+    const entityCheckerApi = new EntityCheckerApiImpl({
+      logger: mockLogger,
+      opaBaseUrl: 'http://localhost:8181',
+      entityCheckerEntrypoint: 'entityCheckerEntrypoint',
+    });
+
+    const router = entityCheckerRouter(mockLogger, entityCheckerApi);
     app = express().use(express.json()).use(router);
   });
 
@@ -59,50 +55,8 @@ describe('entityCheckerRouter', () => {
       );
     });
 
-    it('returns 500 if OPA package is not set', async () => {
-      const mockConfigNoPackage = mockServices.rootConfig({
-        data: {
-          opaClient: {
-            baseUrl: 'http://localhost:8181',
-          },
-        },
-      });
-
-      const mockLogger = mockServices.logger.mock();
-      const router = entityCheckerRouter(mockLogger, mockConfigNoPackage);
-      const appNoPackage = express().use(express.json()).use(router);
-
-      const res = await request(appNoPackage)
-        .post('/entity-checker')
-        .send({ input: {} });
-
-      expect(res.status).toEqual(500);
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        'OPA package not set or missing!',
-      );
-    });
-
     it('returns 500 if entity metadata is missing', async () => {
-      const mockConfigWithPackage = mockServices.rootConfig({
-        data: {
-          opaClient: {
-            baseUrl: 'http://localhost:8181',
-            policies: {
-              entityChecker: {
-                entrypoint: 'entityCheckerEntrypoint',
-              },
-            },
-          },
-        },
-      });
-
-      const mockLogger = mockServices.logger.mock();
-      const router = entityCheckerRouter(mockLogger, mockConfigWithPackage);
-      const appWithPackage = express().use(express.json()).use(router);
-
-      const res = await request(appWithPackage)
-        .post('/entity-checker')
-        .send({});
+      const res = await request(app).post('/entity-checker').send({});
 
       expect(res.status).toEqual(500);
       expect(mockLogger.error).toHaveBeenCalledWith(

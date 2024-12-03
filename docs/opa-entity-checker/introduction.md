@@ -32,6 +32,31 @@ see the details.
 
 ![Compact MetaData Card Violations Open](../assets/card-compact-opened.png)
 
+## Entity Processor Validation - Validate all entities always
+
+While the frontend validation allows for quick feedback, users will only see the feedback on visiting an entity. After implementing new rules, you might wonder how many entities are now returning validation error.
+
+This is where catalog processors comes into play. When you discover or import entities into the Backstage catalog, you can run `processors` to (in this case) validate and update entities. The OPA Entity Checker Catalog Processor will validate your entities when they are ingested into the catalog and add an annotation based on the evaluation of the policy!
+
+For instance, the final entity in Backstage might look like this:
+
+```yaml
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  annotations:
+    open-policy-agent/entity-checker-violations-status: error
+```
+
+As you can see, an annotation of `open-policy-agent/entity-checker-violations-status: error` has been added to the entity, this is because after the processor ran and checked the metadata against the OPA policy it found a violation which is considered an `error`
+
+```http request
+GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-violations-status=error
+Content-Type: 'application/json'
+Authorization: Bearer {{BACKSTAGE_TOKEN}}
+```
+
 ## Join The Community
 
 This project is a part of the broader Backstage and Open Policy Agent ecosystems. Explore more about these communities:
