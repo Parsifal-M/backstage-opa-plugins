@@ -46,13 +46,13 @@ kind: Component
 metadata:
   namespace: default
   annotations:
-    open-policy-agent/entity-checker-violations-status: error
+    open-policy-agent/entity-checker-validation-status: error
 ```
 
-As you can see, an annotation of `open-policy-agent/entity-checker-violations-status: error` has been added to the entity, this is because after the processor ran and checked the metadata against the OPA policy it found a violation which is considered an `error`
+As you can see, an annotation of `open-policy-agent/entity-checker-validation-status: error` has been added to the entity, this is because after the processor ran and checked the metadata against the OPA policy it found a violation which is considered an `error`
 
 ```http request
-GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-violations-status=error
+GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-validation-status=error
 Content-Type: 'application/json'
 Authorization: Bearer {{BACKSTAGE_TOKEN}}
 ```

@@ -5,7 +5,7 @@ Using the [OPA Entity Checker](https://github.com/Parsifal-M/backstage-opa-plugi
 This allows you to, for example query the Backstage API for entities that have failed the policy validation
 
 ```http request
-GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-violations-status=error
+GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-validation-status=error
 Content-Type: 'application/json'
 Authorization: Bearer {{BACKSTAGE_TOKEN}}
 ```

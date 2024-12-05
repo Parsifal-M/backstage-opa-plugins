@@ -9,7 +9,7 @@ import {
 import { LoggerService } from '@backstage/backend-plugin-api';
 
 export const OPA_ENTITY_CHECKER_ANNOTATION =
-  'open-policy-agent/entity-checker-violations-status';
+  'open-policy-agent/entity-checker-validation-status';
 
 export class CatalogOPAEntityValidator implements CatalogProcessor {
   constructor(
