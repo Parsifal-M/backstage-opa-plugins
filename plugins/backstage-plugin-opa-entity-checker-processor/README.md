@@ -22,5 +22,7 @@ You can read more in the Backstage documentation regarding this [here](https://b
 
 ## What's Next?
 
-- Use the [notification backend](https://backstage.io/docs/notifications/) to notify owner(s) of errors or warning on entities
-- Provide an analytics panel that can be added to a group to list their entities that failed validation
+- [ ] Use the [Notification backend](https://backstage.io/docs/notifications/) to notify owner(s) of errors or warning on entities
+- [ ] Provide an analytics panel that can be added to a group to list their entities that failed validation
+- [x] Add an example Catalog Filter to be able to filter entities based on the status of the validation
+      Example available here: [Example Catalog Filter](../../packages/app/src/components/opaCatalogFilter/README.md)
