@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2
+
+### Patch Changes
+
+- c50f833: Change to using PolicyUser instead of BackstageIdentity when passing the user information to the OPA policy to be more inline with how it was intended to be used.
+
 ## 1.3.1
 
 ### Patch Changes
