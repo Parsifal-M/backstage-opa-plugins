@@ -7,10 +7,11 @@ services:
     ports:
       - 5432:5432
   opa:
-    image: openpolicyagent/opa:0.60.0-static
+    image: openpolicyagent/opa:1.0.0-static
     command:
       - 'run'
       - '--server'
+      - '--addr=0.0.0.0:8181'
       - '--watch'
       - '--log-format=json-pretty'
       - '--set=decision_logs.console=true'
