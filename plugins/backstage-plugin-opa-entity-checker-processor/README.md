@@ -5,7 +5,7 @@ Using the [OPA Entity Checker](https://github.com/Parsifal-M/backstage-opa-plugi
 This allows you to, for example query the Backstage API for entities that have failed the policy validation
 
 ```http request
-GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-violations-status=error
+GET http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annotations.open-policy-agent/entity-checker-validation-status=error
 Content-Type: 'application/json'
 Authorization: Bearer {{BACKSTAGE_TOKEN}}
 ```
@@ -22,5 +22,6 @@ You can read more in the Backstage documentation regarding this [here](https://b
 
 ## What's Next?
 
-- Use the [notification backend](https://backstage.io/docs/notifications/) to notify owner(s) of errors or warning on entities
-- Provide an analytics panel that can be added to a group to list their entities that failed validation
+- [ ] Use the [Notification backend](https://backstage.io/docs/notifications/) to notify owner(s) of errors or warning on entities
+- [ ] Provide an analytics panel that can be added to a group to list their entities that failed validation
+- [x] Add an example Catalog Filter to be able to filter entities based on the status of the validation (See [Example Catalog Filter](../../packages/app/src/components/opaCatalogFilter/README.md))
