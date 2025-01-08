@@ -45,7 +45,7 @@
     "@backstage/plugin-search-backend-node": "^1.3.6",
     "@backstage/plugin-techdocs-backend": "^1.11.4",
     "@internal/backstage-plugin-opa-demo-backend": "^0.1.0",
-    "@parsifal-m/backstage-plugin-opa-entity-checker-processor": "^0.1.0",
+    "@parsifal-m/backstage-plugin-opa-entity-checker-processor": "workspace:*",
     "@parsifal-m/plugin-opa-backend": "workspace:*",
     "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:*",
     "app": "link:../app",

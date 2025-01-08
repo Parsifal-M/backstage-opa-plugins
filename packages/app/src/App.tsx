@@ -39,6 +39,8 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { OpaFrontendDemoPage } from '@internal/backstage-plugin-opa-frontend-demo';
+import { DefaultFilters } from '@backstage/plugin-catalog-react';
+import { EntityOpaValidationPicker } from './components/opaCatalogFilter/components/OpaValidationCheckbox';
 
 const app = createApp({
   components: {
@@ -78,7 +80,19 @@ const app = createApp({
 const routes = (
   <FlatRoutes>
     <Route path="/" element={<Navigate to="catalog" />} />
-    <Route path="/catalog" element={<CatalogIndexPage />} />
+    <Route
+      path="/catalog"
+      element={
+        <CatalogIndexPage
+          filters={
+            <>
+              <EntityOpaValidationPicker />
+              <DefaultFilters />
+            </>
+          }
+        />
+      }
+    />
     <Route
       path="/catalog/:namespace/:kind/:name"
       element={<CatalogEntityPage />}

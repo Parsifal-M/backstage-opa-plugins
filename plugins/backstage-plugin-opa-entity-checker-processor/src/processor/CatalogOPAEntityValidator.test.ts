@@ -69,7 +69,7 @@ describe('CatalogOPAEntityValidator', () => {
         name: 'my-component',
         annotations: {
           'backstage.io/location': 'https://example.com',
-          'open-policy-agent/entity-checker-violations-status': 'error',
+          'open-policy-agent/entity-checker-validation-status': 'error',
         },
       },
     });
@@ -110,7 +110,7 @@ describe('CatalogOPAEntityValidator', () => {
         name: 'my-component',
         annotations: {
           'backstage.io/location': 'https://example.com',
-          'open-policy-agent/entity-checker-violations-status': 'warning',
+          'open-policy-agent/entity-checker-validation-status': 'warning',
         },
       },
     });
