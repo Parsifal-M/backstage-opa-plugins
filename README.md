@@ -30,10 +30,6 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 - [catalog-backend-module-opa-entity-checker-processor](./plugins/catalog-backend-module-opa-entity-checker-processor) - A Backstage catalog processor that validates entities at ingestion time using the `backstage-opa-backend` plugin and adds an annotation based on the OPA policy evaluation result which can be `error`, `warning` or `info`
 
-## Policies
-
-- [backstage-opa-policies-templates](https://github.com/Parsifal-M/backstage-opa-policies-templates?tab=readme-ov-file#hello) - A collection of policies that can be used with the plugins in this repository. (WIP)
-
 ## Additional Documentation
 
 Each Plugin has its own documentation in the [Plugins](./plugins/) Folder, I am however, slowly moving things to [Github pages](https://parsifal-m.github.io/backstage-opa-plugins/#/). Feel free to help out!
