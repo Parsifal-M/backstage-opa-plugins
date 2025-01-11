@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.1
+
+### Patch Changes
+
+- d07f3ed: Core versions bump
+
 ## 1.6.0
 
 ### Minor Changes
