@@ -11,7 +11,11 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "backend-plugin"
+    "role": "backend-plugin",
+    "pluginId": "opa-demo",
+    "pluginPackages": [
+      "@internal/backstage-plugin-opa-demo-backend"
+    ]
   },
   "scripts": {
     "start": "backstage-cli package start",

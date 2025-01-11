@@ -13,7 +13,8 @@
   "backstage": {
     "role": "backend-plugin-module",
     "pluginId": "catalog",
-    "moduleId": "opa-entity-checker"
+    "moduleId": "opa-entity-checker",
+    "pluginPackage": "@backstage/plugin-catalog-backend"
   },
   "repository": {
     "type": "git",
