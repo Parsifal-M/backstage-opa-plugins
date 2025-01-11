@@ -11,7 +11,11 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "frontend-plugin"
+    "role": "frontend-plugin",
+    "pluginId": "opa-frontend-demo",
+    "pluginPackages": [
+      "@internal/backstage-plugin-opa-frontend-demo"
+    ]
   },
   "sideEffects": false,
   "scripts": {
