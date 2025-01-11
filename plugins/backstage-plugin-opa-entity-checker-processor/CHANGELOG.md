@@ -1,5 +1,12 @@
 # @parsifal-m/backstage-plugin-opa-entity-checker-processor
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [d07f3ed]
+  - @parsifal-m/plugin-opa-backend@1.6.1
+
 ## 1.0.0
 
 ### Patch Changes
