@@ -34,9 +34,4 @@ allow if {
 # OPA Backend Demo Rules
 allow if {
 	input.method == "GET"
-	input.params.id == "23768468-6ec5-4c52-bb34-bbe18b9703c5"
-}
-
-allow if {
-	input.method == "POST"
 }

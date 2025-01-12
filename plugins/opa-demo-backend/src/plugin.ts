@@ -19,11 +19,20 @@ export const opaDemoPlugin = createBackendPlugin({
         logger: coreServices.logger,
         auth: coreServices.auth,
         httpAuth: coreServices.httpAuth,
+        userInfo: coreServices.userInfo,
         httpRouter: coreServices.httpRouter,
         catalog: catalogServiceRef,
         config: coreServices.rootConfig,
       },
-      async init({ logger, auth, httpAuth, httpRouter, catalog, config }) {
+      async init({
+        logger,
+        auth,
+        httpAuth,
+        httpRouter,
+        catalog,
+        config,
+        userInfo,
+      }) {
         const todoListService = await createTodoListService({
           logger,
           auth,
@@ -36,6 +45,7 @@ export const opaDemoPlugin = createBackendPlugin({
             todoListService,
             logger,
             config,
+            userInfo,
           }),
         );
       },
