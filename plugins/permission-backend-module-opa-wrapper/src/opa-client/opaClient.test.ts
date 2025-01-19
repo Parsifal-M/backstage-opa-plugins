@@ -1,18 +1,30 @@
 import { OpaClient } from './opaClient';
-import fetch from 'node-fetch';
 import { ConfigReader } from '@backstage/config';
 import { LoggerService } from '@backstage/backend-plugin-api';
-import { PolicyEvaluationInput } from '../types';
+import { PermissionsFrameworkPolicyInput } from '../types';
 
-jest.mock('node-fetch', () => jest.fn());
-jest.mock('winston');
+const mockConfig = {
+  opaClient: {
+    baseUrl: 'http://localhost:8181',
+  },
+};
 
-describe('OpaClient', () => {
-  let mockLogger: LoggerService;
-  let mockConfig: ConfigReader;
-  let mockConfigObject: object;
-  const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+const createMockConfig = (fallbackPolicy?: string) => ({
+  opaClient: {
+    baseUrl: 'http://localhost:8181',
+    policies: {
+      permissions: {
+        policyFallback: fallbackPolicy,
+      },
+    },
+  },
+});
 
+const config = new ConfigReader(mockConfig);
+let mockLogger: LoggerService;
+let opaClient: OpaClient;
+
+describe('OpaClient Permissions Framework', () => {
   beforeAll(() => {
     mockLogger = {
       info: jest.fn(),
@@ -20,185 +32,255 @@ describe('OpaClient', () => {
       debug: jest.fn(),
       warn: jest.fn(),
     } as unknown as LoggerService;
-    mockConfigObject = {
-      backend: {
-        backendBaseUrl: 'http://localhost:7007',
-      },
-      opaClient: {
-        baseUrl: 'http://localhost:8181',
-        policies: {
-          permissions: {
-            entrypoint: 'rbac_policy/decision',
-          },
-        },
-      },
-    };
-    mockConfig = new ConfigReader(mockConfigObject);
   });
 
   beforeEach(() => {
+    global.fetch = jest.fn();
     jest.clearAllMocks();
+    opaClient = new OpaClient(config, mockLogger);
   });
 
   it('should evaluate policy correctly', async () => {
-    const mockInput: PolicyEvaluationInput = {
+    const mockInput: PermissionsFrameworkPolicyInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
 
     const mockOpaEntrypoint = 'some/admin';
     const url = `http://localhost:8181/v1/data/${mockOpaEntrypoint}`;
-    mockFetch.mockResolvedValueOnce({
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: jest.fn().mockResolvedValueOnce({ result: 'ALLOW' }),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger);
-    const result = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
-
-    expect(mockFetch).toHaveBeenCalledWith(
-      url, // Use the correct URL here
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          input: mockInput,
-        }),
-      },
+    const result = await opaClient.evaluatePermissionsFrameworkPolicy(
+      mockInput,
+      mockOpaEntrypoint,
     );
+
+    expect(global.fetch as jest.Mock).toHaveBeenCalledWith(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        input: mockInput,
+      }),
+    });
     expect(result).toEqual('ALLOW');
   });
 
   it('should handle DENY result', async () => {
-    const mockInput: PolicyEvaluationInput = {
+    const mockInput: PermissionsFrameworkPolicyInput = {
       permission: { name: 'write' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
     const mockOpaEntrypoint = 'some/admin';
     const url = `http://localhost:8181/v1/data/${mockOpaEntrypoint}`;
-    mockFetch.mockResolvedValueOnce({
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: jest.fn().mockResolvedValueOnce({ result: 'DENY' }),
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger);
-    const result = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
-
-    expect(mockFetch).toHaveBeenCalledWith(
-      url, // Use the correct URL here
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          input: mockInput,
-        }),
-      },
+    const result = await opaClient.evaluatePermissionsFrameworkPolicy(
+      mockInput,
+      mockOpaEntrypoint,
     );
+
+    expect(global.fetch as jest.Mock).toHaveBeenCalledWith(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        input: mockInput,
+      }),
+    });
     expect(result).toEqual('DENY');
   });
 
-  it.each(['ALLOW', 'DENY'])(
+  it.each([
+    ['allow', 'ALLOW'],
+    ['deny', 'DENY'],
+  ])(
     'should return %s if policyFallback is set to that value and fetch fails',
-    async policy => {
+    async (fallback, expected) => {
+      // Create a new config with the fallback policy
+      const configWithFallback = new ConfigReader(createMockConfig(fallback));
+      const clientWithFallback = new OpaClient(configWithFallback, mockLogger);
+
       const mockError = new Error('FetchError');
       mockError.name = 'FetchError';
-      mockFetch.mockRejectedValueOnce(mockError);
+      (global.fetch as jest.Mock).mockRejectedValueOnce(mockError);
 
-      const mockConfigWithPolicyObject: any = structuredClone(mockConfigObject);
-      mockConfigWithPolicyObject.opaClient.policies.permissions.policyFallback =
-        policy;
-      const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
-
-      const client = new OpaClient(mockConfigWithPolicy, mockLogger);
       const mockOpaEntrypoint = 'some/admin';
-      const mockInput: PolicyEvaluationInput = {
+      const mockInput: PermissionsFrameworkPolicyInput = {
         permission: { name: 'read' },
         identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
       };
-      const output = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
-      expect(output.result).toEqual(policy);
+
+      const output =
+        await clientWithFallback.evaluatePermissionsFrameworkPolicy(
+          mockInput,
+          mockOpaEntrypoint,
+        );
+      expect(output.result).toEqual(expected);
     },
   );
 
-  it.each(['ALLOW', 'DENY'])(
+  it.each([
+    ['allow', 'ALLOW'],
+    ['deny', 'DENY'],
+  ])(
     'should return %s if policyFallback is set to that value and OPA response is not OK',
-    async policy => {
-      mockFetch.mockResolvedValueOnce({
+    async (fallback, expected) => {
+      // Create a new config with the fallback policy
+      const configWithFallback = new ConfigReader(createMockConfig(fallback));
+      const clientWithFallback = new OpaClient(configWithFallback, mockLogger);
+
+      (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: false,
         json: jest.fn().mockResolvedValueOnce({}),
         statusText: 'Bad Request',
         status: 400,
       } as any);
 
-      const mockConfigWithPolicyObject: any = structuredClone(mockConfigObject);
-      mockConfigWithPolicyObject.opaClient.policies.permissions.policyFallback =
-        policy;
-      const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
-
-      const client = new OpaClient(mockConfigWithPolicy, mockLogger);
       const mockOpaEntrypoint = 'some/admin';
-      const mockInput: PolicyEvaluationInput = {
+      const mockInput: PermissionsFrameworkPolicyInput = {
         permission: { name: 'read' },
         identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
       };
-      const output = await client.evaluatePolicy(mockInput, mockOpaEntrypoint);
-      expect(output.result).toEqual(policy);
+
+      const output =
+        await clientWithFallback.evaluatePermissionsFrameworkPolicy(
+          mockInput,
+          mockOpaEntrypoint,
+        );
+      expect(output.result).toEqual(expected);
     },
   );
 
   it('should throw an error if policyFallback is an unknown value and OPA response is not OK', async () => {
-    mockFetch.mockResolvedValueOnce({
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
       json: jest.fn().mockResolvedValueOnce({}),
       statusText: 'Bad Request',
       status: 400,
     } as any);
 
-    const mockConfigWithPolicyObject: any = structuredClone(mockConfigObject);
-    mockConfigWithPolicyObject.opaClient.policies.permissions.policyFallback =
-      'TEST_VALUE';
-    const mockConfigWithPolicy = new ConfigReader(mockConfigWithPolicyObject);
-
-    const client = new OpaClient(mockConfigWithPolicy, mockLogger);
     const mockOpaEntrypoint = 'some/admin';
-    const mockInput: PolicyEvaluationInput = {
+    const mockInput: PermissionsFrameworkPolicyInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
     await expect(
-      client.evaluatePolicy(mockInput, mockOpaEntrypoint),
+      opaClient.evaluatePermissionsFrameworkPolicy(
+        mockInput,
+        mockOpaEntrypoint,
+      ),
     ).rejects.toThrow();
   });
 
   it('should throw error when response is not ok', async () => {
-    mockFetch.mockResolvedValueOnce({
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
       json: jest.fn().mockResolvedValueOnce({}),
       status: 400,
       statusText: 'Bad Request',
     } as any);
 
-    const client = new OpaClient(mockConfig, mockLogger);
-    const mockInput: PolicyEvaluationInput = {
+    const mockInput: PermissionsFrameworkPolicyInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
     const mockOpaEntrypoint = 'some/admin';
     await expect(
-      client.evaluatePolicy(mockInput, mockOpaEntrypoint),
+      opaClient.evaluatePermissionsFrameworkPolicy(
+        mockInput,
+        mockOpaEntrypoint,
+      ),
     ).rejects.toThrow(
       'An error response was returned after sending the policy input to the OPA server:',
     );
   });
 
   it('should throw error when fetch throws an error', async () => {
-    mockFetch.mockRejectedValueOnce(new Error('Fetch error'));
+    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Fetch error'));
 
-    const client = new OpaClient(mockConfig, mockLogger);
-    const mockInput: PolicyEvaluationInput = {
+    const mockInput: PermissionsFrameworkPolicyInput = {
       permission: { name: 'read' },
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
-    await expect(client.evaluatePolicy(mockInput)).rejects.toThrow();
+    await expect(
+      opaClient.evaluatePermissionsFrameworkPolicy(mockInput),
+    ).rejects.toThrow();
+  });
+});
+
+describe('OpaClient OG OPA', () => {
+  beforeAll(() => {
+    mockLogger = {
+      info: jest.fn(),
+      error: jest.fn(),
+      debug: jest.fn(),
+      warn: jest.fn(),
+    } as unknown as LoggerService;
+    opaClient = new OpaClient(config, mockLogger);
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.fetch = jest.fn();
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('should evaluate policy correctly', async () => {
+    const mockInput = {
+      permission: { name: 'read' },
+      identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
+    };
+
+    const mockOpaEntrypoint = 'some/admin';
+    const mockResponse = { result: { allow: true } };
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const result = await opaClient.evaluatePolicy(mockInput, mockOpaEntrypoint);
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      `http://localhost:8181/v1/data/${mockOpaEntrypoint}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input: mockInput }),
+      },
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should throw an error if the request to the OPA server fails', async () => {
+    const mockInput = {
+      permission: { name: 'read' },
+      identity: { user: 'anders', claims: ['claim1', 'claim2'] },
+    };
+
+    const mockOpaEntrypoint = 'some/admin';
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      statusText: 'Internal Server Error',
+      json: async () => ({ error: 'Server Error' }),
+    });
+
+    await expect(
+      opaClient.evaluatePolicy(mockInput, mockOpaEntrypoint),
+    ).rejects.toThrow(
+      'An error response was returned after sending the policy input to the OPA server: 500 - Internal Server Error',
+    );
   });
 });

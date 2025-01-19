@@ -7849,7 +7849,7 @@ __metadata:
     "@backstage/config": "npm:^1.3.1"
     "@backstage/errors": "npm:^1.2.6"
     "@backstage/plugin-catalog-node": "npm:^1.15.0"
-    "@parsifal-m/backstage-opa-authz": "workspace:^"
+    "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:^"
     "@types/express": "npm:*"
     "@types/supertest": "npm:^2.0.12"
     express: "npm:^4.17.1"
@@ -9847,7 +9847,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parsifal-m/backstage-opa-authz@workspace:^, @parsifal-m/backstage-opa-authz@workspace:packages/opa-authz":
+"@parsifal-m/backstage-opa-authz@workspace:packages/opa-authz":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/backstage-opa-authz@workspace:packages/opa-authz"
   dependencies:
@@ -9987,7 +9987,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:*, @parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper":
+"@parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:*, @parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:^, @parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper"
   dependencies:

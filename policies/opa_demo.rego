@@ -30,7 +30,6 @@ allow if {
 	"user:default/parsifal-m" in input.ownershipEntityRefs
 }
 
-
 # OPA Backend Demo Rules
 allow if {
 	input.method == "GET"
