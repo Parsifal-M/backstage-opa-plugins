@@ -6,7 +6,7 @@ import {
 } from '@backstage/plugin-permission-node';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
-import { policyEvaluator } from './opaEvaluator';
+import { policyEvaluator } from './permissionsFrameworkEvaluator';
 
 jest.mock('../opa-client/opaClient');
 jest.mock('@backstage/config');

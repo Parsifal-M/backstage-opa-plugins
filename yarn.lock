@@ -7859,9 +7859,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@internal/backstage-plugin-opa-frontend-demo@npm:^0.1.0, @internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-frontend-demo":
+"@internal/backstage-plugin-opa-frontend-demo@npm:^0.1.0, @internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend":
   version: 0.0.0-use.local
-  resolution: "@internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-frontend-demo"
+  resolution: "@internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend"
   dependencies:
     "@backstage/cli": "npm:^0.29.4"
     "@backstage/core-app-api": "npm:^1.15.3"
@@ -9860,9 +9860,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/backstage-plugin-opa-authz-react@workspace:^, @parsifal-m/backstage-plugin-opa-authz-react@workspace:plugins/opa-authz-react":
+"@parsifal-m/backstage-plugin-opa-authz-react@workspace:^, @parsifal-m/backstage-plugin-opa-authz-react@workspace:plugins/backstage-plugin-opa-authz-react":
   version: 0.0.0-use.local
-  resolution: "@parsifal-m/backstage-plugin-opa-authz-react@workspace:plugins/opa-authz-react"
+  resolution: "@parsifal-m/backstage-plugin-opa-authz-react@workspace:plugins/backstage-plugin-opa-authz-react"
   dependencies:
     "@backstage/cli": "npm:^0.29.4"
     "@backstage/core-plugin-api": "npm:^1.10.2"

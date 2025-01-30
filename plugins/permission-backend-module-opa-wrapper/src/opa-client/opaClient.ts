@@ -11,7 +11,9 @@ import { LoggerService } from '@backstage/backend-plugin-api';
 
 /**
  * OpaClient is a class responsible for interacting with the OPA server.
- * It provides a method to evaluate a policy against a given input.
+ * It provides two methods for evaluating policies:
+ * - evaluatePolicy: Evaluates a generic permission policy by sending the input to the OPA server and returns the result.
+ * - evaluatePermissionsFrameworkPolicy: Evaluates a backstage permissions framework policy against a given input.
  */
 export class OpaClient {
   private readonly entryPoint?: string;
@@ -43,7 +45,8 @@ export class OpaClient {
   }
 
   /**
-   * Evaluates a policy against a given input.
+   * Evaluates a backstage permissions framework policy against a given input.
+   *
    * @param input - The input to evaluate the policy against.
    * @param entryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
    * @param fallbackPolicyDecision - The fallback policy decision to use when the OPA server is unavailable or unresponsive. You can optionally provide the fallback policy here, otherwise it will be taken from the app-config.
@@ -124,6 +127,14 @@ export class OpaClient {
     }
   }
 
+  /**
+   * Evaluates a generic policy by sending the input to the OPA server and returns the result.
+   *
+   * @param input - The policy input to be evaluated.
+   * @param entryPoint - The entry point in the OPA server where the policy is defined.
+   * @returns A promise that resolves to the policy result.
+   * @throws An error if the OPA server returns a non-OK response or if there is an issue with the request.
+   */
   public async evaluatePolicy(
     input: PolicyInput,
     entryPoint: string,
