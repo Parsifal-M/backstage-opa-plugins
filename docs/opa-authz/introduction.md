@@ -3,7 +3,7 @@
 > [!TIP|style:flat]
 > This plugin can be used together with [plugin-permission-backend-module-opa-wrapper](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-permissions-wrapper-module/introduction) which may be necessary for some **core** and **community plugins**.
 
-This is a node-library package for Backstage that provides a client and middleware for interacting with an OPA (Open Policy Agent) server for Authorization.
+This is a node-library package for Backstage that provides a client for interacting with an OPA (Open Policy Agent) server for Authorization.
 
 ## Why use this library?
 
@@ -16,101 +16,67 @@ This library is a more generic way to interact with OPA, and can be used in any 
 - You are not limited in terms of what you can send as input to OPA, want to restrict access to something in Backstage based on the time of day? You can do that with this library.
 - You can still use [plugin-permission-backend-module-opa-wrapper](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-permissions-wrapper-module/introduction) in conjunction with this library,
   not all core and community plugins will natively work with this client, so you can use the wrapper to handle those cases.
-- Has a middleware that can be used in the backend to protect your API endpoints, simply add it to your express routes and you are good to go.
 
-## How It Works
+## Usage
 
 ### Using the OpaAuthzClient
 
 The `OpaAuthzClient` allows you to interact with an Open Policy Agent (OPA) server to evaluate policies against given inputs.
 
-You are pretty much free to use this in any way you like in your Backstage Backend.
+Remember that you can also use the [HttpAuthService](https://backstage.io/docs/backend-system/core-services/http-auth) and [UserInfoService](https://backstage.io/docs/backend-system/core-services/user-info) if you want to pass additional information to OPA during policy evaluation!
 
 ```typescript
 import express from 'express';
+import Router from 'express-promise-router';
 import { Config } from '@backstage/config';
-import { LoggerService } from '@backstage/backend-plugin-api';
+import { LoggerService, HttpAuthService } from '@backstage/backend-plugin-api';
 import { OpaAuthzClient } from '@parsifal-m/backstage-opa-authz';
 
-export type someRouteOptions = {
+export type RouterOptions = {
   logger: LoggerService;
   config: Config;
-  // more options...
 };
-// Some code here
-// ...
-// Instantiate the OpaAuthzClient
-const opaClient = new OpaAuthzClient(config, logger);
 
-// Define the policy input and entry point
-const policyInput = { user: 'alice', action: 'read', resource: 'document' };
-const entryPoint = 'example/allow';
+export async function createRouter(
+  options: RouterOptions,
+): Promise<express.Router> {
+  const { config, logger } = options;
+  const router = Router();
 
-// Evaluate the policy
-opaClient
-  .evaluatePolicy(policyInput, entryPoint)
-  .then(result => {
-    logger.info('Policy evaluation result:', result);
-  })
-  .catch(error => {
-    logger.info('Error evaluating policy:', error);
+  // Initialize the OPA client
+  const opaAuthzClient = new OpaAuthzClient(logger, config);
+  const entryPoint = 'opa_demo';
+
+  router.get('/todos', async (_req, res) => {
+    // Define the policy input
+    const input = {
+      method: _req.method,
+      path: _req.path,
+      headers: _req.headers,
+    };
+
+    try {
+      // Evaluate the policy
+      const policyResult = await opaAuthzClient.evaluatePolicy(
+        input,
+        entryPoint,
+      );
+
+      if (!policyResult.result || policyResult.result.allow !== true) {
+        return res.status(403).json({ error: 'Access Denied' });
+      }
+
+      // If allowed, proceed with the actual API call
+      const todos = await todoListService.listTodos();
+      return res.json(todos);
+    } catch (error: unknown) {
+      logger.error(`Policy evaluation error: ${error}`);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
   });
 
-// Some more code here
-// ...
-```
-
-### Using the opaAuthzMiddleware
-
-You'll probably want to use the `opaAuthzMiddleware` in your express routes to protect your API endpoints instead of using the `OpaAuthzClient` directly.
-
-```typescript
-import express from 'express';
-import {
-  OpaAuthzClient,
-  opaAuthzMiddleware,
-} from '@parsifal-m/backstage-opa-authz';
-import { Config } from '@backstage/config';
-import { LoggerService } from '@backstage/backend-plugin-api';
-
-export type someRoutesOptions = {
-  logger: LoggerService;
-  config: Config;
-  // more options...
-};
-
-export const someRoutes = (options: someRoutesOptions): express.Router => {
-  const { logger, config } = options;
-  const router = express.Router();
-
-  // Instantiate the OpaAuthzClient
-  const opaAuthzClient = new OpaAuthzClient(logger, config);
-
-  // Define the entry point
-  const entryPoint = 'authz';
-
-  // Define the input
-  const setInput = (req: express.Request) => {
-    return {
-      method: req.method,
-      path: req.path,
-      permission: { name: 'read' },
-      someFoo: 'bar',
-      dateTime: new Date().toISOString(),
-    };
-  };
-
-  // Define the route
-  router.get(
-    '/some-route',
-    opaAuthzMiddleware(opaAuthzClient, entryPoint, setInput, logger),
-    (req, res) => {
-      res.send('Hello, World!');
-    },
-  );
-
   return router;
-};
+}
 ```
 
 ## Example Demo Plugin(s)

@@ -10,7 +10,7 @@ import {
   PolicyQuery,
   PolicyQueryUser,
 } from '@backstage/plugin-permission-node';
-import { PolicyEvaluationInput } from '../types';
+import { PermissionsFrameworkPolicyInput } from '../types';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
 export const policyEvaluator = (
@@ -22,7 +22,7 @@ export const policyEvaluator = (
     request: PolicyQuery,
     user: PolicyQueryUser,
   ): Promise<PolicyDecision> => {
-    const input: PolicyEvaluationInput = {
+    const input: PermissionsFrameworkPolicyInput = {
       permission: {
         name: request.permission.name,
       },
@@ -33,7 +33,10 @@ export const policyEvaluator = (
     };
 
     try {
-      const response = await opaClient.evaluatePolicy(input, opaEntryPoint);
+      const response = await opaClient.evaluatePermissionsFrameworkPolicy(
+        input,
+        opaEntryPoint,
+      );
 
       if (!response) {
         logger.error(
