@@ -11731,13 +11731,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@spotify/eslint-plugin@npm:^14.1.3":
-  version: 14.1.6
-  resolution: "@spotify/eslint-plugin@npm:14.1.6"
+"@spotify/eslint-plugin@npm:^15.0.0":
+  version: 15.0.0
+  resolution: "@spotify/eslint-plugin@npm:15.0.0"
   peerDependencies:
     "@typescript-eslint/parser": ^5.13.0
-    eslint: ^8.10.0
-  checksum: 10/da911950b5319e67b0f27e11a78283d577e12497d11a3b0f7ad37a3bbd7224337bb604b5e7ac1dd64f6851e4aba8652565dac997292adb69b582547709b72dfc
+    eslint: ">=8.x"
+  checksum: 10/c63d1660732c3513ff8c571c23d57e53ea53fb6ef9b838db0dc888d2118fe4b321b5fce6126adea24bc395478721aecd0627f49022c1493a554af1131da910c2
   languageName: node
   linkType: hard
 
@@ -31651,7 +31651,8 @@ __metadata:
   dependencies:
     "@backstage/cli": "npm:^0.29.6"
     "@changesets/cli": "npm:^2.27.3"
-    "@spotify/eslint-plugin": "npm:^14.1.3"
+    "@spotify/eslint-config-react": "npm:^15.0.0"
+    "@spotify/eslint-plugin": "npm:^15.0.0"
     "@spotify/prettier-config": "npm:^15.0.0"
     concurrently: "npm:^8.0.0"
     eslint: "npm:^8.6.0"

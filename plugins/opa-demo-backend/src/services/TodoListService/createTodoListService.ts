@@ -1,6 +1,6 @@
 import { AuthService, LoggerService } from '@backstage/backend-plugin-api';
 import { NotFoundError } from '@backstage/errors';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 import crypto from 'node:crypto';
 import { TodoItem, TodoListService } from './types';
 
@@ -10,6 +10,7 @@ import { TodoItem, TodoListService } from './types';
 // documentation for more information on how to do this:
 // https://backstage.io/docs/backend-system/core-services/database
 export async function createTodoListService({
+  auth,
   logger,
   catalog,
 }: {
@@ -40,7 +41,9 @@ export async function createTodoListService({
         // you can access it via the `auth.getOwnServiceCredentials()` method.
         // Beware that this bypasses any user permission checks.
 
-        const entity = await catalog.getEntityByRef(input.entityRef);
+        const entity = await catalog.getEntityByRef(input.entityRef, {
+          credentials: await auth.getNoneCredentials(),
+        });
         if (!entity) {
           throw new NotFoundError(
             `No entity found for ref '${input.entityRef}'`,
