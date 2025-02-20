@@ -22,7 +22,7 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 ## Beta Plugins
 
 - [backstage-opa-authz-react](opa-authz-react/introduction.md#opa-authz-react) - A frontend plugin that allows you to control the visibility of components based on the result of an OPA policy evaluation.
-- [backstage-opa-authz](opa-authz/introduction.md#opa-authz-client) - A node library that includes an OPA client and middleware to evaluate policies, allowing you to control authorization in your backstage backend plugins using OPA.
+- [backstage-opa-authz](opa-authz/introduction.md#opa-authz-client) - A node library that includes an OPA client to evaluate policies, allowing you to control authorization in your backstage backend plugins using OPA.
 
 ## Policies
 

@@ -1,1 +1,1 @@
-export * from './opaEvaluator';
+export * from './permissionsFrameworkEvaluator';

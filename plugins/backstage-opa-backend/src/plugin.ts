@@ -5,7 +5,7 @@ import {
   createServiceRef,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 import { EntityCheckerApi, EntityCheckerApiImpl } from './api/EntityCheckerApi';
 
 /**

@@ -18,7 +18,7 @@ var path = require('path');
 
 module.exports = {
   root: true,
-  plugins: ['@spotify', 'notice', 'react', 'testing-library'],
+  plugins: ['notice', 'react', 'testing-library'],
   rules: {
     'no-restricted-syntax': [
       'error',
