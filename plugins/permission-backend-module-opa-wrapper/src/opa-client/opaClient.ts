@@ -51,7 +51,7 @@ export class OpaClient {
    * @param entryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
    * @param fallbackPolicyDecision - The fallback policy decision to use when the OPA server is unavailable or unresponsive. You can optionally provide the fallback policy here, otherwise it will be taken from the app-config.
    */
-  public async evaluatePermissionsFrameworkPolicy(
+  async evaluatePermissionsFrameworkPolicy(
     input: PermissionsFrameworkPolicyInput,
     entryPoint?: string,
   ): Promise<PermissionsFrameworkPolicyEvaluationResult> {
@@ -135,7 +135,7 @@ export class OpaClient {
    * @returns A promise that resolves to the policy result.
    * @throws An error if the OPA server returns a non-OK response or if there is an issue with the request.
    */
-  public async evaluatePolicy(
+  async evaluatePolicy(
     input: PolicyInput,
     entryPoint: string,
   ): Promise<PolicyResult> {
