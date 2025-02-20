@@ -42,7 +42,7 @@ export async function createTodoListService({
         // Beware that this bypasses any user permission checks.
 
         const entity = await catalog.getEntityByRef(input.entityRef, {
-          credentials: await auth.getNoneCredentials(),
+          credentials: await auth.getOwnServiceCredentials(),
         });
         if (!entity) {
           throw new NotFoundError(

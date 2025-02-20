@@ -4,13 +4,13 @@ import data.catalog_rules
 import data.scaffolder_rules
 import rego.v1
 
-default decision := {"result": "DENY"}
-
 permission := input.permission.name
 
 claims := input.identity.claims
 
 is_admin if "group:default/maintainers" in claims
+
+default decision := {"result": "DENY"}
 
 # Admins have god mode
 decision := {"result": "ALLOW"} if {

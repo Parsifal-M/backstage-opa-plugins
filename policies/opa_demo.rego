@@ -6,7 +6,7 @@ default allow := false
 
 # OPA Frontend Demo Rules
 allow if {
-	input.day == "Tuesday"
+	input.day == "Thursday"
 	"user:default/parsifal-m" in input.ownershipEntityRefs
 }
 
@@ -33,4 +33,5 @@ allow if {
 # OPA Backend Demo Rules
 allow if {
 	input.method == "GET"
+	input.permission.name == "read-all-todos"
 }

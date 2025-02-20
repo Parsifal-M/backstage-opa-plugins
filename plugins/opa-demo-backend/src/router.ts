@@ -75,6 +75,8 @@ export async function createRouter({
       path: _req.path,
       headers: _req.headers,
       credentials: credentials,
+      permission: { name: 'read-all-todos' },
+      plugin: 'opa-demo-backend-todo',
     };
 
     console.log(`sending input to opa`, JSON.stringify(input));
