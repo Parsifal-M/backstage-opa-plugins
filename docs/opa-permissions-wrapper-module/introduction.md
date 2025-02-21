@@ -25,7 +25,7 @@ This plugin allows you to do two things, the first and foremost is to use it as 
 - The Permission Framework backend will then forward the request to OPA with the permission and identity information.
 - OPA will evaluate the the information against the policy and return a decision.
 
-You can also use the `evaluatePolicy` (see [here](./using-evalpolicy.md)) function in your backend plugins to evaluate policies. This is useful if you want a bit more flexibility in how you pass the information to OPA and evaluate the policy. You can see an example of this in the [backend demo plugin](../opa-demo-backend/src/router.ts).
+You can also use the `evaluatePolicy` (see [here](/opa-permissions-wrapper-module/using-evalpolicy.md#using-evaluatepolicy)) function in your backend plugins to evaluate policies. This is useful if you want a bit more flexibility in how you pass the information to OPA and evaluate the policy. You can see an example of this in the [backend demo plugin](https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/plugins/opa-demo-backend/src/router.ts).
 
 ## Join The Community
 
