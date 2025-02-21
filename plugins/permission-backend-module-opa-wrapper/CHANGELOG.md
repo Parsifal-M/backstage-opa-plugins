@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0
+
+### Minor Changes
+
+- e59b31f: Adds a new method to the OPA Permissions Wrapper you can call inside your backend plugins to control Authz on your backend routes!
+
+### Patch Changes
+
+- 871ce53: updating docs
+
 ## 1.3.2
 
 ### Patch Changes
