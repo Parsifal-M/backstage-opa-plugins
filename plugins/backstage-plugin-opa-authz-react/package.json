@@ -12,7 +12,7 @@
   },
   "backstage": {
     "role": "web-library",
-    "pluginId": "opa-authz",
+    "pluginId": "opa-authz-react",
     "pluginPackages": [
       "@parsifal-m/backstage-plugin-opa-authz-react"
     ]

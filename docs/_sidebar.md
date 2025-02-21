@@ -8,7 +8,6 @@
   - [Local Development](opa-permissions-wrapper-module/local-development.md#using-the-plugin-in-local-development)
   - [Example Inputs and Outputs](opa-permissions-wrapper-module/inputs-and-outputs.md#example-inputs-and-outputs-for-policy-evaluation)
   - [Architecture](opa-permissions-wrapper-module/architecture.md#open-policy-agent-opa-plugins-architecture)
-- [OPA Authz](opa-authz/introduction.md#opa-authz-client)
 - [OPA Authz React](opa-authz-react/introduction.md#opa-authz-react)
 - [OPA Backend](opa-backend/introduction.md#backstage-opa-backend-plugin)
   - [Quick Start](opa-backend/quick-start.md#quick-start)
