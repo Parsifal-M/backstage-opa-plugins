@@ -18,12 +18,14 @@ For more details, check out:
 
 ## How It Works
 
-The module enhances the Backstage Permission Framework by integrating with OPA for policy evaluation. It simplifies the process of permission checks:
+This plugin allows you to do two things, the first and foremost is to use it as a way to "wrap" around the Backstage Permission Framework and use the OPA client to evaluate policies. It will send a request to OPA with the permission and identity information, OPA will then evaluate the policy and return a decision, which is then passed back to the Permission Framework, in this scenario you don't need to do anything fancy, just install it and follow the configuration steps.
 
-1. Define permissions within the plugin.
-2. The plugin sends permission and identity information to the Permission Framework backend.
-3. The backend forwards this information to OPA.
-4. OPA evaluates the request against your policies and returns a decision.
+- Permissions are created in the plugin in which they need to be enforced.
+- The plugin will send a request to the Permission Framework backend with the permission and identity information.
+- The Permission Framework backend will then forward the request to OPA with the permission and identity information.
+- OPA will evaluate the the information against the policy and return a decision.
+
+You can also use the `evaluatePolicy` (see [here](./using-evalpolicy.md)) function in your backend plugins to evaluate policies. This is useful if you want a bit more flexibility in how you pass the information to OPA and evaluate the policy. You can see an example of this in the [backend demo plugin](../opa-demo-backend/src/router.ts).
 
 ## Join The Community
 
