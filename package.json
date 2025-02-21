@@ -34,7 +34,7 @@
     ]
   },
   "devDependencies": {
-    "@backstage/cli": "^0.29.6",
+    "@backstage/cli": "^0.30.0",
     "@changesets/cli": "^2.27.3",
     "@spotify/eslint-config-react": "^15.0.0",
     "@spotify/eslint-plugin": "^15.0.0",

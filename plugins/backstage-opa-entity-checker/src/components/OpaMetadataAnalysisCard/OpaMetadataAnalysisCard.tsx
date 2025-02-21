@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
@@ -8,63 +6,30 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import Alert from '@mui/material/Alert';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { alertApiRef, ApiHolder, useApi } from '@backstage/core-plugin-api';
+import { ApiHolder, alertApiRef, useApi } from '@backstage/core-plugin-api';
 import { opaBackendApiRef } from '../../api';
 import { EntityResult, OpaResult } from '../../api/types';
-import { Entity } from '@backstage/catalog-model';
+import { getPassStatus } from '../../utils/getPassStatus';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ErrorIcon from '@mui/icons-material/Error';
-import WarningIcon from '@mui/icons-material/Warning';
-import InfoIcon from '@mui/icons-material/Info';
+import { StylesAlert } from '../StyledAlert';
+import { StyledCard, classes } from '../StyledCard';
+import { Entity } from '@backstage/catalog-model/index';
+import { StatusChip } from '../StatusChip';
 
-const PREFIX = 'OpaMetadataAnalysisCard';
-
-const classes = {
-  card: `${PREFIX}-card`,
-  title: `${PREFIX}-title`,
-  alert: `${PREFIX}-alert`,
-  chip: `${PREFIX}-chip`,
-  titleBox: `${PREFIX}-titleBox`,
-};
-
-const StylesAlert = styled(Alert)(({ theme }) => ({
-  marginBottom: theme.spacing(1),
-}));
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  [`& .${classes.card}`]: {
-    marginBottom: theme.spacing(2),
-  },
-
-  [`& .${classes.title}`]: {
-    marginBottom: theme.spacing(2),
-  },
-
-  [`& .${classes.chip}`]: {
-    marginLeft: 'auto',
-  },
-
-  [`& .${classes.titleBox}`]: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: theme.spacing(2),
-  },
-}));
-
-const getPassStatus = (violations: EntityResult[] = []) => {
-  const errors = violations.filter(v => v.level === 'error').length;
-  const warnings = violations.filter(v => v.level !== 'error').length;
-
-  if (errors > 0) {
-    return 'FAIL';
-  } else if (warnings > 0) {
-    return 'WARN';
-  }
-  return 'PASS';
-};
+/**
+ * Props interface for the OpaMetadataAnalysisCard component.
+ *
+ * @interface OpaMetadataAnalysisCardProps
+ * @property {string} [title] - Optional title to display on the card.
+ * @property {MetadataAnalysisCardVariants} [variant] - Can be one of the following: 'default', 'compact'.
+ * @property {string | React.ReactNode} [children] - Optional content to render inside the card.
+ */
+export interface OpaMetadataAnalysisCardProps {
+  title?: string;
+  variant?: MetadataAnalysisCardVariants;
+  children?: string | React.ReactNode;
+}
 
 /**
  * Returns true if the given entity has any validation errors
@@ -124,30 +89,35 @@ const renderCardContent = (results: OpaResult | null | undefined) => {
   ));
 };
 
-const DefaultOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
-  const passStatus = useMemo(
-    () => getPassStatus(props.results?.result),
-    [props.results],
-  );
+const DefaultOpaMetadataCard = ({
+  title,
+  children,
+  results,
+}: OpaMetadataAnalysisCardProps & { results: OpaResult | null }) => {
+  const passStatus = useMemo(() => getPassStatus(results?.result), [results]);
 
-  let chipColor: 'warning' | 'error' | 'success';
+  let chipColor: 'warning' | 'error' | 'success' | 'info';
   switch (passStatus) {
-    case 'FAIL':
+    case 'ERROR':
       chipColor = 'error';
       break;
     case 'PASS':
       chipColor = 'success';
       break;
+    case 'INFO':
+      chipColor = 'info';
+      break;
     default:
       chipColor = 'warning';
+      break;
   }
 
   return (
     <StyledCard>
       <CardContent>
         <div className={classes.titleBox}>
-          <Typography variant="h6">{props.title}</Typography>
-          {props.results?.result && (
+          <Typography variant="h6">{title}</Typography>
+          {results?.result && (
             <Chip
               label={passStatus}
               color={chipColor}
@@ -155,15 +125,19 @@ const DefaultOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
             />
           )}
         </div>
-        {props.children}
-        {renderCardContent(props.results)}
+        {children}
+        {renderCardContent(results)}
       </CardContent>
     </StyledCard>
   );
 };
 
-const CompactOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
-  const count = countBy(props.results?.result, 'level');
+const CompactOpaMetadataCard = ({
+  title,
+  children,
+  results,
+}: OpaMetadataAnalysisCardProps & { results: OpaResult | null }) => {
+  const count = countBy(results?.result, 'level');
 
   return (
     <Accordion>
@@ -173,42 +147,19 @@ const CompactOpaMetadataCard = (props: OpaMetadataAnalysisCardProps) => {
         id="panel1-header"
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gridColumnGap: 20 }}>
-          <Typography variant="h6">{props.title}</Typography>
-          {count.error > 0 && (
-            <Fab variant="extended" size="small" color="error">
-              <ErrorIcon sx={{ mr: 1 }} />
-              {count.error} Errors
-            </Fab>
-          )}
-          {count.warning > 0 && (
-            <Fab variant="extended" size="small" color="warning">
-              <WarningIcon sx={{ mr: 1 }} /> {count.warning} Warnings
-            </Fab>
-          )}
-          {count.info > 0 && (
-            <Fab variant="extended" size="small">
-              <InfoIcon sx={{ mr: 1 }} /> {count.info} Infos
-            </Fab>
-          )}
+          <Typography variant="h6">{title}</Typography>
+          <StatusChip count={count.error || 0} type="error" />
+          <StatusChip count={count.warning || 0} type="warning" />
+          <StatusChip count={count.info || 0} type="info" />
         </Box>
       </AccordionSummary>
       <AccordionDetails>
-        {props.children}
-        <Box sx={{ flexGrow: 1 }}>{renderCardContent(props.results)}</Box>
+        {children}
+        <Box sx={{ flexGrow: 1 }}>{renderCardContent(results)}</Box>
       </AccordionDetails>
     </Accordion>
   );
 };
-
-export interface OpaMetadataAnalysisCardProps {
-  title?: string;
-  // Select how the card looks like
-  variant?: MetadataAnalysisCardVariants;
-  // provide the validation results
-  results?: OpaResult | null;
-  // Description of additional element to add to the OpaMetadataAnalysisCard
-  children?: string | React.ReactNode;
-}
 
 export const OpaMetadataAnalysisCard = (
   props: OpaMetadataAnalysisCardProps,
