@@ -1,4 +1,4 @@
-## Using `evaluatePolicy`
+# Using `evaluatePolicy`
 
 A good way to see this in action is to look at the [backend demo plugin](https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/plugins/opa-demo-backend/src/router.ts). This plugin uses the `evaluatePolicy` function to evaluate policies.
 
