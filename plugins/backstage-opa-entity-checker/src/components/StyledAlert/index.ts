@@ -1,0 +1,1 @@
+export { StylesAlert } from './StylesAlert';

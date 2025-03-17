@@ -17,6 +17,6 @@ export interface OpaResult {
 export interface EntityResult {
   id?: string;
   check_title?: string;
-  level: 'error' | 'warning';
+  level: 'error' | 'warning' | 'info';
   message: string;
 }
