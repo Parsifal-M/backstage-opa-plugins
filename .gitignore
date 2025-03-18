@@ -65,3 +65,6 @@ site
 
 # Vscode
 .vscode
+
+# Zed
+.zed
