@@ -58,7 +58,6 @@ import {
   OpaMetadataAnalysisCard,
   hasOPAValidationErrors,
 } from '@parsifal-m/plugin-opa-entity-checker';
-import { DevQuote } from '@parsifal-m/plugin-dev-quotes-homepage';
 import {
   OpaPolicyPage,
   isOpaPoliciesEnabled,
@@ -149,10 +148,6 @@ const overviewContent = (
     </Grid>
     <Grid item md={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
-    </Grid>
-
-    <Grid item md={12}>
-      <DevQuote />
     </Grid>
   </Grid>
 );

@@ -1,0 +1,1 @@
+export { OpaPermissionsPage } from './OpaPermissionsPage';

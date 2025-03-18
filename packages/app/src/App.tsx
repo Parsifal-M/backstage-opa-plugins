@@ -41,6 +41,7 @@ import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { OpaFrontendDemoPage } from '@internal/backstage-plugin-opa-frontend-demo';
 import { DefaultFilters } from '@backstage/plugin-catalog-react';
 import { EntityOpaValidationPicker } from './components/opaCatalogFilter/components/OpaValidationCheckbox';
+import { OpaPermissionsFrontendPage } from '@parsifal-m/backstage-plugin-opa-permissions-frontend';
 
 const app = createApp({
   components: {
@@ -130,6 +131,10 @@ const routes = (
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route path="/opa-frontend-demo" element={<OpaFrontendDemoPage />} />
+    <Route
+      path="/opa-permissions-frontend"
+      element={<OpaPermissionsFrontendPage />}
+    />
   </FlatRoutes>
 );
 
