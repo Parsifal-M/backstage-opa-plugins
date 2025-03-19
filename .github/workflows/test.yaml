@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   test:
     name: Test on Node ${{ matrix.node-version }}
