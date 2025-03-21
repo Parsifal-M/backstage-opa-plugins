@@ -8,8 +8,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Box from '@mui/material/Box';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { ApiHolder, alertApiRef, useApi } from '@backstage/core-plugin-api';
-import { opaBackendApiRef } from '../../api';
-import { EntityResult, OpaResult } from '../../api/types';
+import { opaApiRef } from '../../api';
+import { OpaMetadataEntityResult, OpaEntityResult } from '../../api/types';
 import { getPassStatus } from '../../utils/getPassStatus';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { StylesAlert } from '../StyledAlert';
@@ -40,9 +40,9 @@ export async function hasOPAValidationErrors(
   entity: Entity,
   context: { apis: ApiHolder },
 ) {
-  const opaApi = context.apis.get(opaBackendApiRef);
+  const opaApi = context.apis.get(opaApiRef);
   if (!opaApi) {
-    throw new Error(`No implementation available for ${opaBackendApiRef}`);
+    throw new Error(`No implementation available for ${opaApiRef}`);
   }
 
   const results = await opaApi.entityCheck(entity);
@@ -62,7 +62,7 @@ const countBy = (arr: any[] | undefined, prop: string) => {
   }, {});
 };
 
-const renderCardContent = (results: OpaResult | null | undefined) => {
+const renderCardContent = (results: OpaEntityResult | null | undefined) => {
   let violationId = 0;
 
   if (!results) {
@@ -78,7 +78,7 @@ const renderCardContent = (results: OpaResult | null | undefined) => {
     return <Typography>No issues found!</Typography>;
   }
 
-  return results.result.map((violation: EntityResult) => (
+  return results.result.map((violation: OpaMetadataEntityResult) => (
     <StylesAlert
       severity={violation.level}
       key={violation.id ?? ++violationId}
@@ -93,7 +93,7 @@ const DefaultOpaMetadataCard = ({
   title,
   children,
   results,
-}: OpaMetadataAnalysisCardProps & { results: OpaResult | null }) => {
+}: OpaMetadataAnalysisCardProps & { results: OpaEntityResult | null }) => {
   const passStatus = useMemo(() => getPassStatus(results?.result), [results]);
 
   let chipColor: 'warning' | 'error' | 'success' | 'info';
@@ -136,7 +136,7 @@ const CompactOpaMetadataCard = ({
   title,
   children,
   results,
-}: OpaMetadataAnalysisCardProps & { results: OpaResult | null }) => {
+}: OpaMetadataAnalysisCardProps & { results: OpaEntityResult | null }) => {
   const count = countBy(results?.result, 'level');
 
   return (
@@ -165,8 +165,8 @@ export const OpaMetadataAnalysisCard = (
   props: OpaMetadataAnalysisCardProps,
 ) => {
   const { entity } = useEntity();
-  const opaApi = useApi(opaBackendApiRef);
-  const [opaResults, setOpaResults] = useState<OpaResult | null>(null);
+  const opaApi = useApi(opaApiRef);
+  const [opaResults, setOpaResults] = useState<OpaEntityResult | null>(null);
   const alertApi = useApi(alertApiRef);
 
   const fetchData = useCallback(async () => {

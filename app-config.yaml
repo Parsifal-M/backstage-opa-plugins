@@ -2,6 +2,14 @@ app:
   title: OPA-Backstage-Plugins
   baseUrl: http://localhost:3000
 
+  support:
+    url: https://backstage.io/docs
+    items: # Used by common SupportButton component
+      - title: Support
+        links:
+          - url: https://backstage.io/docs
+            title: Documentation
+
 organization:
   name: OPA-Backstage-Plugins
 

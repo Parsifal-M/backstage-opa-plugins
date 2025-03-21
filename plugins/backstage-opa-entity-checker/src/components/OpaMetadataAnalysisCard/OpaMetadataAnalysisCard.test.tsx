@@ -3,7 +3,7 @@ import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { OpaMetadataAnalysisCard } from './OpaMetadataAnalysisCard';
 import { alertApiRef } from '@backstage/core-plugin-api';
 import { TestApiProvider } from '@backstage/test-utils';
-import { opaBackendApiRef } from '../../api';
+import { opaApiRef } from '../../api';
 
 const mockEntityCheck = jest.fn();
 const mockAlertPost = jest.fn();
@@ -37,7 +37,7 @@ const renderComponent = (props = {}) => {
     <TestApiProvider
       apis={[
         [alertApiRef, { post: mockAlertPost }],
-        [opaBackendApiRef, { entityCheck: mockEntityCheck }],
+        [opaApiRef, { entityCheck: mockEntityCheck }],
       ]}
     >
       <OpaMetadataAnalysisCard {...props} />

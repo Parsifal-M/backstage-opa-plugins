@@ -5,18 +5,18 @@ import {
   fetchApiRef,
 } from '@backstage/core-plugin-api';
 import { rootRouteRef } from './routes';
-import { opaBackendApiRef } from './api';
-import { OpaBackendClient } from './api/opaBackendClient';
+import { opaApiRef } from './api';
+import { OpaClient } from './api/opaBackendClient';
 
 export const opaEntityCheckerPlugin = createPlugin({
   id: 'opa-entity-checker',
   apis: [
     createApiFactory({
-      api: opaBackendApiRef,
+      api: opaApiRef,
       deps: {
         fetchApi: fetchApiRef,
       },
-      factory: ({ fetchApi }) => new OpaBackendClient({ fetchApi }),
+      factory: ({ fetchApi }) => new OpaClient({ fetchApi }),
     }),
   ],
   routes: {

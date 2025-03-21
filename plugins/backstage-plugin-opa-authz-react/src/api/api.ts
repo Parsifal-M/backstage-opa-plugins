@@ -1,5 +1,10 @@
-import { FetchApi } from '@backstage/core-plugin-api';
+import { ApiRef, createApiRef, FetchApi } from '@backstage/core-plugin-api';
 import { OpaAuthzApi, PolicyInput, PolicyResult } from './types';
+
+export const opaAuthzBackendApiRef: ApiRef<OpaAuthzApi> =
+  createApiRef<OpaAuthzApi>({
+    id: 'plugin.opa-authz.api',
+  });
 
 export class OpaAuthzClientReact implements OpaAuthzApi {
   private readonly fetchApi: FetchApi;

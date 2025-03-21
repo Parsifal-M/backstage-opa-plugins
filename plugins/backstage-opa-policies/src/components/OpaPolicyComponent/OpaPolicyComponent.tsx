@@ -6,17 +6,18 @@ import {
   CopyTextButton,
 } from '@backstage/core-components';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { opaPolicyBackendApiRef, OpaPolicy } from '../../api/types';
+import { OpaPolicy } from '../../api/types';
 import { useApi, alertApiRef } from '@backstage/core-plugin-api';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { a11yDark, coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useTheme } from '@material-ui/core';
+import { opaApiRef } from '../../api';
 
 export const OpaPolicyPage = () => {
   const theme = useTheme();
   const [policy, setPolicy] = useState<OpaPolicy | null>(null);
   const [loading, setLoading] = useState(true);
-  const opaApi = useApi(opaPolicyBackendApiRef);
+  const opaApi = useApi(opaApiRef);
   const { entity } = useEntity();
   const alertApi = useApi(alertApiRef);
   const opaPolicy = entity.metadata?.annotations?.['open-policy-agent/policy'];

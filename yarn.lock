@@ -3781,7 +3781,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/core-plugin-api@npm:^1.10.0, @backstage/core-plugin-api@npm:^1.9.1, @backstage/core-plugin-api@npm:^1.9.2, @backstage/core-plugin-api@npm:^1.9.3":
+"@backstage/core-plugin-api@npm:^1.10.0, @backstage/core-plugin-api@npm:^1.9.2, @backstage/core-plugin-api@npm:^1.9.3":
   version: 1.10.0
   resolution: "@backstage/core-plugin-api@npm:1.10.0"
   dependencies:
@@ -7814,7 +7814,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@internal/backstage-plugin-opa-frontend-demo@npm:^0.1.0, @internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend":
+"@internal/backstage-plugin-opa-frontend-demo@workspace:^, @internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend":
   version: 0.0.0-use.local
   resolution: "@internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend"
   dependencies:
@@ -9837,18 +9837,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-dev-quotes-homepage@npm:^3.0.3":
-  version: 3.0.4
-  resolution: "@parsifal-m/plugin-dev-quotes-homepage@npm:3.0.4"
-  dependencies:
-    "@backstage/core-plugin-api": "npm:^1.9.1"
-    "@material-ui/core": "npm:^4.12.2"
-  peerDependencies:
-    react: ^16.13.1 || ^17.0.0
-  checksum: 10/91b9ff48ba04fef281ca7a1460b920c0ef6419440941dccf174b3ca38bfcb57d27ef1957ef9f81a2aa5f0c07a8a1477b39961ffa47f5a71e6f0a02a0b9dc1acd
-  languageName: node
-  linkType: hard
-
 "@parsifal-m/plugin-opa-backend@workspace:*, @parsifal-m/plugin-opa-backend@workspace:^, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend"
@@ -9866,6 +9854,7 @@ __metadata:
     "@types/supertest": "npm:^2.0.12"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
+    knex: "npm:^3.1.0"
     msw: "npm:^1.0.0"
     node-fetch: "npm:^2.6.7"
     supertest: "npm:^6.2.4"
@@ -15010,11 +14999,10 @@ __metadata:
     "@backstage/plugin-user-settings": "npm:^0.8.19"
     "@backstage/test-utils": "npm:^1.7.5"
     "@backstage/theme": "npm:^0.6.4"
-    "@internal/backstage-plugin-opa-frontend-demo": "npm:^0.1.0"
+    "@internal/backstage-plugin-opa-frontend-demo": "workspace:^"
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
     "@parsifal-m/backstage-plugin-opa-authz-react": "workspace:^"
-    "@parsifal-m/plugin-dev-quotes-homepage": "npm:^3.0.3"
     "@parsifal-m/plugin-opa-entity-checker": "workspace:*"
     "@parsifal-m/plugin-opa-policies": "workspace:*"
     "@testing-library/jest-dom": "npm:^6.1.5"
@@ -25280,7 +25268,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knex@npm:3, knex@npm:^3.0.0":
+"knex@npm:3, knex@npm:^3.0.0, knex@npm:^3.1.0":
   version: 3.1.0
   resolution: "knex@npm:3.1.0"
   dependencies:

@@ -1,6 +1,6 @@
-import { EntityResult } from '../api/types';
+import { OpaMetadataEntityResult } from '../api/types';
 
-export const getPassStatus = (violations: EntityResult[] = []) => {
+export const getPassStatus = (violations: OpaMetadataEntityResult[] = []) => {
   const errors = violations.filter(v => v.level === 'error').length;
   const warnings = violations.filter(v => v.level === 'warning').length;
   const infos = violations.filter(v => v.level === 'info').length;

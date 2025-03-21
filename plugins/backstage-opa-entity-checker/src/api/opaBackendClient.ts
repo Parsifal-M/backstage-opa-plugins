@@ -1,13 +1,17 @@
 import { Entity } from '@backstage/catalog-model';
-import { OpaBackendApi, OpaResult } from './types';
-import { FetchApi } from '@backstage/core-plugin-api';
+import { OpaBackendApi, OpaEntityResult } from './types';
+import { createApiRef, FetchApi } from '@backstage/core-plugin-api';
 
-export class OpaBackendClient implements OpaBackendApi {
+export const opaApiRef = createApiRef<OpaBackendApi>({
+  id: 'plugin.opa-entity-checker.service',
+});
+
+export class OpaClient implements OpaBackendApi {
   private readonly fetchApi: FetchApi;
   constructor(options: { fetchApi: FetchApi }) {
     this.fetchApi = options.fetchApi;
   }
-  private async handleResponse(response: Response): Promise<OpaResult> {
+  private async handleResponse(response: Response): Promise<OpaEntityResult> {
     if (!response.ok) {
       const message = `Error ${response.status}: ${response.statusText}.`;
 
@@ -24,10 +28,10 @@ export class OpaBackendClient implements OpaBackendApi {
     }
 
     const data = await response.json();
-    return data as OpaResult;
+    return data as OpaEntityResult;
   }
 
-  async entityCheck(entityMetadata: Entity): Promise<OpaResult> {
+  async entityCheck(entityMetadata: Entity): Promise<OpaEntityResult> {
     const url = `plugin://opa/entity-checker`;
     const response = await this.fetchApi.fetch(url, {
       method: 'POST',
