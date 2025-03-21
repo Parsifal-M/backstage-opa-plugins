@@ -1,0 +1,22 @@
+codecov:
+  require_ci_to_pass: true
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 0%
+    patch:
+      default:
+        target: auto
+        threshold: 0%
+
+  ignore:
+    - '**/*.test.ts'
+    - '**/dist/**'
+    - '**/coverage/**'
+    - '**/node_modules/**'
+    - '**/plugin.ts'
+    - '**/packages/app/**'
+    - '**/packages/backend/**'
