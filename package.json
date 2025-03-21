@@ -18,7 +18,7 @@
     "clean": "backstage-cli repo clean",
     "test": "backstage-cli repo test",
     "test:all": "backstage-cli repo test --coverage",
-    "test:changed": "backstage-cli repo test --onlyChanged --coverage",
+    "test:changed": "backstage-cli repo test --onlyChanged --coverage --silent",
     "test:silent": "backstage-cli repo test --silent --coverage",
     "lint": "backstage-cli repo lint --since origin/main",
     "lint:all": "backstage-cli repo lint",
