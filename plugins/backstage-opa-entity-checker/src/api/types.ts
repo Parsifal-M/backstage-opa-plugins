@@ -1,20 +1,15 @@
 import { Entity } from '@backstage/catalog-model';
-import { createApiRef } from '@backstage/core-plugin-api';
 
 export interface OpaBackendApi {
-  entityCheck(entityMetadata: Entity): Promise<OpaResult>;
+  entityCheck(entityMetadata: Entity): Promise<OpaEntityResult>;
 }
 
-export const opaBackendApiRef = createApiRef<OpaBackendApi>({
-  id: 'plugin.opa-backend.service',
-});
-
-export interface OpaResult {
+export interface OpaEntityResult {
   good_entity: boolean;
-  result?: EntityResult[];
+  result?: OpaMetadataEntityResult[];
 }
 
-export interface EntityResult {
+export interface OpaMetadataEntityResult {
   id?: string;
   check_title?: string;
   level: 'error' | 'warning' | 'info';

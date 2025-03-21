@@ -1,2 +1,2 @@
 export type { OpaBackendApi } from './types';
-export { opaBackendApiRef } from './types';
+export { opaApiRef } from './opaBackendClient';

@@ -5,20 +5,18 @@ import {
   fetchApiRef,
 } from '@backstage/core-plugin-api';
 import { Entity } from '@backstage/catalog-model';
-
 import { rootRouteRef } from './routes';
-import { opaPolicyBackendApiRef } from './api/types';
-import { OpaPolicyBackendClient } from './api/opaBackendClient';
+import { opaApiRef, OpaClient } from './api';
 
 export const opaPoliciesPlugin = createPlugin({
   id: 'opa-policies',
   apis: [
     createApiFactory({
-      api: opaPolicyBackendApiRef,
+      api: opaApiRef,
       deps: {
         fetchApi: fetchApiRef,
       },
-      factory: ({ fetchApi }) => new OpaPolicyBackendClient({ fetchApi }),
+      factory: ({ fetchApi }) => new OpaClient({ fetchApi }),
     }),
   ],
   routes: {

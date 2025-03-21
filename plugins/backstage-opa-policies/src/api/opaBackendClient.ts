@@ -1,7 +1,11 @@
-import { OpaPolicy, OpaPolicyBackendApi } from './types';
-import { FetchApi } from '@backstage/core-plugin-api';
+import { OpaPolicy, OpaBackendApi } from './types';
+import { createApiRef, FetchApi } from '@backstage/core-plugin-api';
 
-export class OpaPolicyBackendClient implements OpaPolicyBackendApi {
+export const opaApiRef = createApiRef<OpaBackendApi>({
+  id: 'plugin.opa-policies-viewer.service',
+});
+
+export class OpaClient implements OpaBackendApi {
   private readonly fetchApi: FetchApi;
   constructor(options: { fetchApi: FetchApi }) {
     this.fetchApi = options.fetchApi;

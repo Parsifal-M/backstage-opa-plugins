@@ -1,9 +1,6 @@
 import { useApi } from '@backstage/core-plugin-api';
-import {
-  opaAuthzBackendApiRef,
-  PolicyInput,
-  PolicyResult,
-} from '../../api/types';
+import { opaAuthzBackendApiRef } from '../../api';
+import { PolicyInput, PolicyResult } from '../../api/types';
 import useSWR from 'swr';
 
 export type AsyncOpaAuthzResult = {
