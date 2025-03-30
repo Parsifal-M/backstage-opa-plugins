@@ -14,3 +14,4 @@ playwright.config.ts
 .yarnrc.yml
 .github/*
 .changeset
+opa-docs/**
