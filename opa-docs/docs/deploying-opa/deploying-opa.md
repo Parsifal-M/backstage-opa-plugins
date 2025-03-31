@@ -43,7 +43,7 @@ spec:
 ```
 
 > [!ATTENTION|style:flat]
-> The below is a policy designed to work with the [OPA Permissions Wrapper Module](../opa-permissions-wrapper-module/introduction.md#simplify-permissions-with-opa-in-backstage). If you are using [opa-authz](../opa-authz/introduction.md#opa-authz-client) or [opa-authz-react](../opa-authz-react/introduction.md#opa-authz-react), you will need to adjust the policy accordingly!
+> The below is a policy designed to work with the [OPA Permissions Wrapper Module](../opa-permissions-wrapper-module/introduction.md#simplify-permissions-with-opa-in-backstage). If you are using [opa-authz-react](../opa-authz-react/introduction.md#opa-authz-react), you will need to adjust the policy accordingly!
 
 For simplicity you can then create a policy in a `ConfigMap` and mount it into the OPA container.
 
