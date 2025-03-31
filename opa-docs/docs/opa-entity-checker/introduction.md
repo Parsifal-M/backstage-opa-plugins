@@ -1,6 +1,4 @@
-![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-opa-entity-checker?logo=npm) ![NPM Downloads](https://img.shields.io/npm/dw/%40parsifal-m%2Fplugin-opa-entity-checker)
-
-# Keep Your Entity Data In Check With OPA Entity Checker
+# OPA Entity Checker
 
 Welcome to a smarter way to ensure data quality! The opa-entity-checker plugin, powered by [OPA](https://github.com/open-policy-agent/opa), offers a straightforward solution to validate your entities against custom policies. It's a great tool for maintaining high data standards in your Backstage instance. And keeps teams on their toes to ensure data quality is always good.
 

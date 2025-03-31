@@ -48,7 +48,7 @@ Your contributions can make this plugin even better. Fork the repository, make y
 
 ## Ecosystem
 
-- [PlaTT Policy Template](https://github.com/ap-communications/platt-policy-template) contains policy templates that will work with the [plugin-permission-backend-module-opa-wrapper](./plugins/permission-backend-module-opa-wrapper/README.md) plugin!
+- [PlaTT Policy Template](https://github.com/ap-communications/platt-policy-template) contains policy templates that will work with the this plugin!
 
 ## License
 

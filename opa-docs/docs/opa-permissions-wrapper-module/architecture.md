@@ -5,7 +5,6 @@ This document describes the high-level flow of interactions and the sequence dia
 ## High-Level Flow of Interactions
 
 ```mermaid
-%%{init: {'theme': 'dark'}}%%
 graph LR
     A[Backstage] --> B[Permissions Framework]
     B --> C[OPA Permissions Wrapper Plugin]
@@ -20,7 +19,6 @@ graph LR
 This flowchart represents the high-level flow of interactions between the different components in the OPA plugins architecture on the new backend system.
 
 ```mermaid
-%%{init: {'theme': 'dark'}}%%
 sequenceDiagram
     participant User
     participant Backstage App
