@@ -7,8 +7,13 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'OPA Backstage Plugins',
-  tagline: 'Bringing OPA to Backstage ❤️',
+  tagline: 'Bringing the Open Policy Agent to Backstage ❤️',
   favicon: 'img/favicon.ico',
+
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
 
   // Set the production url of your site here
   url: 'https://parsifal-m.github.io',
@@ -59,17 +64,18 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
-
     // Optional: Add announcement bar
     announcementBar: {
       id: 'support_us',
       content:
-        '⭐️ If you like OPA Backstage Plugins, give it a star on GitHub! ⭐️',
+        '⭐️ If you like the OPA Backstage Plugins, give the repository a star on <a href="https://github.com/Parsifal-M/backstage-opa-plugins?tab=readme-ov-file#welcome-to-the-opa-plugins-repository-for-backstage" target="_blank">GitHub</a>! ⭐️',
       backgroundColor: '#fafbfc',
       textColor: '#091E42',
       isCloseable: true,
+    },
+
+    mermaid: {
+      theme: { light: 'base', dark: 'dark' },
     },
 
     navbar: {
@@ -83,7 +89,7 @@ const config: Config = {
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         {
-          href: 'https://github.com/Parsifal-M/backstage-opa-plugins',
+          href: 'https://github.com/Parsifal-M/backstage-opa-plugins?tab=readme-ov-file#welcome-to-the-opa-plugins-repository-for-backstage',
           label: 'GitHub',
           position: 'right',
         },
@@ -97,7 +103,7 @@ const config: Config = {
           items: [
             {
               label: 'Getting Started',
-              to: '/docs/intro',
+              to: '/docs/home',
             },
           ],
         },
@@ -109,12 +115,12 @@ const config: Config = {
               href: 'https://github.com/Parsifal-M/backstage-opa-plugins/discussions',
             },
             {
-              label: 'Backstage Community',
-              href: 'https://github.com/backstage/community',
+              label: 'Backstage Documentation',
+              href: 'https://backstage.io/docs/',
             },
             {
-              label: 'OPA Community',
-              href: 'https://www.openpolicyagent.org/docs/latest/#community',
+              label: 'OPA Documentation',
+              href: 'https://www.openpolicyagent.org/docs/latest/',
             },
           ],
         },
@@ -132,7 +138,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Backstage OPA Plugins. Built with Docusaurus.`,
+      copyright: `Built with ❤️ by <a href="https://github.com/Parsifal-M">Parsifal-M</a> and <a href="https://github.com/Parsifal-M/backstage-opa-plugins/graphs/contributors">  Contributors</a>`,
     },
     prism: {
       theme: prismThemes.github,

@@ -14,9 +14,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Integrate OPA's powerful policy-as-code capabilities directly into your
-        Backstage instance. No need to redeploy Backstage when creating or
-        updating policies, simply update the Rego policies and they will be
-        automatically applied.
+        Backstage instance.
       </>
     ),
   },
@@ -31,12 +29,12 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Enhanced Governance',
+    title: 'No Redeploying After Policy Changes',
     description: (
       <>
-        Improve security and compliance with centralized policy management.
-        Enforce standardization while maintaining flexibility for your
-        engineering teams.
+        No need to redeploy Backstage when making policy changes! Using these
+        plugins decouples the application from the policy changes, simply update
+        the rego policy and youre good to go!
       </>
     ),
   },

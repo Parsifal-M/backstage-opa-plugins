@@ -1,0 +1,30 @@
+name: Test Docusaurus deployment
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'opa-docs/**'
+
+jobs:
+  test-deploy:
+    name: Test Docusaurus deployment
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./opa-docs
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: './opa-docs/yarn.lock'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Test build website
+        run: yarn build

@@ -1,5 +1,3 @@
-![NPM Version](https://img.shields.io/npm/v/%40parsifal-m%2Fplugin-opa-backend?logo=npm)
-
 # Backstage OPA Backend Plugin
 
 A backend plugin for Backstage, this plugin integrates with the Open Policy Agent (OPA) to facilitate policy evaluation.
