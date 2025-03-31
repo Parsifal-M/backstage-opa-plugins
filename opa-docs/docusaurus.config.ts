@@ -42,6 +42,7 @@ const config: Config = {
           editUrl:
             'https://github.com/Parsifal-M/backstage-opa-plugins/tree/main/',
         },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -73,7 +74,6 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
-        { to: '/blog', label: 'Blog', position: 'left' },
         {
           href: 'https://github.com/Parsifal-M/backstage-opa-plugins?tab=readme-ov-file#welcome-to-the-opa-plugins-repository-for-backstage',
           label: 'GitHub',
