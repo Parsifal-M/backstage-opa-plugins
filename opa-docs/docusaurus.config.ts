@@ -42,20 +42,6 @@ const config: Config = {
           editUrl:
             'https://github.com/Parsifal-M/backstage-opa-plugins/tree/main/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Update this to your repo path
-          editUrl:
-            'https://github.com/Parsifal-M/backstage-opa-plugins/tree/main/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
         theme: {
           customCss: './src/css/custom.css',
         },
