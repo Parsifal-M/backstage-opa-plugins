@@ -114,14 +114,14 @@ yarn add --cwd packages/app @parsifal-m/plugin-opa-entity-checker && yarn add --
 
 Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
 
-```diff
+```typescript
 import { createBackend } from '@backstage/backend-defaults';
 
 const backend = createBackend();
 backend.add(import('@backstage/plugin-app-backend/alpha'));
 backend.add(import('@backstage/plugin-auth-backend'));
 // ..... other plugins
-+ backend.add(import('@parsifal-m/plugin-opa-backend'));
+backend.add(import('@parsifal-m/plugin-opa-backend'));
 ```
 
 ## Add The OPA Entity Checker Plugin To Your Frontend
@@ -197,7 +197,7 @@ yarn add --cwd packages/backend @parsifal-m/backstage-plugin-opa-entity-checker-
 
 Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
 
-```diff
+```typescript
 import { createBackend } from '@backstage/backend-defaults';
 
 const backend = createBackend();
@@ -205,7 +205,9 @@ backend.add(import('@backstage/plugin-app-backend/alpha'));
 backend.add(import('@backstage/plugin-auth-backend'));
 // ..... other plugins
 backend.add(import('@parsifal-m/plugin-opa-backend'));
-+ backend.add(import('@parsifal-m/backstage-plugin-opa-entity-checker-processor'));
+backend.add(
+  import('@parsifal-m/backstage-plugin-opa-entity-checker-processor'),
+);
 ```
 
 ## Recommendations

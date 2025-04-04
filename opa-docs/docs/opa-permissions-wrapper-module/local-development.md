@@ -18,14 +18,14 @@ yarn add --cwd packages/backend @parsifal-m/plugin-permission-backend-module-opa
 
 Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
 
-```diff
+```typescript
 import { createBackend } from '@backstage/backend-defaults';
 
 const backend = createBackend();
 backend.add(import('@backstage/plugin-app-backend/alpha'));
 backend.add(import('@backstage/plugin-auth-backend'));
 // ..... other plugins
-+ backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
+backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
 ```
 
 ## Configuration

@@ -3,11 +3,35 @@
  * and scoped locally.
  */
 
+:root {
+  --blue: #2772b3;
+  --green: #3caea3;
+  --teal: #2196f3;
+}
+
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  /* Gradient background */
+  background: linear-gradient(45deg, var(--blue), var(--green), var(--teal));
+  background-size: 400% 400%;
+  /* Animation */
+  animation: gradientAnimation 20s ease infinite;
+  color: white; /* Ensure text is readable */
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @media screen and (max-width: 996px) {
@@ -20,4 +44,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Style the buttons to stand out */
+.buttons .button {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+  transition: background-color 0.3s ease;
+}
+
+.buttons .button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Ensure headings and subtitles are readable */
+.hero__title,
+.hero__subtitle {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
