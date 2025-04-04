@@ -4,9 +4,9 @@
  */
 
 :root {
-  --opa-blue: #2772b3;
-  --backstage-green: #3caea3;
-  --opa-blue: #2196f3;
+  --blue: #2772b3;
+  --green: #3caea3;
+  --teal: #2196f3;
 }
 
 .heroBanner {
@@ -15,15 +15,10 @@
   position: relative;
   overflow: hidden;
   /* Gradient background */
-  background: linear-gradient(
-    45deg,
-    var(--opa-blue),
-    var(--backstage-green),
-    var(--opa-blue)
-  );
+  background: linear-gradient(45deg, var(--blue), var(--green), var(--teal));
   background-size: 400% 400%;
   /* Animation */
-  animation: gradientAnimation 15s ease infinite;
+  animation: gradientAnimation 20s ease infinite;
   color: white; /* Ensure text is readable */
 }
 
