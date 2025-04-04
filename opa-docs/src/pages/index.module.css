@@ -3,7 +3,6 @@
  * and scoped locally.
  */
 
-/* Define OPA and Backstage colors */
 :root {
   --opa-blue: #2772b3;
   --backstage-green: #3caea3;
@@ -54,7 +53,7 @@
 
 /* Style the buttons to stand out */
 .buttons .button {
-  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  background-color: rgba(255, 255, 255, 0.2);
   color: white;
   border: 1px solid white;
   transition: background-color 0.3s ease;
@@ -67,5 +66,5 @@
 /* Ensure headings and subtitles are readable */
 .hero__title,
 .hero__subtitle {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add a text shadow for readability */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
