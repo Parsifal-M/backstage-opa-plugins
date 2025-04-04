@@ -1,5 +1,14 @@
 # @parsifal-m/backstage-plugin-opa-entity-checker-processor
 
+## 1.0.3
+
+### Patch Changes
+
+- Bumps version packages for all plugins, refactors opa entity checker and add additional testing.
+- Updated dependencies
+- Updated dependencies [2ac102e]
+  - @parsifal-m/plugin-opa-backend@1.6.2
+
 ## 1.0.1
 
 ### Patch Changes

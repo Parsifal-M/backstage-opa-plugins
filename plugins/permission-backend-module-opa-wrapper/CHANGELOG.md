@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.1
+
+### Patch Changes
+
+- Bumps version packages for all plugins, refactors opa entity checker and add additional testing.
+
 ## 1.4.0
 
 ### Minor Changes
