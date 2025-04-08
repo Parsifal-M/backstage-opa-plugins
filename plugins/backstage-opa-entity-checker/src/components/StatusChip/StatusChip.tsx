@@ -2,9 +2,10 @@ import Fab from '@mui/material/Fab';
 import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/Warning';
 import InfoIcon from '@mui/icons-material/Info';
+import SuccessIcon from '@mui/icons-material/CheckCircle';
 import React from 'react';
 
-type StatusType = 'error' | 'warning' | 'info';
+type StatusType = 'error' | 'warning' | 'info' | 'success';
 
 export const StatusChip = ({
   count,
@@ -23,6 +24,8 @@ export const StatusChip = ({
         return <WarningIcon sx={{ mr: 1 }} />;
       case 'info':
         return <InfoIcon sx={{ mr: 1 }} />;
+      case 'success':
+        return <SuccessIcon sx={{ mr: 1 }} />;
       default:
         return null;
     }
@@ -36,6 +39,8 @@ export const StatusChip = ({
         return count === 1 ? '1 Warning' : `${count} Warnings`;
       case 'info':
         return count === 1 ? '1 Info' : `${count} Infos`;
+      case 'success':
+        return count === 1 ? '1 success' : `${count} success`;
       default:
         return null;
     }

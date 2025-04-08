@@ -27,9 +27,13 @@ import { StatusChip } from '../StatusChip';
  */
 export interface OpaMetadataAnalysisCardProps {
   title?: string;
-  variant?: MetadataAnalysisCardVariants;
   children?: string | React.ReactNode;
+  variant?: 'default' | 'compact';
+  showCheckTitle?: boolean;
+  showUrls?: boolean;
 }
+
+type CardProps = Omit<OpaMetadataAnalysisCardProps, 'variant'>;
 
 /**
  * Returns true if the given entity has any validation errors
@@ -42,14 +46,14 @@ export async function hasOPAValidationErrors(
 ) {
   const opaApi = context.apis.get(opaApiRef);
   if (!opaApi) {
-    throw new Error(`No implementation available for ${opaApiRef}`);
+    throw new Error(
+      `No implementation available for ${JSON.stringify(opaApiRef)}`,
+    );
   }
 
   const results = await opaApi.entityCheck(entity);
   return getPassStatus(results.result) !== 'PASS';
 }
-
-type MetadataAnalysisCardVariants = 'default' | 'compact';
 
 const countBy = (arr: any[] | undefined, prop: string) => {
   if (arr === undefined || arr.length === 0) {
@@ -62,7 +66,11 @@ const countBy = (arr: any[] | undefined, prop: string) => {
   }, {});
 };
 
-const renderCardContent = (results: OpaEntityResult | null | undefined) => {
+const renderCardContent = (
+  results: OpaEntityResult | null | undefined,
+  showCheckTitle: boolean,
+  showUrls: boolean,
+) => {
   let violationId = 0;
 
   if (!results) {
@@ -83,17 +91,50 @@ const renderCardContent = (results: OpaEntityResult | null | undefined) => {
       severity={violation.level}
       key={violation.id ?? ++violationId}
       className={classes.alert}
+      onClick={() => {
+        if (showUrls && violation.url) {
+          window.open(violation.url, '_blank');
+        }
+      }}
+      sx={{
+        cursor: showUrls && violation.url ? 'pointer' : 'default',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        '&:hover': {
+          transform: showUrls && violation.url ? 'translateY(-2px)' : 'none',
+          boxShadow:
+            showUrls && violation.url ? '0 4px 8px rgba(0,0,0,0.1)' : 'none',
+        },
+      }}
     >
-      {violation.message}
+      <>
+        {showCheckTitle && violation.check_title && (
+          <Typography
+            variant="h6"
+            sx={{
+              mt: -1,
+            }}
+          >
+            {violation.check_title}
+          </Typography>
+        )}
+        <Typography variant="body2">{violation.message}</Typography>
+      </>
+      {violation.decisionId && (
+        <Typography variant="caption">
+          Decision ID: {violation.decisionId}
+        </Typography>
+      )}
     </StylesAlert>
   ));
 };
 
-const DefaultOpaMetadataCard = ({
-  title,
+const DefaultCard = ({
+  title = 'OPA Metadata Analysis',
   children,
   results,
-}: OpaMetadataAnalysisCardProps & { results: OpaEntityResult | null }) => {
+  showCheckTitle = false,
+  showUrls = false,
+}: CardProps & { results: OpaEntityResult | null }) => {
   const passStatus = useMemo(() => getPassStatus(results?.result), [results]);
 
   let chipColor: 'warning' | 'error' | 'success' | 'info';
@@ -126,17 +167,19 @@ const DefaultOpaMetadataCard = ({
           )}
         </div>
         {children}
-        {renderCardContent(results)}
+        {renderCardContent(results, showCheckTitle, showUrls)}
       </CardContent>
     </StyledCard>
   );
 };
 
-const CompactOpaMetadataCard = ({
-  title,
+const CompactCard = ({
+  title = 'OPA Metadata Analysis',
   children,
   results,
-}: OpaMetadataAnalysisCardProps & { results: OpaEntityResult | null }) => {
+  showCheckTitle = false,
+  showUrls = false,
+}: CardProps & { results: OpaEntityResult | null }) => {
   const count = countBy(results?.result, 'level');
 
   return (
@@ -147,7 +190,9 @@ const CompactOpaMetadataCard = ({
         id="panel1-header"
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gridColumnGap: 20 }}>
-          <Typography variant="h6">{title}</Typography>
+          <Typography variant="h6">
+            {title ?? 'OPA Metadata Analysis'}
+          </Typography>
           <StatusChip count={count.error || 0} type="error" />
           <StatusChip count={count.warning || 0} type="warning" />
           <StatusChip count={count.info || 0} type="info" />
@@ -155,7 +200,9 @@ const CompactOpaMetadataCard = ({
       </AccordionSummary>
       <AccordionDetails>
         {children}
-        <Box sx={{ flexGrow: 1 }}>{renderCardContent(results)}</Box>
+        <Box sx={{ flexGrow: 1 }}>
+          {renderCardContent(results, showCheckTitle, showUrls)}
+        </Box>
       </AccordionDetails>
     </Accordion>
   );
@@ -186,16 +233,8 @@ export const OpaMetadataAnalysisCard = (
     fetchData();
   }, [fetchData]);
 
-  switch (props.variant) {
-    case 'compact': {
-      return <CompactOpaMetadataCard {...props} results={opaResults} />;
-    }
-    default: {
-      return <DefaultOpaMetadataCard {...props} results={opaResults} />;
-    }
+  if (props.variant === 'compact') {
+    return <CompactCard {...props} results={opaResults} />;
   }
-};
-
-OpaMetadataAnalysisCard.defaultProps = {
-  title: 'OPA Entity Checker',
+  return <DefaultCard {...props} results={opaResults} />;
 };

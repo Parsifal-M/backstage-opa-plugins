@@ -59,7 +59,7 @@ describe('OpaMetadataAnalysisCard', () => {
       await waitFor(() =>
         expect(mockEntityCheck).toHaveBeenCalledWith(mockEntity),
       );
-      expect(screen.getByText('OPA Entity Checker')).toBeInTheDocument();
+      expect(screen.getByText('OPA Metadata Analysis')).toBeInTheDocument();
     });
 
     it('renders with custom title', async () => {
@@ -153,7 +153,7 @@ describe('OpaMetadataAnalysisCard', () => {
       expect(screen.queryByText('Test message')).not.toBeVisible();
 
       // Click to expand
-      fireEvent.click(screen.getByText('OPA Entity Checker'));
+      fireEvent.click(screen.getByText('OPA Metadata Analysis'));
 
       // After expansion, violation should be visible
       expect(screen.getByText('Test message')).toBeVisible();

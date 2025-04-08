@@ -54,7 +54,12 @@ export class CatalogOPAEntityValidator implements CatalogProcessor {
         const annotations: { [name: string]: string } = {};
 
         annotations[`${OPA_ENTITY_CHECKER_ANNOTATION}`] =
-          determineOverallStatus(violationStats, ['error', 'warning', 'info']);
+          determineOverallStatus(violationStats, [
+            'error',
+            'warning',
+            'info',
+            'success',
+          ]);
 
         return merge(
           {
