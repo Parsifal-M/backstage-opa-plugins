@@ -38,7 +38,7 @@ You can also use the `evaluatePolicy` function in your backend plugins to evalua
 ## Installation
 
 ```bash
-yarn add --cwd packages/backend @parsifal-m/plugin-permission-backend-module-opa-wrapper
+yarn --cwd packages/backend add @parsifal-m/plugin-permission-backend-module-opa-wrapper
 ````
 
 Make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
