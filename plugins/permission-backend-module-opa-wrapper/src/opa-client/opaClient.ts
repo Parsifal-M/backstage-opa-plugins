@@ -135,7 +135,7 @@ export class OpaClient {
     entryPoint: string,
   ): Promise<PolicyResult>;
   async evaluatePolicy<T>(input: PolicyInput, entryPoint: string): Promise<T>;
-  
+
   /**
    * Evaluates a generic policy by sending the input to the OPA server and returns the result.
    *
