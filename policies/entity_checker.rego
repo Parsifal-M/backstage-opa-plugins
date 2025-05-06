@@ -7,9 +7,13 @@ is_system_present if {
 }
 
 check contains {
-    "check_title": "Tags", 
-    "message": "You do not have any tags set!", 
-    "level": "info", 
+    # The title of the check
+    "check_title": "Tags",
+    # The message to display
+    "message": "You do not have any tags set!",
+    # The level of the check, can be info, warning, error, or success
+    "level": "info",
+    # A url to the documentation about tags, helpful for the user to understand the check
     "url": "https://docs.gitlab.com/user/project/repository/tags/"
 } if {
     not input.metadata.tags
@@ -43,7 +47,7 @@ check contains {
 
 check contains {
     "check_title": "Type",
-    "message": "Incorrect component type!",
+    "message": "Correct Component Type!",
     "level": "success"
 } if {
     valid_types = {"website", "library", "service"}

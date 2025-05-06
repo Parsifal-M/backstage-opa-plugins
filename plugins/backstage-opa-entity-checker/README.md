@@ -24,21 +24,21 @@ This plugin will allow you to run OPA against your entities in Backstage and see
 
 The `compact` version is intended to be used as a banner that displays how many errors were found, with a dropdown to see the details as you can see below:
 
-![Compact MetaData Card Violations Closed](../../docs/assets/card-compact-closed.png)
+![Compact MetaData Card Violations Closed](../../opa-docs/docs/assets/card-compact-closed.png)
 
 Expanded, you can see the details of the violations:
 
-![Compact MetaData Card Violations Open](../../docs/assets/card-compact-opened.png)
+![Compact MetaData Card Violations Open](../../opa-docs/docs/assets/card-compact-opened.png)
 
 With the compact version, if there are no violations, the card will not be displayed.
 
 The `default` version, currently looks like this:
 
-![MetaData Card Violations](../../docs/assets/card1.png)
+![MetaData Card Violations](../../opa-docs/docs/assets/card1.png)
 
 And with no violations:
 
-![MetaData Card No Violations](../../docs/assets/card2.png)
+![MetaData Card No Violations](../../opa-docs/docs/assets/card2.png)
 
 ## How do I set the policy?
 
@@ -148,6 +148,32 @@ const entityWarningContent = (
 ```
 
 Although not mandatory, we recommend using the `<EntitySwitch>` in both the `default` and `compact` versions with `hasOPAValidationErrors` as this will then only display the cards if there are validation errors.
+
+## Additional Props
+
+The `OpaMetadataAnalysisCard` component accepts the following props:
+
+- `title`: The title of the card. Defaults to `OPA Entity Checker`.
+- `variant`: The variant of the card. Can be `default` or `compact`. Defaults to `default`.
+- `showCheckTitle`: Whether to show the check title. Defaults to `false`.
+- `showUrls`: If you return a URL in your OPA policy, you can set this to `true` and clicking on the check title will open the URL in a new tab. Defaults to `false`.
+
+e.g.
+
+```rego
+check contains {
+    "check_title": "Tags",
+    "message": "You do not have any tags set!",
+    "level": "info",
+    "url": "https://docs.gitlab.com/user/project/repository/tags/"
+} if {
+    not input.metadata.tags
+}
+```
+
+This will result in the check card looking like the below, clicking on the check title will open the URL in a new tab.
+
+![Card with title and url](../../opa-docs/docs/assets/title-and-url-card.png)
 
 ## Additional Information
 
