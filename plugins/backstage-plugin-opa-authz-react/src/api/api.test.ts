@@ -64,7 +64,7 @@ describe('OpaAuthzClientReact', () => {
       );
 
       await expect(client.evalPolicy(input, entryPoint)).rejects.toThrow(
-        'Error 400: Bad Request.',
+        'Error: 400 Bad Request',
       );
     });
 
@@ -83,7 +83,7 @@ describe('OpaAuthzClientReact', () => {
       );
 
       await expect(client.evalPolicy(input, entryPoint)).rejects.toThrow(
-        'Error 500: Internal Server Error.',
+        'Error: 500 Internal Server Error',
       );
     });
   });
