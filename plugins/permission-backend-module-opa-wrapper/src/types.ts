@@ -70,7 +70,7 @@ export type PermissionsFrameworkPolicyEvaluationResult = {
       resourceType: string;
       rule: string;
     }[];
-    none?: {
+    not?: {
       params: {
         [key: string]: any;
       };
