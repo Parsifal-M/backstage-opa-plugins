@@ -1,17 +1,21 @@
 import { OpaMetadataEntityResult } from '../api/types';
 
 /**
- * Determines the pass status based on the provided violations.
+ * Determines the overall pass status based on the levels of checks provided.
  *
- * @param violations - An array of `OpaMetadataEntityResult` objects representing
- * the violations. Each violation contains a `level` property which can be
- * 'error', 'warning', or 'info'. Defaults to an empty array if not provided.
+ * @param checks - An array of `OpaMetadataEntityResult` objects representing the checks to evaluate.
+ *                 Each check contains a `level` property which can be one of the following:
+ *                 - 'error': Indicates a critical issue.
+ *                 - 'warning': Indicates a non-critical issue.
+ *                 - 'info': Provides informational messages.
+ *                 - 'success': Indicates a successful check.
  *
- * @returns A string representing the pass status:
- * - 'ERROR' if there are any violations with a level of 'error'.
- * - 'WARNING' if there are no errors but there are violations with a level of 'warning'.
- * - 'INFO' if there are no errors or warnings but there are violations with a level of 'info'.
- * - 'PASS' if there are no violations.
+ * @returns A string representing the overall status:
+ *          - 'ERROR': If there is at least one check with the level 'error'.
+ *          - 'WARNING': If there are no errors but at least one check with the level 'warning'.
+ *          - 'INFO': If there are no errors or warnings but at least one check with the level 'info'.
+ *          - 'SUCCESS': If there are no errors, warnings, or infos but at least one check with the level 'success'.
+ *          - 'PASS': If there are no errors, warnings, or infos, and only successes or no checks at all.
  */
 export const getPassStatus = (checks: OpaMetadataEntityResult[] = []) => {
   const errors = checks.filter(c => c.level === 'error').length;

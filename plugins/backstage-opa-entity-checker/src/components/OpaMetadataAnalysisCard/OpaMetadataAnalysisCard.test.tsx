@@ -184,13 +184,13 @@ describe('OpaMetadataAnalysisCard', () => {
   describe('status display', () => {
     it('shows SUCCESS chip for passing checks', async () => {
       mockEntityCheck.mockResolvedValue({
-        result: [{ message: 'Just info', level: 'info' }],
+        result: [{ message: 'Just success', level: 'success' }],
       });
 
       renderComponent();
 
       await waitFor(() => expect(mockEntityCheck).toHaveBeenCalled());
-      const statusChip = screen.getByText('INFO');
+      const statusChip = screen.getByText('SUCCESS');
       expect(statusChip).toBeInTheDocument();
     });
 
