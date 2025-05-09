@@ -104,6 +104,8 @@ data:
     }
 ```
 
+You can also check the policy in this repository for additional inspiration: [opa-entity-checker](https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/policies/entity_checker.rego).
+
 ## Installing The OPA Entity Checker Plugin And The OPA Backend Plugin
 
 Run the following command to install the OPA Entity Checker plugin in your Backstage project.
@@ -174,6 +176,32 @@ const entityWarningContent = (
 ```
 
 Although not mandatory, we recommend using the `<EntitySwitch>` in both the `default` and `compact` versions with `hasOPAValidationErrors` as this will then only display the cards if there are validation errors.
+
+## Additional Props
+
+The `OpaMetadataAnalysisCard` component accepts the following props:
+
+- `title`: The title of the card. Defaults to `OPA Entity Checker`.
+- `variant`: The variant of the card. Can be `default` or `compact`. Defaults to `default`.
+- `showCheckTitle`: Whether to show the check title. Defaults to `false`.
+- `showUrls`: If you return a URL in your OPA policy, you can set this to `true` and clicking on the check title will open the URL in a new tab. Defaults to `false`.
+
+e.g.
+
+```rego
+check contains {
+    "check_title": "Tags",
+    "message": "You do not have any tags set!",
+    "level": "info",
+    "url": "https://docs.gitlab.com/user/project/repository/tags/"
+} if {
+    not input.metadata.tags
+}
+```
+
+This will result in the check card looking like the below, clicking on the check title will open the URL in a new tab.
+
+![Card with title and url](../assets/title-and-url-card.png)
 
 ## Configuration
 

@@ -7792,7 +7792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@internal/backstage-plugin-opa-demo-backend@npm:^0.1.1, @internal/backstage-plugin-opa-demo-backend@workspace:plugins/opa-demo-backend":
+"@internal/backstage-plugin-opa-demo-backend@workspace:*, @internal/backstage-plugin-opa-demo-backend@workspace:plugins/opa-demo-backend":
   version: 0.0.0-use.local
   resolution: "@internal/backstage-plugin-opa-demo-backend@workspace:plugins/opa-demo-backend"
   dependencies:
@@ -15850,7 +15850,7 @@ __metadata:
     "@backstage/plugin-search-backend-module-techdocs": "npm:^0.3.6"
     "@backstage/plugin-search-backend-node": "npm:^1.3.8"
     "@backstage/plugin-techdocs-backend": "npm:^1.11.6"
-    "@internal/backstage-plugin-opa-demo-backend": "npm:^0.1.1"
+    "@internal/backstage-plugin-opa-demo-backend": "workspace:*"
     "@parsifal-m/backstage-plugin-opa-entity-checker-processor": "workspace:*"
     "@parsifal-m/plugin-opa-backend": "workspace:*"
     "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:*"

@@ -23,7 +23,9 @@ export interface OpaEntityCheckResult {
 export interface OPAResult {
   id?: string;
   check_title?: string;
-  level: 'error' | 'warning' | 'info';
+  level: 'error' | 'warning' | 'info' | 'success';
+  url?: string;
+  decisionId?: string;
   message: string;
 }
 
