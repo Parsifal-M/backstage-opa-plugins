@@ -40,7 +40,7 @@ export const StatusChip = ({
       case 'info':
         return count === 1 ? '1 Info' : `${count} Infos`;
       case 'success':
-        return count === 1 ? '1 success' : `${count} success`;
+        return count === 1 ? '1 Success' : `${count} Successes`;
       default:
         return null;
     }

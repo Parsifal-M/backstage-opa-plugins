@@ -108,6 +108,7 @@ describe('OpaMetadataAnalysisCard', () => {
           { id: '1', message: 'Error violation', level: 'error' },
           { id: '2', message: 'Warning violation', level: 'warning' },
           { id: '3', message: 'Info message', level: 'info' },
+          { id: '4', message: 'Success message', level: 'success' },
         ],
       });
 
@@ -117,6 +118,7 @@ describe('OpaMetadataAnalysisCard', () => {
       expect(screen.getByText('Error violation')).toBeInTheDocument();
       expect(screen.getByText('Warning violation')).toBeInTheDocument();
       expect(screen.getByText('Info message')).toBeInTheDocument();
+      expect(screen.getByText('Success message')).toBeInTheDocument();
       expect(screen.getByText('ERROR')).toBeInTheDocument(); // Status chip
     });
   });
@@ -129,6 +131,7 @@ describe('OpaMetadataAnalysisCard', () => {
           { message: 'Error 2', level: 'error' },
           { message: 'Warning', level: 'warning' },
           { message: 'Info', level: 'info' },
+          { message: 'Success', level: 'success' },
         ],
       });
 
@@ -138,6 +141,7 @@ describe('OpaMetadataAnalysisCard', () => {
       expect(screen.getByText('2 Errors')).toBeInTheDocument();
       expect(screen.getByText('1 Warning')).toBeInTheDocument();
       expect(screen.getByText('1 Info')).toBeInTheDocument();
+      expect(screen.getByText('1 Success')).toBeInTheDocument();
     });
 
     it('expands accordion when clicked', async () => {

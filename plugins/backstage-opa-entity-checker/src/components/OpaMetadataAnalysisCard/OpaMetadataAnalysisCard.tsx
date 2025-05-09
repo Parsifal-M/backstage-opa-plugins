@@ -196,6 +196,7 @@ const CompactCard = ({
           <StatusChip count={count.error || 0} type="error" />
           <StatusChip count={count.warning || 0} type="warning" />
           <StatusChip count={count.info || 0} type="info" />
+          <StatusChip count={count.success || 0} type="success" />
         </Box>
       </AccordionSummary>
       <AccordionDetails>
