@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.1
+
+### Patch Changes
+
+- Bumps version packages for all plugins, refactors opa entity checker and add additional testing.
+- 68bfc14: overloaded evaluatePolicy in order to change the return type
+- 439af64: `none` was not accepted by the permissions framework and should be `not` updated the types to accept `not`
+
 ## 1.4.0
 
 ### Minor Changes
