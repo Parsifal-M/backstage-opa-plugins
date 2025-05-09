@@ -128,6 +128,15 @@ export class OpaClient {
   }
 
   /**
+   * Overloaded function signatures for evaluatePolicy.
+   */
+  async evaluatePolicy(
+    input: PolicyInput,
+    entryPoint: string,
+  ): Promise<PolicyResult>;
+  async evaluatePolicy<T>(input: PolicyInput, entryPoint: string): Promise<T>;
+
+  /**
    * Evaluates a generic policy by sending the input to the OPA server and returns the result.
    *
    * @param input - The policy input to be evaluated.
@@ -135,10 +144,10 @@ export class OpaClient {
    * @returns A promise that resolves to the policy result.
    * @throws An error if the OPA server returns a non-OK response or if there is an issue with the request.
    */
-  async evaluatePolicy(
+  async evaluatePolicy<T = PolicyResult>(
     input: PolicyInput,
     entryPoint: string,
-  ): Promise<PolicyResult> {
+  ): Promise<T> {
     const url = `${this.baseUrl}/v1/data/${entryPoint}`;
 
     this.logger.debug(
@@ -160,7 +169,7 @@ export class OpaClient {
         throw new Error(message);
       }
 
-      const opaPermissionsResponse = (await opaResponse.json()) as PolicyResult;
+      const opaPermissionsResponse = (await opaResponse.json()) as T;
 
       this.logger.debug(
         `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
