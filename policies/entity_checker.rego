@@ -33,7 +33,7 @@ check contains {
     "message": "Correct namespace!",
     "level": "error"
 } if {
-    valid_namespaces = {"boga", "dev", "staging", "production"}
+    valid_namespaces = {"dev", "staging", "production"}
     valid_namespaces[input.metadata.namespace]
 }
 
@@ -51,5 +51,5 @@ check contains {
     "level": "success"
 } if {
     valid_types = {"website", "library", "service"}
-    not valid_types[input.spec.type]
+    valid_types[input.spec.type]
 }

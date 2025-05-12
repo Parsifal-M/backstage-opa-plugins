@@ -59,48 +59,56 @@ data:
 
     import rego.v1
 
-    # By default we assume the entity is bad :)
-    default good_entity := false
-
-    # Its a good entity if there are no error violations
-    good_entity if {
-        count({v | some v in violation; v.level == "error"}) == 0
-    }
-
-    # We check if the entity has a system set
     is_system_present if {
         input.spec.system
     }
 
-    # In each rule we check for certain entity metadata and if it is not present we add a violation
-    # In this one, we check if the entity has tags set, if it does not we add a warning violation
-    violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
+    check contains {
+        # The title of the check
+        "check_title": "Tags",
+        # The message to display
+        "message": "You do not have any tags set!",
+        # The level of the check, can be info, warning, error, or success
+        "level": "info",
+        # A url to the documentation about tags, helpful for the user to understand the check
+        "url": "https://docs.gitlab.com/user/project/repository/tags/"
+    } if {
         not input.metadata.tags
-        entity_check := "Tags"
-        msg := "You do not have any tags set!"
     }
 
-    # In this example, we check the lifecycle of the entity and if it is not one of the valid ones we add an error violation
-    violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
+    check contains {
+        "check_title": "Lifecycle",
+        "message": "Incorrect lifecycle, should be one of production or development, experimental!",
+        "level": "error"
+    } if {
         valid_lifecycles = {"production", "development", "experimental"}
         not valid_lifecycles[input.spec.lifecycle]
-        entity_check := "Lifecycle"
-        msg := "Incorrect lifecycle, should be one of production, development, or experimental!"
     }
 
-    # Here we check if the entity has a system set, if it does not we add an error violation
-    violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
+    check contains {
+        "check_title": "Namespace",
+        "message": "Correct namespace!",
+        "level": "error"
+    } if {
+        valid_namespaces = {"dev", "staging", "production"}
+        valid_namespaces[input.metadata.namespace]
+    }
+
+    check contains {
+        "check_title": "System",
+        "message": "System is missing!",
+        "level": "error"
+    } if {
         not is_system_present
-        entity_check := "System"
-        msg := "System is missing!"
     }
 
-    # Lastly here, we check if the entity type is one of the valid ones, if it is not we add an error violation
-    violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
+    check contains {
+        "check_title": "Type",
+        "message": "Correct Component Type!",
+        "level": "success"
+    } if {
         valid_types = {"website", "library", "service"}
-        not valid_types[input.spec.type]
-        entity_check := "Type"
-        msg := "Incorrect component type!"
+        valid_types[input.spec.type]
     }
 ```
 
@@ -155,24 +163,21 @@ You can also use the compact Card variant as follows. The card is intended to be
 
 ```tsx
 import {
-    OpaMetadataAnalysisCard,
-    hasOPAValidationErrors,
+  OpaMetadataAnalysisCard,
+  hasOPAValidationErrors,
 } from '@parsifal-m/plugin-opa-entity-checker';
 
 const entityWarningContent = (
-    //...
-    <EntitySwitch>
-      <EntitySwitch.Case if={hasOPAValidationErrors}>
-        <Grid item xs={12}>
-          <OpaMetadataAnalysisCard
-            title="Entity Validation"
-            variant="compact"
-          />
-        </Grid>
-      </EntitySwitch.Case>
-    </EntitySwitch>
-    //...
-}
+  //...
+  <EntitySwitch>
+    <EntitySwitch.Case if={hasOPAValidationErrors}>
+      <Grid item xs={12}>
+        <OpaMetadataAnalysisCard title="Entity Validation" variant="compact" />
+      </Grid>
+    </EntitySwitch.Case>
+  </EntitySwitch>
+  //...
+);
 ```
 
 Although not mandatory, we recommend using the `<EntitySwitch>` in both the `default` and `compact` versions with `hasOPAValidationErrors` as this will then only display the cards if there are validation errors.

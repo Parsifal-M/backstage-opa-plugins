@@ -33,13 +33,11 @@ This plugin allows you to do two things, the first and foremost is to use it as 
 
 You can also use the `evaluatePolicy` function in your backend plugins to evaluate policies. This is useful if you want a bit more flexibility in how you pass the information to OPA and evaluate the policy. You can see an example of this in the [backend demo plugin](https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/plugins/opa-demo-backend/src/router.ts).
 
-````typescript
-
 ## Installation
 
 ```bash
 yarn --cwd packages/backend add @parsifal-m/plugin-permission-backend-module-opa-wrapper
-````
+```
 
 Make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
 

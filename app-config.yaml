@@ -122,13 +122,13 @@ catalog:
         timeout: PT3M
 
 permission:
-  enabled: false
+  enabled: false # Override this in your app-config.local.yaml to enable the permission plugin
 
 opaClient:
   baseUrl: 'http://localhost:8181'
   policies:
     entityChecker: # Entity checker plugin
-      entrypoint: 'entity_checker/violation'
+      entrypoint: 'entity_checker/check'
     permissions: # Permission wrapper plugin
       entrypoint: 'rbac_policy/decision'
       ## Uncomment this line to add a fallback policy in case there is an issue fetching a policy from OPA
