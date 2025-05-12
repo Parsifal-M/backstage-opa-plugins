@@ -24,21 +24,21 @@ This plugin will allow you to run OPA against your entities in Backstage and see
 
 The `compact` version is intended to be used as a banner that displays how many errors were found, with a dropdown to see the details as you can see below:
 
-![Compact MetaData Card Violations Closed](../../docs/assets/card-compact-closed.png)
+![Compact MetaData Card Closed](../../opa-docs/docs/assets/card-compact-closed.png)
 
-Expanded, you can see the details of the violations:
+Expanded, you can see the details of the errors:
 
-![Compact MetaData Card Violations Open](../../docs/assets/card-compact-opened.png)
+![Compact MetaData Card Open](../../opa-docs/docs/assets/card-compact-opened.png)
 
-With the compact version, if there are no violations, the card will not be displayed.
+With the compact version, if there are no errors, the card will not be displayed.
 
 The `default` version, currently looks like this:
 
-![MetaData Card Violations](../../docs/assets/card1.png)
+![MetaData Card](../../opa-docs/docs/assets/card1.png)
 
-And with no violations:
+And with no errors:
 
-![MetaData Card No Violations](../../docs/assets/card2.png)
+![MetaData Card No Errors](../../opa-docs/docs/assets/card2.png)
 
 ## How do I set the policy?
 
@@ -52,49 +52,63 @@ opaClient:
       entrypoint: 'entity_checker/violation'
 ```
 
-Then in your OPA Policy (the `rego` file) you can use the following to set any violations you want to display (you do not have to use violation, you can use any rule head you want, but you will need to change the `entrypoint` in the `app-config.yaml` file to match the rule head you use):
+Then in your OPA Policy (the `rego` file) you can use the following to set any errors you want to display (you do not have to use `check`, you can use any rule head you want, but you will need to change the `entrypoint` in the `app-config.yaml` file to match the rule head you use):
 
 ```rego
 package entity_checker
 
-import future.keywords.contains
-import future.keywords.if
-import future.keywords.in
-
-default good_entity := false
-
-good_entity if {
- count({v | some v in violation; v.level == "error"}) == 0
-}
-
-violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
- not input.metadata.tags
- entity_check := "Tags"
- msg := "You do not have any tags set!"
-}
-
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
- valid_lifecycles = {"production", "development"}
- not valid_lifecycles[input.spec.lifecycle]
- entity_check := "Lifecycle"
- msg := "Incorrect lifecycle, should be one of production or development"
-}
-
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
- not is_system_present
- entity_check := "System"
- msg := "System is missing!"
-}
-
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
- valid_types = {"website", "library", "service"}
- not valid_types[input.spec.type]
- entity_check := "Type"
- msg := "Incorrect component type!"
-}
+import rego.v1
 
 is_system_present if {
- input.spec.system
+    input.spec.system
+}
+
+check contains {
+    # The title of the check
+    "check_title": "Tags",
+    # The message to display
+    "message": "You do not have any tags set!",
+    # The level of the check, can be info, warning, error, or success
+    "level": "info",
+    # A url to the documentation about tags, helpful for the user to understand the check
+    "url": "https://docs.gitlab.com/user/project/repository/tags/"
+} if {
+    not input.metadata.tags
+}
+
+check contains {
+    "check_title": "Lifecycle",
+    "message": "Incorrect lifecycle, should be one of production or development, experimental!",
+    "level": "error"
+} if {
+    valid_lifecycles = {"production", "development", "experimental"}
+    not valid_lifecycles[input.spec.lifecycle]
+}
+
+check contains {
+    "check_title": "Namespace",
+    "message": "Correct namespace!",
+    "level": "error"
+} if {
+    valid_namespaces = {"dev", "staging", "production"}
+    valid_namespaces[input.metadata.namespace]
+}
+
+check contains {
+    "check_title": "System",
+    "message": "System is missing!",
+    "level": "error"
+} if {
+    not is_system_present
+}
+
+check contains {
+    "check_title": "Type",
+    "message": "Correct Component Type!",
+    "level": "success"
+} if {
+    valid_types = {"website", "library", "service"}
+    valid_types[input.spec.type]
 }
 ```
 
@@ -127,27 +141,50 @@ You can also use the compact Card variant as follows. The card is intended to be
 
 ```tsx
 import {
-    OpaMetadataAnalysisCard,
-    hasOPAValidationErrors,
+  OpaMetadataAnalysisCard,
+  hasOPAValidationErrors,
 } from '@parsifal-m/plugin-opa-entity-checker';
 
 const entityWarningContent = (
-    //...
-    <EntitySwitch>
-      <EntitySwitch.Case if={hasOPAValidationErrors}>
-        <Grid item xs={12}>
-          <OpaMetadataAnalysisCard
-            title="Entity Validation"
-            variant="compact"
-          />
-        </Grid>
-      </EntitySwitch.Case>
-    </EntitySwitch>
-    //...
-}
+  //...
+  <EntitySwitch>
+    <EntitySwitch.Case if={hasOPAValidationErrors}>
+      <Grid item xs={12}>
+        <OpaMetadataAnalysisCard title="Entity Validation" variant="compact" />
+      </Grid>
+    </EntitySwitch.Case>
+  </EntitySwitch>
+  //...
+);
 ```
 
 Although not mandatory, we recommend using the `<EntitySwitch>` in both the `default` and `compact` versions with `hasOPAValidationErrors` as this will then only display the cards if there are validation errors.
+
+## Additional Props
+
+The `OpaMetadataAnalysisCard` component accepts the following props:
+
+- `title`: The title of the card. Defaults to `OPA Entity Checker`.
+- `variant`: The variant of the card. Can be `default` or `compact`. Defaults to `default`.
+- `showCheckTitle`: Whether to show the check title. Defaults to `false`.
+- `showUrls`: If you return a URL in your OPA policy, you can set this to `true` and clicking on the check title will open the URL in a new tab. Defaults to `false`.
+
+e.g.
+
+```rego
+check contains {
+    "check_title": "Tags",
+    "message": "You do not have any tags set!",
+    "level": "info",
+    "url": "https://docs.gitlab.com/user/project/repository/tags/"
+} if {
+    not input.metadata.tags
+}
+```
+
+This will result in the check card looking like the below, clicking on the check title will open the URL in a new tab.
+
+![Card with title and url](../../opa-docs/docs/assets/title-and-url-card.png)
 
 ## Additional Information
 
