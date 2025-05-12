@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["app", "backend", "**/plugins/opa-demo-backend", "plugins/opa-demo-frontend"]
+  "ignore": ["app", "backend", "backstage-plugin-opa-demo-backend", "backstage-plugin-opa-frontend-demo"]
 }
