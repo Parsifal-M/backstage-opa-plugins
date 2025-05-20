@@ -1,1 +1,1 @@
-export { useOpaAuthz } from './useOpaAuthz';
+export { useOpaAuthz, useOpaAuthzManual } from './useOpaAuthz';
