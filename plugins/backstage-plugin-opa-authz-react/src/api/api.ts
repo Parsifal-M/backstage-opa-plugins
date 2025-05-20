@@ -1,4 +1,4 @@
-import { ApiRef, createApiRef, FetchApi } from '@backstage/core-plugin-api';
+import { ApiRef, createApiRef, FetchApi, ConfigApi } from '@backstage/core-plugin-api';
 import { OpaAuthzApi, PolicyInput, PolicyResult } from './types';
 
 export const opaAuthzBackendApiRef: ApiRef<OpaAuthzApi> =
@@ -8,15 +8,17 @@ export const opaAuthzBackendApiRef: ApiRef<OpaAuthzApi> =
 
 export class OpaAuthzClientReact implements OpaAuthzApi {
   private readonly fetchApi: FetchApi;
-  constructor(options: { fetchApi: FetchApi }) {
+  private readonly configApi?: ConfigApi;
+  constructor(options: { fetchApi: FetchApi, configApi?: ConfigApi }) {
     this.fetchApi = options.fetchApi;
+    this.configApi = options.configApi;
   }
 
   async evalPolicy(
     input: PolicyInput,
     entryPoint: string,
   ): Promise<PolicyResult> {
-    const url = `plugin://opa/opa-authz`;
+    const url = this.configApi?.getOptionalString('opaClient.backstageUrl') || `plugin://opa/opa-authz`;
 
     const response = await this.fetchApi.fetch(url, {
       method: 'POST',
