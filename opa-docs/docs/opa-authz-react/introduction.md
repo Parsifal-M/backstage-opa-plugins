@@ -1,5 +1,7 @@
 # OPA Authz React
 
+> This Package is still being worked on and could contain breaking changes without notice. Please use with caution!
+
 This is a React component library for Backstage that provides a way to interact with an OPA (Open Policy Agent) server for Authorization in the frontend.
 
 You can wrap your components with the `RequireOpaAuthz` component to control the visibility of components based on the result of a policy evaluation.
@@ -18,12 +20,12 @@ Sadly, not all core and community plugins will work with this library for permis
 
 ## Quick Start
 
-### Install the library
+### Installation
 
-Run the yarn install command!
+Run the yarn install command! You'll need the `@parsifal-m/backstage-plugin-opa-authz-react` package for the frontend and the `@parsifal-m/plugin-opa-backend` package for the backend!
 
 ```bash
-yarn add --cwd packages/app @parsifal-m/backstage-plugin-opa-authz-react
+yarn add --cwd packages/app @parsifal-m/backstage-plugin-opa-authz-react && yarn add --cwd packages/backend @parsifal-m/plugin-opa-backend
 ```
 
 ### Add the API
@@ -58,6 +60,10 @@ Install the library first to your Backstage plugin:
 ```bash
 yarn add @parsifal-m/backstage-plugin-opa-authz-react
 ```
+
+Make sure you also have the backend plugin `@parsifal-m/plugin-opa-backend` installed and configured in your Backstage app!
+
+Then, you can use the `RequireOpaAuthz` component in your React components like this:
 
 ```tsx
 import { RequireOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
