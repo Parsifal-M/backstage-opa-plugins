@@ -2,61 +2,62 @@ import {
   countResultByLevel,
   determineOverallStatus,
   EntityCheckerApiImpl,
+  EntityCheckerConfig,
   OPAResult,
 } from './EntityCheckerApi';
 import { mockServices } from '@backstage/backend-test-utils';
 
+const mockLogger = mockServices.logger.mock();
+
 describe('EntityCheckerApiImpl', () => {
-  it('should error if OPA package is not set', async () => {
-    const mockLogger = mockServices.logger.mock();
-    const config = mockServices.rootConfig({
-      data: {
-        opaClient: {
-          baseUrl: 'http://localhost:8181',
-        },
-      },
-    });
-
-    const error = () => {
-      /* eslint-disable no-new */
-      new EntityCheckerApiImpl({
-        logger: mockLogger,
-        opaBaseUrl: config.getOptionalString('opaClient.baseUrl'),
-        entityCheckerEntrypoint: config.getOptionalString(
-          'opaClient.policies.entityChecker.entrypoint',
-        ),
-      });
-    };
-
-    expect(error).toThrow('OPA package not set or missing!');
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
 
-  it('should error url if OPA not set', async () => {
-    const mockLogger = mockServices.logger.mock();
-    const config = mockServices.rootConfig({
-      data: {
-        opaClient: {
-          policies: {
-            entityChecker: {
-              entrypoint: 'entityCheckerEntrypoint',
-            },
-          },
-        },
-      },
-    });
-
-    const error = () => {
-      /* eslint-disable no-new */
-      new EntityCheckerApiImpl({
-        logger: mockLogger,
-        opaBaseUrl: config.getOptionalString('opaClient.baseUrl'),
-        entityCheckerEntrypoint: config.getOptionalString(
-          'opaClient.policies.entityChecker.entrypoint',
-        ),
-      });
+  it('should log error when opaBaseUrl is missing', () => {
+    const config: EntityCheckerConfig = {
+      logger: mockLogger,
+      opaBaseUrl: undefined,
+      entityCheckerEntrypoint: 'test-package',
     };
 
-    expect(error).toThrow('OPA URL not set or missing!');
+    const _api = new EntityCheckerApiImpl(config);
+
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'OPA URL not set or missing!',
+    );
+  });
+
+  it('should log error when entityCheckerEntrypoint is missing', () => {
+    const config: EntityCheckerConfig = {
+      logger: mockLogger,
+      opaBaseUrl: 'http://localhost:8181',
+      entityCheckerEntrypoint: undefined,
+    };
+
+    const _api = new EntityCheckerApiImpl(config);
+
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'OPA package not set or missing!',
+    );
+  });
+
+  it('should log both errors when both config values are missing', () => {
+    const config: EntityCheckerConfig = {
+      logger: mockLogger,
+      opaBaseUrl: undefined,
+      entityCheckerEntrypoint: undefined,
+    };
+
+    const _api = new EntityCheckerApiImpl(config);
+
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'OPA URL not set or missing!',
+    );
+    expect(mockLogger.error).toHaveBeenCalledWith(
+      'OPA package not set or missing!',
+    );
+    expect(mockLogger.error).toHaveBeenCalledTimes(2);
   });
 });
 
@@ -116,7 +117,7 @@ describe('determineOverallStatus', () => {
     expect(determineOverallStatus(levelCounts, priorityOrder)).toBe('info');
   });
 
-  it('should return "info" when all counts are 0', () => {
+  it('should return "pass" when all counts are 0', () => {
     const levelCounts = new Map([
       ['error', 0],
       ['warning', 0],
