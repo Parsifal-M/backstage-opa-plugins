@@ -28,7 +28,7 @@ describe('EntityCheckerApiImpl', () => {
     );
   });
 
-  it('should log error when entityCheckerEntrypoint is missing', () => {
+  it('should log error when opaClient.policies.entityChecker.entryPoint (entityCheckerEntrypoint) is missing', () => {
     const config: EntityCheckerConfig = {
       logger: mockLogger,
       opaBaseUrl: 'http://localhost:8181',
