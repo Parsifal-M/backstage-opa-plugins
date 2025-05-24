@@ -61,11 +61,11 @@ export class EntityCheckerApiImpl implements EntityCheckerApi {
     const logger = this.config.logger;
 
     if (!config.opaBaseUrl) {
-      logger.error('OPA URL not set or missing!');
+      logger.error('OPA base url not set or missing!');
     }
 
     if (!config.entityCheckerEntrypoint) {
-      logger.error('OPA package not set or missing!');
+      logger.error('OPA entity checker entry point not set or missing!');
     }
   }
 

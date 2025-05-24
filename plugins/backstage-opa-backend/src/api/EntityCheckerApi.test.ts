@@ -24,7 +24,7 @@ describe('EntityCheckerApiImpl', () => {
     const _api = new EntityCheckerApiImpl(config);
 
     expect(mockLogger.error).toHaveBeenCalledWith(
-      'OPA URL not set or missing!',
+      'OPA base url not set or missing!',
     );
   });
 
@@ -38,7 +38,7 @@ describe('EntityCheckerApiImpl', () => {
     const _api = new EntityCheckerApiImpl(config);
 
     expect(mockLogger.error).toHaveBeenCalledWith(
-      'OPA package not set or missing!',
+      'OPA entity checker entry point not set or missing!',
     );
   });
 
@@ -52,10 +52,10 @@ describe('EntityCheckerApiImpl', () => {
     const _api = new EntityCheckerApiImpl(config);
 
     expect(mockLogger.error).toHaveBeenCalledWith(
-      'OPA URL not set or missing!',
+      'OPA base url not set or missing!',
     );
     expect(mockLogger.error).toHaveBeenCalledWith(
-      'OPA package not set or missing!',
+      'OPA entity checker entry point not set or missing!',
     );
     expect(mockLogger.error).toHaveBeenCalledTimes(2);
   });
