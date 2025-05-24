@@ -27,13 +27,10 @@ export class OpaAuthzClientReact implements OpaAuthzApi {
     });
 
     if (!response.ok) {
-      const message = `Error ${response.status}: ${response.statusText}.`;
-
       try {
-        const responseBody = await response.json();
-        throw new Error(`${message} ${responseBody.error}`);
+        throw new Error(`${response.status} ${response.statusText}`);
       } catch (error) {
-        throw new Error(message);
+        throw new Error(error);
       }
     }
     return response.json();

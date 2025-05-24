@@ -5,13 +5,14 @@ export interface OpaBackendApi {
 }
 
 export interface OpaEntityResult {
-  good_entity: boolean;
   result?: OpaMetadataEntityResult[];
 }
 
 export interface OpaMetadataEntityResult {
-  id?: string;
+  id: number;
+  decisionId?: string;
   check_title?: string;
-  level: 'error' | 'warning' | 'info';
-  message: string;
+  message?: string;
+  url?: string;
+  level: 'error' | 'warning' | 'info' | 'success';
 }
