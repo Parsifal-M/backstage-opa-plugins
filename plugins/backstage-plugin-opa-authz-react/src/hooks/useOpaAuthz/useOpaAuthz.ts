@@ -2,6 +2,7 @@ import { useApi } from '@backstage/core-plugin-api';
 import { opaAuthzBackendApiRef } from '../../api';
 import { PolicyInput, PolicyResult } from '../../api/types';
 import useSWR from 'swr';
+import * as React from 'react';
 
 export type AsyncOpaAuthzResult = {
   loading: boolean;
