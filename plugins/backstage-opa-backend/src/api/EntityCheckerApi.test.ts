@@ -21,7 +21,7 @@ describe('EntityCheckerApiImpl', () => {
       entityCheckerEntrypoint: 'test-package',
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // @ts-expect-error needed to test the error case
     const _api = new EntityCheckerApiImpl(config);
 
     expect(mockLogger.error).toHaveBeenCalledWith(
@@ -36,6 +36,7 @@ describe('EntityCheckerApiImpl', () => {
       entityCheckerEntrypoint: undefined,
     };
 
+    // @ts-expect-error needed to test the error case
     const _api = new EntityCheckerApiImpl(config);
 
     expect(mockLogger.warn).toHaveBeenCalledWith(
@@ -49,7 +50,7 @@ describe('EntityCheckerApiImpl', () => {
       opaBaseUrl: undefined,
       entityCheckerEntrypoint: undefined,
     };
-
+    // @ts-expect-error needed to test the error case
     const _api = new EntityCheckerApiImpl(config);
 
     expect(mockLogger.error).toHaveBeenCalledWith(
