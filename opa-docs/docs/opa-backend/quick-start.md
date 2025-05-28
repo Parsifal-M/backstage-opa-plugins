@@ -49,7 +49,7 @@ spec:
 Run the following command to install the OPA Backend Plugin in your Backstage project.
 
 ```bash
-yarn add --cwd packages/backend @parsifal-m/plugin-opa-backend
+yarn --cwd packages/backend add @parsifal-m/plugin-opa-backend
 ```
 
 Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.

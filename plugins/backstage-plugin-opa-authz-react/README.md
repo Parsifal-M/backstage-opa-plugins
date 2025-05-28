@@ -18,6 +18,11 @@ Although the Backstage Permissions framework works well for most cases, sometime
 
 Sadly, not all core and community plugins will work with this library for permissions, so you can still use the [plugin-permission-backend-module-opa-wrapper](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-permissions-wrapper-module/introduction) in conjunction with this library if needed which supports the permissions framework.
 
+## Pre-requisites
+
+To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](../backstage-opa-backend/README.md).
+
+
 ## Quick Start
 
 ### Installation
