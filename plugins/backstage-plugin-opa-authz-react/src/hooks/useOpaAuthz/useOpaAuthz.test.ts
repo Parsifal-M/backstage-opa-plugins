@@ -3,7 +3,6 @@ import { useOpaAuthz, useOpaAuthzManual } from './useOpaAuthz';
 import { useApi } from '@backstage/core-plugin-api';
 import { OpaAuthzApi } from '../../api';
 import { act } from 'react';
-import { mutate } from 'swr';
 
 jest.mock('@backstage/core-plugin-api', () => ({
   ...jest.requireActual('@backstage/core-plugin-api'),
@@ -16,15 +15,12 @@ describe('useOpaAuthz', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockEvalPolicy.mockReset();
-    mutate(() => true, undefined, { revalidate: false });
     (useApi as jest.Mock).mockReturnValue({
       evalPolicy: mockEvalPolicy,
     } as unknown as OpaAuthzApi);
   });
 
-  afterEach(() => {
-    mutate(() => true, undefined, { revalidate: false });
-  });
+ 
 
   it('should return the policy result', async () => {
     mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
@@ -46,15 +42,12 @@ describe('useOpaAuthzManual', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockEvalPolicy.mockReset();
-    mutate(() => true, undefined, { revalidate: false });
     (useApi as jest.Mock).mockReturnValue({
       evalPolicy: mockEvalPolicy,
     } as unknown as OpaAuthzApi);
   });
 
-  afterEach(() => {
-    mutate(() => true, undefined, { revalidate: false });
-  });
+
 
   it('should not fetch data initially', async () => {
     mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
