@@ -66,8 +66,7 @@ export class EntityCheckerApiImpl implements EntityCheckerApi {
     }
 
     if (!config.entityCheckerEntrypoint) {
-      logger.error('OPA package not set or missing!');
-      throw new Error('OPA package not set or missing!');
+      logger.warn('OPA package not set or missing!');
     }
   }
 

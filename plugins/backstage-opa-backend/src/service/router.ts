@@ -36,7 +36,12 @@ export async function createRouter(
     response.json({ status: 'ok' });
   });
 
-  router.use(entityCheckerRouter(logger, opaEntityChecker));
+  if (
+    config.getOptionalString('opaClient.policies.entityChecker.entrypoint') &&
+    config.getOptionalString('opaClient.baseUrl')
+  ) {
+    router.use(entityCheckerRouter(logger, opaEntityChecker));
+  }
   router.use(authzRouter(logger, config, httpAuth, userInfo));
   router.use(policyContentRouter(logger, urlReader));
 
