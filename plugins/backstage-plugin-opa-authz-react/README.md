@@ -22,7 +22,6 @@ Sadly, not all core and community plugins will work with this library for permis
 
 To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](../backstage-opa-backend/README.md).
 
-
 ## Quick Start
 
 ### Installation

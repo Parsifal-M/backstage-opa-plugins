@@ -20,15 +20,13 @@ describe('useOpaAuthz', () => {
     } as unknown as OpaAuthzApi);
   });
 
- 
-
   it('should return the policy result', async () => {
     mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
 
     const { result } = renderHook(() =>
       useOpaAuthz({ entity: 'test', testId: 'test1' }, 'test'),
     );
-    
+
     await waitFor(() => {
       expect(result.current.data).toEqual({ result: { allow: true } });
       expect(result.current.loading).toBe(false);
@@ -46,8 +44,6 @@ describe('useOpaAuthzManual', () => {
       evalPolicy: mockEvalPolicy,
     } as unknown as OpaAuthzApi);
   });
-
-
 
   it('should not fetch data initially', async () => {
     mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
@@ -75,11 +71,12 @@ describe('useOpaAuthzManual', () => {
       await result.current.triggerFetch();
     });
 
-    
-
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
-      expect(mockEvalPolicy).toHaveBeenCalledWith({ entity: 'test', testId: 'test3' }, 'test');
+      expect(mockEvalPolicy).toHaveBeenCalledWith(
+        { entity: 'test', testId: 'test3' },
+        'test',
+      );
       expect(result.current.data).toEqual({ result: { allow: true } });
     });
   });
@@ -91,7 +88,7 @@ describe('useOpaAuthzManual', () => {
     const { result } = renderHook(() =>
       useOpaAuthzManual({ entity: 'test', testId: 'test4' }, 'test'),
     );
-    
+
     await act(async () => {
       await result.current.triggerFetch();
     });
