@@ -62,7 +62,6 @@ export class EntityCheckerApiImpl implements EntityCheckerApi {
 
     if (!config.opaBaseUrl) {
       logger.error('OPA URL not set or missing!');
-      throw new Error('OPA URL not set or missing!');
     }
 
     if (!config.entityCheckerEntrypoint) {
