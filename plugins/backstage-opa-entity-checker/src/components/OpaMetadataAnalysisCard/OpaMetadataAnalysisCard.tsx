@@ -16,6 +16,7 @@ import { StylesAlert } from '../StyledAlert';
 import { StyledCard, classes } from '../StyledCard';
 import { Entity } from '@backstage/catalog-model/index';
 import { StatusChip } from '../StatusChip';
+import { CodeSnippet } from '@backstage/core-components';
 
 /**
  * Props interface for the OpaMetadataAnalysisCard component.
@@ -75,10 +76,23 @@ const renderCardContent = (
 
   if (!results) {
     return (
-      <Typography>
-        OPA did not return any results for this entity. Please make sure you are
-        using the correct OPA package name.
-      </Typography>
+      <>
+        <Typography variant="body2" color="error">
+          OPA did not return any results for this entity.
+        </Typography>
+        <Typography variant="body2" color="error" paddingTop={2}>
+          You may be missing the policy entrypoint in your OPA configuration!
+          See below for an example configuration:
+        </Typography>
+        <CodeSnippet
+          language="yaml"
+          text={`opaClient:
+  baseUrl: '<BASE_URL>'
+  policies:
+    entityChecker:
+      entrypoint: '<ENTRYPOINT>'`}
+        />
+      </>
     );
   }
 
@@ -119,11 +133,6 @@ const renderCardContent = (
         )}
         <Typography variant="body2">{violation.message}</Typography>
       </>
-      {violation.decisionId && (
-        <Typography variant="caption">
-          Decision ID: {violation.decisionId}
-        </Typography>
-      )}
     </StylesAlert>
   ));
 };
@@ -223,7 +232,7 @@ export const OpaMetadataAnalysisCard = (
       setOpaResults(results);
     } catch (error: unknown) {
       alertApi.post({
-        message: `Could not fetch data from OPA: ${error}`,
+        message: String(error),
         severity: 'error',
         display: 'transient',
       });

@@ -173,7 +173,7 @@ describe('OpaMetadataAnalysisCard', () => {
 
       await waitFor(() => {
         expect(mockAlertPost).toHaveBeenCalledWith({
-          message: `Could not fetch data from OPA: ${testError}`,
+          message: String(testError),
           severity: 'error',
           display: 'transient',
         });

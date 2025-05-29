@@ -1,26 +1,48 @@
 import express from 'express';
+import fetch from 'node-fetch';
 import { LoggerService } from '@backstage/backend-plugin-api';
-import { EntityCheckerApi } from '../../api/EntityCheckerApi';
-import { Entity } from '@backstage/catalog-model';
+import { Config } from '@backstage/config';
 
 export const entityCheckerRouter = (
   logger: LoggerService,
-  opa: EntityCheckerApi,
+  config: Config,
 ): express.Router => {
   const router = express.Router();
 
+  // Get the config options for the OPA plugin
+  const opaBaseUrl =
+    config.getOptionalString('opaClient.baseUrl') || 'http://localhost:8181';
+
+  // This is the Entity Checker package
+  const entityCheckerEntrypoint = config.getOptionalString(
+    'opaClient.policies.entityChecker.entrypoint',
+  );
+
   router.post('/entity-checker', async (req, res, next) => {
-    const entityMetadata = req.body.input as Entity;
+    const entityMetadata = req.body.input;
+
+    const opaUrl = `${opaBaseUrl}/v1/data/${entityCheckerEntrypoint}`;
+
+    if (!entityCheckerEntrypoint) {
+      logger.error('OPA package not set or missing!');
+    }
 
     if (!entityMetadata) {
       logger.error('Entity metadata is missing!');
     }
 
     try {
-      const opaResponse = await opa.checkEntity({
-        entityMetadata: entityMetadata,
+      logger.debug(`Sending entity metadata to OPA: ${entityMetadata}`);
+      const opaResponse = await fetch(opaUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input: entityMetadata }),
       });
-      return res.json(opaResponse);
+      const opaEntityCheckerResponse = await opaResponse.json();
+      logger.debug(`Received response from OPA: ${opaEntityCheckerResponse}`);
+      return res.json(opaEntityCheckerResponse);
     } catch (error) {
       logger.error(
         'An error occurred trying to send entity metadata to OPA:',
