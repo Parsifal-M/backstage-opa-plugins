@@ -1,53 +1,90 @@
 # Example Entity Checker Policy
 
-This is an example policy for the OPA Entity Checker plugin. This policy is used to check if an entity has the correct metadata set. This could be used as a starting point for your own policies.
+This is an example policy for the OPA Entity Checker plugin. This policy is used to check if an entity has the correct metadata set. This could be used as a starting point for your own policies!
 
 ```rego
 package entity_checker
 
 import rego.v1
 
-# By default we assume the entity is bad :)
-default good_entity := false
-
-# Its a good entity if there are no error violations
-good_entity if {
-	count({v | some v in violation; v.level == "error"}) == 0
-}
-
-# We check if the entity has a system set
 is_system_present if {
-	input.spec.system
+    input.spec.system
 }
 
-# In each rule we check for certain entity metadata and if it is not present we add a violation
-# In this one, we check if the entity has tags set, if it does not we add a warning violation
-violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
-	not input.metadata.tags
-	entity_check := "Tags"
-	msg := "You do not have any tags set!"
+check contains {
+    # The title of the check
+    "check_title": "Tags",
+    # The message to display
+    "message": "You do not have any tags set!",
+    # The level of the check, can be info, warning, error, or success
+    "level": "info",
+    # A url to the documentation about tags, helpful for the user to understand the check
+    "url": "https://docs.gitlab.com/user/project/repository/tags/"
+} if {
+    not input.metadata.tags
 }
 
-# In this example, we check the lifecycle of the entity and if it is not one of the valid ones we add an error violation
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	valid_lifecycles = {"production", "development", "experimental"}
-	not valid_lifecycles[input.spec.lifecycle]
-	entity_check := "Lifecycle"
-	msg := "Incorrect lifecycle, should be one of production or development, experimental!"
+check contains {
+    "check_title": "Lifecycle",
+    "message": "Incorrect lifecycle, should be one of production or development, experimental!",
+    "level": "error"
+} if {
+    valid_lifecycles = {"production", "development", "experimental"}
+    not valid_lifecycles[input.spec.lifecycle]
 }
 
-# Here we check if the entity has a system set, if it does not we add an error violation
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	not is_system_present
-	entity_check := "System"
-	msg := "System is missing!"
+check contains {
+    "check_title": "Namespace",
+    "message": "Correct namespace!",
+    "level": "error"
+} if {
+    valid_namespaces = {"dev", "staging", "production"}
+    valid_namespaces[input.metadata.namespace]
 }
 
-# Lastly here, we check if the entity type is one of the valid ones, if it is not we add an error violation
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
-	valid_types = {"website", "library", "service"}
-	not valid_types[input.spec.type]
-	entity_check := "Type"
-	msg := "Incorrect component type!"
+check contains {
+    "check_title": "System",
+    "message": "System is missing!",
+    "level": "error"
+} if {
+    not is_system_present
+}
+
+check contains {
+    "check_title": "Type",
+    "message": "Correct Component Type!",
+    "level": "success"
+} if {
+    valid_types = {"website", "library", "service"}
+    valid_types[input.spec.type]
+}
+```
+
+## Success / Error Rules
+
+If you are wondering how you could "invert" the rules to make them success or error, you could do something like this, but of course you are free to use your own logic.
+
+```rego
+package entity_checker
+
+valid_lifecycles := {"production", "development", "experimental"}
+
+
+# Error
+check contains {
+ "check_title": "Lifecycle",
+ "message": "Incorrect lifecycle, should be one of production or development, experimental!",
+ "level": "error",
+} if {
+ not valid_lifecycles[input.spec.lifecycle]
+}
+
+# Success
+check contains {
+ "check_title": "Lifecycle",
+ "message": "Correct Lifecycle!",
+ "level": "success",
+} if {
+ valid_lifecycles[input.spec.lifecycle]
 }
 ```

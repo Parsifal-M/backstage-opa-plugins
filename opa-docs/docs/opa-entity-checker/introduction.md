@@ -6,35 +6,37 @@ Welcome to a smarter way to ensure data quality! The opa-entity-checker plugin, 
 
 With opa-entity-checker, you can automatically verify if your entities comply with the policies you've set. It displays a clear, concise card on the entity page, indicating the compliance status:
 
-- **Compliant Entities:** A clean card signifies everything is in order.
+- **Compliant Entities:** A clean card signifies everything is in order, if you are using the `compact` version, the card will not be displayed unless there are `info`, `warning` or `error` messages.
 
-  ![MetaData Card No Violations](../assets/card2.png)
+  ![MetaData Card No Errors](../assets/all-pass.png)
 
 - **Non-Compliant Entities:** A detailed card highlights what needs attention.
 
-  ![MetaData Card Violations](../assets/card1.png)
+  ![MetaData Card](../assets/with-errors.png)
 
 For more details, check out:
 
 - [Quick-start Guide](/opa-entity-checker/quick-start.md)
 - [Local Development Guide](/opa-entity-checker/local-development.md)
 
-## Card Violations Variants
+## Card Variants
 
 The card comes in two flavor: `default` and `compact`. The version you have seen above is the default card.
 
 The compact version is intended to be used as a banner that display how many errors where found, with a dropdown to
 see the details.
 
-![Compact MetaData Card Violations Closed](../assets/card-compact-closed.png)
+![Compact MetaData Card Closed](../assets/card-compact-closed.png)
 
-![Compact MetaData Card Violations Open](../assets/card-compact-opened.png)
+![Compact MetaData Card Open](../assets/card-compact-opened.png)
 
 ## Entity Processor Validation - Validate all entities always
 
-While the frontend validation allows for quick feedback, users will only see the feedback on visiting an entity. After implementing new rules, you might wonder how many entities are now returning validation error.
+Imagine this: you've just implemented some new rules, and you're curious to know how many entities might now have issues. While the frontend validation provides quick feedback, it only works when someone visits an entity. But what if you want a broader view?
 
-This is where catalog processors comes into play. When you discover or import entities into the Backstage catalog, you can run `processors` to (in this case) validate and update entities. The OPA Entity Checker Catalog Processor will validate your entities when they are ingested into the catalog and add an annotation based on the evaluation of the policy!
+That's where catalog processors come in! This works behind the scenes when entities are discovered or imported into the Backstage catalog. The OPA Entity Checker Catalog Processor takes it a step further by automatically validating your entities during ingestion. It evaluates them against your policies and adds an annotation to indicate the results.
+
+This means you can stay ahead of potential issues and ensure your catalog remains in top shape—all without lifting a finger!
 
 For instance, the final entity in Backstage might look like this:
 

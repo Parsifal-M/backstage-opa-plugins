@@ -59,7 +59,7 @@ describe('OpaMetadataAnalysisCard', () => {
       await waitFor(() =>
         expect(mockEntityCheck).toHaveBeenCalledWith(mockEntity),
       );
-      expect(screen.getByText('OPA Entity Checker')).toBeInTheDocument();
+      expect(screen.getByText('OPA Metadata Analysis')).toBeInTheDocument();
     });
 
     it('renders with custom title', async () => {
@@ -108,6 +108,7 @@ describe('OpaMetadataAnalysisCard', () => {
           { id: '1', message: 'Error violation', level: 'error' },
           { id: '2', message: 'Warning violation', level: 'warning' },
           { id: '3', message: 'Info message', level: 'info' },
+          { id: '4', message: 'Success message', level: 'success' },
         ],
       });
 
@@ -117,6 +118,7 @@ describe('OpaMetadataAnalysisCard', () => {
       expect(screen.getByText('Error violation')).toBeInTheDocument();
       expect(screen.getByText('Warning violation')).toBeInTheDocument();
       expect(screen.getByText('Info message')).toBeInTheDocument();
+      expect(screen.getByText('Success message')).toBeInTheDocument();
       expect(screen.getByText('ERROR')).toBeInTheDocument(); // Status chip
     });
   });
@@ -129,6 +131,7 @@ describe('OpaMetadataAnalysisCard', () => {
           { message: 'Error 2', level: 'error' },
           { message: 'Warning', level: 'warning' },
           { message: 'Info', level: 'info' },
+          { message: 'Success', level: 'success' },
         ],
       });
 
@@ -138,6 +141,7 @@ describe('OpaMetadataAnalysisCard', () => {
       expect(screen.getByText('2 Errors')).toBeInTheDocument();
       expect(screen.getByText('1 Warning')).toBeInTheDocument();
       expect(screen.getByText('1 Info')).toBeInTheDocument();
+      expect(screen.getByText('1 Success')).toBeInTheDocument();
     });
 
     it('expands accordion when clicked', async () => {
@@ -153,7 +157,7 @@ describe('OpaMetadataAnalysisCard', () => {
       expect(screen.queryByText('Test message')).not.toBeVisible();
 
       // Click to expand
-      fireEvent.click(screen.getByText('OPA Entity Checker'));
+      fireEvent.click(screen.getByText('OPA Metadata Analysis'));
 
       // After expansion, violation should be visible
       expect(screen.getByText('Test message')).toBeVisible();
@@ -169,7 +173,7 @@ describe('OpaMetadataAnalysisCard', () => {
 
       await waitFor(() => {
         expect(mockAlertPost).toHaveBeenCalledWith({
-          message: `Could not fetch data from OPA: ${testError}`,
+          message: String(testError),
           severity: 'error',
           display: 'transient',
         });
@@ -180,13 +184,13 @@ describe('OpaMetadataAnalysisCard', () => {
   describe('status display', () => {
     it('shows SUCCESS chip for passing checks', async () => {
       mockEntityCheck.mockResolvedValue({
-        result: [{ message: 'Just info', level: 'info' }],
+        result: [{ message: 'Just success', level: 'success' }],
       });
 
       renderComponent();
 
       await waitFor(() => expect(mockEntityCheck).toHaveBeenCalled());
-      const statusChip = screen.getByText('INFO');
+      const statusChip = screen.getByText('SUCCESS');
       expect(statusChip).toBeInTheDocument();
     });
 

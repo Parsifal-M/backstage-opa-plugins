@@ -13,7 +13,12 @@ export class OpaClient implements OpaBackendApi {
   }
   private async handleResponse(response: Response): Promise<OpaEntityResult> {
     if (!response.ok) {
-      const message = `Error ${response.status}: ${response.statusText}.`;
+      let message = `${response.status} ${response.statusText}.`;
+
+      if (response.status === 404) {
+        message =
+          'Entity Checker route not found. Please ensure the OPA Entity Checker plugin is correctly configured.';
+      }
 
       try {
         const responseBody = await response.json();
