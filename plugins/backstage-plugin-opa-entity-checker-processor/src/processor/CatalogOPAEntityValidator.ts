@@ -2,27 +2,10 @@ import { CatalogProcessor } from '@backstage/plugin-catalog-node';
 import { Entity } from '@backstage/catalog-model';
 import { merge } from 'lodash';
 import { LoggerService } from '@backstage/backend-plugin-api';
+import { ValidationResult, OpaConfig, ValidationResponse } from '../types';
 
-export const OPA_ENTITY_CHECKER_ANNOTATION =
+const OPA_ENTITY_CHECKER_ANNOTATION =
   'open-policy-agent/entity-checker-validation-status';
-
-export interface ValidationResult {
-  id?: string;
-  check_title?: string;
-  level: 'error' | 'warning' | 'info' | 'success';
-  url?: string;
-  decisionId?: string;
-  message: string;
-}
-
-export interface ValidationResponse {
-  result?: ValidationResult[];
-}
-
-export type OpaConfig = {
-  baseUrl: string;
-  entrypoint: string;
-};
 
 /**
  * countResultByLevel is a utility function that can be used to generate statistics about validation results
