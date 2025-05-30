@@ -110,6 +110,57 @@ const MyComponent = () => {
 };
 ```
 
+### Alternative to using the `useOpaAuthz` you can use `useOpaAuthzManual` hook (also optional)
+
+If you need more control over when the policy evaluation is triggered, you can use the `useOpaAuthzManual` hook. This hook provides a `triggerFetch` function that allows you to manually trigger the policy evaluation:
+
+```tsx
+import React, { useEffect } from 'react';
+import { useOpaAuthzManual } from '@parsifal-m/backstage-plugin-opa-authz-react';
+
+const MyComponent = () => {
+  const [userData, setUserData] = React.useState(null);
+  const { loading, data, error, triggerFetch } = useOpaAuthzManual(
+    { action: 'read-policy' },
+    'authz',
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // First fetch some user data
+      const response = await fetch('/api/user-data');
+      const userData = await response.json();
+      setUserData(userData);
+
+      // Then evaluate the policy with the fetched data
+      const result = await triggerFetch();
+      if (result?.result.allow) {
+        // Do something when access is granted
+      }
+    };
+
+    fetchData();
+  }, [triggerFetch]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error || !data?.result.allow) {
+    return <div>Access Denied</div>;
+  }
+
+  return (
+    <div>
+      <div>User Data: {JSON.stringify(userData)}</div>
+      <div>Content</div>
+    </div>
+  );
+};
+```
+
+The main difference between `useOpaAuthz` and `useOpaAuthzManual` is that the manual version won't automatically fetch the policy evaluation when the component mounts. Instead, it provides a `triggerFetch` function that you can call whenever you want to evaluate the policy, such as after fetching some data that might be needed for the policy evaluation.
+
 ## Example Demo Plugin(s)
 
 To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `RequireOpaAuthz` component in the frontend, you can find the demo code [here](../../plugins/opa-frontend-demo).
