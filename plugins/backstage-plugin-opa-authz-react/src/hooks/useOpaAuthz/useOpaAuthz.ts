@@ -33,4 +33,3 @@ export function useOpaAuthz(
 
   return { loading: false, data: data };
 }
-
