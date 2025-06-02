@@ -18,6 +18,10 @@ Although the Backstage Permissions framework works well for most cases, sometime
 
 Sadly, not all core and community plugins will work with this library for permissions, so you can still use the [plugin-permission-backend-module-opa-wrapper](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-permissions-wrapper-module/introduction) in conjunction with this library if needed which supports the permissions framework.
 
+## Pre-requisites
+
+To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](../backstage-opa-backend/README.md).
+
 ## Quick Start
 
 ### Installation
@@ -105,6 +109,57 @@ const MyComponent = () => {
   return <div>Content</div>;
 };
 ```
+
+### Alternative to using the `useOpaAuthz` you can use `useOpaAuthzManual` hook (also optional)
+
+If you need more control over when the policy evaluation is triggered, you can use the `useOpaAuthzManual` hook. This hook provides an `evaluatePolicy` function that allows you to manually trigger the policy evaluation:
+
+```tsx
+import React, { useEffect } from 'react';
+import { useOpaAuthzManual } from '@parsifal-m/backstage-plugin-opa-authz-react';
+
+const MyComponent = () => {
+  const [userData, setUserData] = React.useState(null);
+  const { loading, data, error, evaluatePolicy } = useOpaAuthzManual(
+    { action: 'read-policy' },
+    'authz',
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // First fetch some user data
+      const response = await fetch('/api/user-data');
+      const userData = await response.json();
+      setUserData(userData);
+
+      // Then evaluate the policy with the fetched data
+      const result = await evaluatePolicy();
+      if (result?.result.allow) {
+        // Do something when access is granted
+      }
+    };
+
+    fetchData();
+  }, [evaluatePolicy]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error || !data?.result.allow) {
+    return <div>Access Denied</div>;
+  }
+
+  return (
+    <div>
+      <div>User Data: {JSON.stringify(userData)}</div>
+      <div>Content</div>
+    </div>
+  );
+};
+```
+
+The main difference between `useOpaAuthz` and `useOpaAuthzManual` is that the manual version won't automatically fetch the policy evaluation when the component mounts. Instead, it provides a `triggerFetch` function that you can call whenever you want to evaluate the policy, such as after fetching some data that might be needed for the policy evaluation.
 
 ## Example Demo Plugin(s)
 
