@@ -140,7 +140,7 @@ const MyComponent = () => {
     };
 
     fetchData();
-  }, [triggerFetch]);
+  }, [evaluatePolicy]);
 
   if (loading) {
     return <div>Loading...</div>;
