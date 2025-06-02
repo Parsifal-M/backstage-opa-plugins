@@ -120,7 +120,7 @@ import { useOpaAuthzManual } from '@parsifal-m/backstage-plugin-opa-authz-react'
 
 const MyComponent = () => {
   const [userData, setUserData] = React.useState(null);
-  const { loading, data, error, triggerFetch } = useOpaAuthzManual(
+  const { loading, data, error, evaluatePolicy } = useOpaAuthzManual(
     { action: 'read-policy' },
     'authz',
   );
