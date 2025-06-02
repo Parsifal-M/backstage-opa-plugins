@@ -112,7 +112,7 @@ const MyComponent = () => {
 
 ### Alternative to using the `useOpaAuthz` you can use `useOpaAuthzManual` hook (also optional)
 
-If you need more control over when the policy evaluation is triggered, you can use the `useOpaAuthzManual` hook. This hook provides a `triggerFetch` function that allows you to manually trigger the policy evaluation:
+If you need more control over when the policy evaluation is triggered, you can use the `useOpaAuthzManual` hook. This hook provides an `evaluatePolicy` function that allows you to manually trigger the policy evaluation:
 
 ```tsx
 import React, { useEffect } from 'react';
