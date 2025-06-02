@@ -1,8 +1,9 @@
 import { waitFor, renderHook } from '@testing-library/react';
-import { useOpaAuthz, useOpaAuthzManual } from './useOpaAuthz';
+import { useOpaAuthz } from './useOpaAuthz';
 import { useApi } from '@backstage/core-plugin-api';
 import { OpaAuthzApi } from '../../api';
 import { act } from 'react';
+import { useOpaAuthzManual } from './useOpaAuthzManual';
 
 jest.mock('@backstage/core-plugin-api', () => ({
   ...jest.requireActual('@backstage/core-plugin-api'),
@@ -58,7 +59,7 @@ describe('useOpaAuthzManual', () => {
     });
   });
 
-  it('should fetch data when triggerFetch is called', async () => {
+  it('should fetch data when evaluatePolicy is called', async () => {
     mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
 
     const { result } = renderHook(() =>
@@ -68,7 +69,7 @@ describe('useOpaAuthzManual', () => {
     expect(mockEvalPolicy).not.toHaveBeenCalled();
 
     await act(async () => {
-      await result.current.triggerFetch();
+      await result.current.evaluatePolicy();
     });
 
     await waitFor(() => {
@@ -90,7 +91,7 @@ describe('useOpaAuthzManual', () => {
     );
 
     await act(async () => {
-      await result.current.triggerFetch();
+      await result.current.evaluatePolicy();
     });
 
     await waitFor(() => {
