@@ -133,7 +133,7 @@ const MyComponent = () => {
       setUserData(userData);
 
       // Then evaluate the policy with the fetched data
-      const result = await triggerFetch();
+      const result = await evaluatePolicy();
       if (result?.result.allow) {
         // Do something when access is granted
       }
