@@ -9,10 +9,6 @@ export type AsyncOpaAuthzResult = {
   error?: Error;
 };
 
-export type ManualOpaAuthzResult = AsyncOpaAuthzResult & {
-  triggerFetch: () => Promise<PolicyResult | undefined>;
-};
-
 export function useOpaAuthz(
   input: PolicyInput,
   entryPoint: string,
