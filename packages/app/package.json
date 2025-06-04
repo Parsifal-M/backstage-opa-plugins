@@ -43,7 +43,7 @@
     "@backstage/plugin-techdocs-react": "^1.2.14",
     "@backstage/plugin-user-settings": "^0.8.19",
     "@backstage/theme": "^0.6.4",
-    "@internal/backstage-plugin-opa-frontend-demo": "workspace:^",
+    "@internal/backstage-plugin-opa-frontend-demo": "workspace:*",
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",
     "@parsifal-m/backstage-plugin-opa-authz-react": "workspace:^",

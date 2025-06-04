@@ -7814,7 +7814,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@internal/backstage-plugin-opa-frontend-demo@workspace:^, @internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend":
+"@internal/backstage-plugin-opa-frontend-demo@workspace:*, @internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend":
   version: 0.0.0-use.local
   resolution: "@internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend"
   dependencies:
@@ -14999,7 +14999,7 @@ __metadata:
     "@backstage/plugin-user-settings": "npm:^0.8.19"
     "@backstage/test-utils": "npm:^1.7.5"
     "@backstage/theme": "npm:^0.6.4"
-    "@internal/backstage-plugin-opa-frontend-demo": "workspace:^"
+    "@internal/backstage-plugin-opa-frontend-demo": "workspace:*"
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
     "@parsifal-m/backstage-plugin-opa-authz-react": "workspace:^"
