@@ -1,5 +1,11 @@
 # @parsifal-m/backstage-plugin-opa-authz-react
 
+## 1.1.0
+
+### Minor Changes
+
+- 0f6c2ce: It is now optional to use the entity checker plugin when using the opa-backend plugin. It is now possible to manually trigger a call to the opa policy endpoint with a new react hook called useOpaAuthzManual
+
 ## 1.0.0
 
 ### Patch Changes
