@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
@@ -14,7 +14,7 @@ import { getPassStatus } from '../../utils/getPassStatus';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { StylesAlert } from '../StyledAlert';
 import { StyledCard, classes } from '../StyledCard';
-import { Entity } from '@backstage/catalog-model/index';
+import { Entity } from '@backstage/catalog-model';
 import { StatusChip } from '../StatusChip';
 
 /**

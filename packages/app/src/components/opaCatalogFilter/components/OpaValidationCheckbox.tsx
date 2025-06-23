@@ -6,7 +6,6 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
-import React from 'react';
 import {
   CustomFilters,
   OpaValidationFilter,

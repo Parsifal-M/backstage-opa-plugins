@@ -1,4 +1,3 @@
-import React from 'react';
 import { createDevApp } from '@backstage/dev-utils';
 import { opaPoliciesPlugin, OpaPolicyPage } from '../src/plugin';
 

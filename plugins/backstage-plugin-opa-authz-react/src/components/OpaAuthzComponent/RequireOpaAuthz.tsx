@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { PolicyInput } from '../../api/types';
 import { useOpaAuthz } from '../../hooks/useOpaAuthz/useOpaAuthz';
 

@@ -2,7 +2,6 @@ import Fab from '@mui/material/Fab';
 import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/Warning';
 import InfoIcon from '@mui/icons-material/Info';
-import React from 'react';
 
 type StatusType = 'error' | 'warning' | 'info';
 
