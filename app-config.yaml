@@ -123,15 +123,16 @@ catalog:
 
 permission:
   enabled: true
+  opa:
+    baseUrl: 'http://localhost:8181'
+    policy:
+      policyEntryPoint: 'rbac_policy/decision'
+      policyFallbackDecision: 'allow' # Values: 'allow' or 'deny'
 
-opaClient:
+openPolicyAgent:
   baseUrl: 'http://localhost:8181'
-  policies:
-    entityChecker: # Entity checker plugin
-      entrypoint: 'entity_checker/violation'
-    permissions: # Permission wrapper plugin
-      entrypoint: 'rbac_policy/decision'
-      ## Uncomment this line to add a fallback policy in case there is an issue fetching a policy from OPA
-      ##   Values can be 'allow' to ALLOW all requests or 'deny' to DENY all requests. Any other value
-      ##   allows errors to be thrown when the connection with OPA fails.
-      # policyFallback: 'allow' # Values: 'allow' or 'deny'
+  entityChecker:
+    enabled: true
+    policyEntryPoint: 'entity_checker/decision'
+  policyViewer:
+    enabled: true

@@ -1,26 +1,35 @@
 import { OpaClient } from './opaClient';
-import { ConfigReader } from '@backstage/config';
 import { LoggerService } from '@backstage/backend-plugin-api';
 import { PermissionsFrameworkPolicyInput } from '../types';
+import { ConfigReader } from '@backstage/config';
 
 const mockConfig = {
-  opaClient: {
-    baseUrl: 'http://localhost:8181',
-  },
-};
-
-const createMockConfig = (fallbackPolicy?: string) => ({
-  opaClient: {
-    baseUrl: 'http://localhost:8181',
-    policies: {
-      permissions: {
-        policyFallback: fallbackPolicy,
+  permission: {
+    opa: {
+      baseUrl: 'http://localhost:8181',
+      policy: {
+        policyEntryPoint: 'some/admin',
+        policyFallbackDecision: 'allow',
       },
     },
   },
-});
+};
 
 const config = new ConfigReader(mockConfig);
+
+const createMockConfig = (fallbackPolicy: string) =>
+  new ConfigReader({
+    permission: {
+      opa: {
+        baseUrl: 'http://localhost:8181',
+        policy: {
+          policyEntryPoint: 'some/admin',
+          policyFallbackDecision: fallbackPolicy,
+        },
+      },
+    },
+  });
+
 let mockLogger: LoggerService;
 let opaClient: OpaClient;
 
@@ -102,7 +111,7 @@ describe('OpaClient Permissions Framework', () => {
     'should return %s if policyFallback is set to that value and fetch fails',
     async (fallback, expected) => {
       // Create a new config with the fallback policy
-      const configWithFallback = new ConfigReader(createMockConfig(fallback));
+      const configWithFallback = createMockConfig(fallback);
       const clientWithFallback = new OpaClient(configWithFallback, mockLogger);
 
       const mockError = new Error('FetchError');
@@ -131,7 +140,7 @@ describe('OpaClient Permissions Framework', () => {
     'should return %s if policyFallback is set to that value and OPA response is not OK',
     async (fallback, expected) => {
       // Create a new config with the fallback policy
-      const configWithFallback = new ConfigReader(createMockConfig(fallback));
+      const configWithFallback = createMockConfig(fallback);
       const clientWithFallback = new OpaClient(configWithFallback, mockLogger);
 
       (global.fetch as jest.Mock).mockResolvedValueOnce({
@@ -157,6 +166,23 @@ describe('OpaClient Permissions Framework', () => {
   );
 
   it('should throw an error if policyFallback is an unknown value and OPA response is not OK', async () => {
+    // Create a config without a fallback policy
+    const configWithoutFallback = new ConfigReader({
+      permission: {
+        opa: {
+          baseUrl: 'http://localhost:8181',
+          policy: {
+            policyEntryPoint: 'some/admin',
+            // No policyFallbackDecision set
+          },
+        },
+      },
+    });
+    const clientWithoutFallback = new OpaClient(
+      configWithoutFallback,
+      mockLogger,
+    );
+
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
       json: jest.fn().mockResolvedValueOnce({}),
@@ -170,7 +196,7 @@ describe('OpaClient Permissions Framework', () => {
       identity: { user: 'testUser', claims: ['claim1', 'claim2'] },
     };
     await expect(
-      opaClient.evaluatePermissionsFrameworkPolicy(
+      clientWithoutFallback.evaluatePermissionsFrameworkPolicy(
         mockInput,
         mockOpaEntrypoint,
       ),
@@ -178,6 +204,23 @@ describe('OpaClient Permissions Framework', () => {
   });
 
   it('should throw error when response is not ok', async () => {
+    // Create a config without a fallback policy
+    const configWithoutFallback = new ConfigReader({
+      permission: {
+        opa: {
+          baseUrl: 'http://localhost:8181',
+          policy: {
+            policyEntryPoint: 'some/admin',
+            // No policyFallbackDecision set
+          },
+        },
+      },
+    });
+    const clientWithoutFallback = new OpaClient(
+      configWithoutFallback,
+      mockLogger,
+    );
+
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
       json: jest.fn().mockResolvedValueOnce({}),
@@ -191,7 +234,7 @@ describe('OpaClient Permissions Framework', () => {
     };
     const mockOpaEntrypoint = 'some/admin';
     await expect(
-      opaClient.evaluatePermissionsFrameworkPolicy(
+      clientWithoutFallback.evaluatePermissionsFrameworkPolicy(
         mockInput,
         mockOpaEntrypoint,
       ),

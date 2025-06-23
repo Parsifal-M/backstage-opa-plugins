@@ -2,7 +2,7 @@ import express from 'express';
 import { LoggerService, UrlReaderService } from '@backstage/backend-plugin-api';
 import { readPolicyFile } from '../../lib/read';
 
-export const policyContentRouter = (
+export const policyViewerRouter = (
   logger: LoggerService,
   urlReader: UrlReaderService,
 ): express.Router => {

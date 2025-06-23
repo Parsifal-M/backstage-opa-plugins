@@ -1,20 +1,20 @@
 import { mockServices } from '@backstage/backend-test-utils';
 import express from 'express';
 import request from 'supertest';
-import { policyContentRouter } from './policyContent';
+import { policyViewerRouter } from './policyViewer';
 import { readPolicyFile } from '../../lib/read';
 
 jest.mock('node-fetch');
 jest.mock('../../lib/read');
 
-describe('policyContentRouter', () => {
+describe('policyViewerRouter', () => {
   let app: express.Express;
 
   beforeAll(async () => {
     const mockUrlReader = mockServices.urlReader.mock();
     const mockLogger = mockServices.logger.mock();
 
-    const router = policyContentRouter(mockLogger, mockUrlReader);
+    const router = policyViewerRouter(mockLogger, mockUrlReader);
     app = express().use(express.json()).use(router);
   });
 

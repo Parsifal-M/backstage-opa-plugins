@@ -28,14 +28,14 @@ export class OpaClient {
    */
   constructor(config: Config, logger: LoggerService) {
     this.entryPoint = config.getOptionalString(
-      'opaClient.policies.permissions.entrypoint',
+      'permission.opa.policy.policyEntryPoint',
     );
-    this.baseUrl = config.getOptionalString('opaClient.baseUrl');
+    this.baseUrl = config.getOptionalString('permission.opa.baseUrl');
 
     this.logger = logger;
 
     const bareFallbackPolicy = config
-      .getOptionalString('opaClient.policies.permissions.policyFallback')
+      .getOptionalString('permission.opa.policy.policyFallbackDecision')
       ?.toLocaleLowerCase('en-US');
     if (bareFallbackPolicy === 'allow' || bareFallbackPolicy === 'deny') {
       this.fallbackPolicyDecision = bareFallbackPolicy;

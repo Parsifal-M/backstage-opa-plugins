@@ -7,7 +7,7 @@ import {
   UserInfoService,
 } from '@backstage/backend-plugin-api';
 import { entityCheckerRouter } from './routers/entityChecker';
-import { policyContentRouter } from './routers/policyContent';
+import { policyViewerRouter } from './routers/policyViewer';
 import { authzRouter } from './routers/authz';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
@@ -36,14 +36,22 @@ export async function createRouter(
     response.json({ status: 'ok' });
   });
 
-  if (
-    config.getOptionalString('opaClient.policies.entityChecker.entrypoint') &&
-    config.getOptionalString('opaClient.baseUrl')
-  ) {
+  const entityCheckerEnabled =
+    config.getOptionalBoolean('openPolicyAgent.entityChecker.enabled') ?? false;
+  const policyViewerEnabled =
+    config.getOptionalBoolean('openPolicyAgent.policyViewer.enabled') ?? false;
+
+  if (entityCheckerEnabled) {
+    logger.info('Mounting Entity Checker router');
     router.use(entityCheckerRouter(logger, opaEntityChecker));
   }
+
+  if (policyViewerEnabled) {
+    logger.info('Mounting Policy Viewer router');
+    router.use(policyViewerRouter(logger, urlReader));
+  }
+
   router.use(authzRouter(logger, config, httpAuth, userInfo));
-  router.use(policyContentRouter(logger, urlReader));
 
   const middleware = MiddlewareFactory.create({ logger, config });
 
