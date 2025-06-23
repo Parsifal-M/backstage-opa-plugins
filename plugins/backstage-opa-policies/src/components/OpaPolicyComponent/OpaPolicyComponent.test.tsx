@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { OpaPolicyPage } from './OpaPolicyComponent';
 import { opaApiRef } from '../../api';
 import { renderInTestApp, TestApiProvider } from '@backstage/test-utils';
-import React, { act } from 'react';
+import { act } from 'react';
 import { alertApiRef } from '@backstage/core-plugin-api';
 
 jest.mock('@backstage/plugin-catalog-react', () => ({

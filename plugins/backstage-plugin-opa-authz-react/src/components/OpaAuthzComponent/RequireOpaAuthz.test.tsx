@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import { RequireOpaAuthz } from './RequireOpaAuthz';
 import { useOpaAuthz } from '../../hooks/useOpaAuthz/useOpaAuthz';

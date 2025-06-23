@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { OpaMetadataAnalysisCard } from './OpaMetadataAnalysisCard';
 import { alertApiRef } from '@backstage/core-plugin-api';
