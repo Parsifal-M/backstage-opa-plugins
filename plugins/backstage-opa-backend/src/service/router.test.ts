@@ -3,10 +3,6 @@ import express from 'express';
 import request from 'supertest';
 import { createRouter } from './router';
 
-const mockEntityCheckerApi = {
-  checkEntity: jest.fn(),
-};
-
 describe('createRouter', () => {
   let app: express.Express;
 
@@ -26,7 +22,6 @@ describe('createRouter', () => {
       urlReader: mockServices.urlReader.mock(),
       httpAuth: mockServices.httpAuth.mock(),
       userInfo: mockServices.userInfo.mock(),
-      opaEntityChecker: mockEntityCheckerApi,
     });
     app = express().use(router);
   });
