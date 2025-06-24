@@ -21,7 +21,7 @@ violation contains {"check_title": entity_check, "message": msg, "level": "error
 	msg := "System is missing!"
 }
 
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
+violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
 	valid_types = {"website", "library", "service"}
 	not valid_types[input.spec.type]
 	entity_check := "Type"

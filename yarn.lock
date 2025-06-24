@@ -9638,7 +9638,6 @@ __metadata:
     "@backstage/catalog-model": "npm:^1.7.4"
     "@backstage/cli": "npm:^0.33.0"
     "@backstage/plugin-catalog-node": "npm:^1.17.1"
-    "@parsifal-m/plugin-opa-backend": "workspace:^"
     "@types/lodash": "npm:^4"
     "@types/lodash-es": "npm:^4.17.12"
     lodash: "npm:^4.17.21"
@@ -9646,7 +9645,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@parsifal-m/plugin-opa-backend@workspace:*, @parsifal-m/plugin-opa-backend@workspace:^, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
+"@parsifal-m/plugin-opa-backend@workspace:*, @parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend":
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-opa-backend@workspace:plugins/backstage-opa-backend"
   dependencies:

@@ -133,6 +133,9 @@ openPolicyAgent:
   baseUrl: 'http://localhost:8181'
   entityChecker:
     enabled: true
-    policyEntryPoint: 'entity_checker/decision'
+    policyEntryPoint: 'entity_checker/violation'
+  entityCheckerProcessor:
+    enabled: true
+    policyEntryPoint: 'entity_checker/violation'
   policyViewer:
     enabled: true

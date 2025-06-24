@@ -1,7 +1,8 @@
 import { Entity } from '@backstage/catalog-model';
 import { CatalogOPAEntityValidator } from './CatalogOPAEntityValidator';
 import { mockServices } from '@backstage/backend-test-utils';
-import { OpaEntityCheckResult } from '@parsifal-m/plugin-opa-backend';
+import { EntityCheckerClient } from '../client/EntityCheckerClient';
+import { OpaEntityCheckResult } from '../types';
 
 const entity: Entity = {
   apiVersion: 'backstage.io/v1alpha1',
@@ -17,15 +18,15 @@ const entity: Entity = {
 const logger = mockServices.logger.mock();
 
 describe('CatalogOPAEntityValidator', () => {
-  it('never fails when the Entity Checker Api errors', async () => {
-    const mockEntityCheckerApi = {
+  it('never fails when the Entity Checker Client errors', async () => {
+    const mockEntityCheckerClient: EntityCheckerClient = {
       checkEntity: jest.fn(
         (): Promise<OpaEntityCheckResult> => Promise.reject('error'),
       ),
     };
     const processor = new CatalogOPAEntityValidator(
       logger,
-      mockEntityCheckerApi,
+      mockEntityCheckerClient,
     );
 
     expect(await processor.preProcessEntity(entity)).toEqual({
@@ -41,7 +42,7 @@ describe('CatalogOPAEntityValidator', () => {
   });
 
   it('adds annotation, when entity fails validation', async () => {
-    const mockEntityCheckerApi = {
+    const mockEntityCheckerClient: EntityCheckerClient = {
       checkEntity: jest.fn(
         (): Promise<OpaEntityCheckResult> =>
           Promise.resolve({
@@ -59,7 +60,7 @@ describe('CatalogOPAEntityValidator', () => {
 
     const processor = new CatalogOPAEntityValidator(
       logger,
-      mockEntityCheckerApi,
+      mockEntityCheckerClient,
     );
 
     expect(await processor.preProcessEntity(entity)).toEqual({
@@ -76,7 +77,7 @@ describe('CatalogOPAEntityValidator', () => {
   });
 
   it('adds warning annotations when it is the highest level', async () => {
-    const mockEntityCheckerApi = {
+    const mockEntityCheckerClient: EntityCheckerClient = {
       checkEntity: jest.fn(
         (): Promise<OpaEntityCheckResult> =>
           Promise.resolve({
@@ -100,7 +101,7 @@ describe('CatalogOPAEntityValidator', () => {
 
     const processor = new CatalogOPAEntityValidator(
       logger,
-      mockEntityCheckerApi,
+      mockEntityCheckerClient,
     );
 
     expect(await processor.preProcessEntity(entity)).toEqual({
