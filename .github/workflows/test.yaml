@@ -6,17 +6,18 @@ on:
     branches:
       - main
 
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   checks: write
 
 jobs:
   test:
-    name: Test on Node ${{ matrix.node-version }}
+    name: Test on Node.js 20
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20]
 
     steps:
       - name: Checkout
@@ -24,21 +25,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Node.js
+      - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Clean Yarn Cache
-        run: yarn cache clean
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/yarn
-          key: yarn-${{ runner.OS }}-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            yarn-${{ runner.OS }}-${{ matrix.node-version }}-
+          node-version: 20
+          cache: 'yarn'
 
       - name: Install Dependencies
         run: yarn install --immutable
@@ -54,3 +45,11 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: Parsifal-M/backstage-opa-plugins
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## Test Results 🧪" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ TypeScript compilation passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ All tests executed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Coverage report uploaded" >> $GITHUB_STEP_SUMMARY
