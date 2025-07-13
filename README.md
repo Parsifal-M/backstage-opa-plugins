@@ -29,6 +29,39 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 - [catalog-backend-module-opa-entity-checker-processor](./plugins/catalog-backend-module-opa-entity-checker-processor) - A Backstage catalog processor that validates entities at ingestion time using the `backstage-opa-backend` plugin and adds an annotation based on the OPA policy evaluation result which can be `error`, `warning` or `info`
 
+## Configuration Overview
+
+The OPA plugins use two separate configuration sections in your `app-config.yaml`:
+
+### Permission Framework Integration
+
+```yaml
+permission:
+  opa:
+    baseUrl: 'http://localhost:8181'
+    policies:
+      permissions:
+        entrypoint: 'rbac_policy/decision'
+        policyFallback: 'allow' # 'allow' or 'deny' (optional)
+```
+
+### OPA Backend Services
+
+```yaml
+openPolicyAgent:
+  baseUrl: 'http://localhost:8181'
+  entityChecker:
+    enabled: true # Default: false
+    policyEntryPoint: 'entity_checker/violation'
+  entityCheckerProcessor:
+    enabled: true # Default: false
+    policyEntryPoint: 'entity_checker/violation'
+  policyViewer:
+    enabled: true # Default: false
+```
+
+> **Important:** All OPA backend features are **disabled by default**. You must explicitly set `enabled: true` for each feature you want to use. This allows selective loading of only the functionality you need.
+
 ## Additional Documentation
 
 Each Plugin has its own documentation in the [Plugins](./plugins/) Folder, I am however, slowly moving things to [Github pages](https://parsifal-m.github.io/backstage-opa-plugins/#/). Feel free to help out!

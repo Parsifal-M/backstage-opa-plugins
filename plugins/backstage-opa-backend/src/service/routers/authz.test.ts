@@ -14,7 +14,7 @@ describe('authzRouter', () => {
   beforeAll(async () => {
     const mockConfig = mockServices.rootConfig({
       data: {
-        opaClient: {
+        openPolicyAgent: {
           baseUrl: 'http://localhost:8181',
         },
       },

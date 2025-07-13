@@ -33,9 +33,21 @@ yarn add --cwd packages/backend @parsifal-m/plugin-opa-backend
 In your `app-config.yaml` file, add the following:
 
 ```yaml
-opaClient:
+openPolicyAgent:
   baseUrl: 'http://localhost:8181'
+  entityChecker:
+    enabled: true
+    policyEntryPoint: 'entity_checker/violation'
+  policyViewer:
+    enabled: true
 ```
+
+> **Configuration Note:** The `enabled` flags control which OPA backend features are loaded. By default, all features are **disabled** (`false`). Set `enabled: true` only for the features you want to use:
+>
+> - `entityChecker.enabled` - Enables the entity validation API endpoint
+> - `policyViewer.enabled` - Enables the policy viewing functionality
+>
+> This allows selective loading of only the OPA functionality you need.
 
 ### Import the plugin into the Backstage Backend
 

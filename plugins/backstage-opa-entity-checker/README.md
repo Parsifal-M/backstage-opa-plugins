@@ -45,12 +45,14 @@ And with no violations:
 The policy is set in the `app-config.yaml` file like so:
 
 ```yaml
-opaClient:
+openPolicyAgent:
   baseUrl: 'http://localhost:8181'
-  policies:
-    entityChecker: # Entity checker plugin
-      entrypoint: 'entity_checker/violation'
+  entityChecker:
+    enabled: true
+    policyEntryPoint: 'entity_checker/violation'
 ```
+
+> **Important:** The `entityChecker.enabled` flag must be set to `true` to activate the entity validation functionality. By default, it is **disabled** (`false`). This allows you to control whether entity validation is active in your Backstage instance.
 
 Then in your OPA Policy (the `rego` file) you can use the following to set any violations you want to display (you do not have to use violation, you can use any rule head you want, but you will need to change the `entrypoint` in the `app-config.yaml` file to match the rule head you use):
 

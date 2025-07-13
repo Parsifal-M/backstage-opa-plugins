@@ -9,10 +9,8 @@ describe('createRouter', () => {
   beforeAll(async () => {
     const mockConfig = mockServices.rootConfig({
       data: {
-        data: {
-          opaClient: {
-            baseUrl: 'http://localhost:8181',
-          },
+        openPolicyAgent: {
+          baseUrl: 'http://localhost:8181',
         },
       },
     });

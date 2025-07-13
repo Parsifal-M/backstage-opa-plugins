@@ -51,12 +51,17 @@ const overviewContent = (
 The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and an `entrypoint` for the OPA server in your Backstage app-config.yaml, based on the example above we would have the following configuration:
 
 ```yaml
-opaClient:
+openPolicyAgent:
   baseUrl: 'http://localhost:8181'
-  policies:
-    entityChecker: # Entity checker plugin
-      entrypoint: 'entity_checker/violation'
+  entityChecker:
+    enabled: true
+    policyEntryPoint: 'entity_checker/violation'
+  entityCheckerProcessor:
+    enabled: true
+    policyEntryPoint: 'entity_checker/violation'
 ```
+
+> **Important:** The `enabled` flags control whether the respective OPA features are loaded and available. By default, all OPA features are **disabled** (`false`). You must explicitly set `enabled: true` for each feature you want to use. This allows you to selectively enable only the OPA functionality you need, reducing resource usage and potential conflicts.
 
 ## Docker Compose
 

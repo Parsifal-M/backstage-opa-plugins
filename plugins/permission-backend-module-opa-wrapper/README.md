@@ -53,47 +53,47 @@ backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
 ```
 
-The policy that will be used can be found in `plugins/permission-backend-module-opa-wrapper/src/policy.ts`. It will simply forward all permission requests to OPA.
+The plugin will automatically register the OPA permission policy to handle all permission requests through OPA.
 
 ## Configuration
 
 The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and an `entrypoint` for the OPA server in your Backstage app-config.yaml file:
 
 ```yaml
-opaClient:
-  baseUrl: 'http://localhost:8181'
-  policies:
-    permissions: # Permission wrapper plugin
-      entrypoint: 'rbac_policy/decision'
+permission:
+  opa:
+    baseUrl: 'http://localhost:8181'
+    policy:
+      policyEntryPoint: 'rbac_policy/decision'
 ```
 
-The `baseUrl` is the URL of the OPA server, and the `entrypoint` is the entrypoint of the policy you want to evaluate.
+The `baseUrl` is the URL of the OPA server, and the `policyEntryPoint` is the entrypoint of the policy you want to evaluate.
 
-It is also possible to provide an entrypoint to the `policyEvaluator` function, this will override the entrypoint provided in the config. This allows for more flexibility in policy evaluation (if you need it).
+You can optionally provide an entrypoint when calling the `evaluatePermissionsFrameworkPolicy` method, which will override the entrypoint provided in the config. This allows for more flexibility in policy evaluation if you need it.
 
 If you do not override the entrypoint, the entrypoint provided in the config will be used.
 
 ### Fallback policy
 
-Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the default policy in the `app-config.yaml` file with the `policyFallback` key:
+Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the fallback policy in the `app-config.yaml` file with the `policyFallbackDecision` key:
 
 ```yaml
-opaClient:
-  baseUrl: 'http://localhost:8181'
-  policies:
-    permissions: # Permission wrapper plugin
-      entrypoint: 'rbac_policy/decision'
-      policyFallback: 'deny'
+permission:
+  opa:
+    baseUrl: 'http://localhost:8181'
+    policy:
+      policyEntryPoint: 'rbac_policy/decision'
+      policyFallbackDecision: 'deny'
 ```
 
 The previous example would return a `DENY` decision to any request if the OPA server is not reachable.
-If the value is set to any value other than `allow` or `deny`, the wrapper is allowed to throw an error if the OPA server is not reachable. The values are case-insensitive.
+If the value is set to any value other than `allow` or `deny`, the plugin will throw an error if the OPA server is not reachable. The values are case-insensitive.
 
 ## An Example Policy and Input
 
 An example policy in OPA might look like this, keep in mind you could also use [bundles](https://www.openpolicyagent.org/docs/latest/management-bundles/) to manage your policies and keep the `conditions` object in a `data.json` file.
 
-We use entrypoints to specify which rule to evaluate, the plugin is checking for a 'result' key in the OPA response, this means you do not **have** to use `decision` as I have below, you can use any key you want.
+We use entrypoints to specify which rule to evaluate. The plugin expects the OPA response to contain a `result` object with the policy decision. This means you do not have to use `decision` as shown below - you can use any rule name you want as long as it returns the expected structure.
 
 ```rego
 package backstage_policy
@@ -133,16 +133,16 @@ decision := CONDITIONAL("catalog", "catalog-entity", {"anyOf": [{
  "rule": "IS_ENTITY_KIND",
  "params": {"kinds": ["Component"]},
 }]}) if {
- permission == "catalog.entity.read"
+ permission == "catalog.entity.update"
 }
 ```
 
 The input sent from Backstage looks like this:
 
 ```typescript
-export type PolicyEvaluationInput = {
+export type PermissionsFrameworkPolicyInput = {
   permission: {
-    type: string;
+    name: string;
   };
   identity?: {
     user: string | undefined;

@@ -11,9 +11,7 @@ import { LoggerService } from '@backstage/backend-plugin-api';
 
 /**
  * OpaClient is a class responsible for interacting with the OPA server.
- * It provides two methods for evaluating policies:
- * - evaluatePolicy: Evaluates a generic permission policy by sending the input to the OPA server and returns the result.
- * - evaluatePermissionsFrameworkPolicy: Evaluates a backstage permissions framework policy against a given input.
+ * It provides methods for evaluating policies by sending requests to the OPA server.
  */
 export class OpaClient {
   private readonly entryPoint?: string;
@@ -45,41 +43,15 @@ export class OpaClient {
   }
 
   /**
-   * Evaluates a backstage permissions framework policy against a given input.
-   *
-   * @param input - The input to evaluate the policy against.
-   * @param entryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
-   * @param fallbackPolicyDecision - The fallback policy decision to use when the OPA server is unavailable or unresponsive. You can optionally provide the fallback policy here, otherwise it will be taken from the app-config.
+   * Common HTTP request logic for OPA communication.
    */
-  async evaluatePermissionsFrameworkPolicy(
-    input: PermissionsFrameworkPolicyInput,
-    entryPoint?: string,
-  ): Promise<PermissionsFrameworkPolicyEvaluationResult> {
-    const setEntryPoint = entryPoint ?? this.entryPoint;
-    const baseUrl = this.baseUrl;
-    const policyFallback = this.fallbackPolicyDecision;
-    const url = `${baseUrl}/v1/data/${setEntryPoint}`;
-
-    if (!baseUrl) {
-      this.logger.error('The OPA URL is not set in the app-config!');
-      throw new Error('The OPA URL is not set in the app-config!');
-    }
-
-    if (!setEntryPoint) {
-      this.logger.error(
-        'The OPA entrypoint is not set in the evaluatePolicy method or in the app-config!',
-      );
-      throw new Error(
-        'The OPA entrypoint is not set in the evaluatePolicy method or in the app-config!',
-      );
-    }
-
-    if (!input) {
-      this.logger.error('The policy input is missing!');
-      throw new Error('The policy input is missing!');
-    }
-
-    this.logger.debug(`Sent data to OPA: ${JSON.stringify(input)}`);
+  private async makeOpaRequest<T>(
+    url: string,
+    input: unknown,
+    fallbackPolicy?: FallbackPolicyDecision,
+    isPermissionsFramework: boolean = false,
+  ): Promise<T> {
+    this.logger.debug(`Sending data to OPA: ${JSON.stringify(input)}`);
 
     try {
       const opaResponse = await fetch(url, {
@@ -91,53 +63,133 @@ export class OpaClient {
       });
 
       if (!opaResponse.ok) {
-        const message = `An error response was returned after sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`;
-
-        if (policyFallback === 'allow') {
-          this.logger.warn(`${message}. Falling back to allow.`);
-          return { result: 'ALLOW' };
-        } else if (policyFallback === 'deny') {
-          this.logger.warn(`${message}. Falling back to deny.`);
-          return { result: 'DENY' };
-        }
-        this.logger.error(message);
-        throw new Error(message);
+        return this.handleOpaError<T>(
+          new Error(`HTTP ${opaResponse.status} - ${opaResponse.statusText}`),
+          fallbackPolicy,
+          isPermissionsFramework,
+        );
       }
 
-      const opaPermissionsResponse =
-        (await opaResponse.json()) as PolicyEvaluationResponse;
-      this.logger.debug('Received data from OPA:', {
-        opaPermissionsResponse: JSON.stringify(opaPermissionsResponse),
-      });
-      return opaPermissionsResponse.result;
+      const opaPermissionsResponse = (await opaResponse.json()) as T;
+      this.logger.debug(
+        `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
+      );
+
+      return opaPermissionsResponse;
     } catch (error: unknown) {
-      const message = `An error occurred while sending the policy input to the OPA server:`;
-
-      if (error instanceof Error && error.name === 'FetchError') {
-        if (policyFallback === 'allow') {
-          this.logger.warn(`${message} ${error}. Falling back to allow.`);
-          return { result: 'ALLOW' };
-        } else if (policyFallback === 'deny') {
-          this.logger.warn(`${message} ${error}. Falling back to deny.`);
-          return { result: 'DENY' };
-        }
-      }
-      this.logger.error(`${message} ${error}`);
-      throw new Error(`${message} ${error}`);
+      return this.handleOpaError<T>(
+        error,
+        fallbackPolicy,
+        isPermissionsFramework,
+      );
     }
   }
 
   /**
-   * Overloaded function signatures for evaluatePolicy.
+   * Unified error handling with optional fallback policy support.
    */
-  async evaluatePolicy(
-    input: PolicyInput,
-    entryPoint: string,
-  ): Promise<PolicyResult>;
-  async evaluatePolicy<T>(input: PolicyInput, entryPoint: string): Promise<T>;
+  private handleOpaError<T>(
+    error: unknown,
+    fallbackPolicy?: FallbackPolicyDecision,
+    isPermissionsFramework: boolean = false,
+  ): T {
+    const isHttpError =
+      error instanceof Error && error.message.startsWith('HTTP');
+    const isFetchError = error instanceof Error && error.name === 'FetchError';
+
+    // Handle fallback policy for network errors or HTTP errors
+    if (fallbackPolicy && (isFetchError || isHttpError)) {
+      const message = isHttpError
+        ? `An error response was returned after sending the policy input to the OPA server: ${error.message.replace(
+            'HTTP ',
+            '',
+          )}`
+        : `An error occurred while sending the policy input to the OPA server: ${error}`;
+
+      if (fallbackPolicy === 'allow') {
+        this.logger.warn(`${message}. Falling back to allow.`);
+        // Return the appropriate structure based on the method type
+        return (
+          isPermissionsFramework
+            ? { result: { result: 'ALLOW' } }
+            : { result: 'ALLOW' }
+        ) as T;
+      } else if (fallbackPolicy === 'deny') {
+        this.logger.warn(`${message}. Falling back to deny.`);
+        // Return the appropriate structure based on the method type
+        return (
+          isPermissionsFramework
+            ? { result: { result: 'DENY' } }
+            : { result: 'DENY' }
+        ) as T;
+      }
+    }
+
+    // For non-fallback errors or when no fallback is configured
+    const message = isHttpError
+      ? `An error response was returned after sending the policy input to the OPA server: ${error.message.replace(
+          'HTTP ',
+          '',
+        )}`
+      : `An error occurred while sending the policy input to the OPA server: ${error}`;
+
+    this.logger.error(message);
+    throw new Error(message);
+  }
+
+  /**
+   * Validates required configuration and parameters before making OPA requests.
+   */
+  private validateConfig(input: unknown, entryPoint?: string): string {
+    if (!this.baseUrl) {
+      this.logger.error('The OPA URL is not set in the app-config!');
+      throw new Error('The OPA URL is not set in the app-config!');
+    }
+
+    const setEntryPoint = entryPoint ?? this.entryPoint;
+    if (!setEntryPoint) {
+      this.logger.error(
+        'The OPA entrypoint is not set in the method parameter or in the app-config!',
+      );
+      throw new Error(
+        'The OPA entrypoint is not set in the method parameter or in the app-config!',
+      );
+    }
+
+    if (!input) {
+      this.logger.error('The policy input is missing!');
+      throw new Error('The policy input is missing!');
+    }
+
+    return setEntryPoint;
+  }
+
+  /**
+   * Evaluates a backstage permissions framework policy against a given input.
+   *
+   * @param input - The input to evaluate the policy against.
+   * @param entryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
+   */
+  async evaluatePermissionsFrameworkPolicy(
+    input: PermissionsFrameworkPolicyInput,
+    entryPoint?: string,
+  ): Promise<PermissionsFrameworkPolicyEvaluationResult> {
+    const setEntryPoint = this.validateConfig(input, entryPoint);
+    const url = `${this.baseUrl}/v1/data/${setEntryPoint}`;
+
+    const response = await this.makeOpaRequest<PolicyEvaluationResponse>(
+      url,
+      input,
+      this.fallbackPolicyDecision,
+      true, // This is a permissions framework call
+    );
+
+    return response.result;
+  }
 
   /**
    * Evaluates a generic policy by sending the input to the OPA server and returns the result.
+   * This method does not include fallback policy support - it will throw errors if OPA is unavailable.
    *
    * @param input - The policy input to be evaluated.
    * @param entryPoint - The entry point in the OPA server where the policy is defined.
@@ -148,41 +200,9 @@ export class OpaClient {
     input: PolicyInput,
     entryPoint: string,
   ): Promise<T> {
+    this.validateConfig(input, entryPoint);
     const url = `${this.baseUrl}/v1/data/${entryPoint}`;
 
-    this.logger.debug(
-      `OpaAuthzClient sending data to OPA: ${JSON.stringify(input)}`,
-    );
-
-    try {
-      const opaResponse = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ input }),
-      });
-
-      if (!opaResponse.ok) {
-        const message = `An error response was returned after sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`;
-        this.logger.error(message);
-        throw new Error(message);
-      }
-
-      const opaPermissionsResponse = (await opaResponse.json()) as T;
-
-      this.logger.debug(
-        `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
-      );
-
-      return opaPermissionsResponse;
-    } catch (error: unknown) {
-      this.logger.error(
-        `An error occurred while sending the policy input to the OPA server: ${error}`,
-      );
-      throw new Error(
-        `An error occurred while sending the policy input to the OPA server: ${error}`,
-      );
-    }
+    return this.makeOpaRequest<T>(url, input, undefined, false); // Generic policy call, no fallback
   }
 }
