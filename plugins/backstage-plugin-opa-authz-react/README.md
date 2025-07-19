@@ -1,41 +1,65 @@
-# OPA Authz React
+# Backstage OPA Authz React Plugin
 
 > This Package is still being worked on and could contain breaking changes without notice. Please use with caution!
 
-This is a React component library for Backstage that provides a way to interact with an OPA (Open Policy Agent) server for Authorization in the frontend.
+**A React component library for Backstage that enables frontend authorization using Open Policy Agent (OPA).**
+
+## Overview
+
+This plugin provides React components and hooks to control UI visibility and access based on OPA policy evaluations. Unlike the standard Backstage permissions framework, this library gives you direct control over authorization logic without requiring application rebuilds.
+
+### Key Features
+
+- 🔒 **Flexible Authorization** - Pass custom policy input data to OPA
+- 🎯 **Component-Level Control** - Hide/show UI elements based on policies
+- 🔧 **Framework Independent** - Works alongside or instead of Backstage permissions
+- ⚡ **Performance Optimized** - Built with SWR for efficient caching and revalidation
+
+### When to Use This Plugin
+
+Use this library when you need:
+
+- More context in authorization decisions than Backstage permissions provide
+- To decouple authorization logic from your application code
+- Fine-grained control over UI element visibility
+- Custom plugins with flexible authorization patterns
 
 You can wrap your components with the `RequireOpaAuthz` component to control the visibility of components based on the result of a policy evaluation.
 
 The component uses the `useOpaAuthz` hook to perform the policy evaluation, and it will render the children only if the policy evaluation `allow` is `true`.
 
-## Why use this library?
+## Why Choose This Over Backstage Permissions?
 
-Although the Backstage Permissions framework works well for most cases, sometimes you need to add a little more information to your policy input which is not available or possible in the framework. This library aims to provide a more generic way to interact with OPA, and can be used in any part of the Backstage application, and is not tied to the permissions framework in any way, meaning:
+While the Backstage Permissions framework works well for many cases, this library provides additional flexibility:
 
-- Flexibility to pass your own policy input to OPA.
-- Decouple the Authorization logic from the application meaning no rebuilding the application to change the authorization logic.
-- More control over the Authorization logic for your own plugins.
+- **Custom Policy Input** - Send any data structure to OPA, not just predefined permission types
+- **Decoupled Authorization** - Change authorization logic without rebuilding your application
+- **Fine-Grained Control** - Perfect for custom plugins requiring specific authorization patterns
+- **Direct OPA Integration** - Work directly with OPA policies without framework limitations
 
-Sadly, not all core and community plugins will work with this library for permissions, so you can still use the [plugin-permission-backend-module-opa-wrapper](https://parsifal-m.github.io/backstage-opa-plugins/#/opa-permissions-wrapper-module/introduction) in conjunction with this library if needed which supports the permissions framework.
+> **Note:** This library can work alongside the [OPA Permission Wrapper](../permission-backend-module-opa-wrapper/README.md) for comprehensive authorization coverage across your Backstage instance.
 
-## Pre-requisites
+## Prerequisites
 
-To use this plugin, you will first need to install the opa-backend plugin. Which can be found [here](../backstage-opa-backend/README.md).
+Before using this plugin, you need to install and configure the OPA backend plugin. See the [OPA Backend Plugin documentation](../backstage-opa-backend/README.md) for setup instructions.
 
-## Quick Start
+## Installation
 
-### Installation
+### 1. Install Required Packages
 
-Run the yarn install command! You'll need the `@parsifal-m/backstage-plugin-opa-authz-react` package for the frontend and the `@parsifal-m/plugin-opa-backend` package for the backend!
+You'll need both the React plugin (frontend) and the OPA backend plugin:
 
-````bash
-yarn add --cwd packages/app @parsifal-m/backstage-plugin-opa-authz-react && yarn add --cwd packages/backend @parsifal-m/plugin-opa-backend
-```add --cwd packages/app @parsifal-m/backstage-plugin-opa-authz-react
-````
+```bash
+# Install frontend plugin
+yarn add --cwd packages/app @parsifal-m/backstage-plugin-opa-authz-react
 
-### Add the API
+# Install backend plugin (if not already installed)
+yarn add --cwd packages/backend @parsifal-m/plugin-opa-backend
+```
 
-In your `app/src/apis.ts` file, add the following:
+### 2. Configure the API
+
+Add the OPA Authz API to your `packages/app/src/apis.ts` file:
 
 ```ts
 export const apis: AnyApiFactory[] = [
@@ -56,122 +80,298 @@ export const apis: AnyApiFactory[] = [
 ];
 ```
 
-### Using the `RequireOpaAuthz` component
+## Usage
 
-To control and hide a component based on the result of a policy evaluation, you can use the `RequireOpaAuthz` component.
+### Option 1: RequireOpaAuthz Component (Recommended)
 
-Install the library first to your Backstage plugin:
-
-```bash
-yarn add --cwd <your-plugin-directory> @parsifal-m/backstage-plugin-opa-authz-react
-```
-
-Make sure you also have the backend plugin `@parsifal-m/plugin-opa-backend` installed and configured in your Backstage app!
-
-Then, you can use the `RequireOpaAuthz` component in your React components like this:
+The `RequireOpaAuthz` component is the easiest way to control component visibility based on OPA policy evaluations.
 
 ```tsx
 import { RequireOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
 
-// Some code...
-
-return (
-  <RequireOpaAuthz input={{ action: 'read-policy' }} entryPoint="authz">
-    <MyComponent />
-  </RequireOpaAuthz>
-);
+function MyProtectedComponent() {
+  return (
+    <RequireOpaAuthz
+      input={{ action: 'read-policy', resource: 'catalog' }}
+      entryPoint="authz"
+    >
+      <div>This content is only visible if the policy allows it!</div>
+    </RequireOpaAuthz>
+  );
+}
 ```
 
-The above will render `MyComponent` only if the policy evaluation `allow` is `true`. It will send to OPA the input `{ action: 'read-policy' }` and the entry point `authz`.
+**Props:**
 
-### Using the `useOpaAuthz` hook directly (optional)
+- `input` - The data sent to OPA for policy evaluation
+- `entryPoint` - The OPA policy entrypoint to evaluate
+- `children` - Components to render when access is allowed
 
-If you want to use the `useOpaAuthz` hook directly, you can do so:
+### Option 2: useOpaAuthz Hook (Advanced)
+
+For more control over the authorization flow, use the hook directly. You can rename the destructured variables for clarity:
 
 ```tsx
 import React from 'react';
 import { useOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
+import { useEntity } from '@backstage/plugin-catalog-react';
 
-const MyComponent = () => {
-  const { loading, data, error } = useOpaAuthz(
-    { action: 'read-policy' },
-    'authz',
+const EntityDeleteButton = () => {
+  const { entity } = useEntity();
+
+  const {
+    loading: policyLoading,
+    data: policyResult,
+    error: policyError,
+  } = useOpaAuthz(
+    {
+      action: 'delete',
+      resource: 'catalog',
+      entityRef: entity.metadata.name,
+      entityKind: entity.kind,
+    },
+    'rbac',
   );
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (policyLoading) {
+    return <div>Checking delete permissions...</div>;
   }
 
-  if (error || !data?.result.allow) {
-    return <div>Access Denied</div>;
+  if (policyError) {
+    return <div>Permission check failed: {policyError.message}</div>;
   }
 
-  return <div>Content</div>;
-};
-```
-
-### Alternative to using the `useOpaAuthz` you can use `useOpaAuthzManual` hook (also optional)
-
-If you need more control over when the policy evaluation is triggered, you can use the `useOpaAuthzManual` hook. This hook provides an `evaluatePolicy` function that allows you to manually trigger the policy evaluation:
-
-```tsx
-import React, { useEffect } from 'react';
-import { useOpaAuthzManual } from '@parsifal-m/backstage-plugin-opa-authz-react';
-
-const MyComponent = () => {
-  const [userData, setUserData] = React.useState(null);
-  const { loading, data, error, evaluatePolicy } = useOpaAuthzManual(
-    { action: 'read-policy' },
-    'authz',
-  );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // First fetch some user data
-      const response = await fetch('/api/user-data');
-      const userData = await response.json();
-      setUserData(userData);
-
-      // Then evaluate the policy with the fetched data
-      const result = await evaluatePolicy();
-      if (result?.result.allow) {
-        // Do something when access is granted
-      }
-    };
-
-    fetchData();
-  }, [evaluatePolicy]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error || !data?.result.allow) {
-    return <div>Access Denied</div>;
+  if (!policyResult?.result.allow) {
+    return null; // Hide button if not allowed
   }
 
   return (
+    <Button color="error" onClick={() => handleDelete(entity)}>
+      Delete Entity
+    </Button>
+  );
+};
+```
+
+### Option 3: useOpaAuthzManual Hook (Manual Control)
+
+For scenarios where you need to trigger policy evaluation at specific times (e.g., after fetching user data):
+
+```tsx
+import React, { useEffect, useState } from 'react';
+import { useOpaAuthzManual } from '@parsifal-m/backstage-plugin-opa-authz-react';
+import { useApi } from '@backstage/core-plugin-api';
+import { catalogApiRef } from '@backstage/plugin-catalog-react';
+
+const ConditionalScaffolderAction = ({ templateRef }) => {
+  const catalogApi = useApi(catalogApiRef);
+  const [userGroups, setUserGroups] = useState([]);
+
+  const {
+    loading: authLoading,
+    data: authResult,
+    error: authError,
+    evaluatePolicy,
+  } = useOpaAuthzManual(
+    {
+      action: 'create',
+      resource: 'scaffolder',
+      template: templateRef,
+      userGroups: userGroups, // Use state that gets updated
+    },
+    'rbac',
+  );
+
+  useEffect(() => {
+    // Fetch user context first, then trigger policy evaluation
+    const fetchUserAndEvaluate = async () => {
+      try {
+        const userEntity = await catalogApi.getEntityByRef(
+          'user:default/current',
+        );
+        const groups =
+          userEntity?.relations?.filter(r => r.type === 'memberOf') || [];
+        const groupRefs = groups.map(g => g.targetRef);
+
+        // Update state first - this will cause the hook's input to change
+        setUserGroups(groupRefs);
+
+        // Then trigger policy evaluation with the updated input
+        await evaluatePolicy();
+      } catch (error) {
+        console.error('Failed to fetch user context:', error);
+      }
+    };
+
+    fetchUserAndEvaluate();
+  }, [catalogApi, evaluatePolicy, templateRef]);
+
+  if (authLoading) return <div>Checking template permissions...</div>;
+  if (authError) return <div>Permission check failed</div>;
+  if (!authResult?.result.allow) return null;
+
+  return (
+    <Button onClick={() => handleScaffolding()}>Create from Template</Button>
+  );
+};
+```
+
+## Practical Example
+
+Here's a simple example in a metaphorical plugin that allows you to deploy things, showing how to restrict deployment actions during business hours:
+
+```tsx
+import React from 'react';
+import { Button } from '@material-ui/core';
+import { RequireOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
+
+export const DeploymentActions = ({ environment }) => {
+  const currentHour = new Date().getHours();
+  const isWeekday = new Date().getDay() >= 1 && new Date().getDay() <= 5;
+
+  return (
     <div>
-      <div>User Data: {JSON.stringify(userData)}</div>
-      <div>Content</div>
+      <Button variant="outlined" color="primary">
+        View Logs
+      </Button>
+
+      {/* Deploy button only shows if policy allows */}
+      <RequireOpaAuthz
+        input={{
+          action: 'deploy',
+          environment,
+          hour: currentHour,
+          isWeekday,
+        }}
+        entryPoint="deployment_policy"
+      >
+        <Button variant="contained" color="primary">
+          Deploy to {environment}
+        </Button>
+      </RequireOpaAuthz>
+
+      {/* Rollback always restricted during business hours */}
+      <RequireOpaAuthz
+        input={{
+          action: 'rollback',
+          environment,
+          hour: currentHour,
+          isWeekday,
+        }}
+        entryPoint="deployment_policy"
+      >
+        <Button variant="contained" color="secondary">
+          Rollback
+        </Button>
+      </RequireOpaAuthz>
     </div>
   );
 };
 ```
 
-The main difference between `useOpaAuthz` and `useOpaAuthzManual` is that the manual version won't automatically fetch the policy evaluation when the component mounts. Instead, it provides a `triggerFetch` function that you can call whenever you want to evaluate the policy, such as after fetching some data that might be needed for the policy evaluation.
+**OPA Policy Example** (`deployment_policy.rego`):
 
-## Example Demo Plugin(s)
+```rego
+package deployment_policy
 
-To help visualize how this library can be used, we have created a demo plugin that demonstrates how to use the `RequireOpaAuthz` component in the frontend, you can find the demo code [here](../../plugins/opa-frontend-demo).
+default allow = false
+
+# Allow deployments to dev anytime
+allow {
+    input.action == "deploy"
+    input.environment == "dev"
+}
+
+# Allow production deployments only outside business hours (6 PM - 8 AM)
+allow {
+    input.action == "deploy"
+    input.environment == "production"
+    not business_hours
+}
+
+# Never allow rollbacks during weekday business hours (9 AM - 5 PM)
+allow {
+    input.action == "rollback"
+    not business_hours
+}
+
+business_hours {
+    input.isWeekday
+    input.hour >= 9
+    input.hour < 17
+}
+```
+
+This example demonstrates blocking dangerous operations during business hours - deployments and rollbacks are hidden when policies don't allow them, preventing accidental production changes during peak usage.
+
+## Demo and Examples
+
+For a complete working example, check out our [demo frontend plugin](../../plugins/opa-demo-frontend) that demonstrates practical usage patterns with the `RequireOpaAuthz` component.
+
+## API Reference
+
+### RequireOpaAuthz Component
+
+| Prop         | Type          | Description                                                         |
+| ------------ | ------------- | ------------------------------------------------------------------- |
+| `input`      | `PolicyInput` | Data payload sent to OPA for policy evaluation                      |
+| `entryPoint` | `string`      | OPA policy entry point to evaluate against                          |
+| `children`   | `ReactNode`   | Content to render when policy allows access                         |
+| `errorPage?` | `ReactNode`   | Optional content to show on loading/error states (defaults to null) |
+
+### useOpaAuthz Hook
+
+```tsx
+const { loading, data, error } = useOpaAuthz(input, entryPoint);
+```
+
+**Returns:**
+
+- `loading` - Boolean indicating if evaluation is in progress
+- `data` - Policy evaluation result from OPA
+- `error` - Error object if evaluation fails
+
+### useOpaAuthzManual Hook
+
+```tsx
+const { loading, data, error, evaluatePolicy } = useOpaAuthzManual(
+  input,
+  entryPoint,
+);
+```
+
+**Returns:** Same as `useOpaAuthz` plus:
+
+- `evaluatePolicy` - Function to manually trigger policy evaluation using the current hook input
+
+> **Note:** The `evaluatePolicy` function doesn't accept parameters. It uses the current `input` object passed to the hook. To evaluate with different data, update your state and the hook input will automatically update.
+
+## Troubleshooting
+
+### Common Issues
+
+1. **"OPA API not configured"** - Ensure the OPA backend plugin is installed and the API is registered in `apis.ts`
+2. **Policy evaluation fails** - Check that your OPA server is running and accessible
+3. **Component not hiding** - Verify your policy returns `{ "allow": true/false }` structure
+
+## Related Plugins
+
+This plugin works well with other OPA plugins in the ecosystem:
+
+- [OPA Backend Plugin](../backstage-opa-backend/README.md) - Required backend component
+- [OPA Permission Wrapper](../permission-backend-module-opa-wrapper/README.md) - For Backstage permissions framework integration
 
 ## Contributing
 
-I am happy to accept contributions and suggestions for these plugins, if you are looking to make significant changes, please open an issue first to discuss the changes you would like to make!
+We welcome contributions! Please:
 
-Please fork the repository and open a PR with your changes. If you have any questions, please feel free to reach out to me on [Mastodon](https://hachyderm.io/@parcifal).
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes with tests
+4. Sign your commits with `git commit -s`
+5. Open a pull request
 
-Please remember to sign your commits with `git commit -s` so that your commits are signed!
+For significant changes, please open an issue first to discuss your proposal.
 
 ## License
 
