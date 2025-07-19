@@ -27,7 +27,7 @@ This repository contains a collection of plugins for [Backstage](https://backsta
 
 ### Entity Checker Processor
 
-- [catalog-backend-module-opa-entity-checker-processor](./plugins/catalog-backend-module-opa-entity-checker-processor) - A Backstage catalog processor that validates entities at ingestion time using the `backstage-opa-backend` plugin and adds an annotation based on the OPA policy evaluation result which can be `error`, `warning` or `info`
+- [backstage-plugin-opa-entity-checker-processor](./plugins/backstage-plugin-opa-entity-checker-processor) - A standalone Backstage catalog processor that automatically validates entity metadata during catalog ingestion using OPA policies and adds validation status annotations
 
 ## Configuration Overview
 
