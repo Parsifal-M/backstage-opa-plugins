@@ -61,6 +61,15 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'OPA Entity Checker Processor',
+      link: {
+        type: 'doc',
+        id: 'opa-entity-checker-processor/introduction',
+      },
+      items: ['opa-entity-checker-processor/quick-start'],
+    },
+    {
+      type: 'category',
       label: 'OPA Permissions Wrapper Module',
       link: {
         type: 'doc',
