@@ -1,8 +1,8 @@
 export interface Config {
   /**
-   * Configuration options for the OpaClient plugin
+   * Configuration options for the OpenPolicyAgent plugins
    */
-  opaClient?: {
+  openPolicyAgent?: {
     /**
      * The base url of the OPA server used for all OPA plugins.
      * This is used across all the OPA plugins.
@@ -10,32 +10,28 @@ export interface Config {
     baseUrl?: string;
 
     /**
-     * Configuration options for the OPA policies
+     * Configuration options for the OPA Entity Checker plugin
      */
-    policies?: {
+    entityChecker?: {
       /**
-       * Configuration options for the entity metadata checker policy
+       * Enable the OPA Entity Checker plugin
        */
-      entityChecker?: {
-        /**
-         * The path to the entity metadata checker package in the OPA server
-         */
-        entrypoint?: string;
-      };
-      /**
-       * Configuration options for the OPA Permissions Wrapper
-       */
-      permissions?: {
-        /**
-         * The entrypoint to the OPA Permissions Wrapper
-         */
-        entrypoint?: string;
+      enabled?: boolean;
 
-        /**
-         * The fallback policy to use when the OPA server is unavailable
-         */
-        policyFallback?: string;
-      };
+      /**
+       * The policy entry point for entity metadata checking in the OPA server
+       */
+      policyEntryPoint?: string;
+    };
+
+    /**
+     * Configuration options for the OPA Policies plugin
+     */
+    policyViewer?: {
+      /**
+       * Enable the OPA Policies plugin
+       */
+      enabled?: boolean;
     };
   };
 }

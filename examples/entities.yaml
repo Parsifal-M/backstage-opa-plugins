@@ -25,14 +25,27 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: invalid-entity
+  name: warning-entity
   annotations:
     open-policy-agent/policy: https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/policies/rbac_policy.rego
 spec:
   type: novalid
-  lifecycle: notvalid
+  lifecycle: production
   owner: guests
   system: examples
+  providesApis: [example-grpc-api]
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-component
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: error-entity
+  annotations:
+    open-policy-agent/policy: https://github.com/Parsifal-M/backstage-opa-plugins/blob/main/policies/rbac_policy.rego
+spec:
+  type: novalid
+  lifecycle: novalid
+  owner: guests
   providesApis: [example-grpc-api]
 ---
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-component

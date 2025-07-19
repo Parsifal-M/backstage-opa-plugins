@@ -7,6 +7,9 @@ on:
     paths:
       - 'opa-docs/**'
 
+permissions:
+  contents: read
+
 jobs:
   test-deploy:
     name: Test Docusaurus deployment
@@ -20,11 +23,11 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: yarn
           cache-dependency-path: './opa-docs/yarn.lock'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Test build website
         run: yarn build

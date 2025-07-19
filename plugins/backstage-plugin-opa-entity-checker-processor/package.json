@@ -42,7 +42,6 @@
     "@backstage/backend-plugin-api": "^1.4.0",
     "@backstage/catalog-model": "^1.7.4",
     "@backstage/plugin-catalog-node": "^1.17.1",
-    "@parsifal-m/plugin-opa-backend": "workspace:^",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21"
   },

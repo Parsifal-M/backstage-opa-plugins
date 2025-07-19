@@ -2,12 +2,6 @@ package entity_checker
 
 import rego.v1
 
-default good_entity := false
-
-good_entity if {
-	count({v | some v in violation; v.level == "error"}) == 0
-}
-
 violation contains {"check_title": entity_check, "message": msg, "level": "info"} if {
 	not input.metadata.tags
 	entity_check := "Tags"
@@ -27,7 +21,7 @@ violation contains {"check_title": entity_check, "message": msg, "level": "error
 	msg := "System is missing!"
 }
 
-violation contains {"check_title": entity_check, "message": msg, "level": "error"} if {
+violation contains {"check_title": entity_check, "message": msg, "level": "warning"} if {
 	valid_types = {"website", "library", "service"}
 	not valid_types[input.spec.type]
 	entity_check := "Type"

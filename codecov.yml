@@ -20,3 +20,4 @@ coverage:
     - '**/plugin.ts'
     - '**/packages/app/**'
     - '**/packages/backend/**'
+    - '**/module.ts'

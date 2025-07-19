@@ -33,11 +33,12 @@ backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
 The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and an `entrypoint` for the OPA server in your Backstage app-config.yaml file:
 
 ```yaml
-opaClient:
-  baseUrl: 'http://localhost:8181'
-  policies:
-    permissions: # Permission wrapper plugin
-      entrypoint: 'rbac_policy/decision'
+permission:
+  opa:
+    baseUrl: 'http://localhost:8181'
+    policies:
+      permissions: # Permission wrapper plugin
+        entrypoint: 'rbac_policy/decision'
 ```
 
 ### Fallback policy
@@ -45,12 +46,13 @@ opaClient:
 Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the default policy in the `app-config.yaml` file with the `policyFallback` key:
 
 ```yaml
-opaClient:
-  baseUrl: 'http://localhost:8181'
-  policies:
-    permissions: # Permission wrapper plugin
-      entrypoint: 'rbac_policy/decision'
-      policyFallback: 'deny'
+permission:
+  opa:
+    baseUrl: 'http://localhost:8181'
+    policies:
+      permissions: # Permission wrapper plugin
+        entrypoint: 'rbac_policy/decision'
+        policyFallback: 'deny'
 ```
 
 The previous example would return a `DENY` decision to any permission request if the OPA server is not reachable.
