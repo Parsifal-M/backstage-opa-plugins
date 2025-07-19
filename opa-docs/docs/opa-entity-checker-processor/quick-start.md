@@ -128,5 +128,5 @@ curl "http://localhost:7007/api/catalog/entities/by-query?filter=metadata.annota
 ## What's Next?
 
 - [Introduction](./introduction.md) - Detailed overview and architecture
-- [Policy Examples](./example-entity-checker-policy.md) - Advanced validation patterns
-- [Local Development](./local-development.md) - Development environment setup
+- [Entity Checker Policy Examples](../opa-entity-checker/example-entity-checker-policy.md) - Advanced validation patterns
+- [Entity Checker Local Development](../opa-entity-checker/local-development.md) - Development environment setup

@@ -25,8 +25,8 @@ This approach provides automatic governance without disrupting catalog operation
 For more details, check out:
 
 - [Quick Start Guide](./quick-start.md) - Get up and running quickly
-- [Policy Examples](./example-entity-checker-policy.md) - Common validation patterns
-- [Local Development](./local-development.md) - Development setup
+- [Entity Checker Policy Examples](../opa-entity-checker/example-entity-checker-policy.md) - Common validation patterns
+- [Entity Checker Local Development](../opa-entity-checker/local-development.md) - Development setup
 
 ## Standalone Design
 
