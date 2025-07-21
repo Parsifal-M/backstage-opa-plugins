@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+### Patch Changes
+
+- 74814c1: Core backstage version bump
+
 ## 0.2.1
 
 ### Patch Changes
