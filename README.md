@@ -41,7 +41,7 @@ permission:
     baseUrl: 'http://localhost:8181'
     policies:
       permissions:
-        entrypoint: 'rbac_policy/decision'
+        policyEntryPoint: 'rbac_policy/decision'
         policyFallback: 'allow' # 'allow' or 'deny' (optional)
 ```
 
