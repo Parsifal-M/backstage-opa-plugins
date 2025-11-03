@@ -1,5 +1,11 @@
 # @parsifal-m/backstage-plugin-opa-authz-react
 
+## 1.1.2
+
+### Patch Changes
+
+- 2804c01: Core Package Version Bumps
+
 ## 1.1.1
 
 ### Patch Changes
