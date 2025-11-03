@@ -4,14 +4,12 @@ import {
   PermissionsFrameworkPolicyEvaluationResult,
   PermissionsFrameworkPolicyInput,
   PolicyEvaluationResponse,
-  PolicyInput,
-  PolicyResult,
 } from '../types';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
 /**
- * OpaClient is a class responsible for interacting with the OPA server.
- * It provides methods for evaluating policies by sending requests to the OPA server.
+ * OpaClient is a class responsible for interacting with the OPA server for Backstage permissions framework.
+ * It provides methods for evaluating permissions framework policies by sending requests to the OPA server.
  */
 export class OpaClient {
   private readonly entryPoint?: string;
@@ -49,7 +47,6 @@ export class OpaClient {
     url: string,
     input: unknown,
     fallbackPolicy?: FallbackPolicyDecision,
-    isPermissionsFramework: boolean = false,
   ): Promise<T> {
     this.logger.debug(`Sending data to OPA: ${JSON.stringify(input)}`);
 
@@ -66,7 +63,6 @@ export class OpaClient {
         return this.handleOpaError<T>(
           new Error(`HTTP ${opaResponse.status} - ${opaResponse.statusText}`),
           fallbackPolicy,
-          isPermissionsFramework,
         );
       }
 
@@ -80,7 +76,6 @@ export class OpaClient {
       return this.handleOpaError<T>(
         error,
         fallbackPolicy,
-        isPermissionsFramework,
       );
     }
   }
@@ -91,7 +86,6 @@ export class OpaClient {
   private handleOpaError<T>(
     error: unknown,
     fallbackPolicy?: FallbackPolicyDecision,
-    isPermissionsFramework: boolean = false,
   ): T {
     const isHttpError =
       error instanceof Error && error.message.startsWith('HTTP');
@@ -108,20 +102,12 @@ export class OpaClient {
 
       if (fallbackPolicy === 'allow') {
         this.logger.warn(`${message}. Falling back to allow.`);
-        // Return the appropriate structure based on the method type
-        return (
-          isPermissionsFramework
-            ? { result: { result: 'ALLOW' } }
-            : { result: 'ALLOW' }
-        ) as T;
+        // Return the appropriate structure for permissions framework call
+        return { result: { result: 'ALLOW' } } as T;
       } else if (fallbackPolicy === 'deny') {
         this.logger.warn(`${message}. Falling back to deny.`);
-        // Return the appropriate structure based on the method type
-        return (
-          isPermissionsFramework
-            ? { result: { result: 'DENY' } }
-            : { result: 'DENY' }
-        ) as T;
+        // Return the appropriate structure for permissions framework call
+        return { result: { result: 'DENY' } } as T;
       }
     }
 
@@ -181,28 +167,8 @@ export class OpaClient {
       url,
       input,
       this.fallbackPolicyDecision,
-      true, // This is a permissions framework call
     );
 
     return response.result;
-  }
-
-  /**
-   * Evaluates a generic policy by sending the input to the OPA server and returns the result.
-   * This method does not include fallback policy support - it will throw errors if OPA is unavailable.
-   *
-   * @param input - The policy input to be evaluated.
-   * @param entryPoint - The entry point in the OPA server where the policy is defined.
-   * @returns A promise that resolves to the policy result.
-   * @throws An error if the OPA server returns a non-OK response or if there is an issue with the request.
-   */
-  async evaluatePolicy<T = PolicyResult>(
-    input: PolicyInput,
-    entryPoint: string,
-  ): Promise<T> {
-    this.validateConfig(input, entryPoint);
-    const url = `${this.baseUrl}/v1/data/${entryPoint}`;
-
-    return this.makeOpaRequest<T>(url, input, undefined, false); // Generic policy call, no fallback
   }
 }

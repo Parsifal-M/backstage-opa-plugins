@@ -45,6 +45,7 @@
     "@backstage/errors": "^1.2.7",
     "@backstage/integration": "^1.18.1",
     "@backstage/plugin-catalog-node": "^1.19.1",
+    "@parsifal-m/backstage-plugin-opa-common": "workspace:^",
     "@types/express": "^4.17.6",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",

@@ -47,6 +47,7 @@
     "@backstage/theme": "^0.7.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.12.2",
+    "@parsifal-m/backstage-plugin-opa-common": "workspace:^",
     "react-use": "^17.2.4"
   },
   "peerDependencies": {

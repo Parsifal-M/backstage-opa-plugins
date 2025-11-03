@@ -8,20 +8,20 @@ import { z } from 'zod';
 import express from 'express';
 import Router from 'express-promise-router';
 import { TodoListService } from './services/TodoListService/types';
-import { Config } from '@backstage/config';
-import { OpaClient } from '@parsifal-m/plugin-permission-backend-module-opa-wrapper';
+import { OpaService } from '@parsifal-m/backstage-plugin-opa-node';
+import { PolicyResult, PolicyInput } from '@parsifal-m/backstage-plugin-opa-common';
 
 export async function createRouter({
   todoListService,
-  config,
   logger,
   httpAuth,
+  opa,
 }: {
   httpAuth: HttpAuthService;
   userInfo: UserInfoService;
-  config: Config;
   logger: LoggerService;
   todoListService: TodoListService;
+  opa: OpaService;
 }): Promise<express.Router> {
   const router = Router();
   router.use(express.json());
@@ -29,12 +29,11 @@ export async function createRouter({
     title: z.string(),
     entityRef: z.string().optional(),
   });
-  const opaClient = new OpaClient(config, logger);
   const entryPoint = 'opa_demo';
 
   router.post('/todos', async (_req, res) => {
     const credentials = await httpAuth.credentials(_req, { allow: ['user'] });
-    const input = {
+    const input: PolicyInput = {
       method: _req.method,
       path: _req.path,
       headers: _req.headers,
@@ -50,7 +49,7 @@ export async function createRouter({
         throw new InputError(parsed.error.toString());
       }
 
-      const policyResult = await opaClient.evaluatePolicy(input, entryPoint);
+      const policyResult = await opa.evaluatePolicy<PolicyResult>(input, entryPoint);
 
       if (!policyResult.result || !policyResult.result.allow) {
         return res.status(403).json({ error: 'Access Denied' });
@@ -82,7 +81,7 @@ export async function createRouter({
     console.log(`sending input to opa`, JSON.stringify(input));
 
     try {
-      const policyResult = await opaClient.evaluatePolicy(input, entryPoint);
+      const policyResult = await opa.evaluatePolicy<PolicyResult>(input, entryPoint);
 
       // Check if access is allowed based on policy result
       if (!policyResult.result || !policyResult.result.allow) {
@@ -115,7 +114,7 @@ export async function createRouter({
     };
 
     try {
-      const policyResult = await opaClient.evaluatePolicy(input, entryPoint);
+      const policyResult = await opa.evaluatePolicy<PolicyResult>(input, entryPoint);
 
       if (!policyResult.result || !policyResult.result.allow) {
         return res.status(403).json({ error: 'Access Denied' });
