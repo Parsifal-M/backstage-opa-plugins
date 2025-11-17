@@ -1,4 +1,3 @@
-
 export type OpaLevel = 'error' | 'warning' | 'info';
 
 export interface OpaEntityResult {

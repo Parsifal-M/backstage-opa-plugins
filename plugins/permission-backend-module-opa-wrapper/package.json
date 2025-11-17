@@ -50,6 +50,7 @@
     "@backstage/cli": "^0.34.4"
   },
   "files": [
+    "config.d.ts",
     "dist"
   ]
 }

@@ -1,58 +1,41 @@
 import { OpaClient } from './opaClient';
+import { mockServices } from '@backstage/backend-test-utils';
 
-// Mock fetch globally
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
+const mockLogger = mockServices.logger.mock();
+const mockConfig = mockServices.rootConfig({
+  data: {
+    openPolicyAgent: {
+      baseUrl: 'http://localhost:8181',
+    },
+  },
+});
+
 describe('OpaClient', () => {
-  const mockLogger = {
-    debug: jest.fn(),
-    error: jest.fn(),
-    warn: jest.fn(),
-    info: jest.fn(),
-    child: jest.fn().mockReturnThis(),
-  };
+  let client: OpaClient;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    client = new OpaClient(mockConfig, mockLogger);
   });
 
   describe('constructor', () => {
-    it('should construct with baseUrl', () => {
-      const client = new OpaClient({ baseUrl: 'http://localhost:8181' });
+    it('should construct the client with baseUrl and entryPoint', () => {
       expect(client).toBeInstanceOf(OpaClient);
     });
-
-    it('should construct with baseUrl and logger', () => {
-      const client = new OpaClient({
-        baseUrl: 'http://localhost:8181',
-        logger: mockLogger,
-      });
-      expect(client).toBeInstanceOf(OpaClient);
-    });
-
     it('should throw error if baseUrl is missing', () => {
-      expect(() => new OpaClient({} as any)).toThrow(
-        'The OPA baseUrl is required to construct OpaClient',
-      );
-    });
-
-    it('should strip trailing slash from baseUrl', () => {
-      const client = new OpaClient({ baseUrl: 'http://localhost:8181/' });
-      expect(client).toBeInstanceOf(OpaClient);
+      const mockConfigWithoutBaseUrl = mockServices.rootConfig({
+        data: {},
+      });
+      expect(
+        () => new OpaClient(mockConfigWithoutBaseUrl, mockLogger),
+      ).toThrow();
     });
   });
 
   describe('evaluatePolicy', () => {
-    let client: OpaClient;
-
-    beforeEach(() => {
-      client = new OpaClient({
-        baseUrl: 'http://localhost:8181',
-        logger: mockLogger,
-      });
-    });
-
     it('should evaluate policy successfully', async () => {
       const mockResponse = {
         result: { allow: true },
@@ -76,36 +59,33 @@ describe('OpaClient', () => {
       );
       expect(result).toEqual(mockResponse);
       expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining('Sending data to OPA'),
-      );
-      expect(mockLogger.debug).toHaveBeenCalledWith(
         expect.stringContaining('Received data from OPA'),
       );
     });
 
-    it('should throw error if entryPoint is missing', async () => {
+    it('should throw error if entryPoint is empty', async () => {
       const input = { user: 'test' };
       await expect(client.evaluatePolicy(input, '')).rejects.toThrow(
-        'The OPA entrypoint is required',
+        'You have not defined a policy entrypoint! Please provide one.',
       );
       expect(mockLogger.error).toHaveBeenCalledWith(
-        'The OPA entrypoint is required',
+        'You have not defined a policy entrypoint! Please provide one.',
       );
     });
 
     it('should throw error if input is null', async () => {
-      await expect(client.evaluatePolicy(null, 'test/policy')).rejects.toThrow(
-        'The policy input is missing',
-      );
+      await expect(
+        client.evaluatePolicy(null as any, 'test/policy'),
+      ).rejects.toThrow('The policy input is missing!');
       expect(mockLogger.error).toHaveBeenCalledWith(
-        'The policy input is missing',
+        'The policy input is missing!',
       );
     });
 
     it('should throw error if input is undefined', async () => {
       await expect(
-        client.evaluatePolicy(undefined, 'test/policy'),
-      ).rejects.toThrow('The policy input is missing');
+        client.evaluatePolicy(undefined as any, 'test/policy'),
+      ).rejects.toThrow('The policy input is missing!');
     });
 
     it('should throw error if OPA returns non-OK response', async () => {
@@ -116,9 +96,7 @@ describe('OpaClient', () => {
       });
 
       const input = { user: 'test' };
-      await expect(
-        client.evaluatePolicy(input, 'test/policy'),
-      ).rejects.toThrow(
+      await expect(client.evaluatePolicy(input, 'test/policy')).rejects.toThrow(
         'An error response was returned after sending the policy input to the OPA server: 500 - Internal Server Error',
       );
       expect(mockLogger.error).toHaveBeenCalledWith(
@@ -131,30 +109,31 @@ describe('OpaClient', () => {
       mockFetch.mockRejectedValueOnce(fetchError);
 
       const input = { user: 'test' };
-      await expect(
-        client.evaluatePolicy(input, 'test/policy'),
-      ).rejects.toThrow('Network error');
+      await expect(client.evaluatePolicy(input, 'test/policy')).rejects.toThrow(
+        'An error occurred while sending the policy input to the OPA server: Error: Network error',
+      );
     });
 
-    it('should work without logger', async () => {
-      const clientWithoutLogger = new OpaClient({
-        baseUrl: 'http://localhost:8181',
-      });
+    it('should work with different entryPoints', async () => {
+      const mockResponse = { result: { allow: false } };
 
-      const mockResponse = { result: { allow: true } };
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       });
 
-      const input = { user: 'test' };
-      const result = await clientWithoutLogger.evaluatePolicy(
-        input,
-        'test/policy',
-      );
+      const input = { user: 'admin', action: 'delete' };
+      const result = await client.evaluatePolicy(input, 'admin/policy');
 
+      expect(mockFetch).toHaveBeenCalledWith(
+        'http://localhost:8181/v1/data/admin/policy',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ input }),
+        },
+      );
       expect(result).toEqual(mockResponse);
-      expect(mockLogger.debug).not.toHaveBeenCalled();
     });
   });
 });

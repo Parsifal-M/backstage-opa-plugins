@@ -1,6 +1,9 @@
 import { useApi } from '@backstage/core-plugin-api';
 import { opaAuthzBackendApiRef } from '../../api';
-import { PolicyInput, PolicyResult } from '@parsifal-m/backstage-plugin-opa-common';
+import {
+  PolicyInput,
+  PolicyResult,
+} from '@parsifal-m/backstage-plugin-opa-common';
 import useSWR from 'swr';
 
 export type AsyncOpaAuthzResult = {

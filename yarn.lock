@@ -4879,7 +4879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/ui@npm:^0.8.1":
+"@backstage/ui@npm:^0.8.1, @backstage/ui@npm:^0.8.2":
   version: 0.8.2
   resolution: "@backstage/ui@npm:0.8.2"
   dependencies:
@@ -8723,7 +8723,9 @@ __metadata:
   resolution: "@parsifal-m/backstage-plugin-opa-node@workspace:plugins/opa-node"
   dependencies:
     "@backstage/backend-plugin-api": "npm:^1.4.4"
+    "@backstage/backend-test-utils": "npm:^1.9.1"
     "@backstage/cli": "npm:^0.34.4"
+    "@backstage/config": "npm:^1.3.5"
     "@parsifal-m/backstage-plugin-opa-common": "workspace:^"
   languageName: unknown
   linkType: soft
@@ -15285,6 +15287,7 @@ __metadata:
     "@backstage/plugin-user-settings": "npm:^0.8.28"
     "@backstage/test-utils": "npm:^1.7.12"
     "@backstage/theme": "npm:^0.7.0"
+    "@backstage/ui": "npm:^0.8.2"
     "@internal/backstage-plugin-opa-frontend-demo": "workspace:*"
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"

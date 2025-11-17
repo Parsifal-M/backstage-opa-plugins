@@ -12,8 +12,8 @@ import { LoggerService } from '@backstage/backend-plugin-api';
  * It provides methods for evaluating permissions framework policies by sending requests to the OPA server.
  */
 export class OpaClient {
-  private readonly entryPoint?: string;
-  private readonly baseUrl?: string;
+  private readonly entryPoint: string;
+  private readonly baseUrl: string;
   private readonly fallbackPolicyDecision?: FallbackPolicyDecision;
   private readonly logger: LoggerService;
 
@@ -23,10 +23,10 @@ export class OpaClient {
    * @param logger - A logger instance
    */
   constructor(config: Config, logger: LoggerService) {
-    this.entryPoint = config.getOptionalString(
+    this.entryPoint = config.getString(
       'permission.opa.policy.policyEntryPoint',
     );
-    this.baseUrl = config.getOptionalString('permission.opa.baseUrl');
+    this.baseUrl = config.getString('permission.opa.baseUrl');
 
     this.logger = logger;
 
@@ -37,46 +37,6 @@ export class OpaClient {
       this.fallbackPolicyDecision = bareFallbackPolicy;
     } else {
       this.fallbackPolicyDecision = undefined;
-    }
-  }
-
-  /**
-   * Common HTTP request logic for OPA communication.
-   */
-  private async makeOpaRequest<T>(
-    url: string,
-    input: unknown,
-    fallbackPolicy?: FallbackPolicyDecision,
-  ): Promise<T> {
-    this.logger.debug(`Sending data to OPA: ${JSON.stringify(input)}`);
-
-    try {
-      const opaResponse = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ input }),
-      });
-
-      if (!opaResponse.ok) {
-        return this.handleOpaError<T>(
-          new Error(`HTTP ${opaResponse.status} - ${opaResponse.statusText}`),
-          fallbackPolicy,
-        );
-      }
-
-      const opaPermissionsResponse = (await opaResponse.json()) as T;
-      this.logger.debug(
-        `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
-      );
-
-      return opaPermissionsResponse;
-    } catch (error: unknown) {
-      return this.handleOpaError<T>(
-        error,
-        fallbackPolicy,
-      );
     }
   }
 
@@ -124,22 +84,21 @@ export class OpaClient {
   }
 
   /**
-   * Validates required configuration and parameters before making OPA requests.
+   * Evaluates a backstage permissions framework policy against a given input.
+   *
+   * @param input - The input to evaluate the policy against.
    */
-  private validateConfig(input: unknown, entryPoint?: string): string {
+  async evaluatePermissionsFrameworkPolicy(
+    input: PermissionsFrameworkPolicyInput,
+  ): Promise<PermissionsFrameworkPolicyEvaluationResult> {
     if (!this.baseUrl) {
       this.logger.error('The OPA URL is not set in the app-config!');
       throw new Error('The OPA URL is not set in the app-config!');
     }
 
-    const setEntryPoint = entryPoint ?? this.entryPoint;
-    if (!setEntryPoint) {
-      this.logger.error(
-        'The OPA entrypoint is not set in the method parameter or in the app-config!',
-      );
-      throw new Error(
-        'The OPA entrypoint is not set in the method parameter or in the app-config!',
-      );
+    if (!this.entryPoint) {
+      this.logger.error('The OPA entrypoint is not set in the app-config!');
+      throw new Error('The OPA entrypoint is not set in the app-config!');
     }
 
     if (!input) {
@@ -147,28 +106,39 @@ export class OpaClient {
       throw new Error('The policy input is missing!');
     }
 
-    return setEntryPoint;
-  }
+    const opaUrl = `${this.baseUrl}/v1/data/${this.entryPoint}`;
 
-  /**
-   * Evaluates a backstage permissions framework policy against a given input.
-   *
-   * @param input - The input to evaluate the policy against.
-   * @param entryPoint - The entry point into the OPA policy to use. You can optionally provide the entry point here, otherwise it will be taken from the app-config.
-   */
-  async evaluatePermissionsFrameworkPolicy(
-    input: PermissionsFrameworkPolicyInput,
-    entryPoint?: string,
-  ): Promise<PermissionsFrameworkPolicyEvaluationResult> {
-    const setEntryPoint = this.validateConfig(input, entryPoint);
-    const url = `${this.baseUrl}/v1/data/${setEntryPoint}`;
+    try {
+      const opaResponse = await fetch(opaUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input }),
+      });
 
-    const response = await this.makeOpaRequest<PolicyEvaluationResponse>(
-      url,
-      input,
-      this.fallbackPolicyDecision,
-    );
+      if (!opaResponse.ok) {
+        const error = new Error(
+          `HTTP ${opaResponse.status} - ${opaResponse.statusText}`,
+        );
+        return this.handleOpaError<PolicyEvaluationResponse>(
+          error,
+          this.fallbackPolicyDecision,
+        ).result;
+      }
 
-    return response.result;
+      const opaPermissionsResponse =
+        (await opaResponse.json()) as PolicyEvaluationResponse;
+      this.logger.debug(
+        `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
+      );
+
+      return opaPermissionsResponse.result;
+    } catch (error: unknown) {
+      return this.handleOpaError<PolicyEvaluationResponse>(
+        error,
+        this.fallbackPolicyDecision,
+      ).result;
+    }
   }
 }

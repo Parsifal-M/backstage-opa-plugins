@@ -9,7 +9,10 @@ import express from 'express';
 import Router from 'express-promise-router';
 import { TodoListService } from './services/TodoListService/types';
 import { OpaService } from '@parsifal-m/backstage-plugin-opa-node';
-import { PolicyResult, PolicyInput } from '@parsifal-m/backstage-plugin-opa-common';
+import {
+  PolicyResult,
+  PolicyInput,
+} from '@parsifal-m/backstage-plugin-opa-common';
 
 export async function createRouter({
   todoListService,
@@ -49,7 +52,12 @@ export async function createRouter({
         throw new InputError(parsed.error.toString());
       }
 
-      const policyResult = await opa.evaluatePolicy<PolicyResult>(input, entryPoint);
+      console.log(`Sending input to OPA: ${JSON.stringify(input)}`);
+
+      const policyResult = await opa.evaluatePolicy<PolicyResult>(
+        input,
+        entryPoint,
+      );
 
       if (!policyResult.result || !policyResult.result.allow) {
         return res.status(403).json({ error: 'Access Denied' });
@@ -81,7 +89,10 @@ export async function createRouter({
     console.log(`sending input to opa`, JSON.stringify(input));
 
     try {
-      const policyResult = await opa.evaluatePolicy<PolicyResult>(input, entryPoint);
+      const policyResult = await opa.evaluatePolicy<PolicyResult>(
+        input,
+        entryPoint,
+      );
 
       // Check if access is allowed based on policy result
       if (!policyResult.result || !policyResult.result.allow) {
@@ -90,6 +101,7 @@ export async function createRouter({
 
       // If allowed, proceed with the actual API call
       const todos = await todoListService.listTodos();
+
       return res.json(todos);
     } catch (error: unknown) {
       if (logger) {
@@ -114,7 +126,10 @@ export async function createRouter({
     };
 
     try {
-      const policyResult = await opa.evaluatePolicy<PolicyResult>(input, entryPoint);
+      const policyResult = await opa.evaluatePolicy<PolicyResult>(
+        input,
+        entryPoint,
+      );
 
       if (!policyResult.result || !policyResult.result.allow) {
         return res.status(403).json({ error: 'Access Denied' });

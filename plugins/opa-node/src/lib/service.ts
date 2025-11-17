@@ -16,9 +16,8 @@ export const opaService = createServiceRef<OpaService>({
         logger: coreServices.logger,
       },
       factory({ config, logger }) {
-        const baseUrl = config.getString('openPolicyAgent.baseUrl');
         return DefaultOpaService.create({
-          baseUrl,
+          config,
           logger,
         });
       },
