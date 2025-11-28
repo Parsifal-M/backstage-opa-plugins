@@ -23,6 +23,7 @@ export const opaDemoPlugin = createBackendPlugin({
         userInfo: coreServices.userInfo,
         httpRouter: coreServices.httpRouter,
         catalog: catalogServiceRef,
+        // We add the OPA service as a dependency this will allow the plugin to use it
         opa: opaService,
       },
       async init({

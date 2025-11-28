@@ -14,6 +14,20 @@ import {
   PolicyInput,
 } from '@parsifal-m/backstage-plugin-opa-common';
 
+/**
+ * OPA Demo Backend Router
+ *
+ * This router demonstrates how to use the OPA (Open Policy Agent) service for policy evaluation
+ * in Backstage. It provides three endpoints that show different authorization patterns:
+ *
+ * - POST /todos: Creates a new todo item (requires user authentication)
+ * - GET /todos: Lists all todos (allows unauthenticated access, policy decides)
+ * - GET /todos/:id: Retrieves a specific todo by ID (requires user authentication)
+ *
+ * Each endpoint sends a PolicyInput to OPA for evaluation against the 'opa_demo' policy entry point.
+ * The policy result determines whether the request is allowed (403 Forbidden if denied).
+ */
+
 export async function createRouter({
   todoListService,
   logger,
@@ -24,6 +38,7 @@ export async function createRouter({
   userInfo: UserInfoService;
   logger: LoggerService;
   todoListService: TodoListService;
+  // The OPA service is injected here
   opa: OpaService;
 }): Promise<express.Router> {
   const router = Router();
@@ -32,10 +47,14 @@ export async function createRouter({
     title: z.string(),
     entityRef: z.string().optional(),
   });
+
+  // Here we are defining the OPA policy entry point we will be using for this plugin
   const entryPoint = 'opa_demo';
 
   router.post('/todos', async (_req, res) => {
     const credentials = await httpAuth.credentials(_req, { allow: ['user'] });
+
+    // We're building an example policy input to send to OPA for evaluation
     const input: PolicyInput = {
       method: _req.method,
       path: _req.path,
@@ -52,13 +71,15 @@ export async function createRouter({
         throw new InputError(parsed.error.toString());
       }
 
-      console.log(`Sending input to OPA: ${JSON.stringify(input)}`);
+      logger.debug(`Sending input to OPA: ${JSON.stringify(input)}`);
 
+      // Evaluate the policy using the OPA service
       const policyResult = await opa.evaluatePolicy<PolicyResult>(
         input,
         entryPoint,
       );
 
+      // Check if access is allowed based on policy result, if not return 403
       if (!policyResult.result || !policyResult.result.allow) {
         return res.status(403).json({ error: 'Access Denied' });
       }
