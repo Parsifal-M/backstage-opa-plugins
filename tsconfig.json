@@ -11,6 +11,7 @@
     "jsx": "react-jsx",
     "outDir": "dist-types",
     "rootDir": ".",
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "ignoreDeprecations": "6.0"
   }
 }
