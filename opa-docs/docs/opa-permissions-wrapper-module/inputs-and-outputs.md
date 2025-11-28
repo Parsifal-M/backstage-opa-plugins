@@ -2,7 +2,7 @@
 
 This document provides examples of inputs and outputs for the policy evaluation process.
 
-## PolicyEvaluationInput Examples:
+## PolicyEvaluationInput Examples
 
 ### Example 1
 
@@ -36,9 +36,9 @@ This document provides examples of inputs and outputs for the policy evaluation 
 }
 ```
 
-## PolicyEvaluationResult Examples:
+## PolicyEvaluationResult Examples
 
-### Conditional Result:
+### Conditional Result
 
 ```json
 {
@@ -63,7 +63,7 @@ This document provides examples of inputs and outputs for the policy evaluation 
 }
 ```
 
-### Allow Result:
+### Allow Result
 
 ```json
 {
@@ -73,7 +73,7 @@ This document provides examples of inputs and outputs for the policy evaluation 
 }
 ```
 
-### Deny Result:
+### Deny Result
 
 ```json
 {
@@ -83,7 +83,7 @@ This document provides examples of inputs and outputs for the policy evaluation 
 }
 ```
 
-### Conditional Result with multiple conditions:
+### Conditional Result with multiple conditions
 
 ```json
 {
@@ -115,4 +115,4 @@ This document provides examples of inputs and outputs for the policy evaluation 
 }
 ```
 
-> Note: I've not actually fully tested the Conidional Result with multiple conditions. Its on my todo list!
+> Note: I've not actually fully tested the Conditional Result with multiple conditions. Its on my todo list!

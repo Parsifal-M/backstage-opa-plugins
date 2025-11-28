@@ -56,8 +56,33 @@ export const yourPlugin = createBackendPlugin({
 - Easy integration with Backstage backend plugins
 - Type-safe policy input and result handling
 
+## Simple Usage Example
+
+Here's a minimal example of how to use `OpaService` in an Express route:
+
+```ts
+import { opaService } from '@parsifal-m/backstage-plugin-opa-node';
+
+app.post('/my-protected-route', async (req, res) => {
+  const input = {
+    method: req.method,
+    path: req.path,
+    headers: req.headers,
+    permission: { name: 'create-resource' },
+    // ...other input fields
+  };
+
+  const policyResult = await opa.evaluatePolicy(input, 'my_policy_entrypoint');
+  if (!policyResult.result || !policyResult.result.allow) {
+    return res.status(403).json({ error: 'Access Denied' });
+  }
+  // Proceed with your route logic
+  res.status(201).json({ success: true });
+});
+```
+
 ## Getting Started
 
 I've set up a demo backend plugin that shows how to use this package to protect your backend endpoints using OPA. You can find it here: [opa-backend-demo](../opa-demo-backend/README.md)
 
-If you check our the `router.ts` file in that plugin, you'll see how to use the `OpaService` to evaluate policies before allowing access to certain endpoints.
+If you check out the `router.ts` file in that plugin, you'll see how to use the `OpaService` to evaluate policies before allowing access to certain endpoints.
