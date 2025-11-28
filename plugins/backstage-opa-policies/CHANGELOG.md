@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3
+
+### Patch Changes
+
+- 2804c01: Core Package Version Bumps
+
 ## 0.2.2
 
 ### Patch Changes

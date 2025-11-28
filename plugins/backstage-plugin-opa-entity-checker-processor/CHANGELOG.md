@@ -1,5 +1,11 @@
 # @parsifal-m/backstage-plugin-opa-entity-checker-processor
 
+## 2.0.1
+
+### Patch Changes
+
+- 2804c01: Core Package Version Bumps
+
 ## 2.0.0
 
 ### Major Changes
