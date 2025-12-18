@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "20 || 22"
+    "node": "22 || 24 "
   },
   "scripts": {
     "dev": "yarn workspaces foreach -A --include backend --include app --parallel -v -i run start",
@@ -11,7 +11,7 @@
     "start": "yarn workspace app start",
     "start-backend": "yarn workspace backend start",
     "build:backend": "yarn workspace backend build",
-    "build:all": "backstage-cli repo build --all",
+    "build": "backstage-cli repo build --all",
     "build-image": "yarn workspace backend build-image",
     "tsc": "tsc",
     "tsc:full": "tsc --skipLibCheck false --incremental false",
@@ -34,11 +34,13 @@
     ]
   },
   "devDependencies": {
-    "@backstage/cli": "^0.34.4",
+    "@backstage/cli": "backstage:^",
     "@changesets/cli": "^2.27.3",
+    "@jest/environment-jsdom-abstract": "^30.2.0",
     "@spotify/eslint-config-react": "^15.0.0",
     "@spotify/eslint-plugin": "^15.0.0",
     "@spotify/prettier-config": "^15.0.0",
+    "@types/jest": "^30.0.0",
     "concurrently": "^8.0.0",
     "eslint": "^8.6.0",
     "eslint-plugin-jest": "*",
@@ -46,10 +48,12 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-testing-library": "^6.0.0",
     "husky": "^9.1.6",
+    "jest": "^30.2.0",
+    "jsdom": "^27.3.0",
     "lint-staged": "^15.1.0",
     "node-gyp": "^10.0.0",
     "prettier": "^2.2.1",
-    "typescript": "~5.3.3"
+    "typescript": "~5.7.0"
   },
   "resolutions": {
     "@types/react": "^18",
