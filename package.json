@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "20 || 22"
+    "node": "22 || 24 "
   },
   "scripts": {
     "dev": "yarn workspaces foreach -A --include backend --include app --parallel -v -i run start",
@@ -34,7 +34,7 @@
     ]
   },
   "devDependencies": {
-    "@backstage/cli": "^0.34.4",
+    "@backstage/cli": "^0.35.0",
     "@changesets/cli": "^2.27.3",
     "@spotify/eslint-config-react": "^15.0.0",
     "@spotify/eslint-plugin": "^15.0.0",
@@ -46,6 +46,8 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-testing-library": "^6.0.0",
     "husky": "^9.1.6",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.1.0",
     "node-gyp": "^10.0.0",
     "prettier": "^2.2.1",
