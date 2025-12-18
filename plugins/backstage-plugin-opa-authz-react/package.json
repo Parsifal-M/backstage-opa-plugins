@@ -42,7 +42,7 @@
     "fix": "backstage-cli repo fix --publish"
   },
   "dependencies": {
-    "@backstage/core-plugin-api": "^1.11.1",
+    "@backstage/core-plugin-api": "backstage:^",
     "@material-ui/core": "^4.9.13",
     "@parsifal-m/backstage-plugin-opa-common": "workspace:^",
     "swr": "^2.2.5"
@@ -51,8 +51,8 @@
     "react": "^18.0.0"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.34.4",
-    "@backstage/test-utils": "^1.7.12",
+    "@backstage/cli": "backstage:^",
+    "@backstage/test-utils": "backstage:^",
     "@testing-library/dom": "^9.0.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",

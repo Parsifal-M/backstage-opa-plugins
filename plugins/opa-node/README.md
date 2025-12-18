@@ -1,4 +1,3 @@
-
 # @parsifal-m/backstage-plugin-opa-node
 
 This package provides a Node.js service for integrating Open Policy Agent (OPA) with Backstage plugins and backends.

@@ -10,6 +10,7 @@
 - [ ] 🐛 Bug fix
 - [ ] 📝 Documentation update
 - [ ] 🧹 Code cleanup/refactor
+- [ ] ⬆️ Version bumps
 
 ### What does it solve?
 
@@ -19,7 +20,7 @@
 
 - [ ] Added/updated tests
 - [ ] Need help with testing
-- [ ] N/A - documentation only
+- [ ] N/A - not needed or documentation only
 
 ### Related issues
 
