@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   test:
-    name: Test on Node.js 20
+    name: Test on Node.js 22
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +28,7 @@ jobs:
       - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'yarn'
 
       - name: Install Dependencies
