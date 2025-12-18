@@ -43,6 +43,7 @@
     "@backstage/plugin-techdocs-react": "backstage:^",
     "@backstage/plugin-user-settings": "backstage:^",
     "@backstage/theme": "backstage:^",
+    "@backstage/ui": "backstage:^",
     "@internal/backstage-plugin-opa-frontend-demo": "workspace:*",
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",

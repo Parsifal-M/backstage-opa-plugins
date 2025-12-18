@@ -4304,7 +4304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/ui@npm:^0.10.0":
+"@backstage/ui@backstage:^::backstage=1.46.1&npm=0.10.0, @backstage/ui@npm:^0.10.0":
   version: 0.10.0
   resolution: "@backstage/ui@npm:0.10.0"
   dependencies:
@@ -14933,6 +14933,7 @@ __metadata:
     "@backstage/plugin-user-settings": "backstage:^"
     "@backstage/test-utils": "backstage:^"
     "@backstage/theme": "backstage:^"
+    "@backstage/ui": "backstage:^"
     "@internal/backstage-plugin-opa-frontend-demo": "workspace:*"
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
