@@ -39,15 +39,15 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@backstage/backend-plugin-api": "^1.4.4",
-    "@backstage/catalog-model": "^1.7.5",
-    "@backstage/plugin-catalog-node": "^1.19.1",
+    "@backstage/backend-plugin-api": "backstage:^",
+    "@backstage/catalog-model": "backstage:^",
+    "@backstage/plugin-catalog-node": "backstage:^",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "@backstage/backend-test-utils": "^1.9.1",
-    "@backstage/cli": "^0.34.4",
+    "@backstage/backend-test-utils": "backstage:^",
+    "@backstage/cli": "backstage:^",
     "@types/lodash": "^4",
     "@types/lodash-es": "^4.17.12"
   },
