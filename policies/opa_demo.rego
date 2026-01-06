@@ -35,9 +35,3 @@ allow if {
 	input.method == "GET"
 	input.permission.name == "read-all-todos"
 }
-
-allow if {
-	input.method == "POST"
-	input.permission.name == "post-todo"
-	not input.credentials.principal.userEntityRef == "user:default/parsifal-m"
-}
