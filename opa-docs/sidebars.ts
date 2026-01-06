@@ -83,7 +83,6 @@ const sidebars: SidebarsConfig = {
         'opa-permissions-wrapper-module/catalog-rules',
         'opa-permissions-wrapper-module/scaffolder-rules',
         'opa-permissions-wrapper-module/example-rbac-policy',
-        'opa-permissions-wrapper-module/using-evalpolicy',
       ],
     },
     {
