@@ -2,7 +2,7 @@
   "name": "@parsifal-m/backstage-plugin-opa-common",
   "version": "0.1.0",
   "license": "Apache-2.0",
-  "description": "Common functionalities for the opa plugin",
+  "description": "Common types and functionality for the OPA plugins",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "publishConfig": {

@@ -1,5 +1,3 @@
-# @internal/backstage-plugin-opa-common
+# Backstage Plugin OPA Common
 
-Welcome to the common package for the opa plugin!
-
-_This plugin was created through the Backstage CLI_
+Common types and functionality for the OPA plugins.
