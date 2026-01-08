@@ -20,6 +20,11 @@ opa-authz-react:
       - any-glob-to-any-file:
           ['plugins/opa-authz-react/**/*']
 
+opa-node:
+  - changed-files:
+      - any-glob-to-any-file:
+          ['plugins/opa-node/**/*']
+
 cicd:
   - changed-files:
       - any-glob-to-any-file: ['.github/workflows/**/*']

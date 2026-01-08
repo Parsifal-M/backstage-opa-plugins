@@ -13,7 +13,7 @@ import { opaService } from '@parsifal-m/backstage-plugin-opa-node';
  * @public
  */
 export const opaDemoPlugin = createBackendPlugin({
-  pluginId: 'opa-demo',
+  pluginId: 'opa-demo-backend',
   register(env) {
     env.registerInit({
       deps: {
@@ -43,10 +43,12 @@ export const opaDemoPlugin = createBackendPlugin({
 
         httpRouter.use(
           await createRouter({
+            auth,
             httpAuth,
             todoListService,
             logger,
             userInfo,
+            catalog,
             opa,
           }),
         );

@@ -1,6 +1,8 @@
-# @parsifal-m/backstage-plugin-opa-node
+# Backstage Plugin OPA Node
 
-This package provides a Node.js service for integrating Open Policy Agent (OPA) with Backstage plugins and backends.
+This package provides a Node.js service for integrating Open Policy Agent (OPA) with Backstage backend modules and plugins.
+
+Its a nice way to secure your backend routes using OPA!
 
 ## Pre-requisites
 
@@ -43,17 +45,12 @@ export const yourPlugin = createBackendPlugin({
 });
 ```
 
-## What does it do?
+## What is it for?
 
 - Allows Backstage plugins and backend services to evaluate authorization and policy decisions using OPA.
 - Provides a simple API for sending policy inputs and receiving policy results from OPA.
 - Supports custom policy entry points and flexible input structures for fine-grained access control.
 - Enables centralized, declarative policy management for your Backstage environment.
-
-## Features
-
-- Easy integration with Backstage backend plugins
-- Type-safe policy input and result handling
 
 ## Simple Usage Example
 
