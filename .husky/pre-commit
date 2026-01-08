@@ -5,19 +5,28 @@ echo "🧹 Running lint-staged checks..."
 yarn lint-staged
 LINT_RESULT=$?
 
+if [ $LINT_RESULT -ne 0 ]; then
+  echo "❌ Pre-commit checks failed, please address linting issues"
+  exit 1
+fi
+
 # Prettier Check
 echo "🧹 Running prettier checks..."
 yarn prettier:check
 PRETTIER_RESULT=$?
+
+if [ $PRETTIER_RESULT -ne 0 ]; then
+  echo "❌ Pre-commit checks failed, run: yarn prettier:write"
+  exit 1
+fi
 
 # Run tests
 echo "🧪 Running tests..."
 yarn test:changed
 TEST_RESULT=$?
 
-# Exit with error if either check failed
-if [ $LINT_RESULT -ne 0 ] || [ $TEST_RESULT -ne 0 ] || [ $PRETTIER_RESULT -ne 0 ]; then
-  echo "❌ Pre-commit checks failed"
+if [ $TEST_RESULT -ne 0 ]; then
+  echo "❌ Pre-commit checks failed, please check failing tests!"
   exit 1
 fi
 
