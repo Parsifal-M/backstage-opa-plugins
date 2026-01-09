@@ -43,7 +43,6 @@ export const opaDemoPlugin = createBackendPlugin({
 
         httpRouter.use(
           await createRouter({
-            auth,
             httpAuth,
             todoListService,
             logger,
