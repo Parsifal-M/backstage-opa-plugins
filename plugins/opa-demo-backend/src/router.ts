@@ -29,12 +29,10 @@ import { CatalogService } from '@backstage/plugin-catalog-node';
 export async function createRouter({
   todoListService,
   logger,
-  auth,
   httpAuth,
   opa,
   catalog,
 }: {
-  auth: AuthService;
   httpAuth: HttpAuthService;
   userInfo: UserInfoService;
   logger: LoggerService;
