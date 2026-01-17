@@ -1,0 +1,1 @@
+export { OpaClient } from './opaClient';

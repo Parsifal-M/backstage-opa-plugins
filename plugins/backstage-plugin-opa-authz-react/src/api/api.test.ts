@@ -2,7 +2,10 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import { MockFetchApi, registerMswTestHooks } from '@backstage/test-utils';
 import { OpaAuthzClientReact } from './api';
-import { PolicyInput, PolicyResult } from './types';
+import {
+  PolicyInput,
+  PolicyResult,
+} from '@parsifal-m/backstage-plugin-opa-common';
 
 const mockBaseUrl = 'http://mock';
 const server = setupServer();

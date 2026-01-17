@@ -16,7 +16,7 @@ By itself, this plugin does not provide any user-facing features.
 
 # Pre-requisites
 
-The only pre-requisites to use this plugin is that you have set up an OPA server. You can find more information on how to do that [here](https://www.openpolicyagent.org/docs/latest/deployments/). And you have a Backstage instance running. More info on how to do that [here](https://backstage.io/docs/getting-started).
+The only pre-requisites to use this plugin is that you have set up an OPA server. You can find more information on how to do that by checking [Deploying OPA](https://www.openpolicyagent.org/docs/latest/deployments/). And you have a Backstage instance running. More info on how to do that here [Getting Started With Backstage](https://backstage.io/docs/getting-started).
 
 Or, you can check [these docs](https://parsifal-m.github.io/backstage-opa-plugins/#/deploying-opa/deploying-opa?id=how-to-deploy-opa) for a quick guide on how to deploy OPA as a sidecar to your Backstage instance and add policies to it.
 
@@ -68,9 +68,9 @@ backend.add(import('@parsifal-m/plugin-opa-backend'));
 backend.start();
 ```
 
-# Note!
+# Note
 
-The `entrypoint` name in the `app-config.yaml` file should be the entrypoint to the policy in the `rego` file. You can find some working example of policies to use with this plugin [here](https://github.com/Parsifal-M/backstage-opa-policies) or in [here](../../example-opa-policies/README.md)
+The `entrypoint` name in the `app-config.yaml` file should be the entrypoint to the policy in the `rego` file. You can find some working example of policies to use with this plugin [Backstage OPA Policies](https://github.com/Parsifal-M/backstage-opa-policies) or in [Example Policies](../../example-opa-policies/README.md)
 
 ## Contributing
 

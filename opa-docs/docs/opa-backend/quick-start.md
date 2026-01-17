@@ -58,12 +58,10 @@ Then make the following changes to the `packages/backend/src/index.ts` file in y
 import { createBackend } from '@backstage/backend-defaults';
 
 const backend = createBackend();
-backend.add(import('@backstage/plugin-app-backend/alpha'));
-backend.add(import('@backstage/plugin-auth-backend'));
 // ..... other plugins
 backend.add(import('@parsifal-m/plugin-opa-backend'));
 ```
 
 ## Recommendations
 
-I recommend using [Regal: A linter and language server for Rego](https://github.com/StyraInc/regal) to help you write your policies. It provides syntax highlighting, linting, and type checking for Rego files.
+I recommend using [Regal: A linter and language server for Rego](https://github.com/open-policy-agent/regal) to help you write your policies. It provides syntax highlighting, linting, and type checking for Rego files.

@@ -218,7 +218,6 @@ This project is a part of the broader Backstage and Open Policy Agent ecosystems
 
 - [Backstage Community](https://backstage.io)
 - [Open Policy Agent Community](https://www.openpolicyagent.org)
-- [Styra](https://www.styra.com)
 - [Join OPA on Slack](https://slack.openpolicyagent.org/)
 - [Backstage Discord](https://discord.com/invite/MUpMjP2)
 

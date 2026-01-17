@@ -1,5 +1,9 @@
 import { ApiRef, createApiRef, FetchApi } from '@backstage/core-plugin-api';
-import { OpaAuthzApi, PolicyInput, PolicyResult } from './types';
+import { OpaAuthzApi } from './types';
+import {
+  PolicyInput,
+  PolicyResult,
+} from '@parsifal-m/backstage-plugin-opa-common';
 
 export const opaAuthzBackendApiRef: ApiRef<OpaAuthzApi> =
   createApiRef<OpaAuthzApi>({

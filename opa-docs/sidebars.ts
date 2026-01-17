@@ -30,10 +30,16 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-backend/introduction',
       },
-      items: [
-        'opa-backend/quick-start',
-        // Add other opa-backend documents here
-      ],
+      items: ['opa-backend/quick-start'],
+    },
+    {
+      type: 'category',
+      label: 'OPA Service',
+      link: {
+        type: 'doc',
+        id: 'opa-service/opa-node-service',
+      },
+      items: ['opa-service/opa-node-service'],
     },
     {
       type: 'category',
@@ -42,9 +48,7 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-authz-react/introduction',
       },
-      items: [
-        // Add other opa-authz-react documents here
-      ],
+      items: [],
     },
     {
       type: 'category',
@@ -83,7 +87,6 @@ const sidebars: SidebarsConfig = {
         'opa-permissions-wrapper-module/catalog-rules',
         'opa-permissions-wrapper-module/scaffolder-rules',
         'opa-permissions-wrapper-module/example-rbac-policy',
-        'opa-permissions-wrapper-module/using-evalpolicy',
       ],
     },
     {
