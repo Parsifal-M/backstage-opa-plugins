@@ -5,27 +5,30 @@
  */
 
 /* You can override the default Infima variables here. */
+/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* Backstage Cyan/Teal Palette - Light Mode */
+  --ifm-color-primary: #008796; /* Backstage cyan */
+  --ifm-color-primary-dark: #007a87;
+  --ifm-color-primary-darker: #007380;
+  --ifm-color-primary-darkest: #005f69;
+  --ifm-color-primary-light: #209da8;
+  --ifm-color-primary-lighter: #32a8b3;
+  --ifm-color-primary-lightest: #66c7d1;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #4d9cf6; /* Bright blue instead of teal */
-  --ifm-color-primary-dark: #378df5;
-  --ifm-color-primary-darker: #2383f4;
-  --ifm-color-primary-darkest: #0b68db;
-  --ifm-color-primary-light: #63abf7;
-  --ifm-color-primary-lighter: #77b7f8;
-  --ifm-color-primary-lightest: #a1cefa;
+  /* Backstage Blue/Cyan Palette - Dark Mode */
+  --ifm-color-primary: #9bf0e1; /* Lighter cyan for dark mode */
+  --ifm-color-primary-dark: #7bebd7;
+  --ifm-color-primary-darker: #6be8d2;
+  --ifm-color-primary-darkest: #3adfc4;
+  --ifm-color-primary-light: #bbf5eb;
+  --ifm-color-primary-lighter: #cbf7f0;
+  --ifm-color-primary-lightest: #fafffe;
   --ifm-background-color: #1a1b36; /* Dark blue/purple background */
   --ifm-navbar-background-color: #252642;
   --ifm-footer-background-color: #252642;
@@ -45,4 +48,85 @@
 
 .footer__copyright {
   text-align: center;
+}
+
+/* =========================================
+   Modern Hero Section
+   ========================================= */
+.heroBanner {
+  padding: 4rem 2rem;
+  background: var(--ifm-color-primary-lightest);
+  background: linear-gradient(
+    135deg,
+    var(--ifm-color-primary-lightest) 0%,
+    var(--ifm-background-color) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .heroBanner {
+  background: linear-gradient(135deg, #1a1b36 0%, #252642 100%);
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(
+    120deg,
+    var(--ifm-color-primary-dark),
+    var(--ifm-color-primary)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='dark'] .heroTitle {
+  background: linear-gradient(120deg, #fff, var(--ifm-color-primary-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.8;
+}
+
+/* =========================================
+   Feature Cards
+   ========================================= */
+.features {
+  padding: 4rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.featureCard {
+  background: var(--ifm-card-background-color);
+  border-radius: 12px;
+  padding: 2rem;
+  height: 100%;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  /* Transformations handled by Framer Motion */
+}
+
+.featureIcon {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ifm-color-primary-lightest);
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  color: var(--ifm-color-primary-darkest);
+}
+
+[data-theme='dark'] .featureIcon {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--ifm-color-primary-lightest);
 }

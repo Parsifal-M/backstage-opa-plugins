@@ -6974,6 +6974,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^12.26.2":
+  version: 12.26.2
+  resolution: "framer-motion@npm:12.26.2"
+  dependencies:
+    motion-dom: "npm:^12.26.2"
+    motion-utils: "npm:^12.24.10"
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/f2950155c982a95c423d6349cf26b2add58ef7e9633dc1629d2e8506b453699cddaf4c8ad9d8f220c53ce4f6af77740422d4f1c27f2033aeadfee5b941e1b59d
+  languageName: node
+  linkType: hard
+
 "fresh@npm:0.5.2":
   version: 0.5.2
   resolution: "fresh@npm:0.5.2"
@@ -8600,6 +8622,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.562.0":
+  version: 0.562.0
+  resolution: "lucide-react@npm:0.562.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/c713a2490916e42c678b9df0d7309d8cdb715af1d7139c7eb49c45547901b276a7cf722548012a668dc0e337eeadf5141d5af8c8fcda6721fc58fb2d288efcba
+  languageName: node
+  linkType: hard
+
 "make-fetch-happen@npm:^14.0.3":
   version: 14.0.3
   resolution: "make-fetch-happen@npm:14.0.3"
@@ -9717,6 +9748,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"motion-dom@npm:^12.26.2":
+  version: 12.26.2
+  resolution: "motion-dom@npm:12.26.2"
+  dependencies:
+    motion-utils: "npm:^12.24.10"
+  checksum: 10c0/9ec544749008b5f53eb3e3140ac720d8a2e0c1f41178ecb29f5fb7629d92c4b92657bd8449a051baa852090a2ea9eacd0fa3c4c7e64bbaea3504c35fc610d430
+  languageName: node
+  linkType: hard
+
+"motion-utils@npm:^12.24.10":
+  version: 12.24.10
+  resolution: "motion-utils@npm:12.24.10"
+  checksum: 10c0/b73e2e414480b0b162a5cbc9195856d113b5e7c23a055b1613143176694fdfabe87a6a41c3c2f205549e368ca541b609455344bd774d7d836f09a551562042e2
+  languageName: node
+  linkType: hard
+
 "mrmime@npm:^2.0.0":
   version: 2.0.1
   resolution: "mrmime@npm:2.0.1"
@@ -9991,6 +10038,8 @@ __metadata:
     "@docusaurus/types": "npm:3.7.0"
     "@mdx-js/react": "npm:^3.0.0"
     clsx: "npm:^2.0.0"
+    framer-motion: "npm:^12.26.2"
+    lucide-react: "npm:^0.562.0"
     prism-react-renderer: "npm:^2.3.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
@@ -13001,7 +13050,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.6.0":
+"tslib@npm:^2.0.3, tslib@npm:^2.4.0, tslib@npm:^2.6.0":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
