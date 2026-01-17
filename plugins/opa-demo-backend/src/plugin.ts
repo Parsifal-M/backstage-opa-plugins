@@ -5,6 +5,7 @@ import {
 import { createRouter } from './router';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 import { createTodoListService } from './services/TodoListService';
+import { opaService } from '@parsifal-m/backstage-plugin-opa-node';
 
 /**
  * opaDemoPlugin backend plugin
@@ -12,7 +13,7 @@ import { createTodoListService } from './services/TodoListService';
  * @public
  */
 export const opaDemoPlugin = createBackendPlugin({
-  pluginId: 'opa-demo',
+  pluginId: 'opa-demo-backend',
   register(env) {
     env.registerInit({
       deps: {
@@ -22,7 +23,8 @@ export const opaDemoPlugin = createBackendPlugin({
         userInfo: coreServices.userInfo,
         httpRouter: coreServices.httpRouter,
         catalog: catalogServiceRef,
-        config: coreServices.rootConfig,
+        // We add the OPA service as a dependency this will allow the plugin to use it
+        opa: opaService,
       },
       async init({
         logger,
@@ -30,8 +32,8 @@ export const opaDemoPlugin = createBackendPlugin({
         httpAuth,
         httpRouter,
         catalog,
-        config,
         userInfo,
+        opa,
       }) {
         const todoListService = await createTodoListService({
           logger,
@@ -44,8 +46,9 @@ export const opaDemoPlugin = createBackendPlugin({
             httpAuth,
             todoListService,
             logger,
-            config,
             userInfo,
+            catalog,
+            opa,
           }),
         );
       },

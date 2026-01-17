@@ -32,11 +32,7 @@ describe('OpaPermissionPolicy', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    policy = new OpaPermissionPolicy(
-      mockOpaClient,
-      mockServices.logger.mock(),
-      'some/package/admin',
-    );
+    policy = new OpaPermissionPolicy(mockOpaClient, mockServices.logger.mock());
   });
 
   it('should return ALLOW decision', async () => {

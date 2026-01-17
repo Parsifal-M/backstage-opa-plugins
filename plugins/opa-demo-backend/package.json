@@ -33,6 +33,8 @@
     "@backstage/config": "backstage:^",
     "@backstage/errors": "backstage:^",
     "@backstage/plugin-catalog-node": "backstage:^",
+    "@parsifal-m/backstage-plugin-opa-common": "workspace:^",
+    "@parsifal-m/backstage-plugin-opa-node": "workspace:^",
     "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:^",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",

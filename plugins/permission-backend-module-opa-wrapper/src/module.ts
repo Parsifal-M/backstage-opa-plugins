@@ -18,12 +18,7 @@ export const permissionModuleOpaWrapper = createBackendModule({
       },
       async init({ config, logger, policy }) {
         const opaClient = new OpaClient(config, logger);
-        const entryPoint = config.getOptionalString(
-          'permission.opa.policy.policyEntryPoint',
-        );
-        policy.setPolicy(
-          new OpaPermissionPolicy(opaClient, logger, entryPoint),
-        );
+        policy.setPolicy(new OpaPermissionPolicy(opaClient, logger));
       },
     });
   },

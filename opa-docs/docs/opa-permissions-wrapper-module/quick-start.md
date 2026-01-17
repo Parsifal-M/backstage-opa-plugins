@@ -126,4 +126,4 @@ The `baseUrl` is the URL of the OPA server, and the `entrypoint` is the entrypoi
 
 ## Recommendations
 
-I recommend using [Regal: A linter and language server for Rego](https://github.com/StyraInc/regal) to help you write your policies. It provides syntax highlighting, linting, and type checking for Rego files.
+I recommend using [Regal: A linter and language server for Rego](https://github.com/open-policy-agent/regal) to help you write your policies. It provides syntax highlighting, linting, and type checking for Rego files.

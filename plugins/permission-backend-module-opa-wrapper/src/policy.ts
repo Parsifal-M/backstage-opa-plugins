@@ -17,16 +17,10 @@ import { PermissionsFrameworkPolicyInput } from './types';
 export class OpaPermissionPolicy implements PermissionPolicy {
   private opaClient: OpaClient;
   private logger: LoggerService;
-  private opaEntryPoint?: string;
 
-  constructor(
-    opaClient: OpaClient,
-    logger: LoggerService,
-    opaEntryPoint?: string,
-  ) {
+  constructor(opaClient: OpaClient, logger: LoggerService) {
     this.opaClient = opaClient;
     this.logger = logger;
-    this.opaEntryPoint = opaEntryPoint;
   }
 
   async handle(
@@ -53,7 +47,6 @@ export class OpaPermissionPolicy implements PermissionPolicy {
     try {
       const response = await this.opaClient.evaluatePermissionsFrameworkPolicy(
         input,
-        this.opaEntryPoint,
       );
 
       if (!response) {

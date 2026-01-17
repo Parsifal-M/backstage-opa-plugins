@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { PolicyInput } from '../../api/types';
+import { PolicyInput } from '@parsifal-m/backstage-plugin-opa-common';
 import { useOpaAuthz } from '../../hooks/useOpaAuthz/useOpaAuthz';
 
 interface RequireOpaAuthzProps {
