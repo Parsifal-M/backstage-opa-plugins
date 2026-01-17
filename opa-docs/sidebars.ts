@@ -32,8 +32,16 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'opa-backend/quick-start',
-        // Add other opa-backend documents here
       ],
+    },
+    {
+      type: 'category',
+      label: 'OPA Service',
+      link: {
+        type: 'doc',
+        id: 'opa-service/introduction',
+      },
+      items: ['opa-service/opa-node-service'],
     },
     {
       type: 'category',
@@ -43,7 +51,6 @@ const sidebars: SidebarsConfig = {
         id: 'opa-authz-react/introduction',
       },
       items: [
-        // Add other opa-authz-react documents here
       ],
     },
     {
