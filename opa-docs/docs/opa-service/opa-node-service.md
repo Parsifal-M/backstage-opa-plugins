@@ -149,5 +149,3 @@ router.post('/squads', async (req, res) => {
   return res.status(201).json(result);
 });
 ```
-
-For more details, see the [opa-node README](../../plugins/opa-node/README.md) and explore the [demo backend](../../plugins/opa-demo-backend/src/) for practical examples.
