@@ -30,9 +30,7 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-backend/introduction',
       },
-      items: [
-        'opa-backend/quick-start',
-      ],
+      items: ['opa-backend/quick-start'],
     },
     {
       type: 'category',
@@ -50,8 +48,7 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-authz-react/introduction',
       },
-      items: [
-      ],
+      items: [],
     },
     {
       type: 'category',

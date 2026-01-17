@@ -124,7 +124,9 @@ router.post('/squads', async (req, res) => {
   // The example below shows what it could look like to send the user entity (name and annotations) to OPA
   const credentials = await httpAuth.credentials(req, { allow: ['user'] });
   const userEntityRef = credentials.principal.userEntityRef;
-  const userEntity = await catalog.getEntityByRef(userEntityRef, { credentials });
+  const userEntity = await catalog.getEntityByRef(userEntityRef, {
+    credentials,
+  });
 
   // We're building an example policy input to send to OPA for evaluation
   const input: PolicyInput = {
@@ -140,7 +142,10 @@ router.post('/squads', async (req, res) => {
 
   logger.info(`Sending input to OPA: ${JSON.stringify(input)}`);
 
-  const policyResult = await opa.evaluatePolicy<PolicyResult>(input, 'opa_demo');
+  const policyResult = await opa.evaluatePolicy<PolicyResult>(
+    input,
+    'opa_demo',
+  );
   if (!policyResult.result || !policyResult.result.allow) {
     return res.status(403).json({ error: 'Access Denied' });
   }
