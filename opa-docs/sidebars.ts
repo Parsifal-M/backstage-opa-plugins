@@ -39,7 +39,7 @@ const sidebars: SidebarsConfig = {
       label: 'OPA Service',
       link: {
         type: 'doc',
-        id: 'opa-service/introduction',
+        id: 'opa-service/opa-node-service',
       },
       items: ['opa-service/opa-node-service'],
     },
