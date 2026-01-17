@@ -12,7 +12,12 @@
   },
   "backstage": {
     "role": "node-library",
-    "pluginId": "opa"
+    "pluginId": "opa",
+    "pluginPackages": [
+      "@parsifal-m/backstage-plugin-opa-common",
+      "@parsifal-m/backstage-plugin-opa-node",
+      "@parsifal-m/plugin-opa-backend"
+    ]
   },
   "repository": {
     "type": "git",
