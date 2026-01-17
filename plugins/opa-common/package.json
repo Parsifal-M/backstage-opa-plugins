@@ -13,7 +13,12 @@
   },
   "backstage": {
     "role": "common-library",
-    "pluginId": "opa"
+    "pluginId": "opa",
+    "pluginPackages": [
+      "@parsifal-m/backstage-plugin-opa-common",
+      "@parsifal-m/backstage-plugin-opa-node",
+      "@parsifal-m/plugin-opa-backend"
+    ]
   },
   "sideEffects": false,
   "scripts": {
