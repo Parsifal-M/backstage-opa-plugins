@@ -8,19 +8,44 @@ import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
 
+import { motion } from 'framer-motion';
+
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
+
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
+    <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link className="button button--secondary button--lg" to="/docs/home">
-            Get Started →
-          </Link>
+        <div className="row">
+          <div className="col col--12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              style={{ textAlign: 'center' }}
+            >
+              <Heading as="h1" className={styles.heroTitle}>
+                {siteConfig.title}
+              </Heading>
+              <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+              <div
+                className={styles.buttons}
+                style={{ justifyContent: 'center' }}
+              >
+                <Link
+                  className="button button--primary button--lg"
+                  to="/docs/home"
+                  style={{
+                    padding: '1rem 2rem',
+                    fontSize: '1.2rem',
+                    borderRadius: '8px',
+                  }}
+                >
+                  Get Started →
+                </Link>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </header>

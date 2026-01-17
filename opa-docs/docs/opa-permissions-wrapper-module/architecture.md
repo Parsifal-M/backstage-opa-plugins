@@ -6,12 +6,12 @@ This document describes the high-level flow of interactions and the sequence dia
 
 ```mermaid
 graph LR
-    A[Backstage] --> B[Permissions Framework]
-    B --> C[OPA Permissions Wrapper Plugin]
-    C --> D[OPA]
-    D --> C
-    C --> B
-    B --> A
+    User([User]) --> Frontend[Backstage Frontend]
+    Frontend -->|Permission Request| PermBackend[Permission Backend]
+    PermBackend -->|Delegate| OPAWrapper[OPA Wrapper]
+    OPAWrapper <-->|Policy Decision| OPA[OPA Server]
+    style User fill:#f9f,stroke:#333,stroke-width:2px
+    style OPA fill:#ff9,stroke:#333,stroke-width:2px
 ```
 
 ## Sequence Diagram of the Plugin Interactions (New Backend)

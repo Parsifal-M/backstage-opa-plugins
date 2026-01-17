@@ -21,9 +21,9 @@ For more details, check out:
 
 ## Card Violations Variants
 
-The card comes in two flavor: `default` and `compact`. The version you have seen above is the default card.
+The card comes in two flavors: `default` and `compact`. The version you have seen above is the default card.
 
-The compact version is intended to be used as a banner that display how many errors where found, with a dropdown to
+The compact version is intended to be used as a banner that display how many errors were found, with a dropdown to
 see the details.
 
 ![Compact MetaData Card Violations Closed](../assets/card-compact-closed.png)
