@@ -1,6 +1,6 @@
 {
   "name": "@parsifal-m/backstage-plugin-opa-node",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "license": "Apache-2.0",
   "description": "Provides a Node.js service for integrating Open Policy Agent (OPA) with Backstage backend modules and plugins.",
   "main": "src/index.ts",
