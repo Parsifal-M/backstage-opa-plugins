@@ -34,7 +34,7 @@ sequenceDiagram
     BackendPlugin->>PermBackend: authorize(permissionRequest)
     PermBackend->>OPAWrapper: handle(request, user)
     OPAWrapper->>OPAClient: evaluatePermissionsFrameworkPolicy(input)
-    OPAClient->>OPA: POST /v1/data/{opaEntryPoint}
+    OPAClient->>OPA: POST /v1/data/{policyEntryPoint}
     OPA-->>OPAClient: Policy decision (ALLOW / DENY / CONDITIONAL)
     OPAClient-->>OPAWrapper: Returns decision
     OPAWrapper-->>PermBackend: Returns PolicyDecision
