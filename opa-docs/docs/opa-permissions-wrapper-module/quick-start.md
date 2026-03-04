@@ -111,18 +111,17 @@ backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
 
 ## Configuration
 
-The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and an `entrypoint` for the OPA server in your Backstage app-config.yaml, based on the example above we would have the following configuration:
+The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and a `policyEntryPoint` for the OPA server in your Backstage `app-config.yaml`, based on the example above we would have the following configuration:
 
 ```yaml
 permission:
   opa:
     baseUrl: 'http://localhost:8181'
-    policies:
-      permissions: # Permission wrapper plugin
-        entrypoint: 'rbac_policy/decision'
+    policy:
+      policyEntryPoint: 'rbac_policy/decision'
 ```
 
-The `baseUrl` is the URL of the OPA server, and the `entrypoint` is the entrypoint of the policy you want to evaluate.
+The `baseUrl` is the URL of the OPA server, and the `policyEntryPoint` is the entry point of the policy you want to evaluate.
 
 ## Recommendations
 

@@ -43,41 +43,29 @@ export class OpaClient {
   /**
    * Unified error handling with optional fallback policy support.
    */
-  private handleOpaError<T>(
+  private handleOpaError(
     error: unknown,
     fallbackPolicy?: FallbackPolicyDecision,
-  ): T {
+  ): PolicyEvaluationResponse {
     const isHttpError =
       error instanceof Error && error.message.startsWith('HTTP');
     const isFetchError = error instanceof Error && error.name === 'FetchError';
 
-    // Handle fallback policy for network errors or HTTP errors
-    if (fallbackPolicy && (isFetchError || isHttpError)) {
-      const message = isHttpError
-        ? `An error response was returned after sending the policy input to the OPA server: ${error.message.replace(
-            'HTTP ',
-            '',
-          )}`
-        : `An error occurred while sending the policy input to the OPA server: ${error}`;
-
-      if (fallbackPolicy === 'allow') {
-        this.logger.warn(`${message}. Falling back to allow.`);
-        // Return the appropriate structure for permissions framework call
-        return { result: { result: 'ALLOW' } } as T;
-      } else if (fallbackPolicy === 'deny') {
-        this.logger.warn(`${message}. Falling back to deny.`);
-        // Return the appropriate structure for permissions framework call
-        return { result: { result: 'DENY' } } as T;
-      }
-    }
-
-    // For non-fallback errors or when no fallback is configured
     const message = isHttpError
       ? `An error response was returned after sending the policy input to the OPA server: ${error.message.replace(
           'HTTP ',
           '',
         )}`
       : `An error occurred while sending the policy input to the OPA server: ${error}`;
+
+    if (fallbackPolicy && (isFetchError || isHttpError)) {
+      if (fallbackPolicy === 'allow') {
+        this.logger.warn(`${message}. Falling back to allow.`);
+        return { result: { result: 'ALLOW' } };
+      }
+      this.logger.warn(`${message}. Falling back to deny.`);
+      return { result: { result: 'DENY' } };
+    }
 
     this.logger.error(message);
     throw new Error(message);
@@ -91,24 +79,12 @@ export class OpaClient {
   async evaluatePermissionsFrameworkPolicy(
     input: PermissionsFrameworkPolicyInput,
   ): Promise<PermissionsFrameworkPolicyEvaluationResult> {
-    if (!this.baseUrl) {
-      this.logger.error('The OPA URL is not set in the app-config!');
-      throw new Error('The OPA URL is not set in the app-config!');
-    }
-
-    if (!this.entryPoint) {
-      this.logger.error('The OPA entrypoint is not set in the app-config!');
-      throw new Error('The OPA entrypoint is not set in the app-config!');
-    }
-
-    if (!input) {
-      this.logger.error('The policy input is missing!');
-      throw new Error('The policy input is missing!');
-    }
-
     const opaUrl = `${this.baseUrl}/v1/data/${this.entryPoint}`;
 
     try {
+      this.logger.debug(
+        `Sending policy input to OPA: ${JSON.stringify(input)}`,
+      );
       const opaResponse = await fetch(opaUrl, {
         method: 'POST',
         headers: {
@@ -121,10 +97,7 @@ export class OpaClient {
         const error = new Error(
           `HTTP ${opaResponse.status} - ${opaResponse.statusText}`,
         );
-        return this.handleOpaError<PolicyEvaluationResponse>(
-          error,
-          this.fallbackPolicyDecision,
-        ).result;
+        return this.handleOpaError(error, this.fallbackPolicyDecision).result;
       }
 
       const opaPermissionsResponse =
@@ -135,10 +108,7 @@ export class OpaClient {
 
       return opaPermissionsResponse.result;
     } catch (error: unknown) {
-      return this.handleOpaError<PolicyEvaluationResponse>(
-        error,
-        this.fallbackPolicyDecision,
-      ).result;
+      return this.handleOpaError(error, this.fallbackPolicyDecision).result;
     }
   }
 }

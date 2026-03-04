@@ -30,29 +30,27 @@ backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
 
 ## Configuration
 
-The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and an `entrypoint` for the OPA server in your Backstage app-config.yaml file:
+The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and a `policyEntryPoint` for the OPA server in your Backstage `app-config.yaml` file:
 
 ```yaml
 permission:
   opa:
     baseUrl: 'http://localhost:8181'
-    policies:
-      permissions: # Permission wrapper plugin
-        entrypoint: 'rbac_policy/decision'
+    policy:
+      policyEntryPoint: 'rbac_policy/decision'
 ```
 
 ### Fallback policy
 
-Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the default policy in the `app-config.yaml` file with the `policyFallback` key:
+Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the fallback policy in the `app-config.yaml` file with the `policyFallbackDecision` key:
 
 ```yaml
 permission:
   opa:
     baseUrl: 'http://localhost:8181'
-    policies:
-      permissions: # Permission wrapper plugin
-        entrypoint: 'rbac_policy/decision'
-        policyFallback: 'deny'
+    policy:
+      policyEntryPoint: 'rbac_policy/decision'
+      policyFallbackDecision: 'deny'
 ```
 
 The previous example would return a `DENY` decision to any permission request if the OPA server is not reachable.
