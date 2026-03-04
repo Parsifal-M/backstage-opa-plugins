@@ -34,6 +34,26 @@ decision := conditional("catalog", "catalog-entity", {"anyOf": [{
 }
 ```
 
+## HAS_METADATA
+
+Denies read access to catalog entities with a specific metadata key/value, except for users in group-a.
+
+```rego
+# Conditional rule to deny read access to a catalog entity if it has a specific metadata key/value pair, except for users in group-a.
+
+decision := conditional("catalog", "catalog-entity", {"not": {
+    "rule": "HAS_METADATA",
+    "resourceType": "catalog-entity",
+    "params": {
+        "key": "name",
+        "value": "create-git-repo-template"
+    }
+}}) if {
+    permission == "catalog.entity.read"
+	not "group:default/group-a" in claims
+}
+```
+
 ## IS_ENTITY_OWNER
 
 This rule checks if the user is the owner of the entity.
