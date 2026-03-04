@@ -4,16 +4,29 @@ This document provides examples of inputs and outputs for the policy evaluation 
 
 ## PolicyEvaluationInput Examples
 
+The plugin sends a `POST` request to OPA at `{baseUrl}/v1/data/{policyEntryPoint}` with the following JSON body:
+
+```json
+{
+  "input": {
+    "permission": { ... },
+    "identity": { ... }
+  }
+}
+```
+
 ### Example 1
 
 ```json
 {
-  "permission": {
-    "name": "catalog.entity.read"
-  },
-  "identity": {
-    "user": "user:default/parsifal-m",
-    "claims": ["user:default/parsifal-m", "group:default/users"]
+  "input": {
+    "permission": {
+      "name": "catalog.entity.read"
+    },
+    "identity": {
+      "user": "user:default/parsifal-m",
+      "claims": ["user:default/parsifal-m", "group:default/users"]
+    }
   }
 }
 ```
@@ -22,28 +35,56 @@ This document provides examples of inputs and outputs for the policy evaluation 
 
 ```json
 {
-  "permission": {
-    "name": "catalog.entity.delete"
-  },
-  "identity": {
-    "user": "user:default/john-doe",
-    "claims": [
-      "user:default/john-doe",
-      "group:default/admins",
-      "group:default/birdwatchers"
-    ]
+  "input": {
+    "permission": {
+      "name": "catalog.entity.delete"
+    },
+    "identity": {
+      "user": "user:default/john-doe",
+      "claims": [
+        "user:default/john-doe",
+        "group:default/admins",
+        "group:default/birdwatchers"
+      ]
+    }
   }
 }
 ```
 
 ## PolicyEvaluationResult Examples
 
-### Conditional Result
+OPA must return a response with a top-level `result` key containing the policy decision. The plugin reads `result.result` to determine the outcome.
+
+### Allow Result
 
 ```json
 {
-  "claims": ["user:default/parsifal-m", "group:default/users"],
-  "decision": {
+  "result": {
+    "result": "ALLOW"
+  }
+}
+```
+
+### Deny Result
+
+```json
+{
+  "result": {
+    "result": "DENY"
+  }
+}
+```
+
+### Conditional Result
+
+A `CONDITIONAL` decision must also include `pluginId`, `resourceType`, and `conditions`. This is used for resource-level filtering — instead of a blanket allow/deny, Backstage will filter the resource list down to only those items that match the conditions.
+
+```json
+{
+  "result": {
+    "result": "CONDITIONAL",
+    "pluginId": "catalog",
+    "resourceType": "catalog-entity",
     "conditions": {
       "anyOf": [
         {
@@ -54,31 +95,7 @@ This document provides examples of inputs and outputs for the policy evaluation 
           }
         }
       ]
-    },
-    "pluginId": "catalog",
-    "resourceType": "catalog-entity",
-    "result": "CONDITIONAL"
-  },
-  "permission": "catalog.entity.read"
-}
-```
-
-### Allow Result
-
-```json
-{
-  "decision": {
-    "result": "ALLOW"
-  }
-}
-```
-
-### Deny Result
-
-```json
-{
-  "decision": {
-    "result": "DENY"
+    }
   }
 }
 ```
@@ -87,8 +104,10 @@ This document provides examples of inputs and outputs for the policy evaluation 
 
 ```json
 {
-  "claims": ["user:default/john-doe", "group:default/admins"],
-  "decision": {
+  "result": {
+    "result": "CONDITIONAL",
+    "pluginId": "catalog",
+    "resourceType": "catalog-entity",
     "conditions": {
       "allOf": [
         {
@@ -106,13 +125,16 @@ This document provides examples of inputs and outputs for the policy evaluation 
           }
         }
       ]
-    },
-    "pluginId": "catalog",
-    "resourceType": "catalog-entity",
-    "result": "CONDITIONAL"
-  },
-  "permission": "catalog.entity.read"
+    }
+  }
 }
 ```
 
-> Note: I've not actually fully tested the Conditional Result with multiple conditions. Its on my todo list!
+## Debugging
+
+If you need to inspect exactly what is being sent to OPA and what is being returned, enable debug logging in your Backstage instance. With debug logging enabled, the plugin will log:
+
+- The full input sent to OPA before each request
+- The full response received from OPA
+
+This makes it straightforward to verify your Rego policy is receiving the correct input and returning the expected structure.

@@ -22,20 +22,21 @@ This project integrates [Open Policy Agent (OPA)](https://github.com/open-policy
 
 ## How It Works
 
-This plugin is designed to enable Backstage adopters to use OPA in conjunction with Backstage's permissions framework. It integrates seamlessly with the Backstage Permission Framework by forwarding permission evaluation requests to your OPA server and returning the policy decisions back to the framework.
+This plugin registers itself as the policy handler for the Backstage Permission Framework. When a backend plugin checks a permission, the framework delegates the decision to this module, which forwards it to your OPA server and returns the result.
 
-- Permissions are created in the plugin in which they need to be enforced.
-- The plugin will send a request to the Permission Framework backend with the permission and identity information.
-- The Permission Framework backend will then forward the request to OPA with the permission and identity information.
-- OPA will evaluate the the information against the policy and return a decision.
-
-````typescript
+1. A backend plugin calls the Permission Framework to check whether a user can perform an action.
+2. The Permission Framework delegates the request to the OPA Wrapper, passing the permission name and user identity.
+3. The OPA Wrapper sends the input to your OPA server and receives a decision.
+4. The decision is one of three types:
+   - **ALLOW** — OPA grants the action. The Permission Framework passes this directly back to the plugin.
+   - **DENY** — OPA denies the action. The Permission Framework passes this directly back to the plugin.
+   - **CONDITIONAL** — OPA returns a set of filter conditions (e.g. `IS_ENTITY_OWNER`). The Permission Framework then applies those conditions against actual resources to determine what the user can access. In this case OPA defines the criteria, but the Permission Framework enforces them.
 
 ## Installation
 
 ```bash
 yarn --cwd packages/backend add @parsifal-m/plugin-permission-backend-module-opa-wrapper
-````
+```
 
 Make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
 

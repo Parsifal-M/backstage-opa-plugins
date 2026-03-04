@@ -27,13 +27,10 @@ export class OpaPermissionPolicy implements PermissionPolicy {
     request: PolicyQuery,
     user: PolicyQueryUser,
   ): Promise<PolicyDecision> {
-    return await this.evaluatePolicy(request, user);
-  }
+    this.logger.debug(
+      `Evaluating permission "${request.permission.name}" for user "${user.info.userEntityRef}"`,
+    );
 
-  private async evaluatePolicy(
-    request: PolicyQuery,
-    user: PolicyQueryUser,
-  ): Promise<PolicyDecision> {
     const input: PermissionsFrameworkPolicyInput = {
       permission: {
         name: request.permission.name,
@@ -44,51 +41,60 @@ export class OpaPermissionPolicy implements PermissionPolicy {
       },
     };
 
-    try {
-      const response = await this.opaClient.evaluatePermissionsFrameworkPolicy(
-        input,
-      );
+    const response = await this.opaClient.evaluatePermissionsFrameworkPolicy(
+      input,
+    );
 
-      if (!response) {
+    if (!response) {
+      this.logger.error(
+        'The result is missing in the response from OPA, are you sure the policy is loaded?',
+      );
+      throw new Error(
+        'The result is missing in the response from OPA, are you sure the policy is loaded?',
+      );
+    }
+
+    if (response.result === 'CONDITIONAL') {
+      const permissionName = request.permission.name;
+      if (!response.conditions) {
         this.logger.error(
-          'The result is missing in the response from OPA, are you sure the policy is loaded?',
+          `Conditions are missing for CONDITIONAL decision on permission "${permissionName}". Check your OPA policy returns conditions.`,
         );
         throw new Error(
-          'The result is missing in the response from OPA, are you sure the policy is loaded?',
+          `Conditions are missing for CONDITIONAL decision on permission "${permissionName}". Check your OPA policy returns conditions.`,
+        );
+      }
+      if (!response.pluginId) {
+        this.logger.error(
+          `pluginId is missing for CONDITIONAL decision on permission "${permissionName}". Check your OPA policy returns pluginId.`,
+        );
+        throw new Error(
+          `pluginId is missing for CONDITIONAL decision on permission "${permissionName}". Check your OPA policy returns pluginId.`,
+        );
+      }
+      if (!response.resourceType) {
+        this.logger.error(
+          `resourceType is missing for CONDITIONAL decision on permission "${permissionName}". Check your OPA policy returns resourceType.`,
+        );
+        throw new Error(
+          `resourceType is missing for CONDITIONAL decision on permission "${permissionName}". Check your OPA policy returns resourceType.`,
         );
       }
 
-      if (response.result === 'CONDITIONAL') {
-        if (!response.conditions) {
-          this.logger.error('Conditions are missing for CONDITIONAL decision');
-          throw new Error('Conditions are missing for CONDITIONAL decision');
-        }
-        if (!response.pluginId) {
-          this.logger.error('PluginId is missing for CONDITIONAL decision');
-          throw new Error('PluginId is missing for CONDITIONAL decision');
-        }
-        if (!response.resourceType) {
-          this.logger.error('ResourceType is missing for CONDITIONAL decision');
-          throw new Error('ResourceType is missing for CONDITIONAL decision');
-        }
-
-        return {
-          result: AuthorizeResult.CONDITIONAL,
-          pluginId: response.pluginId,
-          resourceType: response.resourceType,
-          conditions: response.conditions as PermissionCriteria<
-            PermissionCondition<string, PermissionRuleParams>
-          >,
-        };
-      }
-
-      if (response.result !== 'ALLOW') {
-        return { result: AuthorizeResult.DENY };
-      }
-
-      return { result: AuthorizeResult.ALLOW };
-    } catch (error: unknown) {
-      throw error;
+      return {
+        result: AuthorizeResult.CONDITIONAL,
+        pluginId: response.pluginId,
+        resourceType: response.resourceType,
+        conditions: response.conditions as PermissionCriteria<
+          PermissionCondition<string, PermissionRuleParams>
+        >,
+      };
     }
+
+    if (response.result !== 'ALLOW') {
+      return { result: AuthorizeResult.DENY };
+    }
+
+    return { result: AuthorizeResult.ALLOW };
   }
 }
