@@ -17,6 +17,6 @@ export type PolicyResult = {
   decision_id?: string;
   result: {
     allow: boolean;
+    [key: string]: unknown;
   };
-  [key: string]: unknown;
 };
