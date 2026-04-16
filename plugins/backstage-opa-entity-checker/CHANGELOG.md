@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies [923b236]
+  - @parsifal-m/backstage-plugin-opa-common@0.1.1
+
 ## 2.0.1
 
 ### Patch Changes
