@@ -102,28 +102,41 @@ export async function createRouter(options: RouterOptions): Promise<Router> {
 ### `evaluatePolicy` signature
 
 ```typescript
-opa.evaluatePolicy<T>(input: unknown, entryPoint: string): Promise<{ result: T }>
+opa.evaluatePolicy<T = PolicyResult>(input: PolicyInput, entryPoint: string): Promise<T>
 ```
 
-- `input`: Any JSON-serialisable object — this becomes `input` in Rego
+- `input`: `PolicyInput` (`Record<string, unknown>`) — this becomes `input` in Rego
 - `entryPoint`: The Rego package/rule path (e.g. `'your_policy'` maps to `package your_policy`)
-- Returns `{ result: T }` where `T` is the shape of whatever your policy returns
+- Returns `Promise<T>` where `T` is the **full OPA response shape** — not just the inner policy result. `T` defaults to `PolicyResult` from `@parsifal-m/backstage-plugin-opa-common`, which is `{ decision_id?: string; result: { allow: boolean; [key: string]: unknown } }`
 
-Use the generic `T` to type-check the result:
+Use the default `PolicyResult` type when your policy returns a standard `allow` decision:
 
 ```typescript
-type PolicyResult = { allow: boolean; reason?: string };
-const { result } = await opa.evaluatePolicy<PolicyResult>(input, 'your_policy');
+import { PolicyResult } from '@parsifal-m/backstage-plugin-opa-common';
+
+const policyResult = await opa.evaluatePolicy<PolicyResult>(input, 'your_policy');
+if (!policyResult.result.allow) { ... }
+```
+
+For custom policy responses, name the inner rule output separately so it's clear that `T` is the full OPA response (your rule output wrapped under `result`):
+
+```typescript
+// What your Rego rule returns — the inner policy decision
+type Decision = { allow: boolean; reason?: string };
+
+// T must be the full OPA response shape: OPA wraps your rule output under `result`
+const policyResult = await opa.evaluatePolicy<{ result: Decision }>(input, 'your_policy');
+if (!policyResult.result.allow) { ... }
 ```
 
 ## Step 4: Configure the OPA connection
 
-The `opaService` reads its config from `app-config.yaml` under the `opaNode` key.
+The `opaService` reads its config from `app-config.yaml` under the `openPolicyAgent` key.
 
 If the user doesn't have OPA running yet, point them to the official OPA documentation — search for "OPA getting started" or "OPA deployments" on the Open Policy Agent website. It covers running OPA as a binary, Docker container, or Kubernetes sidecar.
 
 ```yaml
-opaNode:
+openPolicyAgent:
   baseUrl: 'http://localhost:8181'
 ```
 
@@ -192,12 +205,10 @@ const input = {
 
 ## Step 6: Register the backend in `packages/backend`
 
-The `opaService` is provided by `@parsifal-m/backstage-opa-backend`. Make sure that plugin is registered:
+`opaService` has a built-in `defaultFactory` in `@parsifal-m/backstage-plugin-opa-node` — it is self-registering. You only need to add your own plugin:
 
 ```typescript
 // packages/backend/src/index.ts
-backend.add(import('@parsifal-m/backstage-opa-backend'));
-// ... your plugin that uses opaService
 backend.add(import('./plugins/your-plugin-backend'));
 ```
 
@@ -281,7 +292,7 @@ Or use the Rego Playground (search "OPA Rego Playground" — browser-based inter
 ## Common mistakes
 
 - **Wrong entry point**: The string passed to `evaluatePolicy` must match the Rego `package` name exactly. `'your_policy'` maps to `package your_policy`; `'my/policy'` maps to `package my.policy`.
-- **Forgetting the `opaNode.baseUrl` config**: Without this, the service won't know where OPA is. Check `app-config.yaml`.
-- **Not registering `backstage-opa-backend`**: The `opaService` ref is provided by that backend plugin — if it's not registered, injection fails at startup.
+- **Forgetting the `openPolicyAgent.baseUrl` config**: Without this, the service won't know where OPA is. Check `app-config.yaml`.
+- **Expecting `@parsifal-m/plugin-opa-backend` to be required**: `opaService` has a built-in `defaultFactory` inside `@parsifal-m/backstage-plugin-opa-node` — it is self-registering and does not require `@parsifal-m/plugin-opa-backend` to be registered in the backend.
 - **Checking `result.allow` before verifying `result` exists**: Always guard: `if (!policyResult.result?.allow)` — if OPA returns an unexpected shape, `result` may be undefined.
 - **Sending sensitive data in the input unnecessarily**: OPA decision logs capture the full input. Avoid putting secrets, tokens, or PII in the input object.

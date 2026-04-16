@@ -9,7 +9,7 @@ This skill covers installing, wiring, and using `@parsifal-m/backstage-plugin-op
 
 > **Note:** This package is still in active development and may have breaking changes. Pin a specific version in production.
 
-> **Legacy frontend system only:** This plugin is built against the old Backstage frontend system (`@backstage/core-plugin-api`, `createPlugin`, `apis.ts` factory registration). It has **not** been migrated to the new frontend system (`@backstage/frontend-plugin-api`, `createFrontendPlugin`, extension-based config). Do not attempt to use it in a new frontend system app — it may not work. If the user's app has already migrated, flag this blockers and advise them to check for a migration or contribute one.
+> **Legacy frontend system only:** This plugin is built against the old Backstage frontend system (`@backstage/core-plugin-api`, `createPlugin`, `apis.ts` factory registration). It has **not** been migrated to the new frontend system (`@backstage/frontend-plugin-api`, `createFrontendPlugin`, extension-based config). Do not attempt to use it in a new frontend system app — it may not work. If the user's app has already migrated, flag this as a blocker and advise them to check for a migration or contribute one.
 
 ## How it works
 
@@ -28,7 +28,7 @@ Both can coexist — use the Permissions Wrapper for backend enforcement and thi
 
 ## Step 1: Prerequisites
 
-The `backstage-opa-backend` plugin must be installed and running — it handles the actual OPA evaluation call. If it's not set up, follow the `opa-service-integration` skill first.
+`@parsifal-m/plugin-opa-backend` must be installed and registered in `packages/backend` — it serves the `/opa-authz` route that the frontend client calls. Make sure `openPolicyAgent.baseUrl` is set in `app-config.yaml` so the backend knows where to reach OPA.
 
 ## Step 2: Install packages
 
@@ -280,7 +280,7 @@ it('returns allow:true from policy', async () => {
 ## Common mistakes
 
 - **API factory not registered**: If `opaAuthzBackendApiRef` is missing from `apis.ts`, all hooks throw at runtime. Register it once in `packages/app/src/apis.ts`.
-- **Backend plugin not running**: The client calls `plugin://opa/opa-authz` — if `backstage-opa-backend` isn't registered, all policy evaluations will fail silently (component renders nothing).
+- **Backend plugin not running**: The client calls `plugin://opa/opa-authz` — if `@parsifal-m/plugin-opa-backend` isn't registered in the backend, all policy evaluations will fail silently (component renders nothing).
 - **Wrong entry point**: `"rbac"` → `package rbac`. `"my/policy"` → `package my.policy`. Mismatch → OPA returns empty result → `allow` is undefined → component renders nothing.
 - **Nesting `RequireOpaAuthz` without intent**: Each instance makes its own OPA call. Avoid deep nesting on hot render paths — batch checks into a single `useOpaAuthz` call with a richer input if performance matters.
 - **Using with new frontend system**: Plugin targets legacy system only. `createApiFactory` + `apis.ts` registration does not exist in new frontend system apps. If the user is on the new frontend system (`createFrontendPlugin`, extension-based config), this library cannot be used as-is — no workaround until it is migrated.

@@ -119,6 +119,6 @@ Commits must be signed: `git commit -s`.
 ## What to watch out for
 
 - `backstage-plugin-opa-authz-react` uses the **legacy frontend system** (`createPlugin`, `createApiFactory`, `apis.ts`). Do not attempt to migrate it to the new frontend system without updating the skill and docs.
-- `opaService` (from `opa-node`) is **provided by `backstage-opa-backend`** — that plugin must be registered in `packages/backend/src/index.ts` for injection to work.
+- `opaService` (from `opa-node`) has a **built-in `defaultFactory`** inside `@parsifal-m/backstage-plugin-opa-node` — it is self-registering and reads `openPolicyAgent.baseUrl` from config. No separate backend plugin registration is required; adding the library dependency is sufficient.
 - `permission-backend-module-opa-wrapper` does **not** require `backstage-opa-backend` — it talks to OPA directly.
 - Changesets are used for versioning — run `yarn changeset` before merging a change to a published package.
