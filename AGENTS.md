@@ -23,16 +23,16 @@ opa-docs/         — Docusaurus documentation site
 
 ### Published plugins
 
-| Directory                                               | npm package                                                 | Type            | Purpose                                                                                                                                                                                                                   |
-| ------------------------------------------------------- | ----------------------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `plugins/permission-backend-module-opa-wrapper`         | `@parsifal-m/plugin-permission-backend-module-opa-wrapper`  | Backend module  | Wraps the Backstage Permission Framework — delegates permission decisions to OPA. Self-registers, no policy code needed in TypeScript.                                                                                    |
-| `plugins/backstage-opa-backend`                         | `@parsifal-m/plugin-opa-backend`                            | Backend plugin  | Provides HTTP routes used by `opa-authz-react` and `opa-entity-checker` to evaluate policies. Required for those frontend plugins.                                                                                        |
-| `plugins/opa-node`                                      | `@parsifal-m/backstage-plugin-opa-node`                     | Backend library | Provides `opaService` — a Backstage service ref that any backend plugin can inject to call OPA directly for route-level authorization.                                                                                    |
-| `plugins/backstage-plugin-opa-authz-react`              | `@parsifal-m/backstage-plugin-opa-authz-react`              | Frontend plugin | React components (`RequireOpaAuthz`) and hooks (`useOpaAuthz`, `useOpaAuthzManual`) for hiding/showing UI elements based on OPA decisions. **Legacy frontend system only — not yet migrated to the new frontend system.** |
-| `plugins/backstage-opa-entity-checker`                  | `@parsifal-m/plugin-opa-entity-checker`                     | Frontend plugin | Entity page card that shows whether an entity passes an OPA validation policy.                                                                                                                                            |
-| `plugins/backstage-plugin-opa-entity-checker-processor` | `@parsifal-m/backstage-plugin-opa-entity-checker-processor` | Backend plugin  | Catalog processor that validates entity metadata during ingestion using OPA and adds annotation results.                                                                                                                  |
-| `plugins/backstage-opa-policies`                        | `@parsifal-m/plugin-opa-policies`                           | Frontend plugin | Entity page component that fetches and displays the OPA policy associated with an entity via a catalog annotation.                                                                                                        |
-| `plugins/opa-common`                                    | `@parsifal-m/backstage-plugin-opa-common`                   | Shared library  | Shared TypeScript types used across multiple plugins (`PolicyInput`, `PolicyResult`, etc.).                                                                                                                               |
+| Directory                                               | npm package                                                 | Type                                            | Purpose                                                                                                                                                                                                                   |
+| ------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `plugins/permission-backend-module-opa-wrapper`         | `@parsifal-m/plugin-permission-backend-module-opa-wrapper`  | Backend module                                  | Wraps the Backstage Permission Framework — delegates permission decisions to OPA. Self-registers, no policy code needed in TypeScript.                                                                                    |
+| `plugins/backstage-opa-backend`                         | `@parsifal-m/plugin-opa-backend`                            | Backend plugin                                  | Provides HTTP routes used by `opa-authz-react` and `opa-entity-checker` to evaluate policies. Required for those frontend plugins.                                                                                        |
+| `plugins/opa-node`                                      | `@parsifal-m/backstage-plugin-opa-node`                     | Backend library                                 | Provides `opaService` — a Backstage service ref that any backend plugin can inject to call OPA directly for route-level authorization.                                                                                    |
+| `plugins/backstage-plugin-opa-authz-react`              | `@parsifal-m/backstage-plugin-opa-authz-react`              | Web library (`web-library`)                     | React components (`RequireOpaAuthz`) and hooks (`useOpaAuthz`, `useOpaAuthzManual`) for hiding/showing UI elements based on OPA decisions. **Legacy frontend system only — not yet migrated to the new frontend system.** |
+| `plugins/backstage-opa-entity-checker`                  | `@parsifal-m/plugin-opa-entity-checker`                     | Frontend plugin                                 | Entity page card that shows whether an entity passes an OPA validation policy.                                                                                                                                            |
+| `plugins/backstage-plugin-opa-entity-checker-processor` | `@parsifal-m/backstage-plugin-opa-entity-checker-processor` | Backend plugin module (`backend-plugin-module`) | Catalog processor that validates entity metadata during ingestion using OPA and adds annotation results.                                                                                                                  |
+| `plugins/backstage-opa-policies`                        | `@parsifal-m/plugin-opa-policies`                           | Frontend plugin                                 | Entity page component that fetches and displays the OPA policy associated with an entity via a catalog annotation.                                                                                                        |
+| `plugins/opa-common`                                    | `@parsifal-m/backstage-plugin-opa-common`                   | Shared library                                  | Shared TypeScript types used across multiple plugins (`PolicyInput`, `PolicyResult`, etc.).                                                                                                                               |
 
 ### Internal (demo only, not published)
 
@@ -70,11 +70,21 @@ openPolicyAgent:
     enabled: true
 ```
 
-All `openPolicyAgent` features are **disabled by default** — they must be explicitly enabled.
+The `/opa-authz` route (used by `opa-authz-react`) is **always mounted** by `backstage-opa-backend` — no `enabled` flag required. The `entityChecker` and `policyViewer` sub-features are **disabled by default** and must be explicitly enabled via their respective `enabled: true` flags. The `entityCheckerProcessor` enabled flag is read by the separate processor plugin, not by `backstage-opa-backend`.
 
 ### OPA server requirement
 
-All plugins require a running OPA server. For local development, `docker-compose up -d` starts OPA (port 8181) and a Postgres database. OPA runs with `--watch` so policy file changes reload without restart.
+A running OPA server is required only by the features that actually evaluate policies:
+
+- `permission-backend-module-opa-wrapper` — delegates permission decisions to OPA
+- `backstage-opa-backend` `/opa-authz` route — used by `opa-authz-react` for UI authorization
+- `backstage-opa-backend` entity checker route — validates entities against OPA
+- `backstage-plugin-opa-entity-checker-processor` — calls OPA during catalog ingestion
+- `opa-node` service — used by backend plugins for route-level authorization
+
+`plugin-opa-policies` and the `policyViewer` backend route do **not** call OPA — they fetch policy file content directly from a repo URL via `UrlReader`.
+
+For local development, `docker-compose up -d` starts OPA (port 8181) and a Postgres database. OPA runs with `--watch` so policy file changes reload without restart.
 
 ### Rego policy conventions
 

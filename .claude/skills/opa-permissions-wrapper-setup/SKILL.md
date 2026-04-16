@@ -169,53 +169,20 @@ decision := conditional("scaffolder", "scaffolder-template", {"not": {"anyOf": [
 
 ## Testing
 
-### Unit testing the policy module
+### Unit testing
 
-The plugin tests mock `OpaClient` directly. Use `mockServices` from `@backstage/backend-test-utils`:
+`OpaPermissionPolicy` is an internal implementation detail — it is **not** exported from the package's public API, so consumers cannot construct or import it directly. The TypeScript wiring (input mapping, decision parsing, CONDITIONAL validation) is covered by the package's own test suite.
+
+For your app, the meaningful unit test surface is your Rego policy. Test it with `opa eval` as shown below.
+
+If you need to verify integration behaviour (e.g. that your backend sends the right permission input to OPA), spy on `OpaClient.evaluatePermissionsFrameworkPolicy` — `OpaClient` **is** exported:
 
 ```typescript
-import { mockServices } from '@backstage/backend-test-utils';
 import { OpaClient } from '@parsifal-m/plugin-permission-backend-module-opa-wrapper';
-import { OpaPermissionPolicy } from '@parsifal-m/plugin-permission-backend-module-opa-wrapper';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
 
-jest.mock('@parsifal-m/plugin-permission-backend-module-opa-wrapper', () => ({
-  OpaClient: jest.fn(),
-  OpaPermissionPolicy: jest.requireActual(
-    '@parsifal-m/plugin-permission-backend-module-opa-wrapper',
-  ).OpaPermissionPolicy,
-}));
-
-it('returns ALLOW when OPA says allow', async () => {
-  const mockOpaClient = {
-    evaluatePermissionsFrameworkPolicy: jest
-      .fn()
-      .mockResolvedValue({ result: 'ALLOW' }),
-  } as unknown as OpaClient;
-
-  const policy = new OpaPermissionPolicy(
-    mockOpaClient,
-    mockServices.logger.mock(),
-  );
-  const result = await policy.handle(
-    {
-      permission: {
-        name: 'catalog.entity.read',
-        attributes: {},
-        type: 'resource',
-        resourceType: 'catalog-entity',
-      },
-    },
-    {
-      info: {
-        userEntityRef: 'user:default/test',
-        ownershipEntityRefs: ['user:default/test'],
-      },
-    } as any,
-  );
-
-  expect(result).toEqual({ result: AuthorizeResult.ALLOW });
-});
+jest
+  .spyOn(OpaClient.prototype, 'evaluatePermissionsFrameworkPolicy')
+  .mockResolvedValue({ result: 'ALLOW' });
 ```
 
 ### Testing the Rego policy itself
