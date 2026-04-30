@@ -18,6 +18,7 @@ type OpaAuthzRequestBody = {
   input: Record<string, any>;
   /** The policy entry point in the OPA server to evaluate against. */
   entryPoint: string;
+  includeUserEntity?: boolean;
 };
 
 /**
@@ -42,20 +43,26 @@ export function authzRouter(
   const baseUrl =
     config.getOptionalString('openPolicyAgent.baseUrl') ??
     'http://localhost:8181';
-  const includeFullUserEntity =
-    config.getOptionalBoolean(
-      'openPolicyAgent.includeFullUserEntity.enabled',
-    ) ?? false;
 
   router.post('/opa-authz', async (req, res) => {
-    const { input, entryPoint: policyEntryPoint } =
-      req.body as OpaAuthzRequestBody;
+    const {
+      input,
+      entryPoint: policyEntryPoint,
+      includeUserEntity,
+    } = req.body as OpaAuthzRequestBody;
+
+    if (!input || !policyEntryPoint) {
+      return res
+        .status(400)
+        .json({ error: 'Missing input or entryPoint in request body' });
+    }
+
     const credentials = await httpAuth.credentials(req, { allow: ['user'] });
     const info = await userInfo.getUserInfo(credentials);
 
     let opaInput: OpaInput = { ...input, ...info };
 
-    if (includeFullUserEntity) {
+    if (includeUserEntity) {
       try {
         const { token } = await auth.getPluginRequestToken({
           onBehalfOf: await auth.getOwnServiceCredentials(),
@@ -83,12 +90,6 @@ export function authzRouter(
         opaInput,
       )} and the policy entrypoint: ${policyEntryPoint}`,
     );
-
-    if (!input || !policyEntryPoint) {
-      return res
-        .status(400)
-        .json({ error: 'Missing input or entryPoint in request body' });
-    }
 
     try {
       const url = `${baseUrl}/v1/data/${policyEntryPoint}`;

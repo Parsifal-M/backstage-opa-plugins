@@ -19,6 +19,7 @@ export class OpaAuthzClientReact implements OpaAuthzApi {
   async evalPolicy(
     input: PolicyInput,
     entryPoint: string,
+    options: { includeUserEntity?: boolean } = {},
   ): Promise<PolicyResult> {
     const url = `plugin://opa/opa-authz`;
 
@@ -27,7 +28,11 @@ export class OpaAuthzClientReact implements OpaAuthzApi {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ input, entryPoint }),
+      body: JSON.stringify({
+        input,
+        entryPoint,
+        includeUserEntity: options.includeUserEntity ?? false,
+      }),
     });
 
     if (!response.ok) {

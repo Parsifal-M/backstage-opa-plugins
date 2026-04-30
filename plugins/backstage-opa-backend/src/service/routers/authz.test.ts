@@ -10,14 +10,11 @@ jest.mock('node-fetch');
 const { Response } = jest.requireActual('node-fetch');
 
 describe('authzRouter', () => {
-  const buildApp = (includeFullUserEntity = false) => {
+  const buildApp = () => {
     const config = mockServices.rootConfig({
       data: {
         openPolicyAgent: {
           baseUrl: 'http://localhost:8181',
-          includeFullUserEntity: {
-            enabled: includeFullUserEntity,
-          },
         },
       },
     });
@@ -27,10 +24,12 @@ describe('authzRouter', () => {
         token: 'fake-token',
       }),
     });
+
     const mockCatalogApi = catalogServiceMock.mock();
     const mockLogger = mockServices.logger.mock();
     const mockHttpAuth = mockServices.httpAuth.mock();
     const mockUserInfo = mockServices.userInfo.mock();
+
     const mockUserInfoData = {
       user: 'testUser',
       email: 'test@example.com',
@@ -87,7 +86,10 @@ describe('authzRouter', () => {
 
       const res = await request(app)
         .post('/opa-authz')
-        .send({ input: { user: 'testUser' }, entryPoint: 'testEntryPoint' });
+        .send({
+          input: { user: 'testUser' },
+          entryPoint: 'testEntryPoint',
+        });
 
       expect(res.status).toEqual(200);
       expect(res.body).toEqual(mockResult);
@@ -115,7 +117,10 @@ describe('authzRouter', () => {
 
       const res = await request(app)
         .post('/opa-authz')
-        .send({ input: { user: 'testUser' }, entryPoint: 'testEntryPoint' });
+        .send({
+          input: { user: 'testUser' },
+          entryPoint: 'testEntryPoint',
+        });
 
       expect(res.status).toEqual(500);
       expect(res.body).toEqual({ error: 'Error evaluating policy' });
@@ -135,8 +140,8 @@ describe('authzRouter', () => {
       );
     });
 
-    it('includes full user entity when enabled', async () => {
-      const { app, mockCatalogApi } = buildApp(true);
+    it('includes full user entity when requested in body', async () => {
+      const { app, mockCatalogApi } = buildApp();
 
       const fakeEntity = {
         apiVersion: 'backstage.io/v1alpha1',
@@ -155,12 +160,17 @@ describe('authzRouter', () => {
 
       await request(app)
         .post('/opa-authz')
-        .send({ input: { user: 'testUser' }, entryPoint: 'testEntryPoint' });
+        .send({
+          input: { user: 'testUser' },
+          entryPoint: 'testEntryPoint',
+          includeUserEntity: true,
+        });
 
       expect(mockCatalogApi.getEntityByRef).toHaveBeenCalledWith(
         'user:default/testUser',
         expect.any(Object),
       );
+
       expect(fetch).toHaveBeenCalledWith(
         'http://localhost:8181/v1/data/testEntryPoint',
         expect.objectContaining({
@@ -176,6 +186,25 @@ describe('authzRouter', () => {
           }),
         }),
       );
+    });
+
+    it('does NOT include full user entity when not requested', async () => {
+      const { app, mockCatalogApi } = buildApp();
+
+      (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: { allow: true } }), {
+          status: 200,
+        }),
+      );
+
+      await request(app)
+        .post('/opa-authz')
+        .send({
+          input: { user: 'testUser' },
+          entryPoint: 'testEntryPoint',
+        });
+
+      expect(mockCatalogApi.getEntityByRef).not.toHaveBeenCalled();
     });
   });
 });

@@ -12,15 +12,23 @@ export type AsyncOpaAuthzResult = {
   error?: Error;
 };
 
+type UseOpaAuthzOptions = {
+  includeUserEntity?: boolean;
+};
+
 export function useOpaAuthz(
   input: PolicyInput,
   entryPoint: string,
+  options: UseOpaAuthzOptions = {},
 ): AsyncOpaAuthzResult {
   const opaAuthzBackendApi = useApi(opaAuthzBackendApiRef);
 
-  const { data, error } = useSWR(input, async (authzInput: PolicyInput) => {
-    return await opaAuthzBackendApi.evalPolicy(authzInput, entryPoint);
-  });
+  const { data, error } = useSWR(
+    [input, entryPoint, options.includeUserEntity],
+    async () => {
+      return await opaAuthzBackendApi.evalPolicy(input, entryPoint, options);
+    },
+  );
 
   if (error) {
     return { error, loading: false, data: null };

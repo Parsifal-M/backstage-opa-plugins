@@ -16,19 +16,43 @@ describe('useOpaAuthz', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockEvalPolicy.mockReset();
+
     (useApi as jest.Mock).mockReturnValue({
       evalPolicy: mockEvalPolicy,
     } as unknown as OpaAuthzApi);
   });
 
-  it('should return the policy result', async () => {
+  it('should return the policy result (default options)', async () => {
     mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
 
+    const input = { entity: 'test', testId: 'test1' };
+    const entryPoint = 'test';
+
+    const { result } = renderHook(() => useOpaAuthz(input, entryPoint));
+
+    await waitFor(() => {
+      expect(mockEvalPolicy).toHaveBeenCalledWith(input, entryPoint, {});
+
+      expect(result.current.data).toEqual({ result: { allow: true } });
+      expect(result.current.loading).toBe(false);
+    });
+  });
+
+  it('should pass includeUserEntity=true to evalPolicy', async () => {
+    mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
+
+    const input = { entity: 'test', testId: 'test2' };
+    const entryPoint = 'test';
+
     const { result } = renderHook(() =>
-      useOpaAuthz({ entity: 'test', testId: 'test1' }, 'test'),
+      useOpaAuthz(input, entryPoint, { includeUserEntity: true }),
     );
 
     await waitFor(() => {
+      expect(mockEvalPolicy).toHaveBeenCalledWith(input, entryPoint, {
+        includeUserEntity: true,
+      });
+
       expect(result.current.data).toEqual({ result: { allow: true } });
       expect(result.current.loading).toBe(false);
     });
@@ -41,17 +65,17 @@ describe('useOpaAuthzManual', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockEvalPolicy.mockReset();
+
     (useApi as jest.Mock).mockReturnValue({
       evalPolicy: mockEvalPolicy,
     } as unknown as OpaAuthzApi);
   });
 
   it('should not fetch data initially', async () => {
-    mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
-
     const { result } = renderHook(() =>
       useOpaAuthzManual({ entity: 'test', testId: 'test2' }, 'test'),
     );
+
     await waitFor(() => {
       expect(mockEvalPolicy).not.toHaveBeenCalled();
       expect(result.current.data).toBeNull();
@@ -61,12 +85,10 @@ describe('useOpaAuthzManual', () => {
 
   it('should fetch data when evaluatePolicy is called', async () => {
     mockEvalPolicy.mockResolvedValueOnce({ result: { allow: true } });
+    const input = { entity: 'test', testId: 'test3' };
+    const entryPoint = 'test';
 
-    const { result } = renderHook(() =>
-      useOpaAuthzManual({ entity: 'test', testId: 'test3' }, 'test'),
-    );
-
-    expect(mockEvalPolicy).not.toHaveBeenCalled();
+    const { result } = renderHook(() => useOpaAuthzManual(input, entryPoint));
 
     await act(async () => {
       await result.current.evaluatePolicy();
@@ -74,10 +96,9 @@ describe('useOpaAuthzManual', () => {
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
-      expect(mockEvalPolicy).toHaveBeenCalledWith(
-        { entity: 'test', testId: 'test3' },
-        'test',
-      );
+
+      expect(mockEvalPolicy).toHaveBeenCalledWith(input, entryPoint);
+
       expect(result.current.data).toEqual({ result: { allow: true } });
     });
   });
@@ -87,7 +108,7 @@ describe('useOpaAuthzManual', () => {
     mockEvalPolicy.mockRejectedValueOnce(error);
 
     const { result } = renderHook(() =>
-      useOpaAuthzManual({ entity: 'test', testId: 'test4' }, 'test'),
+      useOpaAuthzManual({ entity: 'test', testId: 'test5' }, 'test'),
     );
 
     await act(async () => {

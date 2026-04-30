@@ -94,6 +94,7 @@ function MyProtectedComponent() {
     <RequireOpaAuthz
       input={{ action: 'read-policy', resource: 'catalog' }}
       entryPoint="authz"
+      options={{ includeUserEntity: true }}
     >
       <div>This content is only visible if the policy allows it!</div>
     </RequireOpaAuthz>
@@ -106,6 +107,7 @@ function MyProtectedComponent() {
 - `input` - The data sent to OPA for policy evaluation
 - `entryPoint` - The OPA policy entrypoint to evaluate
 - `children` - Components to render when access is allowed
+- `options.includeUserEntity` - When set to true, includes the full Backstage user entity in the policy input sent to OPA
 
 ### Option 2: useOpaAuthz Hook (Advanced)
 
@@ -131,6 +133,9 @@ const EntityDeleteButton = () => {
       entityKind: entity.kind,
     },
     'rbac',
+    {
+      includeUserEntity: true,
+    },
   );
 
   if (policyLoading) {
