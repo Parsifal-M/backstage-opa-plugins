@@ -38,6 +38,8 @@ openPolicyAgent:
   entityChecker:
     enabled: true
     policyEntryPoint: 'entity_checker/violation'
+  includeFullUserEntity:
+    enabled: true
   policyViewer:
     enabled: true
 ```
@@ -45,6 +47,7 @@ openPolicyAgent:
 > **Configuration Note:** The `enabled` flags control which OPA backend features are loaded. By default, all features are **disabled** (`false`). Set `enabled: true` only for the features you want to use:
 >
 > - `entityChecker.enabled` - Enables the entity validation API endpoint
+> - `includeFullUserEntity.enabled` - Enables the full user entity to be sent to OPA
 > - `policyViewer.enabled` - Enables the policy viewing functionality
 >
 > This allows selective loading of only the OPA functionality you need.

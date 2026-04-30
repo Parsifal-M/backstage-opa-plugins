@@ -113,6 +113,8 @@ openPolicyAgent:
   entityCheckerProcessor:
     enabled: true # Default: false
     policyEntryPoint: 'entity_checker/violation'
+  includeFullUserEntity:
+    enabled: true # Default: false
   policyViewer:
     enabled: true # Default: false
 ```
