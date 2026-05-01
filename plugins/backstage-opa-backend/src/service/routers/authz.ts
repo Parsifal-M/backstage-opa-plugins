@@ -62,10 +62,10 @@ export function authzRouter(
 
     let opaInput: OpaInput = { ...input, ...info };
 
-    if (includeUserEntity) {
+    if (includeUserEntity === true) {
       try {
         const { token } = await auth.getPluginRequestToken({
-          onBehalfOf: await auth.getOwnServiceCredentials(),
+          onBehalfOf: credentials,
           targetPluginId: 'catalog',
         });
 
