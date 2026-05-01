@@ -12,11 +12,23 @@ const mockOpaBackendApi = {
 };
 
 describe('RequireOpaAuthz', () => {
-  const mockInput = { user: 'test-user', action: 'read', resource: 'document' };
+  const mockInput = {
+    user: 'test-user',
+    action: 'read',
+    resource: 'document',
+  };
+
   const mockEntryPoint = 'example/allow';
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders null when loading', async () => {
-    (useOpaAuthz as jest.Mock).mockReturnValue({ loading: true, data: null });
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: true,
+      data: null,
+    });
 
     renderInTestApp(
       <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
@@ -86,6 +98,54 @@ describe('RequireOpaAuthz', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Protected Content')).toBeInTheDocument();
+    });
+  });
+
+  it('passes options.includeUserEntity to useOpaAuthz', async () => {
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: false,
+      data: { result: { allow: true } },
+    });
+
+    renderInTestApp(
+      <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
+        <RequireOpaAuthz
+          input={mockInput}
+          entryPoint={mockEntryPoint}
+          options={{ includeUserEntity: true }}
+        >
+          <div>Protected Content</div>
+        </RequireOpaAuthz>
+      </TestApiProvider>,
+    );
+
+    await waitFor(() => {
+      expect(useOpaAuthz).toHaveBeenCalledWith(mockInput, mockEntryPoint, {
+        includeUserEntity: true,
+      });
+    });
+  });
+
+  it('passes undefined options when not provided', async () => {
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: false,
+      data: { result: { allow: true } },
+    });
+
+    renderInTestApp(
+      <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
+        <RequireOpaAuthz input={mockInput} entryPoint={mockEntryPoint}>
+          <div>Protected Content</div>
+        </RequireOpaAuthz>
+      </TestApiProvider>,
+    );
+
+    await waitFor(() => {
+      expect(useOpaAuthz).toHaveBeenCalledWith(
+        mockInput,
+        mockEntryPoint,
+        undefined,
+      );
     });
   });
 });

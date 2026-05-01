@@ -2,25 +2,27 @@ import {
   coreServices,
   createBackendPlugin,
 } from '@backstage/backend-plugin-api';
+import { CatalogClient } from '@backstage/catalog-client';
 import { createRouter } from './service';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 
 export const opaPlugin = createBackendPlugin({
   pluginId: 'opa',
   register(env) {
     env.registerInit({
       deps: {
-        catalogApi: catalogServiceRef,
+        auth: coreServices.auth,
         config: coreServices.rootConfig,
+        discovery: coreServices.discovery,
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
-        auth: coreServices.auth,
         httpAuth: coreServices.httpAuth,
         urlReader: coreServices.urlReader,
         userInfo: coreServices.userInfo,
       },
       async init({
+        auth,
         config,
+        discovery,
         logger,
         httpRouter,
         httpAuth,
@@ -29,6 +31,8 @@ export const opaPlugin = createBackendPlugin({
       }) {
         httpRouter.use(
           await createRouter({
+            auth,
+            catalogApi: new CatalogClient({ discoveryApi: discovery }),
             config,
             logger,
             httpAuth,

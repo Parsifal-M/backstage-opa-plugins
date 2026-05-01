@@ -5,6 +5,9 @@ import { useOpaAuthz } from '../../hooks/useOpaAuthz/useOpaAuthz';
 interface RequireOpaAuthzProps {
   input: PolicyInput;
   entryPoint: string;
+  options?: {
+    includeUserEntity?: boolean;
+  };
   errorPage?: ReactNode;
   children: ReactNode;
 }
@@ -12,9 +15,9 @@ interface RequireOpaAuthzProps {
 export function RequireOpaAuthz(
   props: Readonly<RequireOpaAuthzProps>,
 ): React.JSX.Element | null {
-  const { input, entryPoint } = props;
+  const { input, entryPoint, options } = props;
 
-  const { loading, data, error } = useOpaAuthz(input, entryPoint);
+  const { loading, data, error } = useOpaAuthz(input, entryPoint, options);
 
   if (loading || error || !data?.result.allow) {
     return null;

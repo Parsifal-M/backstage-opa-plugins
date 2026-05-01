@@ -4,15 +4,14 @@ import request from 'supertest';
 import { authzRouter } from './authz';
 import fetch from 'node-fetch';
 import { BackstageUserInfo } from '@backstage/backend-plugin-api';
+import { catalogServiceMock } from '@backstage/plugin-catalog-node/testUtils';
 
 jest.mock('node-fetch');
 const { Response } = jest.requireActual('node-fetch');
 
 describe('authzRouter', () => {
-  let app: express.Express;
-
-  beforeAll(async () => {
-    const mockConfig = mockServices.rootConfig({
+  const buildApp = () => {
+    const config = mockServices.rootConfig({
       data: {
         openPolicyAgent: {
           baseUrl: 'http://localhost:8181',
@@ -20,23 +19,44 @@ describe('authzRouter', () => {
       },
     });
 
+    const mockAuth = mockServices.auth.mock({
+      getPluginRequestToken: jest.fn().mockResolvedValue({
+        token: 'fake-token',
+      }),
+    });
+
+    const mockCatalogApi = catalogServiceMock.mock();
     const mockLogger = mockServices.logger.mock();
     const mockHttpAuth = mockServices.httpAuth.mock();
     const mockUserInfo = mockServices.userInfo.mock();
-    const mockUserInfoData = { user: 'testUser', email: 'test@example.com' };
+
+    const mockUserInfoData = {
+      user: 'testUser',
+      email: 'test@example.com',
+      userEntityRef: 'user:default/testUser',
+    };
 
     mockUserInfo.getUserInfo.mockResolvedValue(
       mockUserInfoData as unknown as BackstageUserInfo,
     );
 
     const router = authzRouter(
+      mockAuth,
+      mockCatalogApi,
       mockLogger,
-      mockConfig,
+      config,
       mockHttpAuth,
       mockUserInfo,
     );
-    app = express().use(express.json()).use(router);
-  });
+
+    const app = express().use(express.json()).use(router);
+
+    return {
+      app,
+      mockCatalogApi,
+      mockUserInfo,
+    };
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -44,6 +64,7 @@ describe('authzRouter', () => {
 
   describe('POST /opa-authz', () => {
     it('returns 400 if input or entryPoint is missing', async () => {
+      const { app } = buildApp();
       const res = await request(app).post('/opa-authz').send({});
 
       expect(res.status).toEqual(400);
@@ -53,6 +74,7 @@ describe('authzRouter', () => {
     });
 
     it('returns the policy evaluation result', async () => {
+      const { app } = buildApp();
       const mockResult = {
         decision_id: 'test-decision-id',
         result: { allow: true },
@@ -64,7 +86,10 @@ describe('authzRouter', () => {
 
       const res = await request(app)
         .post('/opa-authz')
-        .send({ input: { user: 'testUser' }, entryPoint: 'testEntryPoint' });
+        .send({
+          input: { user: 'testUser' },
+          entryPoint: 'testEntryPoint',
+        });
 
       expect(res.status).toEqual(200);
       expect(res.body).toEqual(mockResult);
@@ -74,20 +99,28 @@ describe('authzRouter', () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            input: { user: 'testUser', email: 'test@example.com' },
+            input: {
+              user: 'testUser',
+              email: 'test@example.com',
+              userEntityRef: 'user:default/testUser',
+            },
           }),
         }),
       );
     });
 
     it('returns 500 if an error occurs during policy evaluation', async () => {
+      const { app } = buildApp();
       (fetch as jest.MockedFunction<typeof fetch>).mockRejectedValueOnce(
         new Error('OPA Error'),
       );
 
       const res = await request(app)
         .post('/opa-authz')
-        .send({ input: { user: 'testUser' }, entryPoint: 'testEntryPoint' });
+        .send({
+          input: { user: 'testUser' },
+          entryPoint: 'testEntryPoint',
+        });
 
       expect(res.status).toEqual(500);
       expect(res.body).toEqual({ error: 'Error evaluating policy' });
@@ -97,10 +130,81 @@ describe('authzRouter', () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            input: { user: 'testUser', email: 'test@example.com' },
+            input: {
+              user: 'testUser',
+              email: 'test@example.com',
+              userEntityRef: 'user:default/testUser',
+            },
           }),
         }),
       );
+    });
+
+    it('includes full user entity when requested in body', async () => {
+      const { app, mockCatalogApi } = buildApp();
+
+      const fakeEntity = {
+        apiVersion: 'backstage.io/v1alpha1',
+        kind: 'User',
+        metadata: { name: 'testUser' },
+        spec: {},
+      };
+
+      mockCatalogApi.getEntityByRef.mockResolvedValue(fakeEntity);
+
+      (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: { allow: true } }), {
+          status: 200,
+        }),
+      );
+
+      await request(app)
+        .post('/opa-authz')
+        .send({
+          input: { user: 'testUser' },
+          entryPoint: 'testEntryPoint',
+          includeUserEntity: true,
+        });
+
+      expect(mockCatalogApi.getEntityByRef).toHaveBeenCalledWith(
+        'user:default/testUser',
+        expect.any(Object),
+      );
+
+      expect(fetch).toHaveBeenCalledWith(
+        'http://localhost:8181/v1/data/testEntryPoint',
+        expect.objectContaining({
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            input: {
+              user: 'testUser',
+              email: 'test@example.com',
+              userEntityRef: 'user:default/testUser',
+              userEntity: fakeEntity,
+            },
+          }),
+        }),
+      );
+    });
+
+    it('does NOT include full user entity when not requested', async () => {
+      const { app, mockCatalogApi } = buildApp();
+
+      (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: { allow: true } }), {
+          status: 200,
+        }),
+      );
+
+      await request(app)
+        .post('/opa-authz')
+        .send({
+          input: { user: 'testUser' },
+          entryPoint: 'testEntryPoint',
+        });
+
+      expect(mockCatalogApi.getEntityByRef).not.toHaveBeenCalled();
     });
   });
 });

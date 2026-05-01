@@ -1,11 +1,14 @@
 import { Router } from 'express';
 import { Config } from '@backstage/config';
 import {
+  AuthService,
   HttpAuthService,
   LoggerService,
   UserInfoService,
 } from '@backstage/backend-plugin-api';
 import fetch from 'node-fetch';
+import { CatalogApi } from '@backstage/catalog-client';
+import { Entity } from '@backstage/catalog-model';
 
 /**
  * Request body structure for OPA (Open Policy Agent) authorization requests.
@@ -15,9 +18,22 @@ type OpaAuthzRequestBody = {
   input: Record<string, any>;
   /** The policy entry point in the OPA server to evaluate against. */
   entryPoint: string;
+  includeUserEntity?: boolean;
 };
 
+/**
+ * Combined input sent to OPA policies.
+ * Includes user identity context from Backstage along with arbitrary request input.
+ */
+type OpaInput = {
+  userEntityRef: string;
+  ownershipEntityRefs: string[];
+  userEntity?: Entity | null;
+} & Record<string, any>;
+
 export function authzRouter(
+  auth: AuthService,
+  catalogApi: CatalogApi,
   logger: LoggerService,
   config: Config,
   httpAuth: HttpAuthService,
@@ -29,18 +45,11 @@ export function authzRouter(
     'http://localhost:8181';
 
   router.post('/opa-authz', async (req, res) => {
-    const { input, entryPoint: policyEntryPoint } =
-      req.body as OpaAuthzRequestBody;
-    const credentials = await httpAuth.credentials(req, { allow: ['user'] });
-    const info = await userInfo.getUserInfo(credentials);
-
-    const inputWithCredentials = { ...input, ...info };
-
-    logger.debug(
-      `OPA Backend received request with input: ${JSON.stringify(
-        input,
-      )} and the policy entrypoint: ${policyEntryPoint}`,
-    );
+    const {
+      input,
+      entryPoint: policyEntryPoint,
+      includeUserEntity,
+    } = req.body as OpaAuthzRequestBody;
 
     if (!input || !policyEntryPoint) {
       return res
@@ -48,18 +57,50 @@ export function authzRouter(
         .json({ error: 'Missing input or entryPoint in request body' });
     }
 
+    const credentials = await httpAuth.credentials(req, { allow: ['user'] });
+    const info = await userInfo.getUserInfo(credentials);
+
+    let opaInput: OpaInput = { ...input, ...info };
+
+    if (includeUserEntity === true) {
+      try {
+        const { token } = await auth.getPluginRequestToken({
+          onBehalfOf: credentials,
+          targetPluginId: 'catalog',
+        });
+
+        const userEntity = await catalogApi.getEntityByRef(info.userEntityRef, {
+          token,
+        });
+
+        opaInput = {
+          ...opaInput,
+          userEntity: userEntity ?? null,
+        };
+      } catch (error: unknown) {
+        logger.error(
+          `An error occurred while retrieving the full user entity from the catalog: ${error}`,
+        );
+        return res.status(500).json({ error: 'Error evaluating policy' });
+      }
+    }
+
+    logger.debug(
+      `OPA Backend received request with input: ${JSON.stringify(
+        opaInput,
+      )} and the policy entrypoint: ${policyEntryPoint}`,
+    );
+
     try {
       const url = `${baseUrl}/v1/data/${policyEntryPoint}`;
-      logger.debug(
-        `Sending data to OPA: ${JSON.stringify(inputWithCredentials)}`,
-      );
+      logger.debug(`Sending data to OPA: ${JSON.stringify(opaInput)}`);
 
       const opaResponse = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ input: inputWithCredentials }),
+        body: JSON.stringify({ input: opaInput }),
       });
 
       if (!opaResponse.ok) {

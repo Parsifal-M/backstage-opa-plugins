@@ -12,6 +12,7 @@ const server = setupServer();
 
 describe('OpaAuthzClientReact', () => {
   registerMswTestHooks(server);
+
   const fetchApi = new MockFetchApi({
     resolvePluginProtocol: {
       discoveryApi: {
@@ -27,13 +28,14 @@ describe('OpaAuthzClientReact', () => {
   });
 
   describe('evalPolicy', () => {
-    it('should call the correct endpoint', async () => {
+    it('should call the correct endpoint with includeUserEntity = false by default', async () => {
       const input: PolicyInput = {
         user: 'test-user',
         action: 'read',
         resource: 'document',
       };
       const entryPoint = 'example/allow';
+
       const mockResponse: PolicyResult = {
         decision_id: '12345',
         result: { allow: true },
@@ -42,12 +44,52 @@ describe('OpaAuthzClientReact', () => {
       server.use(
         rest.post(`${mockBaseUrl}/opa-authz`, async (req, res, ctx) => {
           const requestBody = await req.json();
-          expect(requestBody).toEqual({ input, entryPoint });
+
+          expect(requestBody).toEqual({
+            input,
+            entryPoint,
+            includeUserEntity: false,
+          });
+
           return res(ctx.json(mockResponse));
         }),
       );
 
       const response = await client.evalPolicy(input, entryPoint);
+      expect(response).toEqual(mockResponse);
+    });
+
+    it('should include includeUserEntity=true when explicitly requested', async () => {
+      const input: PolicyInput = {
+        user: 'test-user',
+        action: 'read',
+        resource: 'document',
+      };
+      const entryPoint = 'example/allow';
+
+      const mockResponse: PolicyResult = {
+        decision_id: '12345',
+        result: { allow: true },
+      };
+
+      server.use(
+        rest.post(`${mockBaseUrl}/opa-authz`, async (req, res, ctx) => {
+          const requestBody = await req.json();
+
+          expect(requestBody).toEqual({
+            input,
+            entryPoint,
+            includeUserEntity: true,
+          });
+
+          return res(ctx.json(mockResponse));
+        }),
+      );
+
+      const response = await client.evalPolicy(input, entryPoint, {
+        includeUserEntity: true,
+      });
+
       expect(response).toEqual(mockResponse);
     });
 
@@ -58,6 +100,7 @@ describe('OpaAuthzClientReact', () => {
         resource: 'document',
       };
       const entryPoint = 'example/allow';
+
       const mockErrorResponse = { error: 'Some error details' };
 
       server.use(

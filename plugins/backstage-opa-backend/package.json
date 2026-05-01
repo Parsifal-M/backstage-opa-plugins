@@ -42,6 +42,7 @@
   "dependencies": {
     "@backstage/backend-defaults": "backstage:^",
     "@backstage/backend-plugin-api": "backstage:^",
+    "@backstage/catalog-client": "backstage:^",
     "@backstage/catalog-model": "backstage:^",
     "@backstage/config": "backstage:^",
     "@backstage/errors": "backstage:^",
