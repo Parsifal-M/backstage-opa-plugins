@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.2
+
+### Patch Changes
+
+- 3770957: Patch bump so can run the correct publish command in NPM
+
 ## 2.1.0
 
 ### Minor Changes

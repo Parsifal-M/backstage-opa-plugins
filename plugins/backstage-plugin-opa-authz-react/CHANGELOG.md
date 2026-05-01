@@ -1,5 +1,11 @@
 # @parsifal-m/backstage-plugin-opa-authz-react
 
+## 2.0.2
+
+### Patch Changes
+
+- 3770957: Patch bump so can run the correct publish command in NPM
+
 ## 2.0.0
 
 ### Major Changes
