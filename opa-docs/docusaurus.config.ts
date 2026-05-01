@@ -34,21 +34,6 @@ const config: Config = {
     locales: ['en'],
   },
 
-  metadata: [
-    {
-      name: 'description',
-      content:
-        'Open Policy Agent (OPA) plugins for Backstage — decouple authorization policy from application code using Rego policies evaluated by OPA.',
-    },
-    {
-      property: 'og:description',
-      content:
-        'Open Policy Agent (OPA) plugins for Backstage — decouple authorization policy from application code using Rego policies evaluated by OPA.',
-    },
-    { property: 'og:type', content: 'website' },
-    { name: 'twitter:card', content: 'summary' },
-  ],
-
   presets: [
     [
       'classic',
@@ -69,7 +54,21 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Optional: Add announcement bar
+    metadata: [
+      {
+        name: 'description',
+        content:
+          'Open Policy Agent (OPA) plugins for Backstage — decouple authorization policy from application code using Rego policies evaluated by OPA.',
+      },
+      {
+        property: 'og:description',
+        content:
+          'Open Policy Agent (OPA) plugins for Backstage — decouple authorization policy from application code using Rego policies evaluated by OPA.',
+      },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary' },
+    ],
+
     announcementBar: {
       id: 'support_us',
       content:
