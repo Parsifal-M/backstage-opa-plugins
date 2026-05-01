@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+### Minor Changes
+
+- 82af423: Allow the full user entity to be sent to OPA
+
 ## 2.0.1
 
 ### Patch Changes
