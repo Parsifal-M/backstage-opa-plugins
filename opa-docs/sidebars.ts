@@ -43,7 +43,7 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-service/opa-node-service',
       },
-      items: ['opa-service/opa-node-service'],
+      items: ['opa-service/opa-node-service', 'opa-service/local-development'],
     },
     {
       type: 'category',

@@ -31,6 +31,7 @@
     "RBAC"
   ],
   "scripts": {
+    "start": "backstage-cli package start",
     "build": "backstage-cli package build",
     "lint": "backstage-cli package lint",
     "test": "backstage-cli package test",
@@ -39,8 +40,12 @@
     "postpack": "backstage-cli package postpack"
   },
   "devDependencies": {
+    "@backstage/backend-defaults": "backstage:^",
     "@backstage/backend-test-utils": "^1.9.1",
-    "@backstage/cli": "^0.34.4"
+    "@backstage/cli": "^0.34.4",
+    "@types/express": "^4.17.6",
+    "express": "^4.17.1",
+    "express-promise-router": "^4.1.0"
   },
   "files": [
     "dist"
