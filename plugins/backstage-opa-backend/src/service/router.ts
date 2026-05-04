@@ -12,11 +12,11 @@ import { policyViewerRouter } from './routers/policyViewer';
 import { authzRouter } from './routers/authz';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
-import { CatalogApi } from '@backstage/catalog-client';
+import { CatalogService } from '@backstage/plugin-catalog-node';
 
 export type RouterOptions = {
   auth: AuthService;
-  catalogApi: CatalogApi;
+  catalog: CatalogService;
   logger: LoggerService;
   config: Config;
   urlReader: UrlReaderService;
@@ -27,7 +27,7 @@ export type RouterOptions = {
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { auth, catalogApi, logger, config, urlReader, httpAuth, userInfo } =
+  const { auth, catalog, logger, config, urlReader, httpAuth, userInfo } =
     options;
 
   const router = Router();
@@ -53,7 +53,7 @@ export async function createRouter(
     router.use(policyViewerRouter(logger, urlReader));
   }
 
-  router.use(authzRouter(auth, catalogApi, logger, config, httpAuth, userInfo));
+  router.use(authzRouter(auth, catalog, logger, config, httpAuth, userInfo));
 
   const middleware = MiddlewareFactory.create({ logger, config });
 

@@ -25,7 +25,7 @@ describe('authzRouter', () => {
       }),
     });
 
-    const mockCatalogApi = catalogServiceMock.mock();
+    const mockCatalog = catalogServiceMock.mock();
     const mockLogger = mockServices.logger.mock();
     const mockHttpAuth = mockServices.httpAuth.mock();
     const mockUserInfo = mockServices.userInfo.mock();
@@ -42,7 +42,7 @@ describe('authzRouter', () => {
 
     const router = authzRouter(
       mockAuth,
-      mockCatalogApi,
+      mockCatalog,
       mockLogger,
       config,
       mockHttpAuth,
@@ -53,7 +53,7 @@ describe('authzRouter', () => {
 
     return {
       app,
-      mockCatalogApi,
+      mockCatalog,
       mockUserInfo,
     };
   };
@@ -141,7 +141,7 @@ describe('authzRouter', () => {
     });
 
     it('includes full user entity when requested in body', async () => {
-      const { app, mockCatalogApi } = buildApp();
+      const { app, mockCatalog } = buildApp();
 
       const fakeEntity = {
         apiVersion: 'backstage.io/v1alpha1',
@@ -150,7 +150,7 @@ describe('authzRouter', () => {
         spec: {},
       };
 
-      mockCatalogApi.getEntityByRef.mockResolvedValue(fakeEntity);
+      mockCatalog.getEntityByRef.mockResolvedValue(fakeEntity);
 
       (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
         new Response(JSON.stringify({ result: { allow: true } }), {
@@ -166,7 +166,7 @@ describe('authzRouter', () => {
           includeUserEntity: true,
         });
 
-      expect(mockCatalogApi.getEntityByRef).toHaveBeenCalledWith(
+      expect(mockCatalog.getEntityByRef).toHaveBeenCalledWith(
         'user:default/testUser',
         expect.any(Object),
       );
@@ -189,7 +189,7 @@ describe('authzRouter', () => {
     });
 
     it('does NOT include full user entity when not requested', async () => {
-      const { app, mockCatalogApi } = buildApp();
+      const { app, mockCatalog } = buildApp();
 
       (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
         new Response(JSON.stringify({ result: { allow: true } }), {
@@ -204,7 +204,7 @@ describe('authzRouter', () => {
           entryPoint: 'testEntryPoint',
         });
 
-      expect(mockCatalogApi.getEntityByRef).not.toHaveBeenCalled();
+      expect(mockCatalog.getEntityByRef).not.toHaveBeenCalled();
     });
   });
 });

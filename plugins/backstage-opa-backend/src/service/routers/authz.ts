@@ -7,7 +7,7 @@ import {
   UserInfoService,
 } from '@backstage/backend-plugin-api';
 import fetch from 'node-fetch';
-import { CatalogApi } from '@backstage/catalog-client';
+import { CatalogService } from '@backstage/plugin-catalog-node';
 import { Entity } from '@backstage/catalog-model';
 
 /**
@@ -33,7 +33,7 @@ type OpaInput = {
 
 export function authzRouter(
   auth: AuthService,
-  catalogApi: CatalogApi,
+  catalog: CatalogService,
   logger: LoggerService,
   config: Config,
   httpAuth: HttpAuthService,
@@ -69,7 +69,7 @@ export function authzRouter(
           targetPluginId: 'catalog',
         });
 
-        const userEntity = await catalogApi.getEntityByRef(info.userEntityRef, {
+        const userEntity = await catalog.getEntityByRef(info.userEntityRef, {
           token,
         });
 
