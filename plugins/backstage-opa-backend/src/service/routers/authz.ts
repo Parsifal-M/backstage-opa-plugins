@@ -40,7 +40,7 @@ export function authzRouter(
     if (!parsed.success) {
       return res.status(400).json({
         error: 'Invalid request body',
-        details: parsed.error.flatten().fieldErrors,
+        details: parsed.error.flatten(),
       });
     }
 
