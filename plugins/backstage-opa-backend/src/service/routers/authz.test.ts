@@ -28,6 +28,7 @@ describe('authzRouter', () => {
       user: 'testUser',
       email: 'test@example.com',
       userEntityRef: 'user:default/testUser',
+      ownershipEntityRefs: ['user:default/testUser', 'group:default/team-a'],
     };
 
     mockUserInfo.getUserInfo.mockResolvedValue(
@@ -56,7 +57,7 @@ describe('authzRouter', () => {
   });
 
   describe('POST /opa-authz', () => {
-    it('returns 400 if input or entryPoint is missing', async () => {
+    it('returns 400 for invalid request body', async () => {
       const { app } = buildApp();
       const res = await request(app).post('/opa-authz').send({});
 
@@ -94,6 +95,10 @@ describe('authzRouter', () => {
               user: 'testUser',
               email: 'test@example.com',
               userEntityRef: 'user:default/testUser',
+              ownershipEntityRefs: [
+                'user:default/testUser',
+                'group:default/team-a',
+              ],
             },
           }),
         }),
@@ -125,6 +130,10 @@ describe('authzRouter', () => {
               user: 'testUser',
               email: 'test@example.com',
               userEntityRef: 'user:default/testUser',
+              ownershipEntityRefs: [
+                'user:default/testUser',
+                'group:default/team-a',
+              ],
             },
           }),
         }),
@@ -172,6 +181,10 @@ describe('authzRouter', () => {
               user: 'testUser',
               email: 'test@example.com',
               userEntityRef: 'user:default/testUser',
+              ownershipEntityRefs: [
+                'user:default/testUser',
+                'group:default/team-a',
+              ],
               userEntity: fakeEntity,
             },
           }),
@@ -227,6 +240,10 @@ describe('authzRouter', () => {
               user: 'testUser',
               email: 'test@example.com',
               userEntityRef: 'user:default/testUser',
+              ownershipEntityRefs: [
+                'user:default/testUser',
+                'group:default/team-a',
+              ],
             },
           }),
         }),

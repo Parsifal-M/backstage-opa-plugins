@@ -82,10 +82,10 @@ The raw response body from OPA's `/v1/data/<entryPoint>` endpoint, passed throug
 
 **Error responses**
 
-| Status | Cause                                                               |
-| ------ | ------------------------------------------------------------------- |
-| `400`  | Missing `input` or `entryPoint` in request body.                    |
-| `500`  | OPA server unreachable, or error fetching user entity from catalog. |
+| Status | Cause                                                                                                                                    |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `400`  | Request body failed schema validation. Response includes `error: "Invalid request body"` and a `details` object with field-level errors. |
+| `500`  | OPA server unreachable, or error fetching user entity from catalog.                                                                      |
 
 ---
 
