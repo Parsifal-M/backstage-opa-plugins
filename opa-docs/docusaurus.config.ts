@@ -24,8 +24,10 @@ const config: Config = {
   organizationName: 'Parsifal-M', // Your GitHub org/user name
   projectName: 'backstage-opa-plugins', // Your repo name
 
+  trailingSlash: false,
+
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenMarkdownLinks: 'throw',
 
   i18n: {
     defaultLocale: 'en',
@@ -38,9 +40,10 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Update this to your repo path
           editUrl:
             'https://github.com/Parsifal-M/backstage-opa-plugins/tree/main/',
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
         },
         blog: false,
         theme: {
@@ -51,7 +54,21 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Optional: Add announcement bar
+    metadata: [
+      {
+        name: 'description',
+        content:
+          'Open Policy Agent (OPA) plugins for Backstage — decouple authorization policy from application code using Rego policies evaluated by OPA.',
+      },
+      {
+        property: 'og:description',
+        content:
+          'Open Policy Agent (OPA) plugins for Backstage — decouple authorization policy from application code using Rego policies evaluated by OPA.',
+      },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary' },
+    ],
+
     announcementBar: {
       id: 'support_us',
       content:
@@ -75,9 +92,10 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/Parsifal-M/backstage-opa-plugins?tab=readme-ov-file#welcome-to-the-opa-plugins-repository-for-backstage',
-          label: 'GitHub',
+          href: 'https://github.com/Parsifal-M/backstage-opa-plugins',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },

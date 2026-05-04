@@ -30,7 +30,7 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-backend/introduction',
       },
-      items: ['opa-backend/quick-start'],
+      items: ['opa-backend/quick-start', 'opa-backend/reference'],
     },
     {
       type: 'category',

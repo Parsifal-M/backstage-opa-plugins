@@ -1,67 +1,71 @@
 # Quick Start
 
-This guide will help you get started with the OPA Backend module for Backstage.
+This guide walks you through installing and configuring the OPA Backend plugin in your Backstage instance.
 
-## Pre-requisites
+## Prerequisites
 
-- You have deployed OPA, kindly see how to do that [here](https://www.openpolicyagent.org/docs/latest/deployments/), or see below.
+- A running OPA server. See [Deploying OPA](../deploying-opa/deploying-opa.md) for a guide on running OPA as a sidecar to Backstage, or the [OPA deployment docs](https://www.openpolicyagent.org/docs/latest/deployments/) for other options.
 
-## Deploying OPA
-
-There are many ways to deploy OPA, and there is no one size fits all. A good way is to deploy OPA as a sidecar to your Backstage instance. This way, you can ensure that OPA is always available when your Backstage instance is running.
-
-Here is an example of how you could update your Backstage `k8s` deployment to include OPA, this would be an extension of the `k8s` deployment that you are using for your Backstage instance.
-
-```yaml
-#... Backstage deployment configuration with OPA
-spec:
-  containers:
-    - name: backstage
-      image: your-backstage-image
-      ports:
-        - name: http
-          containerPort: 7007
-    - name: opa
-      image: openpolicyagent/opa:0.65.0 # Pin a version of your choice
-      ports:
-        - name: http
-          containerPort: 8181
-      args:
-        - 'run'
-        - '--server'
-        - '--log-format=json-pretty'
-        - '--set=decision_logs.console=true'
-        - '--ignore=.*'
-        - '--watch' # Watch for policy changes, this allows updating the policy without restarting OPA
-        - '/policies'
-      volumeMounts:
-        - readOnly: true
-          name: opa-policy
-          mountPath: /policies
-  volumes:
-    - name: opa-policy
-      configMap:
-        name: opa-policy
-```
-
-## Installing The OPA Backend Plugin
-
-Run the following command to install the OPA Backend Plugin in your Backstage project.
+## Step 1 — Install the package
 
 ```bash
 yarn --cwd packages/backend add @parsifal-m/plugin-opa-backend
 ```
 
-Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
+## Step 2 — Register the plugin
+
+Add the plugin to `packages/backend/src/index.ts`:
 
 ```typescript
 import { createBackend } from '@backstage/backend-defaults';
 
 const backend = createBackend();
-// ..... other plugins
+
+// ... other plugins
 backend.add(import('@parsifal-m/plugin-opa-backend'));
+
+backend.start();
 ```
 
-## Recommendations
+## Step 3 — Configure `app-config.yaml`
 
-I recommend using [Regal: A linter and language server for Rego](https://github.com/open-policy-agent/regal) to help you write your policies. It provides syntax highlighting, linting, and type checking for Rego files.
+Add the `openPolicyAgent` block to your `app-config.yaml`. Only enable the features you actually need.
+
+```yaml
+openPolicyAgent:
+  # Base URL of your OPA server. Required for all routes that call OPA.
+  baseUrl: 'http://localhost:8181'
+
+  entityChecker:
+    # Set to true to enable the /api/opa/entity-checker route.
+    # Required by the opa-entity-checker frontend plugin.
+    enabled: true
+    # Entry point in your Rego policy that returns violation messages.
+    # Maps to: package entity_checker, rule violation
+    policyEntryPoint: 'entity_checker/violation'
+
+  policyViewer:
+    # Set to true to enable the /api/opa/get-policy route.
+    # Required by the opa-policies frontend plugin.
+    enabled: true
+```
+
+> **Note:** The `/api/opa/opa-authz` route (used by `opa-authz-react`) is **always mounted** — no `enabled` flag is needed. All other routes are disabled by default.
+
+> **Note:** `policyEntryPoint` is required when `entityChecker.enabled` is `true`. If it is missing, the plugin will return a 500 error when the `/api/opa/entity-checker` endpoint is called.
+
+## Step 4 — Verify
+
+With your Backstage backend running, confirm the plugin is healthy:
+
+```bash
+curl http://localhost:7007/api/opa/health
+# {"status":"ok"}
+```
+
+## Next steps
+
+- [Reference](./reference.md) — full config key and HTTP endpoint documentation
+- [OPA Entity Checker](../opa-entity-checker/quick-start.md) — set up entity validation
+- [OPA Authz React](../opa-authz-react/introduction.md) — add UI authorization
+- [OPA Policies](../opa-policies/introduction.md) — display Rego policies on entity pages
