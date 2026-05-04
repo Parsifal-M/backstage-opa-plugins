@@ -160,8 +160,10 @@ Fetches the raw content of a Rego policy file from a URL. Used by [`opa-policies
 }
 ```
 
-**Error responses**
+**Edge cases**
 
-| Status | Cause                                            |
-| ------ | ------------------------------------------------ |
-| `500`  | File could not be fetched from the provided URL. |
+| Scenario                                | Status | Body                                   |
+| --------------------------------------- | ------ | -------------------------------------- |
+| `opaPolicy` query param missing         | `500`  | Error passed to middleware             |
+| Policy file not found (`NotFoundError`) | `200`  | `{}` — `opaPolicyContent` field absent |
+| Other fetch error (network, auth)       | `500`  | Error passed to middleware             |
