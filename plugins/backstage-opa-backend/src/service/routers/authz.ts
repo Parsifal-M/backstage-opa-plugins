@@ -44,8 +44,11 @@ export function authzRouter(
       });
     }
 
-    const { entryPoint: policyEntryPoint, input, includeUserEntity } =
-      parsed.data;
+    const {
+      entryPoint: policyEntryPoint,
+      input,
+      includeUserEntity,
+    } = parsed.data;
 
     const credentials = await httpAuth.credentials(req, { allow: ['user'] });
     const info = await userInfo.getUserInfo(credentials);
