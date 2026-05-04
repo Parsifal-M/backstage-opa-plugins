@@ -34,4 +34,17 @@ allow if {
 allow if {
 	input.method == "GET"
 	input.permission.name == "read-all-todos"
+	input.userAnnotations["company.com/department"] == "engineering"
 }
+
+  allow if {
+    input.method == "POST"
+    input.permission.name == "post-todo"
+    input.userEntityRef == "user:default/mock"
+  }
+
+  allow if {
+    input.method == "POST"
+    input.permission.name == "post-todo"
+    input.userAnnotations["company.com/role"] == "developer"
+  }
