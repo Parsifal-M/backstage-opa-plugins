@@ -50,7 +50,7 @@ export async function createRouter({
   // Here we are defining the OPA policy entry point we will be using for this plugin
   const entryPoint = 'opa_demo';
 
-  router.post('/squads', async (req, res) => {
+  router.post('/todo', async (req, res) => {
     // The example below shows what it could look like to send the user entity (name and annotations) to OPA
     // You can extract anything from the full user envelope as described here:
     // https://backstage.io/docs/features/software-catalog/descriptor-format
@@ -68,6 +68,7 @@ export async function createRouter({
       userAnnotations: userEntity?.metadata.annotations,
       permission: { name: 'post-todo' },
       plugin: 'opa-demo-backend-todo',
+      userEntityRef: credentials.principal.userEntityRef,
       dateTime: new Date().toISOString(),
     };
 
@@ -104,12 +105,16 @@ export async function createRouter({
   });
 
   router.get('/todos', async (_req, res) => {
-    const credentials = await httpAuth.credentials(_req);
+    const credentials = await httpAuth.credentials(_req, { allow: ['user'] });
+    const userEntityRef = credentials.principal.userEntityRef;
+    const userEntity = await catalog.getEntityByRef(userEntityRef, {
+      credentials,
+    });
     const input = {
       method: _req.method,
       path: _req.path,
       headers: _req.headers,
-      credentials: credentials,
+      userAnnotations: userEntity?.metadata.annotations,
       permission: { name: 'read-all-todos' },
       plugin: 'opa-demo-backend-todo',
     };
