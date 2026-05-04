@@ -7,6 +7,12 @@ The OPA Node service has a self-contained dev setup that lets you run and test i
 - Node 22 or 24
 - A running OPA server at `http://localhost:8181` — run `docker-compose up -d` from the repo root
 - Dependencies installed: `yarn install`
+- `openPolicyAgent.baseUrl` set in `app-config.yaml` — the root config in this repo already has it. If running outside this repo, add:
+
+```yaml
+openPolicyAgent:
+  baseUrl: 'http://localhost:8181'
+```
 
 ## Starting the service
 

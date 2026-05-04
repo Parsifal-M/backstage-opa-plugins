@@ -8777,6 +8777,7 @@ __metadata:
     "@backstage/config": "npm:^1.3.5"
     "@parsifal-m/backstage-plugin-opa-common": "workspace:^"
     "@types/express": "npm:^4.17.6"
+    express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
   languageName: unknown
   linkType: soft
