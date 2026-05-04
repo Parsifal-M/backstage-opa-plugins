@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { Config } from '@backstage/config';
 import {
-  AuthService,
   HttpAuthService,
   LoggerService,
   UserInfoService,
@@ -32,7 +31,6 @@ type OpaInput = {
 } & Record<string, any>;
 
 export function authzRouter(
-  auth: AuthService,
   catalog: CatalogService,
   logger: LoggerService,
   config: Config,
@@ -64,13 +62,8 @@ export function authzRouter(
 
     if (includeUserEntity === true) {
       try {
-        const { token } = await auth.getPluginRequestToken({
-          onBehalfOf: credentials,
-          targetPluginId: 'catalog',
-        });
-
         const userEntity = await catalog.getEntityByRef(info.userEntityRef, {
-          token,
+          credentials,
         });
 
         opaInput = {

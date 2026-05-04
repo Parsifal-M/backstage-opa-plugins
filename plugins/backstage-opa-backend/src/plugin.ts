@@ -10,7 +10,6 @@ export const opaPlugin = createBackendPlugin({
   register(env) {
     env.registerInit({
       deps: {
-        auth: coreServices.auth,
         catalog: catalogServiceRef,
         config: coreServices.rootConfig,
         logger: coreServices.logger,
@@ -20,7 +19,6 @@ export const opaPlugin = createBackendPlugin({
         userInfo: coreServices.userInfo,
       },
       async init({
-        auth,
         catalog,
         config,
         logger,
@@ -31,7 +29,6 @@ export const opaPlugin = createBackendPlugin({
       }) {
         httpRouter.use(
           await createRouter({
-            auth,
             catalog,
             config,
             logger,

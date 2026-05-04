@@ -23,7 +23,7 @@ import { catalogServiceMock } from '@backstage/plugin-catalog-node/testUtils';
 // Entity checker (requires openPolicyAgent.entityChecker.enabled: true in app-config.yaml):
 //   curl -X POST http://localhost:7007/api/opa/entity-checker \
 //     -H 'Content-Type: application/json' \
-//     -d '{"entity": {"apiVersion": "backstage.io/v1alpha1", "kind": "Component", "metadata": {"name": "sample"}, "spec": {}}}'
+//     -d '{"input": {"apiVersion": "backstage.io/v1alpha1", "kind": "Component", "metadata": {"name": "sample"}, "spec": {}}}'
 
 const backend = createBackend();
 

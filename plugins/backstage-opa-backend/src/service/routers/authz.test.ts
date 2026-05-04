@@ -19,12 +19,6 @@ describe('authzRouter', () => {
       },
     });
 
-    const mockAuth = mockServices.auth.mock({
-      getPluginRequestToken: jest.fn().mockResolvedValue({
-        token: 'fake-token',
-      }),
-    });
-
     const mockCatalog = catalogServiceMock.mock();
     const mockLogger = mockServices.logger.mock();
     const mockHttpAuth = mockServices.httpAuth.mock();
@@ -41,7 +35,6 @@ describe('authzRouter', () => {
     );
 
     const router = authzRouter(
-      mockAuth,
       mockCatalog,
       mockLogger,
       config,
