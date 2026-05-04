@@ -16,8 +16,7 @@ describe('createRouter', () => {
       },
     });
     const router = await createRouter({
-      auth: mockServices.auth.mock(),
-      catalogApi: catalogServiceMock.mock(),
+      catalog: catalogServiceMock.mock(),
       config: mockConfig,
       logger: mockServices.logger.mock(),
       urlReader: mockServices.urlReader.mock(),

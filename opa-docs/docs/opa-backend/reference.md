@@ -70,11 +70,11 @@ Evaluates an OPA policy and returns the result. Used by [`opa-authz-react`](../o
 
 The plugin automatically adds the following to `input` before forwarding to OPA, regardless of what the caller sends:
 
-| Field                 | Type             | Description                                                                |
-| --------------------- | ---------------- | -------------------------------------------------------------------------- |
-| `userEntityRef`       | `string`         | Backstage entity ref of the calling user (e.g. `user:default/jane`).       |
-| `ownershipEntityRefs` | `string[]`       | All entity refs the user owns.                                             |
-| `userEntity`          | `Entity \| null` | Full Backstage `User` entity. Only present when `includeUserEntity: true`. |
+| Field                 | Type             | Description                                                                                                                                                                                    |
+| --------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userEntityRef`       | `string`         | Backstage entity ref of the calling user (e.g. `user:default/jane`).                                                                                                                           |
+| `ownershipEntityRefs` | `string[]`       | All entity refs the user owns.                                                                                                                                                                 |
+| `userEntity`          | `Entity \| null` | Full Backstage `User` entity resolved from the catalog. Only present when `includeUserEntity: true`. Always set by the backend — any `userEntity` supplied by the caller is silently stripped. |
 
 **Response**
 
@@ -82,10 +82,10 @@ The raw response body from OPA's `/v1/data/<entryPoint>` endpoint, passed throug
 
 **Error responses**
 
-| Status | Cause                                                               |
-| ------ | ------------------------------------------------------------------- |
-| `400`  | Missing `input` or `entryPoint` in request body.                    |
-| `500`  | OPA server unreachable, or error fetching user entity from catalog. |
+| Status | Cause                                                                                                                                                                        |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `400`  | Request body failed schema validation. Response includes `error: "Invalid request body"` and a `details` object with `formErrors` (top-level) and `fieldErrors` (per-field). |
+| `500`  | OPA server unreachable, or error fetching user entity from catalog.                                                                                                          |
 
 ---
 
