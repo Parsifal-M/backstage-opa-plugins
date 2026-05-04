@@ -74,7 +74,7 @@ The plugin automatically adds the following to `input` before forwarding to OPA,
 | --------------------- | ---------------- | -------------------------------------------------------------------------- |
 | `userEntityRef`       | `string`         | Backstage entity ref of the calling user (e.g. `user:default/jane`).       |
 | `ownershipEntityRefs` | `string[]`       | All entity refs the user owns.                                             |
-| `userEntity`          | `Entity \| null` | Full Backstage `User` entity. Only present when `includeUserEntity: true`. |
+| `userEntity`          | `Entity \| null` | Full Backstage `User` entity resolved from the catalog. Only present when `includeUserEntity: true`. Always set by the backend — any `userEntity` supplied by the caller is silently stripped. |
 
 **Response**
 

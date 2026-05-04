@@ -8,27 +8,19 @@ import {
 import fetch from 'node-fetch';
 import { CatalogService } from '@backstage/plugin-catalog-node';
 import { Entity } from '@backstage/catalog-model';
+import { z } from 'zod';
 
-/**
- * Request body structure for OPA (Open Policy Agent) authorization requests.
- */
-type OpaAuthzRequestBody = {
-  /** The input data to be evaluated by the OPA policy. */
-  input: Record<string, any>;
-  /** The policy entry point in the OPA server to evaluate against. */
-  entryPoint: string;
-  includeUserEntity?: boolean;
-};
+const opaAuthzRequestSchema = z.object({
+  entryPoint: z.string().min(1),
+  input: z.record(z.unknown()).transform(({ userEntity: _, ...rest }) => rest),
+  includeUserEntity: z.boolean().default(false),
+});
 
-/**
- * Combined input sent to OPA policies.
- * Includes user identity context from Backstage along with arbitrary request input.
- */
 type OpaInput = {
   userEntityRef: string;
   ownershipEntityRefs: string[];
   userEntity?: Entity | null;
-} & Record<string, any>;
+} & Record<string, unknown>;
 
 export function authzRouter(
   catalog: CatalogService,
@@ -43,24 +35,24 @@ export function authzRouter(
     'http://localhost:8181';
 
   router.post('/opa-authz', async (req, res) => {
-    const {
-      input,
-      entryPoint: policyEntryPoint,
-      includeUserEntity,
-    } = req.body as OpaAuthzRequestBody;
+    const parsed = opaAuthzRequestSchema.safeParse(req.body);
 
-    if (!input || !policyEntryPoint) {
-      return res
-        .status(400)
-        .json({ error: 'Missing input or entryPoint in request body' });
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: 'Invalid request body',
+        details: parsed.error.flatten().fieldErrors,
+      });
     }
+
+    const { entryPoint: policyEntryPoint, input, includeUserEntity } =
+      parsed.data;
 
     const credentials = await httpAuth.credentials(req, { allow: ['user'] });
     const info = await userInfo.getUserInfo(credentials);
 
     let opaInput: OpaInput = { ...input, ...info };
 
-    if (includeUserEntity === true) {
+    if (includeUserEntity) {
       try {
         const userEntity = await catalog.getEntityByRef(info.userEntityRef, {
           credentials,

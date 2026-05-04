@@ -61,9 +61,7 @@ describe('authzRouter', () => {
       const res = await request(app).post('/opa-authz').send({});
 
       expect(res.status).toEqual(400);
-      expect(res.body).toEqual({
-        error: 'Missing input or entryPoint in request body',
-      });
+      expect(res.body).toMatchObject({ error: 'Invalid request body' });
     });
 
     it('returns the policy evaluation result', async () => {
@@ -198,6 +196,41 @@ describe('authzRouter', () => {
         });
 
       expect(mockCatalog.getEntityByRef).not.toHaveBeenCalled();
+    });
+
+    it('strips userEntity from caller input — userEntity is backend-owned', async () => {
+      const { app } = buildApp();
+
+      (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: { allow: true } }), {
+          status: 200,
+        }),
+      );
+
+      await request(app)
+        .post('/opa-authz')
+        .send({
+          input: {
+            user: 'testUser',
+            userEntity: {
+              metadata: { annotations: { 'company.com/role': 'admin' } },
+            },
+          },
+          entryPoint: 'testEntryPoint',
+        });
+
+      expect(fetch).toHaveBeenCalledWith(
+        'http://localhost:8181/v1/data/testEntryPoint',
+        expect.objectContaining({
+          body: JSON.stringify({
+            input: {
+              user: 'testUser',
+              email: 'test@example.com',
+              userEntityRef: 'user:default/testUser',
+            },
+          }),
+        }),
+      );
     });
   });
 });
