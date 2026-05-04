@@ -4,7 +4,7 @@ The OPA Backend plugin (`@parsifal-m/plugin-opa-backend`) is a Backstage backend
 
 ## What this plugin does
 
-The plugin mounts three HTTP routes under `/api/opa`:
+The plugin mounts four HTTP routes under `/api/opa`:
 
 | Route             | Method | Always mounted? | Purpose                                                   |
 | ----------------- | ------ | --------------- | --------------------------------------------------------- |

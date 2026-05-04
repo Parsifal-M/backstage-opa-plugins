@@ -52,7 +52,7 @@ openPolicyAgent:
 
 > **Note:** The `/api/opa/opa-authz` route (used by `opa-authz-react`) is **always mounted** — no `enabled` flag is needed. All other routes are disabled by default.
 
-> **Note:** `policyEntryPoint` is required when `entityChecker.enabled` is `true`. The plugin will return a 500 error on startup if it is missing.
+> **Note:** `policyEntryPoint` is required when `entityChecker.enabled` is `true`. If it is missing, the plugin will return a 500 error when the `/api/opa/entity-checker` endpoint is called.
 
 ## Step 4 — Verify
 

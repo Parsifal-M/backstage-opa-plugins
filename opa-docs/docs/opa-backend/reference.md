@@ -6,12 +6,12 @@ Technical specification for the OPA Backend plugin — configuration keys and HT
 
 All keys live under `openPolicyAgent` in `app-config.yaml`.
 
-| Key                                              | Type      | Default                 | Description                                                                                                                   |
-| ------------------------------------------------ | --------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `openPolicyAgent.baseUrl`                        | `string`  | `http://localhost:8181` | Base URL of your OPA server. Used by `/opa-authz` and `/entity-checker`.                                                      |
-| `openPolicyAgent.entityChecker.enabled`          | `boolean` | `false`                 | Mounts the `/entity-checker` route when `true`.                                                                               |
-| `openPolicyAgent.entityChecker.policyEntryPoint` | `string`  | —                       | Rego entry point for entity validation. Required when `entityChecker.enabled` is `true`. Example: `entity_checker/violation`. |
-| `openPolicyAgent.policyViewer.enabled`           | `boolean` | `false`                 | Mounts the `/get-policy` route when `true`.                                                                                   |
+| Key                                              | Type      | Default                                                                    | Description                                                                                                                   |
+| ------------------------------------------------ | --------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `openPolicyAgent.baseUrl`                        | `string`  | `http://localhost:8181` for `/opa-authz`, no default for `/entity-checker` | Base URL of your OPA server. Set this explicitly — `/entity-checker` returns a 500 if it is missing.                          |
+| `openPolicyAgent.entityChecker.enabled`          | `boolean` | `false`                                                                    | Mounts the `/entity-checker` route when `true`.                                                                               |
+| `openPolicyAgent.entityChecker.policyEntryPoint` | `string`  | —                                                                          | Rego entry point for entity validation. Required when `entityChecker.enabled` is `true`. Example: `entity_checker/violation`. |
+| `openPolicyAgent.policyViewer.enabled`           | `boolean` | `false`                                                                    | Mounts the `/get-policy` route when `true`.                                                                                   |
 
 ### Entry point format
 
@@ -93,7 +93,7 @@ The raw response body from OPA's `/v1/data/<entryPoint>` endpoint, passed throug
 
 Validates a Backstage entity against an OPA policy. Used by [`opa-entity-checker`](../opa-entity-checker/introduction.md).
 
-- **Auth:** requires Backstage plugin token
+- **Auth:** requires a valid Backstage token (user or service-to-service); enforced by the framework
 - **Requires config:** `openPolicyAgent.entityChecker.enabled: true` and `openPolicyAgent.entityChecker.policyEntryPoint`
 
 **Request body**
@@ -142,15 +142,15 @@ Validates a Backstage entity against an OPA policy. Used by [`opa-entity-checker
 
 Fetches the raw content of a Rego policy file from a URL. Used by [`opa-policies`](../opa-policies/introduction.md).
 
-- **Auth:** requires Backstage plugin token
+- **Auth:** requires a valid Backstage token (user or service-to-service); enforced by the framework
 - **Requires config:** `openPolicyAgent.policyViewer.enabled: true`
 - **Does not call OPA** — reads the file via Backstage's `UrlReader` service
 
 **Query parameters**
 
-| Parameter   | Type     | Required | Description                                                      |
-| ----------- | -------- | -------- | ---------------------------------------------------------------- |
-| `opaPolicy` | `string` | Yes      | URL of the `.rego` policy file to fetch (e.g. a raw GitHub URL). |
+| Parameter   | Type     | Required | Description                                                                                                |
+| ----------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| `opaPolicy` | `string` | Yes      | URL of the `.rego` policy file to fetch (e.g. a raw GitHub URL). Omitting this will result in a 500 error. |
 
 **Response**
 
