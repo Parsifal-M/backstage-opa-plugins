@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Local Development
 
-`backstage-plugin-opa-authz-react` includes a standalone dev app so you can develop and test the components and hooks without running Backstage, the OPA backend plugin, or a live OPA server.
+`@parsifal-m/backstage-plugin-opa-authz-react` includes a standalone dev app so you can develop and test the components and hooks without running Backstage, the OPA backend plugin, or a live OPA server.
 
 ## What the dev app actually tests
 

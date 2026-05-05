@@ -21,3 +21,4 @@ coverage:
     - '**/packages/app/**'
     - '**/packages/backend/**'
     - '**/module.ts'
+    - '**/alpha.tsx'
