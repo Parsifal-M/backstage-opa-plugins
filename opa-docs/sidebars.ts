@@ -52,7 +52,10 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-authz-react/introduction',
       },
-      items: [],
+      items: [
+        'opa-authz-react/new-frontend-system',
+        'opa-authz-react/local-development',
+      ],
     },
     {
       type: 'category',
