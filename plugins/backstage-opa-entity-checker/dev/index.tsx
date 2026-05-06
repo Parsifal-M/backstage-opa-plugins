@@ -4,7 +4,7 @@ import { EntityProvider } from '@backstage/plugin-catalog-react';
 import { Entity } from '@backstage/catalog-model';
 import { opaApiRef } from '../src/api';
 import type { OpaBackendApi } from '../src/api/types';
-import { OpaMetadataAnalysisCard } from '../src';
+import { OpaMetadataAnalysisCard } from '../src/components/OpaMetadataAnalysisCard';
 
 const mockEntity: Entity = {
   apiVersion: 'backstage.io/v1alpha1',
