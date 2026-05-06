@@ -223,3 +223,86 @@ backend.add(
 ## Recommendations
 
 I recommend using [Regal: A linter and language server for Rego](https://github.com/open-policy-agent/regal) to help you write your policies. It provides syntax highlighting, linting, and type checking for Rego files.
+
+## New Frontend System
+
+`@parsifal-m/plugin-opa-entity-checker` supports the new Backstage frontend system via the `./alpha` subpath export. The main entry point remains for legacy apps — import from `./alpha` only in new frontend system apps.
+
+### Installation
+
+```bash
+yarn add --cwd packages/app @parsifal-m/plugin-opa-entity-checker
+```
+
+In your `App.tsx`, import the plugin from the `./alpha` subpath and add it to the `features` array:
+
+```tsx
+import opaEntityCheckerPlugin from '@parsifal-m/plugin-opa-entity-checker/alpha';
+
+const app = createApp({
+  features: [
+    // ... other plugins
+    opaEntityCheckerPlugin,
+  ],
+});
+```
+
+That is all that is required. The plugin registers its OPA API and the entity card extension automatically. No changes to `EntityPage.tsx` are needed — the framework places the card on entity pages for you.
+
+### What the alpha entry registers
+
+| Extension             | ID                                                 | Description                                    |
+| --------------------- | -------------------------------------------------- | ---------------------------------------------- |
+| `ApiBlueprint`        | `api:opa-entity-checker/opa-entity-checker`        | Registers the OPA backend API used by the card |
+| `EntityCardBlueprint` | `entity-card:opa-entity-checker/metadata-analysis` | The validation card shown on entity pages      |
+
+### Configuration
+
+The same `app-config.yaml` configuration applies regardless of which frontend system you use:
+
+```yaml
+openPolicyAgent:
+  baseUrl: 'http://localhost:8181'
+  entityChecker:
+    enabled: true
+    policyEntryPoint: 'entity_checker/violation'
+```
+
+### Customizing the card
+
+The card renders with the `default` variant and title `OPA Entity Checker` by default. To override these, create a replacement blueprint and pass it via `withOverrides` when adding the plugin to your app:
+
+```tsx
+import opaEntityCheckerPlugin from '@parsifal-m/plugin-opa-entity-checker/alpha';
+import { EntityCardBlueprint } from '@backstage/plugin-catalog-react/alpha';
+
+const customCard = EntityCardBlueprint.make({
+  name: 'metadata-analysis',
+  params: {
+    loader: () =>
+      import('@parsifal-m/plugin-opa-entity-checker/alpha').then(m => (
+        <m.OpaMetadataAnalysisCard
+          title="Policy Compliance"
+          variant="compact"
+        />
+      )),
+  },
+});
+
+const app = createApp({
+  features: [
+    opaEntityCheckerPlugin.withOverrides({ extensions: [customCard] }),
+  ],
+});
+```
+
+### Backend requirement
+
+The OPA Entity Checker card fetches results from `backstage-opa-backend`. You still need the backend plugin installed:
+
+```ts
+// packages/backend/src/index.ts
+backend.add(import('@parsifal-m/plugin-opa-backend'));
+```
+
+See the [OPA Backend documentation](../opa-backend/introduction) for full setup details.
