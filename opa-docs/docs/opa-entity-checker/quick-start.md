@@ -270,7 +270,7 @@ openPolicyAgent:
 
 ### Customizing the card
 
-The card renders with the `default` variant and title `OPA Entity Checker` by default. To override these, use the extension's `.with()` method when adding the plugin to your app:
+The card renders with the `default` variant and title `OPA Entity Checker` by default. To override these, create a replacement blueprint and pass it via `withOverrides` when adding the plugin to your app:
 
 ```tsx
 import opaEntityCheckerPlugin from '@parsifal-m/plugin-opa-entity-checker/alpha';
@@ -280,7 +280,7 @@ const customCard = EntityCardBlueprint.make({
   name: 'metadata-analysis',
   params: {
     loader: () =>
-      import('@parsifal-m/plugin-opa-entity-checker').then(m => (
+      import('@parsifal-m/plugin-opa-entity-checker/alpha').then(m => (
         <m.OpaMetadataAnalysisCard
           title="Policy Compliance"
           variant="compact"
