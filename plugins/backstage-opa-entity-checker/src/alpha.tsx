@@ -27,6 +27,8 @@ const opaEntityCheckerCard = EntityCardBlueprint.make({
   },
 });
 
+export { OpaMetadataAnalysisCard } from './components/OpaMetadataAnalysisCard';
+
 export default createFrontendPlugin({
   pluginId: 'opa-entity-checker',
   extensions: [opaEntityCheckerApi, opaEntityCheckerCard],
