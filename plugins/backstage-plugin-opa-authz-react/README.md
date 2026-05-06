@@ -39,6 +39,20 @@ While the Backstage Permissions framework works well for many cases, this librar
 
 > **Note:** This library can work alongside the [OPA Permission Wrapper](../permission-backend-module-opa-wrapper/README.md) for comprehensive authorization coverage across your Backstage instance.
 
+## New Frontend System
+
+This plugin supports both the legacy and new Backstage frontend systems. If you are using the new frontend system, import from the `./alpha` subpath and add `opaAuthzApi` to your plugin's extensions instead of registering in `apis.ts`. See the [New Frontend System guide](https://parsifal-m.github.io/backstage-opa-plugins/opa-authz-react/new-frontend-system) for full details.
+
+## Local Development
+
+Run the isolated dev app without a full Backstage installation or live OPA server:
+
+```bash
+yarn workspace @parsifal-m/backstage-plugin-opa-authz-react start
+```
+
+The dev app mocks the response that `backstage-opa-backend` would return — no OPA server or backend process needed. See the [local development guide](https://parsifal-m.github.io/backstage-opa-plugins/opa-authz-react/local-development) for details.
+
 ## Prerequisites
 
 Before using this plugin, you need to install and configure the OPA backend plugin. See the [OPA Backend Plugin documentation](../backstage-opa-backend/README.md) for setup instructions.
