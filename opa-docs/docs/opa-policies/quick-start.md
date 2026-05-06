@@ -78,3 +78,36 @@ spec:
 ```
 
 You need to provide the full URL to the OPA Policy file as above in order for the plugin to fetch and display it.
+
+## New Frontend System
+
+If your app uses the new Backstage frontend system, import from the `./alpha` subpath instead. The plugin exports a `createFrontendPlugin` default that bundles both the API and the entity content tab — no `EntityLayout.Route` or `apis.ts` changes needed.
+
+```bash
+yarn add --cwd packages/app @parsifal-m/plugin-opa-policies
+```
+
+```ts
+// App.tsx
+import { createApp } from '@backstage/frontend-app-api';
+import opaPoliciesPlugin from '@parsifal-m/plugin-opa-policies/alpha';
+
+const app = createApp({
+  features: [
+    // ... other plugins
+    opaPoliciesPlugin,
+  ],
+});
+```
+
+The OPA Policy tab is added to entity pages automatically at `/opa-policy`. To show it only for entities that carry the annotation, add a filter in `app-config.yaml`:
+
+```yaml
+app:
+  extensions:
+    - entity-content:opa-policies/opa-policies:
+        config:
+          filter: has-annotation:open-policy-agent/policy
+```
+
+The entity annotation and backend setup are the same as the legacy system — see the sections above.

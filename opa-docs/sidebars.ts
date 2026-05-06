@@ -103,7 +103,7 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-policies/introduction',
       },
-      items: ['opa-policies/quick-start'],
+      items: ['opa-policies/quick-start', 'opa-policies/local-development'],
     },
     {
       type: 'category',
