@@ -19,8 +19,6 @@ RequireOpaAuthz / useOpaAuthz
 
 The mock stubs the entire chain at the `OpaAuthzApi` boundary, so what you are testing is **component behaviour given a decision** — does `RequireOpaAuthz` show or hide its children correctly, does `useOpaAuthz` return the right loading/data/error states. You are not testing policy logic or the backend plugin here, and that is intentional.
 
-For end-to-end testing of the full request path, use the complete Backstage dev setup (`yarn dev` from the repo root).
-
 ## Starting the dev app
 
 ```bash

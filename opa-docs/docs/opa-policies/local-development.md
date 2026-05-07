@@ -19,8 +19,6 @@ OpaPolicyPage
 
 The mock stubs the entire chain at the `OpaBackendApi` boundary with a hardcoded Rego snippet, and provides a fake entity with the `open-policy-agent/policy` annotation set via `EntityProvider`. What you are testing is **component behaviour given a fetched policy** — does the syntax highlighter render correctly, does the copy button work, does the loading state resolve as expected. You are not testing the backend fetch or URL resolution here.
 
-For end-to-end testing of the full request path, use the complete Backstage dev setup (`yarn dev` from the repo root).
-
 ## Starting the dev app
 
 ```bash
