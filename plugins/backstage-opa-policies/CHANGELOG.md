@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+### Minor Changes
+
+- 8b81a3a: Adds new frontend system support and sets up the dev/index for easy local development
+
 ## 0.2.3
 
 ### Patch Changes
