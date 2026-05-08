@@ -1,5 +1,11 @@
 # @parsifal-m/backstage-plugin-opa-common
 
+## 0.1.2
+
+### Patch Changes
+
+- e273d1d: Bumps core Backstage dependencies to 1.50.4.
+
 ## 0.1.1
 
 ### Patch Changes

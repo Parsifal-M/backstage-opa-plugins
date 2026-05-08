@@ -1,5 +1,18 @@
 # @parsifal-m/backstage-plugin-opa-authz-react
 
+## 2.1.0
+
+### Minor Changes
+
+- e273d1d: Add new frontend system support via ./alpha entry point, exporting opaAuthzApi (ApiBlueprint) alongside the existing hooks and components. Includes a standalone dev app for component development without a running backend.
+
+  Bumps core Backstage dependencies to 1.50.4.
+
+### Patch Changes
+
+- Updated dependencies [e273d1d]
+  - @parsifal-m/backstage-plugin-opa-common@0.1.2
+
 ## 2.0.1
 
 ### Patch Changes
