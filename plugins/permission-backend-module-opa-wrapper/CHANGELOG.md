@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2
+
+### Patch Changes
+
+- a32de69: chore: version bump to fix workspace dependency issues
+
 ## 2.0.1
 
 ### Patch Changes
