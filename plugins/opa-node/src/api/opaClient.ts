@@ -5,7 +5,11 @@ import {
   PolicyResult,
 } from '@parsifal-m/backstage-plugin-opa-common';
 
-export class OpaClient {
+export interface OpaClient {
+  evaluatePolicy(input: PolicyInput, entryPoint: string): Promise<PolicyResult>;
+}
+
+export class DefaultOpaClient implements OpaClient {
   private readonly logger: LoggerService;
   private readonly config: Config;
   private readonly baseUrl: string;

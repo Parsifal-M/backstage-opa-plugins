@@ -1,1 +1,1 @@
-export { OpaClient } from './opaClient';
+export { DefaultOpaClient } from './opaClient';

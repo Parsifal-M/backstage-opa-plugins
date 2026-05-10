@@ -1,5 +1,5 @@
 import { LoggerService } from '@backstage/backend-plugin-api';
-import { OpaClient } from '../src/api/opaClient';
+import { DefaultOpaClient, OpaClient } from '../api/opaClient';
 import { Config } from '@backstage/config';
 import {
   PolicyResult,
@@ -36,7 +36,7 @@ export class DefaultOpaService implements OpaService {
     config: Config;
     logger: LoggerService;
   }): DefaultOpaService {
-    const opaClient = new OpaClient(options.config, options.logger);
+    const opaClient = new DefaultOpaClient(options.config, options.logger);
     return new DefaultOpaService(opaClient);
   }
 

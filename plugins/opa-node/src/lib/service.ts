@@ -3,7 +3,7 @@ import {
   createServiceFactory,
   createServiceRef,
 } from '@backstage/backend-plugin-api';
-import { DefaultOpaService, OpaService } from '../../service';
+import { DefaultOpaService, OpaService } from '../service';
 
 export const opaService = createServiceRef<OpaService>({
   id: 'opa.service',
