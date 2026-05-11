@@ -1,3 +1,3 @@
-export * from '../src/api';
-export * from '../src/lib';
-export * from '../service';
+export * from './api';
+export * from './lib';
+export * from './service';

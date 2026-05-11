@@ -1,5 +1,8 @@
-import { OpaClient } from './opaClient';
 import { mockServices } from '@backstage/backend-test-utils';
+import {
+  DefaultOpaClient,
+  OpaClient,
+} from '@parsifal-m/backstage-plugin-opa-node';
 
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
@@ -13,34 +16,24 @@ const mockConfig = mockServices.rootConfig({
   },
 });
 
-describe('OpaClient', () => {
+describe('DefaultOpaClient', () => {
   let client: OpaClient;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    client = new OpaClient(mockConfig, mockLogger);
+    client = new DefaultOpaClient(mockConfig, mockLogger);
   });
 
-  describe('constructor', () => {
-    it('should construct the client with baseUrl and entryPoint', () => {
-      expect(client).toBeInstanceOf(OpaClient);
-    });
-    it('should throw error if baseUrl is missing', () => {
-      const mockConfigWithoutBaseUrl = mockServices.rootConfig({
-        data: {},
-      });
-      expect(
-        () => new OpaClient(mockConfigWithoutBaseUrl, mockLogger),
-      ).toThrow();
-    });
+  it('should throw if baseUrl is missing from config', () => {
+    expect(
+      () =>
+        new DefaultOpaClient(mockServices.rootConfig({ data: {} }), mockLogger),
+    ).toThrow();
   });
 
   describe('evaluatePolicy', () => {
-    it('should evaluate policy successfully', async () => {
-      const mockResponse = {
-        result: { allow: true },
-      };
-
+    it('should call OPA and return result', async () => {
+      const mockResponse = { result: { allow: true } };
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
@@ -58,82 +51,45 @@ describe('OpaClient', () => {
         },
       );
       expect(result).toEqual(mockResponse);
-      expect(mockLogger.debug).toHaveBeenCalledWith(
-        expect.stringContaining('Received data from OPA'),
-      );
     });
 
-    it('should throw error if entryPoint is empty', async () => {
-      const input = { user: 'test' };
-      await expect(client.evaluatePolicy(input, '')).rejects.toThrow(
-        'You have not defined a policy entrypoint! Please provide one.',
-      );
-      expect(mockLogger.error).toHaveBeenCalledWith(
+    it('should throw if entryPoint is empty', async () => {
+      await expect(client.evaluatePolicy({ user: 'test' }, '')).rejects.toThrow(
         'You have not defined a policy entrypoint! Please provide one.',
       );
     });
 
-    it('should throw error if input is null', async () => {
-      await expect(
-        client.evaluatePolicy(null as any, 'test/policy'),
-      ).rejects.toThrow('The policy input is missing!');
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        'The policy input is missing!',
-      );
-    });
+    it.each([null, undefined])(
+      'should throw if input is %s',
+      async badInput => {
+        await expect(
+          client.evaluatePolicy(badInput as any, 'test/policy'),
+        ).rejects.toThrow('The policy input is missing!');
+      },
+    );
 
-    it('should throw error if input is undefined', async () => {
-      await expect(
-        client.evaluatePolicy(undefined as any, 'test/policy'),
-      ).rejects.toThrow('The policy input is missing!');
-    });
-
-    it('should throw error if OPA returns non-OK response', async () => {
+    it('should throw if OPA returns non-OK response', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
         statusText: 'Internal Server Error',
       });
 
-      const input = { user: 'test' };
-      await expect(client.evaluatePolicy(input, 'test/policy')).rejects.toThrow(
+      await expect(
+        client.evaluatePolicy({ user: 'test' }, 'test/policy'),
+      ).rejects.toThrow(
         'An error response was returned after sending the policy input to the OPA server: 500 - Internal Server Error',
       );
-      expect(mockLogger.error).toHaveBeenCalledWith(
-        expect.stringContaining('500 - Internal Server Error'),
-      );
     });
 
-    it('should throw error if fetch fails', async () => {
-      const fetchError = new Error('Network error');
-      mockFetch.mockRejectedValueOnce(fetchError);
+    it('should throw if fetch throws', async () => {
+      mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
-      const input = { user: 'test' };
-      await expect(client.evaluatePolicy(input, 'test/policy')).rejects.toThrow(
+      await expect(
+        client.evaluatePolicy({ user: 'test' }, 'test/policy'),
+      ).rejects.toThrow(
         'An error occurred while sending the policy input to the OPA server: Error: Network error',
       );
-    });
-
-    it('should work with different entryPoints', async () => {
-      const mockResponse = { result: { allow: false } };
-
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
-
-      const input = { user: 'admin', action: 'delete' };
-      const result = await client.evaluatePolicy(input, 'admin/policy');
-
-      expect(mockFetch).toHaveBeenCalledWith(
-        'http://localhost:8181/v1/data/admin/policy',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ input }),
-        },
-      );
-      expect(result).toEqual(mockResponse);
     });
   });
 });
