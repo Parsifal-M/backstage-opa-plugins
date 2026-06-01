@@ -6,15 +6,13 @@ This file provides context for AI agents working in this repository.
 
 A Yarn monorepo containing a collection of published Backstage plugins and modules that integrate Open Policy Agent (OPA) with Backstage. The goal is to decouple authorization policy from application code — policies live in `.rego` files, are evaluated by a running OPA server, and can be updated without redeploying Backstage.
 
-The repo also contains a full local Backstage app (`packages/app` + `packages/backend`) used for development and demonstration.
+Each plugin has a `dev/` folder with a self-contained dev backend or frontend harness — no shared core app is needed.
 
 ## Repo structure
 
 ```
 plugins/          — published plugins and modules (see below)
-packages/app      — Backstage frontend app (local dev only)
-packages/backend  — Backstage backend app (local dev only)
-policies/         — example Rego policies used by the local dev app
+policies/         — example Rego policies for local OPA development
 opa-docs/         — Docusaurus documentation site
 .claude/skills/   — Claude Code skills for working with this repo
 ```
@@ -106,10 +104,18 @@ Project-local skills live in `.claude/skills/`. Use them when working on these a
 
 ## Development workflow
 
+Each plugin is developed independently using its own `dev/` folder. Run from the plugin directory:
+
 ```bash
-yarn install --immutable        # install deps
-docker-compose up -d            # start OPA + Postgres
-yarn dev                        # start Backstage (frontend + backend)
+yarn install --immutable        # install deps (repo root)
+docker-compose up -d            # start OPA (port 8181) — required for policy evaluation
+cd plugins/<plugin-name>
+yarn start                      # start the plugin's dev harness
+```
+
+Repo-level commands (run from root):
+
+```bash
 yarn test                       # run all tests
 yarn lint:all                   # lint all packages
 yarn tsc                        # type-check

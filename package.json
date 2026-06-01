@@ -6,13 +6,7 @@
     "node": "22 || 24 "
   },
   "scripts": {
-    "dev": "yarn workspaces foreach -A --include backend --include app --parallel -v -i run start",
-    "debug": "LOG_LEVEL=debug yarn dev",
-    "start": "yarn workspace app start",
-    "start-backend": "yarn workspace backend start",
-    "build:backend": "yarn workspace backend build",
     "build": "backstage-cli repo build --all",
-    "build-image": "yarn workspace backend build-image",
     "tsc": "tsc",
     "tsc:full": "tsc --skipLibCheck false --incremental false",
     "clean": "backstage-cli repo clean",
@@ -29,7 +23,6 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*",
       "plugins/*"
     ]
   },
@@ -67,8 +60,6 @@
   },
   "jest": {
     "coveragePathIgnorePatterns": [
-      "packages/app",
-      "packages/backend",
       "plugins/opa-frontend-demo",
       "plugins/opa-backend-demo"
     ],
