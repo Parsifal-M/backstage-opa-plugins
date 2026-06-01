@@ -1,36 +1,26 @@
-# Using The Plugin In Local Development
+# Local Development
 
-If you are using this plugin and want to know how to use it in local development, you can follow the steps below, note that this is not the only way to do it, but how its done in this repository.
+The OPA Permissions Wrapper Module has a self-contained dev setup that lets you run and test it in isolation — no full Backstage app or database required.
 
-## Pre-requisites
+## Prerequisites
 
-- You have a Backstage instance set up and running and the permission framework set up as outlined [here](https://backstage.io/docs/permissions/getting-started/).
-  - **Note** do not set a policy, just enable the framework.
-- This assumes you are using `Postgres` as your database in your `app-config.yaml` file, although this is not mandatory.
+- Node 22 or 24
+- A running OPA server at `http://localhost:8181` with the `rbac_policy` loaded — run `docker-compose up -d` from the repo root
+- Dependencies installed: `yarn install --immutable`
 
-## Installing the OPA Permissions Wrapper Module in Backstage
-
-Run the following command to install the OPA Permissions Wrapper Module in your Backstage project.
+## Starting the plugin
 
 ```bash
-yarn add --cwd packages/backend @parsifal-m/plugin-permission-backend-module-opa-wrapper
+yarn workspace @parsifal-m/plugin-permission-backend-module-opa-wrapper start
 ```
 
-Then make the following changes to the `packages/backend/src/index.ts` file in your Backstage project.
+The backend starts at `http://localhost:7007`.
 
-```typescript
-import { createBackend } from '@backstage/backend-defaults';
+## How it works
 
-const backend = createBackend();
-backend.add(import('@backstage/plugin-app-backend/alpha'));
-backend.add(import('@backstage/plugin-auth-backend'));
-// ..... other plugins
-backend.add(import('@parsifal-m/plugin-permission-backend-module-opa-wrapper'));
-```
+The dev backend directly instantiates `OpaClient` and `OpaPermissionPolicy`, then wires them into a single `POST /evaluate` endpoint. Send a permission name and optional user identity, get back the raw OPA decision. No permission framework validation, no `resourceRef` requirements, no auth headers needed.
 
-## Configuration
-
-The OPA client requires configuration to connect to the OPA server. You need to provide a `baseUrl` and a `policyEntryPoint` for the OPA server in your Backstage `app-config.yaml` file:
+The root `app-config.yaml` in this repo already has the required config:
 
 ```yaml
 permission:
@@ -38,88 +28,115 @@ permission:
     baseUrl: 'http://localhost:8181'
     policy:
       policyEntryPoint: 'rbac_policy/decision'
+      policyFallbackDecision: 'allow'
 ```
 
-### Fallback policy
+## Testing the endpoint
 
-Two basic fallback policies are provided in the plugin, `allow` and `deny`. You can set the fallback policy in the `app-config.yaml` file with the `policyFallbackDecision` key:
+### POST /api/opa-permission-wrapper-dev/evaluate
 
-```yaml
-permission:
-  opa:
-    baseUrl: 'http://localhost:8181'
-    policy:
-      policyEntryPoint: 'rbac_policy/decision'
-      policyFallbackDecision: 'deny'
+Send `permissionName` and optionally override `userEntityRef` and `ownershipEntityRefs`. The defaults simulate a non-admin user (`user:default/mock` with no group memberships).
+
+#### Testing a DENY decision
+
+Any permission with no matching rule in `rbac_policy` hits the `default decision := {"result": "DENY"}`:
+
+```bash
+curl -X POST http://localhost:7007/api/opa-permission-wrapper-dev/evaluate \
+  -H 'Content-Type: application/json' \
+  -d '{"permissionName": "scaffolder.task.create"}'
 ```
 
-The previous example would return a `DENY` decision to any permission request if the OPA server is not reachable.
-If you do not enable a `policyFallback`, the wrapper will simply throw an error if the OPA server is not reachable and a permission request is made. The values are case-insensitive.
+Expected response:
 
-## Docker Compose
-
-You can create a `docker-compose.yaml` file in the root of the repository with the following content:
-
-```yaml
-services:
-  postgres:
-    image: postgres:15.5-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: devPostgres
-    ports:
-      - 5432:5432
-  opa:
-    image: openpolicyagent/opa:0.60.0-static
-    command:
-      - 'run'
-      - '--server'
-      - '--watch'
-      - '--log-format=json-pretty'
-      - '--set=decision_logs.console=true'
-      - '/policies/rbac_policy.rego'
-      - '/policies/entity_checker.rego'
-    ports:
-      - 8181:8181
-    volumes:
-      - ./policies:/policies
+```json
+{ "result": "DENY" }
 ```
 
-Then you'll need to make sure you have a `policies` folder in the root of the repository with the following content:
+---
 
-```rego
-package rbac_policy
+#### Testing a CONDITIONAL decision
 
-import rego.v1
+`catalog.entity.read` is delegated to `catalog_rules`, which returns CONDITIONAL for non-admins (only Component-kind entities are readable):
 
-# Helper method for constructing a conditional decision
-conditional(plugin_id, resource_type, conditions) := {
-	"result": "CONDITIONAL",
-	"pluginId": plugin_id,
-	"resourceType": resource_type,
-	"conditions": conditions,
-}
+```bash
+curl -X POST http://localhost:7007/api/opa-permission-wrapper-dev/evaluate \
+  -H 'Content-Type: application/json' \
+  -d '{"permissionName": "catalog.entity.read"}'
+```
 
-default decision := {"result": "ALLOW"}
+Expected response:
 
-permission := input.permission.name
-
-claims := input.identity.claims
-
-is_admin if "kind:namespace/name" in claims
-
-# decision := {"result": "DENY"} if {
-# 	permission == "catalog.entity.read"
-# 	not is_admin
-# }
-
-# Conditional based on claims (groups a user belongs to) unless they are an admin
-decision := conditional("catalog", "catalog-entity", {"anyOf": [{
-	"resourceType": "catalog-entity",
-	"rule": "IS_ENTITY_OWNER",
-	"params": {"claims": claims},
-}]}) if {
-	permission == "catalog.entity.delete"
-	not is_admin
+```json
+{
+  "result": "CONDITIONAL",
+  "pluginId": "catalog",
+  "resourceType": "catalog-entity",
+  "conditions": {
+    "anyOf": [
+      {
+        "resourceType": "catalog-entity",
+        "rule": "IS_ENTITY_KIND",
+        "params": { "kinds": ["Component"] }
+      }
+    ]
+  }
 }
 ```
+
+---
+
+#### Testing an ALLOW decision (admin user)
+
+Override `ownershipEntityRefs` to include `group:default/maintainers`, which satisfies `is_admin` in `rbac_policy`:
+
+```bash
+curl -X POST http://localhost:7007/api/opa-permission-wrapper-dev/evaluate \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "permissionName": "catalog.entity.read",
+    "ownershipEntityRefs": ["group:default/maintainers"]
+  }'
+```
+
+Expected response:
+
+```json
+{ "result": "ALLOW" }
+```
+
+---
+
+#### Testing with a custom user
+
+You can fully override the identity sent to OPA:
+
+```bash
+curl -X POST http://localhost:7007/api/opa-permission-wrapper-dev/evaluate \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "permissionName": "catalog.entity.delete",
+    "userEntityRef": "user:default/alice",
+    "ownershipEntityRefs": ["user:default/alice", "group:default/team-a"]
+  }'
+```
+
+This maps directly to the `input.identity` object OPA receives:
+
+```json
+{
+  "permission": { "name": "catalog.entity.delete" },
+  "identity": {
+    "user": "user:default/alice",
+    "claims": ["user:default/alice", "group:default/team-a"]
+  }
+}
+```
+
+## Modifying the policy
+
+The `rbac_policy` and `catalog_rules` Rego files live in `policies/` at the repo root. OPA runs with `--watch` in docker-compose, so any change to those files reloads without restarting OPA or the dev backend. Send another request immediately after saving to see the updated decision.
+
+## Fallback behaviour
+
+If OPA is unreachable, the module returns the configured fallback (`allow` by default in this repo). To test the deny fallback, stop OPA — the next request returns `{ "result": "DENY" }` and logs a warning.

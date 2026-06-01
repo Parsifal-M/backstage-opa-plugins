@@ -9190,13 +9190,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@parsifal-m/backstage-plugin-opa-entity-checker-processor@workspace:plugins/backstage-plugin-opa-entity-checker-processor"
   dependencies:
+    "@backstage/backend-defaults": "backstage:^"
     "@backstage/backend-plugin-api": "backstage:^"
     "@backstage/backend-test-utils": "backstage:^"
     "@backstage/catalog-model": "backstage:^"
     "@backstage/cli": "backstage:^"
     "@backstage/plugin-catalog-node": "backstage:^"
+    "@types/express": "npm:^4.17.6"
     "@types/lodash": "npm:^4"
     "@types/lodash-es": "npm:^4.17.12"
+    express: "npm:^4.17.1"
+    express-promise-router: "npm:^4.1.0"
     lodash: "npm:^4.17.21"
     lodash-es: "npm:^4.17.21"
   languageName: unknown
@@ -9308,6 +9312,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@parsifal-m/plugin-permission-backend-module-opa-wrapper@workspace:plugins/permission-backend-module-opa-wrapper"
   dependencies:
+    "@backstage/backend-defaults": "backstage:^"
     "@backstage/backend-plugin-api": "backstage:^"
     "@backstage/backend-test-utils": "backstage:^"
     "@backstage/cli": "backstage:^"
@@ -9316,6 +9321,9 @@ __metadata:
     "@backstage/plugin-auth-node": "backstage:^"
     "@backstage/plugin-permission-common": "backstage:^"
     "@backstage/plugin-permission-node": "backstage:^"
+    "@types/express": "npm:^4.17.6"
+    express: "npm:^4.17.1"
+    express-promise-router: "npm:^4.1.0"
     node-fetch: "npm:2.6.7"
     winston: "npm:^3.11.0"
   languageName: unknown

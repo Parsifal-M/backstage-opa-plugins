@@ -46,10 +46,14 @@
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
+    "@backstage/backend-defaults": "backstage:^",
     "@backstage/backend-test-utils": "backstage:^",
     "@backstage/cli": "backstage:^",
+    "@types/express": "^4.17.6",
     "@types/lodash": "^4",
-    "@types/lodash-es": "^4.17.12"
+    "@types/lodash-es": "^4.17.12",
+    "express": "^4.17.1",
+    "express-promise-router": "^4.1.0"
   },
   "files": [
     "dist"
