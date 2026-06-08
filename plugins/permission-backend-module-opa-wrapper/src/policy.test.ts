@@ -19,16 +19,10 @@ const mockRequest: PolicyQuery = {
 };
 
 const mockUser: PolicyQueryUser = {
-  identity: {
-    userEntityRef: 'user:default/parsifal-m',
-    ownershipEntityRefs: ['user:default/parsifal-m', 'group:default/users'],
-    type: 'user',
-  },
-  token: 'mockToken',
   credentials: {
     $$type: '@backstage/BackstageCredentials',
     principal: 'user:default/parsifal-m',
-  },
+  } as any,
   info: {
     userEntityRef: 'user:default/parsifal-m',
     ownershipEntityRefs: ['user:default/parsifal-m', 'group:default/users'],
