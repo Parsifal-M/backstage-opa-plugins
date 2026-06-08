@@ -54,6 +54,13 @@ const permissionWrapperDevPlugin = createBackendPlugin({
         router.use(express.json());
 
         router.post('/evaluate', async (req, res) => {
+          if (!req.body || typeof req.body.permissionName !== 'string') {
+            res
+              .status(400)
+              .json({ error: 'permissionName (string) required in JSON body' });
+            return;
+          }
+
           const {
             permissionName,
             userEntityRef = 'user:default/mock',

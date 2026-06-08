@@ -57,6 +57,14 @@ const processorDevPlugin = createBackendPlugin({
         router.use(express.json());
 
         router.post('/process', async (req, res) => {
+          if (!req.body || typeof req.body !== 'object') {
+            res.status(400).json({
+              error:
+                'A valid entity JSON object is required in the request body',
+            });
+            return;
+          }
+
           const entity = req.body;
           const result = await processor.preProcessEntity(entity);
           res.json(result);
