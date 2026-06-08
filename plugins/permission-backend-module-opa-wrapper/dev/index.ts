@@ -62,7 +62,13 @@ const permissionWrapperDevPlugin = createBackendPlugin({
 
           const result = await policy.handle(
             // OpaPermissionPolicy only reads permission.name — type fields are irrelevant here
-            { permission: { type: 'basic', name: permissionName, attributes: {} } as any },
+            {
+              permission: {
+                type: 'basic',
+                name: permissionName,
+                attributes: {},
+              } as any,
+            },
             { info: { userEntityRef, ownershipEntityRefs } },
           );
 
