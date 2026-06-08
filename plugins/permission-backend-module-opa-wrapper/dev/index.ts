@@ -76,7 +76,7 @@ const permissionWrapperDevPlugin = createBackendPlugin({
                 attributes: {},
               } as any,
             },
-            { info: { userEntityRef, ownershipEntityRefs } },
+            { info: { userEntityRef, ownershipEntityRefs } } as any,
           );
 
           res.json(result);
