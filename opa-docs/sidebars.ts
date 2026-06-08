@@ -77,7 +77,10 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'opa-entity-checker-processor/introduction',
       },
-      items: ['opa-entity-checker-processor/quick-start'],
+      items: [
+        'opa-entity-checker-processor/quick-start',
+        'opa-entity-checker-processor/local-development',
+      ],
     },
     {
       type: 'category',
