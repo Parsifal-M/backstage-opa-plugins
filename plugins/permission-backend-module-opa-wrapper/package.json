@@ -42,7 +42,6 @@
     "@backstage/plugin-auth-node": "backstage:^",
     "@backstage/plugin-permission-common": "backstage:^",
     "@backstage/plugin-permission-node": "backstage:^",
-    "node-fetch": "2.6.7",
     "winston": "^3.11.0"
   },
   "devDependencies": {
