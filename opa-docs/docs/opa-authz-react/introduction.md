@@ -103,9 +103,39 @@ function MyProtectedComponent() {
 
 **Props:**
 
-- `input` - The data sent to OPA for policy evaluation
-- `entryPoint` - The OPA policy entrypoint to evaluate
-- `children` - Components to render when access is allowed
+| Prop                        | Type          | Required | Description                                                                                                   |
+| --------------------------- | ------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `input`                     | `PolicyInput` | Yes      | The data sent to OPA for policy evaluation                                                                    |
+| `entryPoint`                | `string`      | Yes      | The OPA policy entrypoint to evaluate                                                                         |
+| `children`                  | `ReactNode`   | Yes      | Content rendered when the policy allows access                                                                |
+| `errorPage`                 | `ReactNode`   | No       | Content rendered when the policy denies access or OPA returns an error. Defaults to `null` (renders nothing). |
+| `options.includeUserEntity` | `boolean`     | No       | When `true`, the current user's entity is automatically added to the policy input                             |
+
+#### Showing a fallback when access is denied
+
+By default `RequireOpaAuthz` renders nothing when the policy denies access or OPA returns an error. Pass an `errorPage` node to show something instead — a message, a redirect, or a full error card:
+
+```tsx
+import { RequireOpaAuthz } from '@parsifal-m/backstage-plugin-opa-authz-react';
+
+function AdminPanel() {
+  return (
+    <RequireOpaAuthz
+      input={{ action: 'view', resource: 'admin-panel' }}
+      entryPoint="authz"
+      errorPage={<div>You do not have permission to view this page.</div>}
+    >
+      <AdminPanelContent />
+    </RequireOpaAuthz>
+  );
+}
+```
+
+`errorPage` is rendered for both cases: a policy `allow: false` decision, and a network/evaluation error reaching OPA. During the initial loading phase the component always renders `null` — `errorPage` is never flashed while the request is in flight.
+
+:::tip
+If you need to distinguish "OPA unreachable" from "policy denied" (e.g. to show a different message for each), use the `useOpaAuthz` hook directly — it exposes `loading`, `data`, and `error` separately so you can branch on each state yourself.
+:::
 
 ### Option 2: useOpaAuthz Hook (Advanced)
 
