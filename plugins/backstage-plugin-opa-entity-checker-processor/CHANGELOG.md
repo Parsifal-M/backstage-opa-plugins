@@ -1,5 +1,11 @@
 # @parsifal-m/backstage-plugin-opa-entity-checker-processor
 
+## 2.0.2
+
+### Patch Changes
+
+- 1ee4baf: Add standalone dev harness; removes dependency on core app packages
+
 ## 2.0.1
 
 ### Patch Changes

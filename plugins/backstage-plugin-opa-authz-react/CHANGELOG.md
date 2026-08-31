@@ -1,5 +1,11 @@
 # @parsifal-m/backstage-plugin-opa-authz-react
 
+## 2.1.1
+
+### Patch Changes
+
+- 60cbccb: Fix `RequireOpaAuthz` to render the `errorPage` prop when OPA evaluation errors or denies access, instead of always rendering nothing.
+
 ## 2.1.0
 
 ### Minor Changes
