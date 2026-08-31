@@ -14,13 +14,17 @@ interface RequireOpaAuthzProps {
 
 export function RequireOpaAuthz(
   props: Readonly<RequireOpaAuthzProps>,
-): React.JSX.Element | null {
-  const { input, entryPoint, options } = props;
+): ReactNode {
+  const { input, entryPoint, options, errorPage = null } = props;
 
   const { loading, data, error } = useOpaAuthz(input, entryPoint, options);
 
-  if (loading || error || !data?.result.allow) {
+  if (loading) {
     return null;
+  }
+
+  if (error || !data?.result.allow) {
+    return errorPage;
   }
 
   return <>{props.children}</>;

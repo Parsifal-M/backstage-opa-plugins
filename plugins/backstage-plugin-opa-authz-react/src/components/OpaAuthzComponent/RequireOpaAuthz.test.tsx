@@ -63,6 +63,31 @@ describe('RequireOpaAuthz', () => {
     });
   });
 
+  it('renders errorPage when there is an error', async () => {
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: false,
+      data: null,
+      error: new Error('OPA unreachable'),
+    });
+
+    renderInTestApp(
+      <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
+        <RequireOpaAuthz
+          input={mockInput}
+          entryPoint={mockEntryPoint}
+          errorPage={<div>Error Page</div>}
+        >
+          <div>Protected Content</div>
+        </RequireOpaAuthz>
+      </TestApiProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Error Page')).toBeInTheDocument();
+      expect(screen.queryByText('Protected Content')).toBeNull();
+    });
+  });
+
   it('renders null when access is not allowed', async () => {
     (useOpaAuthz as jest.Mock).mockReturnValue({
       loading: false,
@@ -78,6 +103,54 @@ describe('RequireOpaAuthz', () => {
     );
 
     await waitFor(() => {
+      expect(screen.queryByText('Protected Content')).toBeNull();
+    });
+  });
+
+  it('renders errorPage when access is not allowed', async () => {
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: false,
+      data: { result: { allow: false } },
+    });
+
+    renderInTestApp(
+      <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
+        <RequireOpaAuthz
+          input={mockInput}
+          entryPoint={mockEntryPoint}
+          errorPage={<div>Access Denied</div>}
+        >
+          <div>Protected Content</div>
+        </RequireOpaAuthz>
+      </TestApiProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Access Denied')).toBeInTheDocument();
+      expect(screen.queryByText('Protected Content')).toBeNull();
+    });
+  });
+
+  it('renders null when loading even if errorPage is provided', async () => {
+    (useOpaAuthz as jest.Mock).mockReturnValue({
+      loading: true,
+      data: null,
+    });
+
+    renderInTestApp(
+      <TestApiProvider apis={[[opaAuthzBackendApiRef, mockOpaBackendApi]]}>
+        <RequireOpaAuthz
+          input={mockInput}
+          entryPoint={mockEntryPoint}
+          errorPage={<div>Error Page</div>}
+        >
+          <div>Protected Content</div>
+        </RequireOpaAuthz>
+      </TestApiProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText('Error Page')).toBeNull();
       expect(screen.queryByText('Protected Content')).toBeNull();
     });
   });
