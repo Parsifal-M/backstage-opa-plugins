@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.3
+
+### Patch Changes
+
+- 32149ae: Remove dead node-fetch dependency
+- 1ee4baf: Add standalone dev harness; removes dependency on core app packages
+
 ## 2.0.2
 
 ### Patch Changes
