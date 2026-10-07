@@ -70,15 +70,6 @@ export class OpaPermissionPolicy implements PermissionPolicy {
       input,
     );
 
-    if (!response) {
-      this.logger.error(
-        'The result is missing in the response from OPA, are you sure the policy is loaded?',
-      );
-      throw new Error(
-        'The result is missing in the response from OPA, are you sure the policy is loaded?',
-      );
-    }
-
     if (response.result === 'CONDITIONAL') {
       const permissionName = request.permission.name;
       if (!response.conditions) {

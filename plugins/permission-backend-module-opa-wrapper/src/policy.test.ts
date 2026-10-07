@@ -225,17 +225,6 @@ describe('OpaPermissionPolicy', () => {
   });
 
   describe('errors', () => {
-    it('throws when OPA returns no result', async () => {
-      evaluate.mockResolvedValueOnce(
-        undefined as unknown as PermissionsFrameworkPolicyEvaluationResult,
-      );
-
-      await expect(policy.handle(catalogEntityRead, user)).rejects.toThrow(
-        'The result is missing in the response from OPA, are you sure the policy is loaded?',
-      );
-      expect(logger.error).toHaveBeenCalled();
-    });
-
     it('propagates errors from the OPA client', async () => {
       evaluate.mockRejectedValueOnce(new Error('OPA is down'));
 

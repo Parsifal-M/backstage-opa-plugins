@@ -37,8 +37,4 @@ export type PermissionsFrameworkPolicyEvaluationResult = {
   };
 };
 
-export type PolicyEvaluationResponse = {
-  result: PermissionsFrameworkPolicyEvaluationResult;
-};
-
 export type FallbackPolicyDecision = 'allow' | 'deny' | undefined;

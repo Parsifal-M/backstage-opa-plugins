@@ -75,6 +75,54 @@ describe('OpaClient', () => {
         `Missing required config value at '${key}'`,
       );
     });
+
+    // Native fetch rejects these with the same TypeError it uses for network
+    // failures, so they must fail at startup rather than reach the fallback.
+    it.each([
+      ['has no scheme', 'localhost:8181', 'must be an http:// or https:// URL'],
+      [
+        'uses a non-HTTP scheme',
+        'ftp://opa:8181',
+        'must be an http:// or https:// URL',
+      ],
+      ['cannot be parsed', 'http://opa .example.com', 'Invalid OPA URL'],
+      ['is not a URL', 'not a url', 'Invalid OPA URL'],
+    ])('throws when baseUrl %s', (_, baseUrl, expectedError) => {
+      const config = mockServices.rootConfig({
+        data: {
+          permission: {
+            opa: {
+              baseUrl,
+              policy: {
+                policyEntryPoint: ENTRY_POINT,
+                policyFallbackDecision: 'allow',
+              },
+            },
+          },
+        },
+      });
+
+      expect(() => new OpaClient(config, mockServices.logger.mock())).toThrow(
+        expectedError,
+      );
+    });
+
+    it.each(['http://opa:8181', 'https://opa.example.com'])(
+      'accepts the %s baseUrl',
+      baseUrl => {
+        const config = mockServices.rootConfig({
+          data: {
+            permission: {
+              opa: { baseUrl, policy: { policyEntryPoint: ENTRY_POINT } },
+            },
+          },
+        });
+
+        expect(
+          () => new OpaClient(config, mockServices.logger.mock()),
+        ).not.toThrow();
+      },
+    );
   });
 
   describe('evaluatePermissionsFrameworkPolicy', () => {
@@ -123,14 +171,31 @@ describe('OpaClient', () => {
       ).resolves.toEqual(decision);
     });
 
-    it('returns undefined when the entry point has no result (policy not loaded)', async () => {
-      // OPA answers 200 with `{}` when the queried document is undefined.
-      const { client } = createClient('allow');
-      fetchSpy.mockResolvedValueOnce(jsonResponse({}));
+    // A reachable OPA that returns no usable decision is a policy or entry
+    // point misconfiguration, so it throws even when a fallback is set.
+    it.each([
+      // OPA answers 200 with `{}` when the queried document is undefined,
+      // e.g. the policy is not loaded.
+      ['the entry point is undefined', {}],
+      ['the body is null', null],
+      ['the result is a boolean rule', { result: true }],
+      ['the result is a bare string', { result: 'ALLOW' }],
+      ['the result object has no result field', { result: { allow: true } }],
+      ['the result field is not a string', { result: { result: 1 } }],
+    ])('throws when %s', async (_, body) => {
+      const { client, logger } = createClient('allow');
+      fetchSpy.mockResolvedValueOnce(jsonResponse(body));
 
       await expect(
         client.evaluatePermissionsFrameworkPolicy(input),
-      ).resolves.toBeUndefined();
+      ).rejects.toThrow('The result is missing in the response from OPA');
+
+      expect(logger.error).toHaveBeenCalledWith(
+        expect.stringContaining(
+          'The result is missing in the response from OPA',
+        ),
+      );
+      expect(logger.warn).not.toHaveBeenCalled();
     });
 
     it('logs the input and the response at debug level', async () => {
