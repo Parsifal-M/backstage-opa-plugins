@@ -41,30 +41,20 @@ export class OpaClient {
   }
 
   /**
-   * Unified error handling with optional fallback policy support.
+   * Handles a failure to get a decision from OPA (server unreachable or a
+   * non-2xx response). Applies the configured fallback decision if there is
+   * one, otherwise logs and throws.
    */
-  private handleOpaError(
-    error: unknown,
-    fallbackPolicy?: FallbackPolicyDecision,
-  ): PolicyEvaluationResponse {
-    const isHttpError =
-      error instanceof Error && error.message.startsWith('HTTP');
-    const isFetchError = error instanceof Error && error.name === 'FetchError';
-
-    const message = isHttpError
-      ? `An error response was returned after sending the policy input to the OPA server: ${error.message.replace(
-          'HTTP ',
-          '',
-        )}`
-      : `An error occurred while sending the policy input to the OPA server: ${error}`;
-
-    if (fallbackPolicy && (isFetchError || isHttpError)) {
-      if (fallbackPolicy === 'allow') {
-        this.logger.warn(`${message}. Falling back to allow.`);
-        return { result: { result: 'ALLOW' } };
-      }
+  private handleOpaUnavailable(
+    message: string,
+  ): PermissionsFrameworkPolicyEvaluationResult {
+    if (this.fallbackPolicyDecision === 'allow') {
+      this.logger.warn(`${message}. Falling back to allow.`);
+      return { result: 'ALLOW' };
+    }
+    if (this.fallbackPolicyDecision === 'deny') {
       this.logger.warn(`${message}. Falling back to deny.`);
-      return { result: { result: 'DENY' } };
+      return { result: 'DENY' };
     }
 
     this.logger.error(message);
@@ -81,34 +71,48 @@ export class OpaClient {
   ): Promise<PermissionsFrameworkPolicyEvaluationResult> {
     const opaUrl = `${this.baseUrl}/v1/data/${this.entryPoint}`;
 
+    this.logger.debug(`Sending policy input to OPA: ${JSON.stringify(input)}`);
+
+    let opaResponse: Response;
     try {
-      this.logger.debug(
-        `Sending policy input to OPA: ${JSON.stringify(input)}`,
-      );
-      const opaResponse = await fetch(opaUrl, {
+      opaResponse = await fetch(opaUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ input }),
       });
-
-      if (!opaResponse.ok) {
-        const error = new Error(
-          `HTTP ${opaResponse.status} - ${opaResponse.statusText}`,
-        );
-        return this.handleOpaError(error, this.fallbackPolicyDecision).result;
-      }
-
-      const opaPermissionsResponse =
-        (await opaResponse.json()) as PolicyEvaluationResponse;
-      this.logger.debug(
-        `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
-      );
-
-      return opaPermissionsResponse.result;
     } catch (error: unknown) {
-      return this.handleOpaError(error, this.fallbackPolicyDecision).result;
+      // Any rejection from fetch itself is a transport failure (connection
+      // refused, DNS, TLS, ...). Native fetch reports these as
+      // `TypeError: fetch failed`, so we don't rely on the error name.
+      return this.handleOpaUnavailable(
+        `An error occurred while sending the policy input to the OPA server: ${error}`,
+      );
     }
+
+    if (!opaResponse.ok) {
+      return this.handleOpaUnavailable(
+        `An error response was returned after sending the policy input to the OPA server: ${opaResponse.status} - ${opaResponse.statusText}`,
+      );
+    }
+
+    // A 2xx response we can't parse means OPA is reachable but something is
+    // misconfigured, so we never apply the fallback here.
+    let opaPermissionsResponse: PolicyEvaluationResponse;
+    try {
+      opaPermissionsResponse =
+        (await opaResponse.json()) as PolicyEvaluationResponse;
+    } catch (error: unknown) {
+      const message = `Failed to parse the response from the OPA server: ${error}`;
+      this.logger.error(message);
+      throw new Error(message);
+    }
+
+    this.logger.debug(
+      `Received data from OPA: ${JSON.stringify(opaPermissionsResponse)}`,
+    );
+
+    return opaPermissionsResponse.result;
   }
 }
