@@ -72,7 +72,7 @@
     "@backstage/frontend-plugin-api": "backstage:^",
     "@material-ui/core": "^4.9.13",
     "@parsifal-m/backstage-plugin-opa-common": "workspace:^",
-    "swr": "^2.2.5"
+    "swr": "^2.5.1"
   },
   "peerDependencies": {
     "react": "^18.0.0"
