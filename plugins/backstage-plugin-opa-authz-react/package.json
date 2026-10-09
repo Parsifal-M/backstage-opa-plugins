@@ -83,7 +83,7 @@
     "@backstage/test-utils": "backstage:^",
     "@testing-library/dom": "^9.0.0",
     "@testing-library/jest-dom": "^6.0.0",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^16.3.3",
     "msw": "^1.0.0"
   },
   "files": [
