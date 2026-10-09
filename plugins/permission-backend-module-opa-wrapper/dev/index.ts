@@ -3,7 +3,7 @@ import {
   coreServices,
   createBackendPlugin,
 } from '@backstage/backend-plugin-api';
-import { mockServices } from '@backstage/backend-test-utils';
+import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
 import express from 'express';
 import Router from 'express-promise-router';
 import { OpaClient } from '../src/opa-client/opaClient';
@@ -45,10 +45,10 @@ const permissionWrapperDevPlugin = createBackendPlugin({
         httpRouter: coreServices.httpRouter,
         logger: coreServices.logger,
         config: coreServices.rootConfig,
+        auth: coreServices.auth,
       },
-      async init({ httpRouter, logger, config }) {
+      async init({ httpRouter, logger, config, auth }) {
         const opaClient = new OpaClient(config, logger);
-        const policy = new OpaPermissionPolicy(opaClient, logger);
 
         const router = Router();
         router.use(express.json());
@@ -65,18 +65,39 @@ const permissionWrapperDevPlugin = createBackendPlugin({
             permissionName,
             userEntityRef = 'user:default/mock',
             ownershipEntityRefs = ['user:default/mock'],
+          }: {
+            permissionName: string;
+            userEntityRef?: string;
+            ownershipEntityRefs?: string[];
           } = req.body;
 
+          // Built per request so the simulated user's ownership refs come
+          // from the request body via a stubbed UserInfo service.
+          const policy = new OpaPermissionPolicy({
+            opaClient,
+            auth,
+            userInfo: mockServices.userInfo({
+              userEntityRef,
+              ownershipEntityRefs,
+            }),
+            logger,
+          });
+
+          // OpaPermissionPolicy only reads permission.name — type fields are irrelevant here
           const result = await policy.handle(
-            // OpaPermissionPolicy only reads permission.name — type fields are irrelevant here
             {
               permission: {
                 type: 'basic',
                 name: permissionName,
                 attributes: {},
-              } as any,
+              },
             },
-            { info: { userEntityRef, ownershipEntityRefs } } as any,
+            {
+              credentials: mockCredentials.user(userEntityRef),
+              // Still required by the PolicyQueryUser type, but deprecated and
+              // ignored by the policy, which resolves identity via userInfo.
+              info: { userEntityRef, ownershipEntityRefs },
+            },
           );
 
           res.json(result);

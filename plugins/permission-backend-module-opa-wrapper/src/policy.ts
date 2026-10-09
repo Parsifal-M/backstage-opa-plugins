@@ -11,48 +11,64 @@ import {
   PolicyQueryUser,
 } from '@backstage/plugin-permission-node';
 import { OpaClient } from './opa-client';
-import { LoggerService } from '@backstage/backend-plugin-api';
+import {
+  AuthService,
+  LoggerService,
+  UserInfoService,
+} from '@backstage/backend-plugin-api';
 import { PermissionsFrameworkPolicyInput } from './types';
 
-export class OpaPermissionPolicy implements PermissionPolicy {
-  private opaClient: OpaClient;
-  private logger: LoggerService;
+/**
+ * The subset of {@link OpaClient} the policy depends on, so tests (and
+ * alternative transports) can supply their own implementation.
+ */
+export type PermissionsFrameworkPolicyEvaluator = Pick<
+  OpaClient,
+  'evaluatePermissionsFrameworkPolicy'
+>;
 
-  constructor(opaClient: OpaClient, logger: LoggerService) {
-    this.opaClient = opaClient;
-    this.logger = logger;
+export type OpaPermissionPolicyOptions = {
+  opaClient: PermissionsFrameworkPolicyEvaluator;
+  auth: AuthService;
+  userInfo: UserInfoService;
+  logger: LoggerService;
+};
+
+export class OpaPermissionPolicy implements PermissionPolicy {
+  private readonly opaClient: PermissionsFrameworkPolicyEvaluator;
+  private readonly auth: AuthService;
+  private readonly userInfo: UserInfoService;
+  private readonly logger: LoggerService;
+
+  constructor(options: OpaPermissionPolicyOptions) {
+    this.opaClient = options.opaClient;
+    this.auth = options.auth;
+    this.userInfo = options.userInfo;
+    this.logger = options.logger;
   }
 
   async handle(
     request: PolicyQuery,
-    user: PolicyQueryUser,
+    user?: PolicyQueryUser,
   ): Promise<PolicyDecision> {
+    const identity = await this.resolveIdentity(user);
+
     this.logger.debug(
-      `Evaluating permission "${request.permission.name}" for user "${user.info.userEntityRef}"`,
+      `Evaluating permission "${request.permission.name}" for user "${
+        identity?.user ?? '<none>'
+      }"`,
     );
 
     const input: PermissionsFrameworkPolicyInput = {
       permission: {
         name: request.permission.name,
       },
-      identity: {
-        user: user.info.userEntityRef,
-        claims: user.info.ownershipEntityRefs ?? [],
-      },
+      ...(identity && { identity }),
     };
 
     const response = await this.opaClient.evaluatePermissionsFrameworkPolicy(
       input,
     );
-
-    if (!response) {
-      this.logger.error(
-        'The result is missing in the response from OPA, are you sure the policy is loaded?',
-      );
-      throw new Error(
-        'The result is missing in the response from OPA, are you sure the policy is loaded?',
-      );
-    }
 
     if (response.result === 'CONDITIONAL') {
       const permissionName = request.permission.name;
@@ -96,5 +112,26 @@ export class OpaPermissionPolicy implements PermissionPolicy {
     }
 
     return { result: AuthorizeResult.ALLOW };
+  }
+
+  /**
+   * Resolves the user's identity from their credentials via the UserInfo
+   * service, replacing the deprecated `PolicyQueryUser.info`.
+   *
+   * The PermissionPolicy contract allows `user` to be undefined, and its
+   * credentials are not guaranteed to belong to a user principal. In both
+   * cases no identity is sent to OPA.
+   */
+  private async resolveIdentity(
+    user: PolicyQueryUser | undefined,
+  ): Promise<PermissionsFrameworkPolicyInput['identity']> {
+    if (!user || !this.auth.isPrincipal(user.credentials, 'user')) {
+      return undefined;
+    }
+
+    const { userEntityRef, ownershipEntityRefs } =
+      await this.userInfo.getUserInfo(user.credentials);
+
+    return { user: userEntityRef, claims: ownershipEntityRefs };
   }
 }

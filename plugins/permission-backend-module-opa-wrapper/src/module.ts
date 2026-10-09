@@ -14,11 +14,15 @@ export const permissionModuleOpaWrapper = createBackendModule({
       deps: {
         config: coreServices.rootConfig,
         logger: coreServices.logger,
+        auth: coreServices.auth,
+        userInfo: coreServices.userInfo,
         policy: policyExtensionPoint,
       },
-      async init({ config, logger, policy }) {
+      async init({ config, logger, auth, userInfo, policy }) {
         const opaClient = new OpaClient(config, logger);
-        policy.setPolicy(new OpaPermissionPolicy(opaClient, logger));
+        policy.setPolicy(
+          new OpaPermissionPolicy({ opaClient, auth, userInfo, logger }),
+        );
       },
     });
   },
