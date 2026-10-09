@@ -1,0 +1,67 @@
+# Dependabot version updates
+# Docs: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+version: 2
+
+updates:
+  # Root Yarn workspace (all plugins under plugins/*)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Wait before proposing freshly published versions — gives the ecosystem
+    # time to catch compromised/broken releases. Does not delay security updates.
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(deps)'
+    ignore:
+      # @backstage/* deps use the `backstage:^` protocol resolved by the
+      # Backstage Yarn plugin. Bump these with `yarn backstage-cli versions:bump`.
+      - dependency-name: '@backstage/*'
+    groups:
+      dev-dependencies:
+        dependency-type: development
+        update-types: [minor, patch]
+      production-dependencies:
+        dependency-type: production
+        update-types: [minor, patch]
+
+  # Docusaurus documentation site (separate lockfile)
+  - package-ecosystem: npm
+    directory: /opa-docs
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: 'chore(docs-deps)'
+    groups:
+      docusaurus:
+        patterns: ['@docusaurus/*']
+      docs-dependencies:
+        patterns: ['*']
+        exclude-patterns: ['@docusaurus/*']
+        update-types: [minor, patch]
+
+  # GitHub Actions used in .github/workflows
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: 'chore(ci)'
+    groups:
+      github-actions:
+        patterns: ['*']
+
+  # Local dev images (OPA, Postgres) in docker-compose.yaml
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: 'chore(dev)'
