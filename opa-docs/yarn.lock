@@ -9092,12 +9092,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.562.0":
-  version: 0.562.0
-  resolution: "lucide-react@npm:0.562.0"
+"lucide-react@npm:^1.50.0":
+  version: 1.50.0
+  resolution: "lucide-react@npm:1.50.0"
   peerDependencies:
+    "@types/react": "*"
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/c713a2490916e42c678b9df0d7309d8cdb715af1d7139c7eb49c45547901b276a7cf722548012a668dc0e337eeadf5141d5af8c8fcda6721fc58fb2d288efcba
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/c00d4a8e4726c560db2d2e0c3bf1150ce29580c16445d68ffd283469b77d85ef795c602ad30ed6b64043e92008ff9899d9271d7ee1d804af6a1d16e972fcc818
   languageName: node
   linkType: hard
 
@@ -10522,7 +10526,7 @@ __metadata:
     "@mdx-js/react": "npm:^3.1.1"
     clsx: "npm:^2.0.0"
     framer-motion: "npm:^12.26.2"
-    lucide-react: "npm:^0.562.0"
+    lucide-react: "npm:^1.50.0"
     prism-react-renderer: "npm:^2.3.0"
     react: "npm:^19.3.0"
     react-dom: "npm:^19.3.0"
