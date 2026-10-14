@@ -100,9 +100,7 @@ Validates a Backstage entity against an OPA policy. Used by [`opa-entity-checker
 
 ```json
 {
-  "input": {
-    /* Backstage Entity object */
-  }
+  "input": {/* Backstage Entity object */}
 }
 ```
 

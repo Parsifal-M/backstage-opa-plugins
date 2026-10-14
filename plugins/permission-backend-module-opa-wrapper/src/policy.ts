@@ -66,9 +66,8 @@ export class OpaPermissionPolicy implements PermissionPolicy {
       ...(identity && { identity }),
     };
 
-    const response = await this.opaClient.evaluatePermissionsFrameworkPolicy(
-      input,
-    );
+    const response =
+      await this.opaClient.evaluatePermissionsFrameworkPolicy(input);
 
     if (response.result === 'CONDITIONAL') {
       const permissionName = request.permission.name;
