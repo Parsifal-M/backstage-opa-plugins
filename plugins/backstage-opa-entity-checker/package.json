@@ -72,7 +72,7 @@
     "@backstage/frontend-plugin-api": "backstage:^",
     "@backstage/plugin-catalog-react": "backstage:^",
     "@backstage/theme": "backstage:^",
-    "@mui/icons-material": "^5.16.7",
+    "@mui/icons-material": "^9.5.0",
     "@mui/material": "^5.12.2",
     "@parsifal-m/backstage-plugin-opa-common": "workspace:^",
     "react-use": "^17.6.1"
