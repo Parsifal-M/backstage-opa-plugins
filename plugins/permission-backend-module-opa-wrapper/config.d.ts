@@ -9,8 +9,11 @@ export interface Config {
       policy: {
         /** Entry point into the OPA policy */
         policyEntryPoint: string;
-        /** Optional fallback decision if OPA evaluation fails */
-        policyFallbackDecision?: 'allow' | 'deny';
+        /**
+         * Optional fallback decision if OPA evaluation fails.
+         * Accepts 'allow' or 'deny' (case-insensitive); any other value disables the fallback.
+         */
+        policyFallbackDecision?: string;
       };
     };
   };
