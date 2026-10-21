@@ -78,14 +78,11 @@
   },
   "devDependencies": {
     "@backstage/cli": "backstage:^",
-    "@backstage/core-app-api": "backstage:^",
     "@backstage/dev-utils": "backstage:^",
     "@backstage/test-utils": "backstage:^",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^12.1.3",
-    "@testing-library/user-event": "^14.6.7",
-    "@types/react-syntax-highlighter": "^15.5.11",
-    "msw": "^1.0.0"
+    "@types/react-syntax-highlighter": "^15.5.11"
   },
   "files": [
     "dist"

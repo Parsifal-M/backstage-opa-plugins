@@ -3360,7 +3360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/core-app-api@backstage:^::backstage=1.55.2&npm=1.20.5, @backstage/core-app-api@npm:^1.20.5":
+"@backstage/core-app-api@npm:^1.20.5":
   version: 1.20.5
   resolution: "@backstage/core-app-api@npm:1.20.5"
   dependencies:
@@ -5104,10 +5104,8 @@ __metadata:
     "@parsifal-m/backstage-plugin-opa-node": "workspace:^"
     "@parsifal-m/plugin-permission-backend-module-opa-wrapper": "workspace:^"
     "@types/express": "npm:*"
-    "@types/supertest": "npm:^2.0.12"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
-    supertest: "npm:^6.2.4"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
@@ -5117,20 +5115,15 @@ __metadata:
   resolution: "@internal/backstage-plugin-opa-frontend-demo@workspace:plugins/opa-demo-frontend"
   dependencies:
     "@backstage/cli": "backstage:^"
-    "@backstage/core-app-api": "backstage:^"
     "@backstage/core-components": "backstage:^"
     "@backstage/core-plugin-api": "backstage:^"
     "@backstage/dev-utils": "backstage:^"
-    "@backstage/test-utils": "backstage:^"
     "@backstage/theme": "backstage:^"
     "@material-ui/core": "npm:^4.9.13"
     "@material-ui/icons": "npm:^4.9.1"
     "@material-ui/lab": "npm:^4.0.0-alpha.61"
     "@parsifal-m/backstage-plugin-opa-authz-react": "workspace:^"
     "@testing-library/jest-dom": "npm:^6.0.0"
-    "@testing-library/react": "npm:^14.0.0"
-    "@testing-library/user-event": "npm:^14.6.7"
-    msw: "npm:^1.0.0"
     react: "npm:^16.13.1 || ^17.0.0 || ^18.0.0"
     react-use: "npm:^17.6.1"
   peerDependencies:
@@ -7355,7 +7348,6 @@ __metadata:
     "@types/supertest": "npm:^2.0.12"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
-    msw: "npm:^1.0.0"
     node-fetch: "npm:^2.6.7"
     supertest: "npm:^6.2.4"
     zod: "npm:^3.22.4"
@@ -7368,7 +7360,6 @@ __metadata:
   dependencies:
     "@backstage/catalog-model": "backstage:^"
     "@backstage/cli": "backstage:^"
-    "@backstage/core-app-api": "backstage:^"
     "@backstage/core-plugin-api": "backstage:^"
     "@backstage/dev-utils": "backstage:^"
     "@backstage/frontend-plugin-api": "backstage:^"
@@ -7378,10 +7369,8 @@ __metadata:
     "@mui/material": "npm:^5.12.2"
     "@testing-library/jest-dom": "npm:^6.1.5"
     "@testing-library/react": "npm:^12.1.3"
-    "@testing-library/user-event": "npm:^14.6.7"
     "@types/node": "npm:*"
     cross-fetch: "npm:^3.1.5"
-    msw: "npm:^1.0.0"
   peerDependencies:
     react: ^16.13.1 || ^18.0.0
   languageName: unknown
@@ -7393,7 +7382,6 @@ __metadata:
   dependencies:
     "@backstage/catalog-model": "backstage:^"
     "@backstage/cli": "backstage:^"
-    "@backstage/core-app-api": "backstage:^"
     "@backstage/core-components": "backstage:^"
     "@backstage/core-plugin-api": "backstage:^"
     "@backstage/dev-utils": "backstage:^"
@@ -7404,9 +7392,7 @@ __metadata:
     "@material-ui/icons": "npm:^4.9.1"
     "@testing-library/jest-dom": "npm:^6.1.5"
     "@testing-library/react": "npm:^12.1.3"
-    "@testing-library/user-event": "npm:^14.6.7"
     "@types/react-syntax-highlighter": "npm:^15.5.11"
-    msw: "npm:^1.0.0"
     react-syntax-highlighter: "npm:^15.5.0"
   peerDependencies:
     react: ^17.0.0 || ^18.0.0
@@ -9402,16 +9388,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@spotify/eslint-plugin@npm:^15.0.0":
-  version: 15.0.0
-  resolution: "@spotify/eslint-plugin@npm:15.0.0"
-  peerDependencies:
-    "@typescript-eslint/parser": ^5.13.0
-    eslint: ">=8.x"
-  checksum: 10c0/9cb7f2b49992b5fec8fd0b05fd74c344a6ec90e7d4482f691c04a8cb59977e22185e37ef768372da52de595a8d3a3440ce109cd3e83b79d7ad3e1a397cfe25c2
-  languageName: node
-  linkType: hard
-
 "@spotify/prettier-config@npm:^15.0.0":
   version: 15.0.0
   resolution: "@spotify/prettier-config@npm:15.0.0"
@@ -9718,15 +9694,6 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10c0/8451dcc76ba0d4f3504af78f2a4aacc13117691f4b7a3c279f3e047d5ea817ff686496ad53e7f65f6183112aef2be3f318af609b1f5d666eed42b1014d1c68d5
-  languageName: node
-  linkType: hard
-
-"@testing-library/user-event@npm:^14.6.7":
-  version: 14.6.7
-  resolution: "@testing-library/user-event@npm:14.6.7"
-  peerDependencies:
-    "@testing-library/dom": ">=7.21.4"
-  checksum: 10c0/21f5e01bea2699b069947ae06d0b0fbabe0e90d2a2206b8f56a3f46126d09bd85320cba3fd3910c4d18710b1873e6966fb9021668966c615aaa14bf35d7df3ef
   languageName: node
   linkType: hard
 
@@ -14065,26 +14032,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^8.0.0":
-  version: 8.2.2
-  resolution: "concurrently@npm:8.2.2"
-  dependencies:
-    chalk: "npm:^4.1.2"
-    date-fns: "npm:^2.30.0"
-    lodash: "npm:^4.17.21"
-    rxjs: "npm:^7.8.1"
-    shell-quote: "npm:^1.8.1"
-    spawn-command: "npm:0.0.2"
-    supports-color: "npm:^8.1.1"
-    tree-kill: "npm:^1.2.2"
-    yargs: "npm:^17.7.2"
-  bin:
-    conc: dist/bin/concurrently.js
-    concurrently: dist/bin/concurrently.js
-  checksum: 10c0/0e9683196fe9c071d944345d21d8f34aa6c0cc50c0dd897e95619f2f1c9eb4871dca851b2569da17888235b7335b4c821ca19deed35bebcd9a131ee5d247f34c
-  languageName: node
-  linkType: hard
-
 "connect-history-api-fallback@npm:^2.0.0":
   version: 2.0.0
   resolution: "connect-history-api-fallback@npm:2.0.0"
@@ -14794,7 +14741,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.16.1, date-fns@npm:^2.30.0":
+"date-fns@npm:^2.16.1":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
@@ -25727,10 +25674,8 @@ __metadata:
     "@changesets/cli": "npm:^2.27.3"
     "@jest/environment-jsdom-abstract": "npm:^30.5.2"
     "@spotify/eslint-config-react": "npm:^15.0.0"
-    "@spotify/eslint-plugin": "npm:^15.0.0"
     "@spotify/prettier-config": "npm:^15.0.0"
     "@types/jest": "npm:^30.0.0"
-    concurrently: "npm:^8.0.0"
     eslint: "npm:^8.6.0"
     eslint-plugin-jest: "npm:*"
     eslint-plugin-notice: "npm:^0.9.10"
@@ -25782,7 +25727,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.5.5, rxjs@npm:^7.8.1":
+"rxjs@npm:^7.5.5":
   version: 7.8.1
   resolution: "rxjs@npm:7.8.1"
   dependencies:
@@ -26234,7 +26179,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shell-quote@npm:^1.10.0, shell-quote@npm:^1.6.1, shell-quote@npm:^1.7.3, shell-quote@npm:^1.8.1, shell-quote@npm:^1.9.0":
+"shell-quote@npm:^1.10.0, shell-quote@npm:^1.6.1, shell-quote@npm:^1.7.3, shell-quote@npm:^1.9.0":
   version: 1.12.0
   resolution: "shell-quote@npm:1.12.0"
   checksum: 10c0/1605a4ed6a758bf13de7cb8197a4184d8015f7a4dbdcd6cd4a717d5b30b3ae7666300cc4ae7f3155cf80ace9739e9e82061ee5aa1a648f53f5fab31a220816d0
@@ -26496,13 +26441,6 @@ __metadata:
   version: 2.0.2
   resolution: "space-separated-tokens@npm:2.0.2"
   checksum: 10c0/6173e1d903dca41dcab6a2deed8b4caf61bd13b6d7af8374713500570aa929ff9414ae09a0519f4f8772df993300305a395d4871f35bc4ca72b6db57e1f30af8
-  languageName: node
-  linkType: hard
-
-"spawn-command@npm:0.0.2":
-  version: 0.0.2
-  resolution: "spawn-command@npm:0.0.2"
-  checksum: 10c0/b22f2d71239e6e628a400831861ba747750bbb40c0a53323754cf7b84330b73d81e40ff1f9055e6d1971818679510208a9302e13d9ff3b32feb67e74d7a1b3ef
   languageName: node
   linkType: hard
 
@@ -27780,15 +27718,6 @@ __metadata:
   peerDependencies:
     tslib: 2
   checksum: 10c0/079f0f0163b68ee2eedc65cab1de6fb121487eba9ae135c106a8bc5e4ab7906ae0b57d86016e4a7da8c0ee906da1eae8c6a1490cd6e2a5e5ccbca321e1f959ca
-  languageName: node
-  linkType: hard
-
-"tree-kill@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "tree-kill@npm:1.2.2"
-  bin:
-    tree-kill: cli.js
-  checksum: 10c0/7b1b7c7f17608a8f8d20a162e7957ac1ef6cd1636db1aba92f4e072dc31818c2ff0efac1e3d91064ede67ed5dc57c565420531a8134090a12ac10cf792ab14d2
   languageName: node
   linkType: hard
 
