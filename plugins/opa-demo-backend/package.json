@@ -43,9 +43,7 @@
   "devDependencies": {
     "@backstage/backend-test-utils": "backstage:^",
     "@backstage/cli": "backstage:^",
-    "@types/express": "*",
-    "@types/supertest": "^2.0.12",
-    "supertest": "^6.2.4"
+    "@types/express": "*"
   },
   "files": [
     "dist"

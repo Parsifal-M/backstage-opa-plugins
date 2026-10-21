@@ -1,0 +1,46 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  // Internal demo plugins: unpublished examples, not held to the same standard.
+  "ignoreWorkspaces": ["plugins/opa-demo-backend", "plugins/opa-demo-frontend"],
+  // Provided transitively by @backstage/cli/config/eslint-factory, which every
+  // plugin's .eslintrc.js delegates to.
+  "ignoreDependencies": [
+    "@backstage/eslint-plugin",
+    "@spotify/eslint-config-base",
+    "@spotify/eslint-config-typescript",
+    "@typescript-eslint/parser",
+  ],
+  "ignoreUnresolved": [
+    "eslint-config-prettier",
+    "eslint-plugin-import",
+    "eslint-plugin-unused-imports",
+  ],
+  "workspaces": {
+    ".": {
+      "entry": [],
+      "project": [],
+      "ignoreDependencies": [
+        // Loaded by name at runtime by @backstage/cli, never imported.
+        "@backstage/cli-defaults",
+        // Pins the native build toolchain for better-sqlite3 (via
+        // @backstage/backend-test-utils); Yarn would otherwise fetch node-gyp@latest.
+        "node-gyp",
+        // Hoisted peer dependencies shared by the frontend plugins.
+        "react",
+        "react-dom",
+        "react-router-dom",
+      ],
+    },
+    "plugins/*": {
+      // Backstage CLI conventions: package entry points, the Jest setup file
+      // loaded by `backstage-cli package test`, and the `yarn start` dev harness.
+      "entry": [
+        "src/index.{ts,tsx}",
+        "src/alpha.{ts,tsx}",
+        "src/setupTests.ts",
+        "dev/index.{ts,tsx}",
+      ],
+      "project": ["src/**/*.{ts,tsx}", "dev/**/*.{ts,tsx}"],
+    },
+  },
+}
