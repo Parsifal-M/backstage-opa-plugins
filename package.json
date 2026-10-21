@@ -45,7 +45,7 @@
     "jsdom": "^30.1.2",
     "lint-staged": "^17.6.0",
     "node-gyp": "^10.0.0",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.30.6",
