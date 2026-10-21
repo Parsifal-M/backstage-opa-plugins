@@ -19,7 +19,9 @@
     "prettier:write": "prettier --write .",
     "prettier:check": "prettier --check .",
     "create-plugin": "echo \"use 'yarn new' instead\"",
-    "new": "backstage-cli new --scope internal"
+    "new": "backstage-cli new --scope internal",
+    "knip": "knip",
+    "postinstall": "husky"
   },
   "workspaces": {
     "packages": [
@@ -28,13 +30,12 @@
   },
   "devDependencies": {
     "@backstage/cli": "backstage:^",
+    "@backstage/cli-defaults": "backstage:^",
     "@changesets/cli": "^2.27.3",
     "@jest/environment-jsdom-abstract": "^30.5.2",
     "@spotify/eslint-config-react": "^15.0.0",
-    "@spotify/eslint-plugin": "^15.0.0",
     "@spotify/prettier-config": "^15.0.0",
     "@types/jest": "^30.0.0",
-    "concurrently": "^8.0.0",
     "eslint": "^8.6.0",
     "eslint-plugin-jest": "*",
     "eslint-plugin-notice": "^1.0.0",
@@ -43,6 +44,7 @@
     "husky": "^9.1.7",
     "jest": "^30.5.2",
     "jsdom": "^30.1.2",
+    "knip": "^6.42.1",
     "lint-staged": "^17.6.0",
     "node-gyp": "^10.0.0",
     "prettier": "^3.9.9",

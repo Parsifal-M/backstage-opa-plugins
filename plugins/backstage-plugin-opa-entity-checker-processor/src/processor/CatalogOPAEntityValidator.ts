@@ -9,7 +9,7 @@ import {
 } from '../client/EntityCheckerClient';
 import { OpaEntityCheckResult } from '../types';
 
-export const OPA_ENTITY_CHECKER_ANNOTATION =
+const OPA_ENTITY_CHECKER_ANNOTATION =
   'open-policy-agent/entity-checker-validation-status';
 
 /**
