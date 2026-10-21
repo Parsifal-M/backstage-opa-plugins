@@ -1,0 +1,29 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreDependencies": [
+    "@backstage/eslint-plugin",
+    "@spotify/eslint-config-base",
+    "@spotify/eslint-config-typescript"
+  ],
+  "ignoreUnresolved": [
+    "eslint-config-prettier",
+    "eslint-plugin-import",
+    "eslint-plugin-unused-imports"
+  ],
+  "workspaces": {
+    ".": {
+      "entry": [],
+      "project": [],
+      "ignoreDependencies": ["react", "react-dom", "react-router-dom"]
+    },
+    "plugins/*": {
+      "entry": [
+        "src/index.{ts,tsx}",
+        "src/alpha.{ts,tsx}",
+        "src/setupTests.ts",
+        "dev/index.{ts,tsx}"
+      ],
+      "project": ["src/**/*.{ts,tsx}", "dev/**/*.{ts,tsx}"]
+    }
+  }
+}

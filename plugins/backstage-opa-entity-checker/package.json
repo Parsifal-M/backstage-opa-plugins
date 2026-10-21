@@ -66,16 +66,11 @@
   },
   "dependencies": {
     "@backstage/catalog-model": "backstage:^",
-    "@backstage/config": "backstage:^",
-    "@backstage/core-components": "backstage:^",
     "@backstage/core-plugin-api": "backstage:^",
     "@backstage/frontend-plugin-api": "backstage:^",
     "@backstage/plugin-catalog-react": "backstage:^",
-    "@backstage/theme": "backstage:^",
     "@mui/icons-material": "^5.16.7",
-    "@mui/material": "^5.12.2",
-    "@parsifal-m/backstage-plugin-opa-common": "workspace:^",
-    "react-use": "^17.6.1"
+    "@mui/material": "^5.12.2"
   },
   "peerDependencies": {
     "react": "^16.13.1 || ^18.0.0"
