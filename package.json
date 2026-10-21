@@ -34,7 +34,7 @@
     "@spotify/eslint-plugin": "^15.0.0",
     "@spotify/prettier-config": "^15.0.0",
     "@types/jest": "^30.0.0",
-    "concurrently": "^8.0.0",
+    "concurrently": "^10.0.6",
     "eslint": "^8.6.0",
     "eslint-plugin-jest": "*",
     "eslint-plugin-notice": "^0.9.10",
