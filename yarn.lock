@@ -15196,16 +15196,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-notice@npm:^0.9.10":
-  version: 0.9.10
-  resolution: "eslint-plugin-notice@npm:0.9.10"
+"eslint-plugin-notice@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "eslint-plugin-notice@npm:1.0.0"
   dependencies:
     find-root: "npm:^1.1.0"
-    lodash: "npm:^4.17.15"
+    lodash: "npm:^4.17.21"
     metric-lcs: "npm:^0.1.2"
   peerDependencies:
     eslint: ">=3.0.0"
-  checksum: 10c0/05b45467299d050242045e75073429c6ab6e4826bc53aba9aa15f5736782d102a6ac15aa4f36c9f564d10c04dd3f7cf4e46cff4f2a555f1b4cb828f3d533852a
+  checksum: 10c0/40b162fea014efad8e24c38f58c84729cf0ce0ee7a21fdb79ccfde9c2f5d219e4e74e7729679b6321400b34cc80c51beb00a46ba03a7c13265ceab573262f9ea
   languageName: node
   linkType: hard
 
@@ -24691,7 +24691,7 @@ __metadata:
     concurrently: "npm:^8.0.0"
     eslint: "npm:^8.6.0"
     eslint-plugin-jest: "npm:*"
-    eslint-plugin-notice: "npm:^0.9.10"
+    eslint-plugin-notice: "npm:^1.0.0"
     eslint-plugin-react: "npm:^7.37.5"
     eslint-plugin-testing-library: "npm:^6.0.0"
     husky: "npm:^9.1.7"
