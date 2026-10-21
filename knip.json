@@ -14,7 +14,12 @@
     ".": {
       "entry": [],
       "project": [],
-      "ignoreDependencies": ["react", "react-dom", "react-router-dom"]
+      "ignoreDependencies": [
+        "@backstage/cli-defaults",
+        "react",
+        "react-dom",
+        "react-router-dom"
+      ]
     },
     "plugins/*": {
       "entry": [
