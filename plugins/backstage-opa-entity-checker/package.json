@@ -69,7 +69,7 @@
     "@backstage/core-plugin-api": "backstage:^",
     "@backstage/frontend-plugin-api": "backstage:^",
     "@backstage/plugin-catalog-react": "backstage:^",
-    "@mui/icons-material": "^5.16.7",
+    "@mui/icons-material": "^7.3.11",
     "@mui/material": "^5.12.2"
   },
   "peerDependencies": {
