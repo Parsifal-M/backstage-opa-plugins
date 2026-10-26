@@ -7542,12 +7542,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^14.1.0":
-  version: 14.1.0
-  resolution: "framer-motion@npm:14.1.0"
+"framer-motion@npm:^14.3.0":
+  version: 14.3.0
+  resolution: "framer-motion@npm:14.3.0"
   dependencies:
-    motion-dom: "npm:14.1.0"
-    motion-utils: "npm:14.1.0"
+    motion-dom: "npm:14.3.0"
+    motion-utils: "npm:14.1.1"
     tslib: "npm:^2.4.0"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -7557,7 +7557,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/cf167172d041c2d20d844da7aaba91826aa3767aafa2251acb43c6271294e5f60ea3ab99d198ff21521d1f72fc24aeb391ea7ff1faf54f80764ef3a76114966a
+  checksum: 10c0/66fc2c8dbe68e9ff3241440969e02dd22c8c96bac1a380987510b77e8e25d6bbd05f8192e9b5a74cd32790719c7971d31cea8c9156fb58538d0885c9fbf7b28e
   languageName: node
   linkType: hard
 
@@ -9089,16 +9089,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^1.55.0":
-  version: 1.55.0
-  resolution: "lucide-react@npm:1.55.0"
+"lucide-react@npm:^1.59.0":
+  version: 1.59.0
+  resolution: "lucide-react@npm:1.59.0"
   peerDependencies:
     "@types/react": "*"
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10c0/0618af0eb06e0ea71a7c66b39b89158ff357093714fff5f4bfc1b4851af890ffc49092956b08daf89f38c7ff48f783bb14e7b52756aae4f6bed06da4cf297821
+  checksum: 10c0/e02dbdda8a9689527988ffb8ed7f01675755146ee7abfebbbe46b843fbc477f23dc0a4524fe257d0daa3d8eb3289a46f8bdce4a1dcbbdeeab5d158bfa68842c4
   languageName: node
   linkType: hard
 
@@ -10223,19 +10223,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:14.1.0":
-  version: 14.1.0
-  resolution: "motion-dom@npm:14.1.0"
+"motion-dom@npm:14.3.0":
+  version: 14.3.0
+  resolution: "motion-dom@npm:14.3.0"
   dependencies:
-    motion-utils: "npm:14.1.0"
-  checksum: 10c0/ad5d65e10cd88b2e2f2d2728eb936c0607c8862b04246f8732dad07559ec632a09f5d5ee547afa08d4898ef0fd3fc8d3f5c1615e4d32bda477daac7017f2dd35
+    motion-utils: "npm:14.1.1"
+  checksum: 10c0/0675ecf947f675acf7710b64a3ddece2fbc0bb490130333e7c695967eee55ea8cba52c1eb15df9277eda6766f029b63785c658ea869e5f14ffb3d33fdc731947
   languageName: node
   linkType: hard
 
-"motion-utils@npm:14.1.0":
-  version: 14.1.0
-  resolution: "motion-utils@npm:14.1.0"
-  checksum: 10c0/d48bb8bf9e78af2ee9dd5b4f6ef54e4357b876b950be7be1216f40b7e8f080270109741a02ac168a9b202505a12e9809538c90e36821591dc2a2b8489a6048f2
+"motion-utils@npm:14.1.1":
+  version: 14.1.1
+  resolution: "motion-utils@npm:14.1.1"
+  checksum: 10c0/ee89684857aae2b02897d7297568e1e6dc6c1eec08c61533fbc0a9650de5d5c454aa888532b825baabac92defddecd364cbb8cd7fa63b2171152edf8f9f819f0
   languageName: node
   linkType: hard
 
@@ -10522,11 +10522,11 @@ __metadata:
     "@docusaurus/types": "npm:3.10.2"
     "@mdx-js/react": "npm:^3.1.1"
     clsx: "npm:^2.0.0"
-    framer-motion: "npm:^14.1.0"
-    lucide-react: "npm:^1.55.0"
+    framer-motion: "npm:^14.3.0"
+    lucide-react: "npm:^1.59.0"
     prism-react-renderer: "npm:^2.3.0"
-    react: "npm:^19.3.0"
-    react-dom: "npm:^19.3.0"
+    react: "npm:^19.3.1"
+    react-dom: "npm:^19.3.1"
     typescript: "npm:~5.6.2"
   languageName: unknown
   linkType: soft
@@ -11938,14 +11938,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.3.0":
-  version: 19.3.0
-  resolution: "react-dom@npm:19.3.0"
+"react-dom@npm:^19.3.1":
+  version: 19.3.1
+  resolution: "react-dom@npm:19.3.1"
   dependencies:
     scheduler: "npm:^0.28.0"
   peerDependencies:
-    react: ^19.3.0
-  checksum: 10c0/c513044b724dd6bfe9500a9682d60973e7f8a48cffba00b6b16d3e910e27dcc459bf71bf0a5c33d7d62a3843ca30de1bd1e2098058aa4ed71f618a24b6061da5
+    react: ^19.3.1
+  checksum: 10c0/382700916313b2ebc46acee80642f300bb8601eac6a9e7fefade5b8b30e66b05bf3aaa56a3c964589fcd578d27b486e847470c2697d879264e766661ff49fac7
   languageName: node
   linkType: hard
 
@@ -12059,10 +12059,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.3.0":
-  version: 19.3.0
-  resolution: "react@npm:19.3.0"
-  checksum: 10c0/dd3099c3c43a7122bc01223bb26b0f8d5ba13cca569af6fb94a005fb54fa73223c9cb203bb226d40cfd49a82cbeef2e36ce84062a3a6d5b9fe8f4437694c7b52
+"react@npm:^19.3.1":
+  version: 19.3.1
+  resolution: "react@npm:19.3.1"
+  checksum: 10c0/f0ed036d1223562c09c8347858ca712733ea6e27a30db709ee9c3f3f176d3e9e767afce735d59956addf3d030102e256bba82dea635fc1bdb0e01107e98fef10
   languageName: node
   linkType: hard
 
