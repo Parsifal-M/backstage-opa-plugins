@@ -96,7 +96,6 @@
   ```
 
   ## Key Changes
-
   1. **Configuration Namespace Changes:**
 
      - Permission wrapper: `opaClient.*` → `permission.opa.*`
@@ -111,14 +110,12 @@
      - `entrypoint` → `policyEntryPoint` (for backend services only)
 
   ## Required Actions
-
   1. **Update your `app-config.yaml`** with the new configuration structure
   2. **Add `enabled: true`** for all OPA backend features you want to use
   3. **Update property names** (`entrypoint` → `policyEntryPoint` for backend services)
   4. **Test your configuration** to ensure all features work as expected
 
   ## Benefits of This Change
-
   - **Better organization:** Clear separation between permission framework and backend services
   - **Resource optimization:** Only load the OPA features you actually need
   - **Future-proof:** Better foundation for additional OPA features

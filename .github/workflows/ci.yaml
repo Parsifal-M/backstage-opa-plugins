@@ -22,11 +22,11 @@ jobs:
       matrix:
         node-version: [22.x, 24.x]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: '0'
       - name: Use Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
@@ -36,6 +36,24 @@ jobs:
       - run: yarn tsc
       - run: yarn build
 
+  knip:
+    name: Knip (unused code & dependencies)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use Node 22.x
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22.x
+          cache: 'yarn'
+      - run: yarn install --immutable
+      # Advisory only: findings are surfaced as warning annotations and never fail
+      # the job. The github-actions reporter emits ::error, so downgrade to ::warning.
+      # `shell: bash` enables pipefail, so a Knip crash or config error still fails.
+      - name: Run Knip
+        shell: bash
+        run: yarn knip --no-progress --no-config-hints --no-exit-code --reporter github-actions | sed 's/^::error /::warning /'
+
   tests:
     name: Tests
     runs-on: ubuntu-latest
@@ -43,18 +61,18 @@ jobs:
       matrix:
         node-version: [22.x, 24.x]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: '0'
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
       - run: yarn install --immutable
       - run: yarn test:all --silent
       - name: Upload results to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: Parsifal-M/backstage-opa-plugins

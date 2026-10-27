@@ -38,11 +38,8 @@
   "dependencies": {
     "@backstage/backend-plugin-api": "backstage:^",
     "@backstage/config": "backstage:^",
-    "@backstage/errors": "backstage:^",
-    "@backstage/plugin-auth-node": "backstage:^",
     "@backstage/plugin-permission-common": "backstage:^",
-    "@backstage/plugin-permission-node": "backstage:^",
-    "winston": "^3.11.0"
+    "@backstage/plugin-permission-node": "backstage:^"
   },
   "devDependencies": {
     "@backstage/backend-defaults": "backstage:^",
@@ -55,5 +52,6 @@
   "files": [
     "config.d.ts",
     "dist"
-  ]
+  ],
+  "configSchema": "config.d.ts"
 }
