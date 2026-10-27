@@ -71,7 +71,7 @@
     "@backstage/plugin-catalog-react": "backstage:^",
     "@material-ui/core": "^4.9.13",
     "@material-ui/icons": "^4.9.1",
-    "react-syntax-highlighter": "^15.5.0"
+    "react-syntax-highlighter": "^16.1.2"
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0"
