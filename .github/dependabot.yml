@@ -20,6 +20,9 @@ updates:
       # @backstage/* deps use the `backstage:^` protocol resolved by the
       # Backstage Yarn plugin. Bump these with `yarn backstage-cli versions:bump`.
       - dependency-name: '@backstage/*'
+      # Skip major bumps — these need deliberate, manual migration work.
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     groups:
       dev-dependencies:
         dependency-type: development
@@ -38,6 +41,10 @@ updates:
       default-days: 7
     commit-message:
       prefix: 'chore(docs-deps)'
+    ignore:
+      # Skip major bumps — these need deliberate, manual migration work.
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     groups:
       docusaurus:
         patterns: ['@docusaurus/*']
@@ -54,6 +61,10 @@ updates:
       day: monday
     commit-message:
       prefix: 'chore(ci)'
+    ignore:
+      # Skip major bumps — these need deliberate, manual migration work.
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     groups:
       github-actions:
         patterns: ['*']
@@ -65,3 +76,7 @@ updates:
       interval: monthly
     commit-message:
       prefix: 'chore(dev)'
+    ignore:
+      # Skip major bumps — these need deliberate, manual migration work.
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
