@@ -80,7 +80,7 @@
     "@backstage/cli": "backstage:^",
     "@backstage/dev-utils": "backstage:^",
     "@backstage/test-utils": "backstage:^",
-    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^12.1.3",
     "@types/react-syntax-highlighter": "^15.5.11"
   },
