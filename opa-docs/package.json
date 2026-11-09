@@ -20,8 +20,8 @@
     "@docusaurus/theme-mermaid": "^3.10.2",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.0.0",
-    "framer-motion": "^14.6.0",
-    "lucide-react": "^1.61.0",
+    "framer-motion": "^14.9.0",
+    "lucide-react": "^1.66.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
