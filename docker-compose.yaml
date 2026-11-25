@@ -7,7 +7,7 @@ services:
     ports:
       - 5432:5432
   opa:
-    image: openpolicyagent/opa:1.21.1-static
+    image: openpolicyagent/opa:1.22.0-static
     command:
       - 'run'
       - '--server'
